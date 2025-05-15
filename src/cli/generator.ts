@@ -12,19 +12,6 @@ import { CompositeGeneratorNode, toString } from 'langium/generate';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import {extractDestinationAndName } from './cli-util.js';
-// import {
-//     generateDockerfile,
-//     generateDockerComposePart,
-// } from './generator_files/docker_file_generator.js';
-// // import { generateEntrypoint } from './generator_files/entrypoint_generator.js';
-// import { generatePackageXml } from './generator_files/xml_generator.js';
-// import {
-//     generateSetupCfg,
-//     generateSetupPy,
-// } from './generator_files/setup_generator.js';
-// import { generateTimerExecutionPy } from './generator_files/timer_execution_generator.js';
-// import { generateLaunchFile } from './generator_files/launch_generation.js';
-// import { resolveMessageType } from './utils/utils.js';
 
 export function generateIFScript(
     model: Model,
@@ -131,7 +118,7 @@ function prettyPrintSensorSignal(sig: Sensor, ifContent: CompositeGeneratorNode,
     endstate;
     state jitter;
         deadline delayable;
-        when x <= (${sig.ssp.stdDev * 2}) ;
+        when x <= ${sig.ssp.stdDev * 2} ;
             informal "${sigName}_START";
             set e := 0;
             nextstate exec;
@@ -174,7 +161,7 @@ function prettyPrintActuatorSignal(sig: Actuator, ifContent: CompositeGeneratorN
     endstate;
     state jitter;
         deadline delayable;
-        when x <= (${AP.stdDev} * 2);
+        when x <= (${sig.ad.mean-sig.ad.stdDev} * 2));
             set e := 0;
             nextstate preprocessing;
         
