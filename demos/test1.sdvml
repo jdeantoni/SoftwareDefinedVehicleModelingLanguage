@@ -1,0 +1,13 @@
+SDV test1:
+
+    Sensor Signal Radar (SSP:10+/-2ms, DL: 5+/-2ms)
+
+    Actuator Signal Brake (periodic 10+/-2ms, AD: 5+/-2ms)
+
+
+    Component AEBS_controler
+    subscribe Radar
+    publish Brake
+    service s1:
+        triggered on Radar
+        ExecTime 3+/-1ms 
