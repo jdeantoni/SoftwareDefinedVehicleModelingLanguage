@@ -2,15 +2,18 @@ import type {
     LanguageClientOptions,
     ServerOptions,
 } from 'vscode-languageclient/node.js';
-import type * as vscode from 'vscode';
+import * as vscode from 'vscode';
 import * as path from 'node:path';
 import { LanguageClient, TransportKind } from 'vscode-languageclient/node.js';
-
+// import { SetModelAction} from '@eclipse-glsp/protocol';
+// import {RequestBoundsAction, SModelRoot, SNode} from "sprotty-protocol";
+// import { ModelServerVisualBuilder } from './sprottyHelper.js';
 let client: LanguageClient;
 
 // This function is called when the extension is activated.
 export function activate(context: vscode.ExtensionContext): void {
     client = startLanguageClient(context);
+
 }
 
 // This function is called when the extension is deactivated.
@@ -53,13 +56,48 @@ function startLanguageClient(context: vscode.ExtensionContext): LanguageClient {
 
     // Create the language client and start the client.
     const client = new LanguageClient(
-        'sdvml',
-        'sdvml',
+        'SDVML Language Server',
         serverOptions,
-        clientOptions
+        clientOptions,
+        true
     );
 
+
+    vscode.commands.executeCommand<string>('klighd-vscode.setLanguageClient', client, ['sdvml'])
+
+
+//     vscode.commands.executeCommand("klighd-vscode.addActionHandler", "klighd:open", async (args: any) => {
+//     console.log("klighD:open handler")
+//     const uri = vscode.Uri.parse(args.sourceUri);
+//     const doc = await vscode.workspace.openTextDocument(uri);
+//     const content = doc.getText();
+
+//     // Call your Python backend — e.g., via HTTP fetch or WebSocket
+//     const response = await fetch('http://localhost:5007/diagram', {
+//       method: 'POST',
+//       body: JSON.stringify({ text: content }),
+//       headers: { 'Content-Type': 'application/json' }
+//     });
+
+//     const diagram = await response.json();
+
+//     // Must return a diagram in KlighD JSON format
+//     return diagram;
+//   });
+
+
+
+
+
+    // eslint-disable-next-line no-console
+    console.debug('Starting SDVM Language Server...')
     // Start the client. This will also launch the server
     client.start();
     return client;
 }
+
+// type ActionHandler = (action: { kind: string }) => Promise<void>
+
+// // - kind: the action kind that should be intercepted by the handler
+// // - handler: the action handler that is called for the provided action type.
+// vscode.commands.executeCommand("klighd-vscode.addActionHandler", kind: string, handler: ActionHandler);

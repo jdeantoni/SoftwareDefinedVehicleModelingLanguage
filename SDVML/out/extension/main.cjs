@@ -1492,47 +1492,45 @@ var require_messageBuffer = __commonJS({
         let chunkIndex = 0;
         let offset = 0;
         let chunkBytesRead = 0;
-        row:
-          while (chunkIndex < this._chunks.length) {
-            const chunk = this._chunks[chunkIndex];
-            offset = 0;
-            column:
-              while (offset < chunk.length) {
-                const value = chunk[offset];
-                switch (value) {
-                  case CR:
-                    switch (state) {
-                      case 0:
-                        state = 1;
-                        break;
-                      case 2:
-                        state = 3;
-                        break;
-                      default:
-                        state = 0;
-                    }
+        row: while (chunkIndex < this._chunks.length) {
+          const chunk = this._chunks[chunkIndex];
+          offset = 0;
+          column: while (offset < chunk.length) {
+            const value = chunk[offset];
+            switch (value) {
+              case CR:
+                switch (state) {
+                  case 0:
+                    state = 1;
                     break;
-                  case LF:
-                    switch (state) {
-                      case 1:
-                        state = 2;
-                        break;
-                      case 3:
-                        state = 4;
-                        offset++;
-                        break row;
-                      default:
-                        state = 0;
-                    }
+                  case 2:
+                    state = 3;
                     break;
                   default:
                     state = 0;
                 }
-                offset++;
-              }
-            chunkBytesRead += chunk.byteLength;
-            chunkIndex++;
+                break;
+              case LF:
+                switch (state) {
+                  case 1:
+                    state = 2;
+                    break;
+                  case 3:
+                    state = 4;
+                    offset++;
+                    break row;
+                  default:
+                    state = 0;
+                }
+                break;
+              default:
+                state = 0;
+            }
+            offset++;
           }
+          chunkBytesRead += chunk.byteLength;
+          chunkIndex++;
+        }
         if (state !== 4) {
           return void 0;
         }
@@ -3103,8 +3101,7 @@ var require_main = __commonJS({
   "node_modules/vscode-jsonrpc/lib/node/main.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
         desc = { enumerable: true, get: function() {
@@ -3113,14 +3110,11 @@ var require_main = __commonJS({
       }
       Object.defineProperty(o, k2, desc);
     } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     });
     var __exportStar = exports2 && exports2.__exportStar || function(m, exports3) {
-      for (var p in m)
-        if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p))
-          __createBinding(exports3, m, p);
+      for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p)) __createBinding(exports3, m, p);
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.createMessageConnection = exports2.createServerSocketTransport = exports2.createClientSocketTransport = exports2.createServerPipeTransport = exports2.createClientPipeTransport = exports2.generateRandomPipeName = exports2.StreamMessageWriter = exports2.StreamMessageReader = exports2.SocketMessageWriter = exports2.SocketMessageReader = exports2.PortMessageWriter = exports2.PortMessageReader = exports2.IPCMessageWriter = exports2.IPCMessageReader = void 0;
@@ -3376,8 +3370,7 @@ var require_main2 = __commonJS({
     (function(factory) {
       if (typeof module2 === "object" && typeof module2.exports === "object") {
         var v = factory(require, exports2);
-        if (v !== void 0)
-          module2.exports = v;
+        if (v !== void 0) module2.exports = v;
       } else if (typeof define === "function" && define.amd) {
         define(["require", "exports"], factory);
       }
@@ -6329,8 +6322,7 @@ var require_api2 = __commonJS({
   "node_modules/vscode-languageserver-protocol/lib/common/api.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
         desc = { enumerable: true, get: function() {
@@ -6339,14 +6331,11 @@ var require_api2 = __commonJS({
       }
       Object.defineProperty(o, k2, desc);
     } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     });
     var __exportStar = exports2 && exports2.__exportStar || function(m, exports3) {
-      for (var p in m)
-        if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p))
-          __createBinding(exports3, m, p);
+      for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p)) __createBinding(exports3, m, p);
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.LSPErrorCodes = exports2.createProtocolConnection = void 0;
@@ -6375,8 +6364,7 @@ var require_main3 = __commonJS({
   "node_modules/vscode-languageserver-protocol/lib/node/main.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
         desc = { enumerable: true, get: function() {
@@ -6385,14 +6373,11 @@ var require_main3 = __commonJS({
       }
       Object.defineProperty(o, k2, desc);
     } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     });
     var __exportStar = exports2 && exports2.__exportStar || function(m, exports3) {
-      for (var p in m)
-        if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p))
-          __createBinding(exports3, m, p);
+      for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p)) __createBinding(exports3, m, p);
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.createProtocolConnection = void 0;
@@ -6719,8 +6704,8 @@ var require_protocolCodeAction = __commonJS({
   "node_modules/vscode-languageclient/lib/common/protocolCodeAction.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    var vscode = require("vscode");
-    var ProtocolCodeAction = class extends vscode.CodeAction {
+    var vscode2 = require("vscode");
+    var ProtocolCodeAction = class extends vscode2.CodeAction {
       constructor(title, data) {
         super(title);
         this.data = data;
@@ -6736,7 +6721,7 @@ var require_protocolDiagnostic = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.ProtocolDiagnostic = exports2.DiagnosticCode = void 0;
-    var vscode = require("vscode");
+    var vscode2 = require("vscode");
     var Is = require_is();
     var DiagnosticCode;
     (function(DiagnosticCode2) {
@@ -6746,7 +6731,7 @@ var require_protocolDiagnostic = __commonJS({
       }
       DiagnosticCode2.is = is;
     })(DiagnosticCode || (exports2.DiagnosticCode = DiagnosticCode = {}));
-    var ProtocolDiagnostic = class extends vscode.Diagnostic {
+    var ProtocolDiagnostic = class extends vscode2.Diagnostic {
       constructor(range, message, severity, data) {
         super(range, message, severity);
         this.data = data;
@@ -9248,10 +9233,8 @@ var require_balanced_match = __commonJS({
     "use strict";
     module2.exports = balanced;
     function balanced(a, b, str) {
-      if (a instanceof RegExp)
-        a = maybeMatch(a, str);
-      if (b instanceof RegExp)
-        b = maybeMatch(b, str);
+      if (a instanceof RegExp) a = maybeMatch(a, str);
+      if (b instanceof RegExp) b = maybeMatch(b, str);
       var r = range(a, b, str);
       return r && {
         start: r[0],
@@ -9364,8 +9347,7 @@ var require_brace_expansion = __commonJS({
     function expand(str, isTop) {
       var expansions = [];
       var m = balanced("{", "}", str);
-      if (!m)
-        return [str];
+      if (!m) return [str];
       var pre = m.pre;
       var post = m.post.length ? expand(m.post, false) : [""];
       if (/\$$/.test(m.pre)) {
@@ -9547,8 +9529,7 @@ var require_minimatch = __commonJS({
     var Minimatch = class {
       constructor(pattern, options) {
         assertValidPattern(pattern);
-        if (!options)
-          options = {};
+        if (!options) options = {};
         this.options = options;
         this.set = [];
         this.pattern = pattern;
@@ -9578,8 +9559,7 @@ var require_minimatch = __commonJS({
         }
         this.parseNegate();
         let set = this.globSet = this.braceExpand();
-        if (options.debug)
-          this.debug = (...args) => console.error(...args);
+        if (options.debug) this.debug = (...args) => console.error(...args);
         this.debug(this.pattern, set);
         set = this.globParts = set.map((s) => s.split(slashSplit));
         this.debug(this.pattern, set);
@@ -9590,8 +9570,7 @@ var require_minimatch = __commonJS({
         this.set = set;
       }
       parseNegate() {
-        if (this.options.nonegate)
-          return;
+        if (this.options.nonegate) return;
         const pattern = this.pattern;
         let negate = false;
         let negateOffset = 0;
@@ -9599,8 +9578,7 @@ var require_minimatch = __commonJS({
           negate = !negate;
           negateOffset++;
         }
-        if (negateOffset)
-          this.pattern = pattern.slice(negateOffset);
+        if (negateOffset) this.pattern = pattern.slice(negateOffset);
         this.negate = negate;
       }
       // set partial to true to test if, for example,
@@ -9620,8 +9598,7 @@ var require_minimatch = __commonJS({
           var p = pattern[pi];
           var f = file[fi];
           this.debug(pattern, p, f);
-          if (p === false)
-            return false;
+          if (p === false) return false;
           if (p === GLOBSTAR) {
             this.debug("GLOBSTAR", [pattern, p, f]);
             var fr = fi;
@@ -9629,8 +9606,7 @@ var require_minimatch = __commonJS({
             if (pr === pl) {
               this.debug("** at the end");
               for (; fi < fl; fi++) {
-                if (file[fi] === "." || file[fi] === ".." || !options.dot && file[fi].charAt(0) === ".")
-                  return false;
+                if (file[fi] === "." || file[fi] === ".." || !options.dot && file[fi].charAt(0) === ".") return false;
               }
               return true;
             }
@@ -9651,8 +9627,7 @@ var require_minimatch = __commonJS({
             }
             if (partial) {
               this.debug("\n>>> no match, partial?", file, fr, pattern, pr);
-              if (fr === fl)
-                return true;
+              if (fr === fl) return true;
             }
             return false;
           }
@@ -9664,8 +9639,7 @@ var require_minimatch = __commonJS({
             hit = f.match(p);
             this.debug("pattern match", p, f, hit);
           }
-          if (!hit)
-            return false;
+          if (!hit) return false;
         }
         if (fi === fl && pi === pl) {
           return true;
@@ -9688,8 +9662,7 @@ var require_minimatch = __commonJS({
           else
             pattern = "*";
         }
-        if (pattern === "")
-          return "";
+        if (pattern === "") return "";
         let re = "";
         let hasMagic = false;
         let escaping = false;
@@ -9739,6 +9712,7 @@ var require_minimatch = __commonJS({
             continue;
           }
           switch (c) {
+            /* istanbul ignore next */
             case "/": {
               return false;
             }
@@ -9750,6 +9724,8 @@ var require_minimatch = __commonJS({
               clearStateChar();
               escaping = true;
               continue;
+            // the various stateChar values
+            // for the "extglob" stuff.
             case "?":
             case "*":
             case "+":
@@ -9758,16 +9734,14 @@ var require_minimatch = __commonJS({
               this.debug("%s	%s %s %j <-- stateChar", pattern, i, re, c);
               if (inClass) {
                 this.debug("  in class");
-                if (c === "!" && i === classStart + 1)
-                  c = "^";
+                if (c === "!" && i === classStart + 1) c = "^";
                 re += c;
                 continue;
               }
               this.debug("call clearStateChar %j", stateChar);
               clearStateChar();
               stateChar = c;
-              if (options.noext)
-                clearStateChar();
+              if (options.noext) clearStateChar();
               continue;
             case "(": {
               if (inClass) {
@@ -9826,6 +9800,7 @@ var require_minimatch = __commonJS({
               }
               continue;
             }
+            // these are mostly the same in regexp and glob
             case "[":
               clearStateChar();
               if (inClass) {
@@ -9929,8 +9904,7 @@ var require_minimatch = __commonJS({
         }
       }
       makeRe() {
-        if (this.regexp || this.regexp === false)
-          return this.regexp;
+        if (this.regexp || this.regexp === false) return this.regexp;
         const set = this.set;
         if (!set.length) {
           this.regexp = false;
@@ -9968,8 +9942,7 @@ var require_minimatch = __commonJS({
           return pattern.filter((p) => p !== GLOBSTAR).join("/");
         }).join("|");
         re = "^(?:" + re + ")$";
-        if (this.negate)
-          re = "^(?!" + re + ").*$";
+        if (this.negate) re = "^(?!" + re + ").*$";
         try {
           this.regexp = new RegExp(re, flags);
         } catch (ex) {
@@ -9979,12 +9952,9 @@ var require_minimatch = __commonJS({
       }
       match(f, partial = this.partial) {
         this.debug("match", f, this.pattern);
-        if (this.comment)
-          return false;
-        if (this.empty)
-          return f === "";
-        if (f === "/" && partial)
-          return true;
+        if (this.comment) return false;
+        if (this.empty) return f === "";
+        if (f === "/" && partial) return true;
         const options = this.options;
         if (path2.sep !== "/") {
           f = f.split(path2.sep).join("/");
@@ -9996,8 +9966,7 @@ var require_minimatch = __commonJS({
         let filename;
         for (let i = f.length - 1; i >= 0; i--) {
           filename = f[i];
-          if (filename)
-            break;
+          if (filename) break;
         }
         for (let i = 0; i < set.length; i++) {
           const pattern = set[i];
@@ -10007,13 +9976,11 @@ var require_minimatch = __commonJS({
           }
           const hit = this.matchOne(file, pattern, partial);
           if (hit) {
-            if (options.flipNegate)
-              return true;
+            if (options.flipNegate) return true;
             return !this.negate;
           }
         }
-        if (options.flipNegate)
-          return false;
+        if (options.flipNegate) return false;
         return this.negate;
       }
       static defaults(def) {
@@ -10783,7 +10750,7 @@ var require_notebook = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.NotebookDocumentSyncFeature = void 0;
-    var vscode = require("vscode");
+    var vscode2 = require("vscode");
     var minimatch = require_minimatch();
     var proto = require_main3();
     var UUID = require_uuid();
@@ -10838,9 +10805,9 @@ var require_notebook = __commonJS({
         c2p2.asNotebookCell = asNotebookCell;
         function asNotebookCellKind(kind) {
           switch (kind) {
-            case vscode.NotebookCellKind.Markup:
+            case vscode2.NotebookCellKind.Markup:
               return proto.NotebookCellKind.Markup;
-            case vscode.NotebookCellKind.Code:
+            case vscode2.NotebookCellKind.Code:
               return proto.NotebookCellKind.Code;
           }
         }
@@ -11092,25 +11059,25 @@ var require_notebook = __commonJS({
         this.notebookDidOpen = /* @__PURE__ */ new Set();
         this.disposables = [];
         this.selector = client2.protocol2CodeConverter.asDocumentSelector($NotebookDocumentSyncOptions.asDocumentSelector(options));
-        vscode.workspace.onDidOpenNotebookDocument((notebookDocument) => {
+        vscode2.workspace.onDidOpenNotebookDocument((notebookDocument) => {
           this.notebookDidOpen.add(notebookDocument.uri.toString());
           this.didOpen(notebookDocument);
         }, void 0, this.disposables);
-        for (const notebookDocument of vscode.workspace.notebookDocuments) {
+        for (const notebookDocument of vscode2.workspace.notebookDocuments) {
           this.notebookDidOpen.add(notebookDocument.uri.toString());
           this.didOpen(notebookDocument);
         }
-        vscode.workspace.onDidChangeNotebookDocument((event) => this.didChangeNotebookDocument(event), void 0, this.disposables);
+        vscode2.workspace.onDidChangeNotebookDocument((event) => this.didChangeNotebookDocument(event), void 0, this.disposables);
         if (this.options.save === true) {
-          vscode.workspace.onDidSaveNotebookDocument((notebookDocument) => this.didSave(notebookDocument), void 0, this.disposables);
+          vscode2.workspace.onDidSaveNotebookDocument((notebookDocument) => this.didSave(notebookDocument), void 0, this.disposables);
         }
-        vscode.workspace.onDidCloseNotebookDocument((notebookDocument) => {
+        vscode2.workspace.onDidCloseNotebookDocument((notebookDocument) => {
           this.didClose(notebookDocument);
           this.notebookDidOpen.delete(notebookDocument.uri.toString());
         }, void 0, this.disposables);
       }
       getState() {
-        for (const notebook of vscode.workspace.notebookDocuments) {
+        for (const notebook of vscode2.workspace.notebookDocuments) {
           const matchingCells = this.getMatchingCells(notebook);
           if (matchingCells !== void 0) {
             return { kind: "document", id: "$internal", registrations: true, matches: true };
@@ -11122,10 +11089,10 @@ var require_notebook = __commonJS({
         return "notebook";
       }
       handles(textDocument) {
-        return vscode.languages.match(this.selector, textDocument) > 0;
+        return vscode2.languages.match(this.selector, textDocument) > 0;
       }
       didOpenNotebookCellTextDocument(notebookDocument, cell) {
-        if (vscode.languages.match(this.selector, cell.document) === 0) {
+        if (vscode2.languages.match(this.selector, cell.document) === 0) {
           return;
         }
         if (!this.notebookDidOpen.has(notebookDocument.uri.toString())) {
@@ -11156,7 +11123,7 @@ var require_notebook = __commonJS({
         }
       }
       didChangeNotebookCellTextDocument(notebookDocument, event) {
-        if (vscode.languages.match(this.selector, event.document) === 0) {
+        if (vscode2.languages.match(this.selector, event.document) === 0) {
           return;
         }
         this.doSendChange({
@@ -11436,7 +11403,7 @@ var require_notebook = __commonJS({
         this.client = client2;
         this.registrations = /* @__PURE__ */ new Map();
         this.registrationType = proto.NotebookDocumentSyncRegistrationType.type;
-        vscode.workspace.onDidOpenTextDocument((textDocument) => {
+        vscode2.workspace.onDidOpenTextDocument((textDocument) => {
           if (textDocument.uri.scheme !== _NotebookDocumentSyncFeature.CellScheme) {
             return;
           }
@@ -11450,7 +11417,7 @@ var require_notebook = __commonJS({
             }
           }
         });
-        vscode.workspace.onDidChangeTextDocument((event) => {
+        vscode2.workspace.onDidChangeTextDocument((event) => {
           if (event.contentChanges.length === 0) {
             return;
           }
@@ -11468,7 +11435,7 @@ var require_notebook = __commonJS({
             }
           }
         });
-        vscode.workspace.onDidCloseTextDocument((textDocument) => {
+        vscode2.workspace.onDidCloseTextDocument((textDocument) => {
           if (textDocument.uri.scheme !== _NotebookDocumentSyncFeature.CellScheme) {
             return;
           }
@@ -11534,7 +11501,7 @@ var require_notebook = __commonJS({
         if (textDocument.uri.scheme !== _NotebookDocumentSyncFeature.CellScheme) {
           return false;
         }
-        if (this.dedicatedChannel !== void 0 && vscode.languages.match(this.dedicatedChannel, textDocument) > 0) {
+        if (this.dedicatedChannel !== void 0 && vscode2.languages.match(this.dedicatedChannel, textDocument) > 0) {
           return true;
         }
         for (const provider of this.registrations.values()) {
@@ -11554,7 +11521,7 @@ var require_notebook = __commonJS({
       }
       findNotebookDocumentAndCell(textDocument) {
         const uri = textDocument.uri.toString();
-        for (const notebookDocument of vscode.workspace.notebookDocuments) {
+        for (const notebookDocument of vscode2.workspace.notebookDocuments) {
           for (const cell of notebookDocument.getCells()) {
             if (cell.document.uri.toString() === uri) {
               return [notebookDocument, cell];
@@ -14073,7 +14040,7 @@ var require_semanticTokens = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.SemanticTokensFeature = void 0;
-    var vscode = require("vscode");
+    var vscode2 = require("vscode");
     var vscode_languageserver_protocol_1 = require_main3();
     var features_1 = require_features();
     var Is = require_is();
@@ -14151,7 +14118,7 @@ var require_semanticTokens = __commonJS({
         const selector = options.documentSelector;
         const fullProvider = Is.boolean(options.full) ? options.full : options.full !== void 0;
         const hasEditProvider = options.full !== void 0 && typeof options.full !== "boolean" && options.full.delta === true;
-        const eventEmitter = new vscode.EventEmitter();
+        const eventEmitter = new vscode2.EventEmitter();
         const documentProvider = fullProvider ? {
           onDidChangeSemanticTokens: eventEmitter.event,
           provideDocumentSemanticTokens: (document, token) => {
@@ -14223,12 +14190,12 @@ var require_semanticTokens = __commonJS({
         const legend = client2.protocol2CodeConverter.asSemanticTokensLegend(options.legend);
         const documentSelector = client2.protocol2CodeConverter.asDocumentSelector(selector);
         if (documentProvider !== void 0) {
-          disposables.push(vscode.languages.registerDocumentSemanticTokensProvider(documentSelector, documentProvider, legend));
+          disposables.push(vscode2.languages.registerDocumentSemanticTokensProvider(documentSelector, documentProvider, legend));
         }
         if (rangeProvider !== void 0) {
-          disposables.push(vscode.languages.registerDocumentRangeSemanticTokensProvider(documentSelector, rangeProvider, legend));
+          disposables.push(vscode2.languages.registerDocumentRangeSemanticTokensProvider(documentSelector, rangeProvider, legend));
         }
-        return [new vscode.Disposable(() => disposables.forEach((item) => item.dispose())), { range: rangeProvider, full: documentProvider, onDidChangeSemanticTokensEmitter: eventEmitter }];
+        return [new vscode2.Disposable(() => disposables.forEach((item) => item.dispose())), { range: rangeProvider, full: documentProvider, onDidChangeSemanticTokensEmitter: eventEmitter }];
       }
     };
     exports2.SemanticTokensFeature = SemanticTokensFeature;
@@ -16730,6 +16697,8 @@ var require_semver = __commonJS({
             this.inc("patch", identifier, identifierBase);
             this.inc("pre", identifier, identifierBase);
             break;
+          // If the input is a non-prerelease version, this acts the same as
+          // prepatch.
           case "prerelease":
             if (this.prerelease.length === 0) {
               this.inc("patch", identifier, identifierBase);
@@ -16763,6 +16732,8 @@ var require_semver = __commonJS({
             }
             this.prerelease = [];
             break;
+          // This probably shouldn't be used publicly.
+          // 1.0.0 'pre' would become 1.0.0-0 which is the wrong direction.
           case "pre": {
             const base = Number(identifierBase) ? 1 : 0;
             if (this.prerelease.length === 0) {
@@ -17489,8 +17460,7 @@ var require_api3 = __commonJS({
   "node_modules/vscode-languageclient/lib/common/api.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
         desc = { enumerable: true, get: function() {
@@ -17499,14 +17469,11 @@ var require_api3 = __commonJS({
       }
       Object.defineProperty(o, k2, desc);
     } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     });
     var __exportStar = exports2 && exports2.__exportStar || function(m, exports3) {
-      for (var p in m)
-        if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p))
-          __createBinding(exports3, m, p);
+      for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p)) __createBinding(exports3, m, p);
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.DiagnosticPullMode = exports2.vsdiag = void 0;
@@ -17528,8 +17495,7 @@ var require_main4 = __commonJS({
   "node_modules/vscode-languageclient/lib/node/main.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
         desc = { enumerable: true, get: function() {
@@ -17538,14 +17504,11 @@ var require_main4 = __commonJS({
       }
       Object.defineProperty(o, k2, desc);
     } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     });
     var __exportStar = exports2 && exports2.__exportStar || function(m, exports3) {
-      for (var p in m)
-        if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p))
-          __createBinding(exports3, m, p);
+      for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p)) __createBinding(exports3, m, p);
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.SettingMonitor = exports2.LanguageClient = exports2.TransportKind = void 0;
@@ -18073,7 +18036,8 @@ __export(main_exports, {
   deactivate: () => deactivate
 });
 module.exports = __toCommonJS(main_exports);
-var path = __toESM(require("path"), 1);
+var vscode = __toESM(require("vscode"), 1);
+var path = __toESM(require("node:path"), 1);
 var import_node = __toESM(require_node3(), 1);
 var client;
 function activate(context) {
@@ -18107,11 +18071,13 @@ function startLanguageClient(context) {
     documentSelector: [{ scheme: "*", language: "sdvml" }]
   };
   const client2 = new import_node.LanguageClient(
-    "sdvml",
-    "sdvml",
+    "SDVML Language Server",
     serverOptions,
-    clientOptions
+    clientOptions,
+    true
   );
+  vscode.commands.executeCommand("klighd-vscode.setLanguageClient", client2, ["sdvml"]);
+  console.debug("Starting SDVM Language Server...");
   client2.start();
   return client2;
 }

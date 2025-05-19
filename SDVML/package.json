@@ -38,7 +38,13 @@
         "monaco-languageclient": "~8.1.1",
         "vscode": "npm:@codingame/monaco-vscode-api@~3.2.3",
         "vscode-languageclient": "~9.0.1",
-        "vscode-languageserver": "~9.0.1"
+        "vscode-languageserver": "~9.0.1",
+        "@eclipse-glsp/sprotty": "2.4.0",
+        "@eclipse-glsp/protocol": "2.4.0",
+        "@kieler/klighd-core": "0.7.0",
+        "@kieler/klighd-interactive": "0.7.0",
+        "langium-sprotty": "3.5.0"
+        
     },
     "devDependencies": {
         "@codingame/esbuild-import-meta-url-plugin": "~1.0.2",
@@ -47,15 +53,18 @@
         "@typescript-eslint/eslint-plugin": "~7.3.1",
         "@typescript-eslint/parser": "~7.3.1",
         "concurrently": "~8.2.1",
-        "esbuild": "~0.20.2",
+        "esbuild": "^0.25.4",
         "eslint": "~8.57.0",
         "http-server": "~14.1.1",
         "langium-cli": "~3.5.0",
         "prettier": "^3.5.3",
         "typescript": "~5.1.6",
-        "vite": "~5.2.7",
-        "vitest": "~1.4.0"
+        "vite": "^5.4.19",
+        "vitest": "^1.6.1"
     },
+    "extensionDependencies": [
+        "kieler.klighd-vscode"
+    ],
     "volta": {
         "node": "18.19.1",
         "npm": "10.2.4"
@@ -87,6 +96,35 @@
                 "language": "sdvml",
                 "scopeName": "source.sdvml",
                 "path": "syntaxes/sdvml.tmLanguage.json"
+            }
+        ],
+        "menus": {
+            "editor/title": [
+                {
+                    "when": "resourceLangId == sdvml",
+                    "command": "klighd-vscode.diagram.open",
+                    "group": "navigation"
+                }
+            ],
+            "editor/context": [
+                {
+                    "when": "resourceLangId == sdvml",
+                    "command": "klighd-vscode.diagram.open",
+                    "group": "navigation"
+                }
+            ],
+            "explorer/context": [
+                {
+                    "when": "resourceLangId == sdvml",
+                    "command": "klighd-vscode.diagram.open",
+                    "group": "navigation"
+                }
+            ]
+        },
+        "commands": [
+            {
+            "command": "klighd-vscode.diagram.open",
+            "title": "Open SDVML Diagram"
             }
         ]
     },

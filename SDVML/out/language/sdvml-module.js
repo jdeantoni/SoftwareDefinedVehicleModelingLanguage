@@ -1,15 +1,29 @@
+const ElkConstructor = require('elkjs/lib/elk.bundled.js').default;
 import { inject } from 'langium';
 import { createDefaultModule, createDefaultSharedModule, } from 'langium/lsp';
 import { SdvmlGeneratedModule, SdvmlGeneratedSharedModule, } from './generated/module.js';
 import { SdvmlValidator, registerValidationChecks, } from './sdvml-validator.js';
+import { SprottyDefaultModule, SprottySharedModule } from 'langium-sprotty';
+import { SdvDiagramGenerator } from './diagram-generator.js';
+import { DefaultElementFilter, ElkLayoutEngine } from 'sprotty-elk/lib/elk-layout.js';
+import { SdvmlLayoutConfigurator } from './layout-config.js';
 /**
  * Dependency injection module that overrides Langium default services and contributes the
  * declared custom services. The Langium defaults can be partially specified to override only
  * selected services, while the custom services must be fully specified.
  */
 export const SdvmlModule = {
+    diagram: {
+        DiagramGenerator: services => new SdvDiagramGenerator(services),
+        ModelLayoutEngine: services => new ElkLayoutEngine(services.layout.ElkFactory, services.layout.ElementFilter, services.layout.LayoutConfigurator)
+    },
     validation: {
         SdvmlValidator: () => new SdvmlValidator(),
+    },
+    layout: {
+        ElkFactory: () => () => new ElkConstructor({ algorithms: ['layered'] }),
+        ElementFilter: () => new DefaultElementFilter,
+        LayoutConfigurator: () => new SdvmlLayoutConfigurator()
     },
 };
 /**
@@ -28,8 +42,8 @@ export const SdvmlModule = {
  * @returns An object wrapping the shared services and the language-specific services
  */
 export function createSdvmlServices(context) {
-    const shared = inject(createDefaultSharedModule(context), SdvmlGeneratedSharedModule);
-    const Sdvml = inject(createDefaultModule({ shared }), SdvmlGeneratedModule, SdvmlModule);
+    const shared = inject(createDefaultSharedModule(context), SdvmlGeneratedSharedModule, SprottySharedModule);
+    const Sdvml = inject(createDefaultModule({ shared }), SdvmlGeneratedModule, SdvmlModule, SprottyDefaultModule);
     shared.ServiceRegistry.register(Sdvml);
     registerValidationChecks(Sdvml);
     if (!context.connection) {

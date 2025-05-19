@@ -1,10 +1,9 @@
+const ElkConstructor = require('elkjs/lib/elk.bundled.js').default;
 import { type Module, inject } from 'langium';
 import {
     createDefaultModule,
     createDefaultSharedModule,
     type DefaultSharedModuleContext,
-    type LangiumServices,
-    type LangiumSharedServices,
     type PartialLangiumServices,
 } from 'langium/lsp';
 import {
@@ -15,6 +14,12 @@ import {
     SdvmlValidator,
     registerValidationChecks,
 } from './sdvml-validator.js';
+import { LangiumSprottyServices, LangiumSprottySharedServices, SprottyDefaultModule, SprottyDiagramServices, SprottySharedModule } from 'langium-sprotty';
+import { SdvDiagramGenerator } from './diagram-generator.js';
+import { DefaultElementFilter, ElkFactory, ElkLayoutEngine, IElementFilter, ILayoutConfigurator } from 'sprotty-elk/lib/elk-layout.js';
+import { SdvmlLayoutConfigurator } from './layout-config.js';
+
+
 
 /**
  * Declaration of custom services - add your own service classes here.
@@ -22,14 +27,19 @@ import {
 export type SdvmlAddedServices = {
     validation: {
         SdvmlValidator: SdvmlValidator;
-    };
+    },
+    layout: {
+        ElkFactory: ElkFactory,
+        ElementFilter: IElementFilter,
+        LayoutConfigurator: ILayoutConfigurator
+    }
 };
 
 /**
  * Union of Langium default services and your custom services - use this as constructor parameter
  * of custom service classes.
  */
-export type SdvmlServices = LangiumServices & SdvmlAddedServices;
+export type SdvmlServices = LangiumSprottyServices & SdvmlAddedServices;
 
 /**
  * Dependency injection module that overrides Langium default services and contributes the
@@ -38,10 +48,19 @@ export type SdvmlServices = LangiumServices & SdvmlAddedServices;
  */
 export const SdvmlModule: Module<
     SdvmlServices,
-    PartialLangiumServices & SdvmlAddedServices
+    PartialLangiumServices & SdvmlAddedServices & SprottyDiagramServices 
 > = {
+    diagram: {
+        DiagramGenerator: services => new SdvDiagramGenerator(services),
+        ModelLayoutEngine: services => new ElkLayoutEngine(services.layout.ElkFactory, services.layout.ElementFilter, services.layout.LayoutConfigurator) as any
+    },
     validation: {
         SdvmlValidator: () => new SdvmlValidator(),
+    },
+    layout: {
+        ElkFactory: () => () => new ElkConstructor({ algorithms: ['layered'] }),
+        ElementFilter: () => new DefaultElementFilter,
+        LayoutConfigurator: () => new SdvmlLayoutConfigurator()
     },
 };
 
@@ -61,17 +80,19 @@ export const SdvmlModule: Module<
  * @returns An object wrapping the shared services and the language-specific services
  */
 export function createSdvmlServices(context: DefaultSharedModuleContext): {
-    shared: LangiumSharedServices;
+    shared: LangiumSprottySharedServices,
     Sdvml: SdvmlServices;
 } {
     const shared = inject(
         createDefaultSharedModule(context),
-        SdvmlGeneratedSharedModule
+        SdvmlGeneratedSharedModule,
+        SprottySharedModule
     );
     const Sdvml = inject(
         createDefaultModule({ shared }),
         SdvmlGeneratedModule,
-        SdvmlModule
+        SdvmlModule,
+        SprottyDefaultModule,
     );
     shared.ServiceRegistry.register(Sdvml);
     registerValidationChecks(Sdvml);
