@@ -5,12 +5,15 @@ import type {
 import type * as vscode from 'vscode';
 import * as path from 'node:path';
 import { LanguageClient, TransportKind } from 'vscode-languageclient/node.js';
+import { startDiagram } from './diagram/diagram-starter.js';
 
 let client: LanguageClient;
 
 // This function is called when the extension is activated.
 export function activate(context: vscode.ExtensionContext): void {
+    console.debug("export function activate(context: vscode.ExtensionContext): void {")
     client = startLanguageClient(context);
+    startDiagram(context);
 }
 
 // This function is called when the extension is deactivated.
@@ -22,6 +25,8 @@ export function deactivate(): Thenable<void> | undefined {
 }
 
 function startLanguageClient(context: vscode.ExtensionContext): LanguageClient {
+   console.debug("extension/main.ts:startLanguageClient()")
+
     const serverModule = context.asAbsolutePath(
         path.join('out', 'language', 'main.cjs')
     );
@@ -62,4 +67,9 @@ function startLanguageClient(context: vscode.ExtensionContext): LanguageClient {
     // Start the client. This will also launch the server
     client.start();
     return client;
+}
+
+
+export function getLanguageClient(): LanguageClient {
+	return client
 }

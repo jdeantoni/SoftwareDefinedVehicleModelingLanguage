@@ -4,10 +4,9 @@ SDV test1:
 
     Actuator Signal Brake (periodic 10+/-2ms, AD: 5+/-2ms)
 
-
     Component AEBS_controler
     subscribe Radar
     publish Brake
     service s1:
         triggered on Radar
-        ExecTime 3+/-1ms 
+        ExecTime 3+/-1ms

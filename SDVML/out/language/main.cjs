@@ -43,10 +43,8 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
-var __publicField = (obj, key, value) => {
-  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-  return value;
-};
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 
 // node_modules/vscode-languageserver/lib/common/utils/is.js
 var require_is = __commonJS({
@@ -273,7 +271,7 @@ var require_messages = __commonJS({
       }
     };
     exports2.RequestType9 = RequestType9;
-    var NotificationType = class extends AbstractMessageSignature {
+    var NotificationType2 = class extends AbstractMessageSignature {
       constructor(method, _parameterStructures = ParameterStructures.auto) {
         super(method, 1);
         this._parameterStructures = _parameterStructures;
@@ -282,7 +280,7 @@ var require_messages = __commonJS({
         return this._parameterStructures;
       }
     };
-    exports2.NotificationType = NotificationType;
+    exports2.NotificationType = NotificationType2;
     var NotificationType0 = class extends AbstractMessageSignature {
       constructor(method) {
         super(method, 0);
@@ -299,12 +297,12 @@ var require_messages = __commonJS({
       }
     };
     exports2.NotificationType1 = NotificationType1;
-    var NotificationType2 = class extends AbstractMessageSignature {
+    var NotificationType22 = class extends AbstractMessageSignature {
       constructor(method) {
         super(method, 2);
       }
     };
-    exports2.NotificationType2 = NotificationType2;
+    exports2.NotificationType2 = NotificationType22;
     var NotificationType3 = class extends AbstractMessageSignature {
       constructor(method) {
         super(method, 3);
@@ -1481,47 +1479,45 @@ var require_messageBuffer = __commonJS({
         let chunkIndex = 0;
         let offset = 0;
         let chunkBytesRead = 0;
-        row:
-          while (chunkIndex < this._chunks.length) {
-            const chunk = this._chunks[chunkIndex];
-            offset = 0;
-            column:
-              while (offset < chunk.length) {
-                const value = chunk[offset];
-                switch (value) {
-                  case CR:
-                    switch (state) {
-                      case 0:
-                        state = 1;
-                        break;
-                      case 2:
-                        state = 3;
-                        break;
-                      default:
-                        state = 0;
-                    }
+        row: while (chunkIndex < this._chunks.length) {
+          const chunk = this._chunks[chunkIndex];
+          offset = 0;
+          column: while (offset < chunk.length) {
+            const value = chunk[offset];
+            switch (value) {
+              case CR:
+                switch (state) {
+                  case 0:
+                    state = 1;
                     break;
-                  case LF:
-                    switch (state) {
-                      case 1:
-                        state = 2;
-                        break;
-                      case 3:
-                        state = 4;
-                        offset++;
-                        break row;
-                      default:
-                        state = 0;
-                    }
+                  case 2:
+                    state = 3;
                     break;
                   default:
                     state = 0;
                 }
-                offset++;
-              }
-            chunkBytesRead += chunk.byteLength;
-            chunkIndex++;
+                break;
+              case LF:
+                switch (state) {
+                  case 1:
+                    state = 2;
+                    break;
+                  case 3:
+                    state = 4;
+                    offset++;
+                    break row;
+                  default:
+                    state = 0;
+                }
+                break;
+              default:
+                state = 0;
+            }
+            offset++;
           }
+          chunkBytesRead += chunk.byteLength;
+          chunkIndex++;
+        }
         if (state !== 4) {
           return void 0;
         }
@@ -3092,8 +3088,7 @@ var require_main = __commonJS({
   "node_modules/vscode-jsonrpc/lib/node/main.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
         desc = { enumerable: true, get: function() {
@@ -3102,14 +3097,11 @@ var require_main = __commonJS({
       }
       Object.defineProperty(o, k2, desc);
     } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     });
     var __exportStar = exports2 && exports2.__exportStar || function(m, exports3) {
-      for (var p in m)
-        if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p))
-          __createBinding(exports3, m, p);
+      for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p)) __createBinding(exports3, m, p);
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.createMessageConnection = exports2.createServerSocketTransport = exports2.createClientSocketTransport = exports2.createServerPipeTransport = exports2.createClientPipeTransport = exports2.generateRandomPipeName = exports2.StreamMessageWriter = exports2.StreamMessageReader = exports2.SocketMessageWriter = exports2.SocketMessageReader = exports2.PortMessageWriter = exports2.PortMessageReader = exports2.IPCMessageWriter = exports2.IPCMessageReader = void 0;
@@ -3365,8 +3357,7 @@ var require_main2 = __commonJS({
     (function(factory) {
       if (typeof module2 === "object" && typeof module2.exports === "object") {
         var v = factory(require, exports2);
-        if (v !== void 0)
-          module2.exports = v;
+        if (v !== void 0) module2.exports = v;
       } else if (typeof define === "function" && define.amd) {
         define(["require", "exports"], factory);
       }
@@ -6318,8 +6309,7 @@ var require_api2 = __commonJS({
   "node_modules/vscode-languageserver-protocol/lib/common/api.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
         desc = { enumerable: true, get: function() {
@@ -6328,14 +6318,11 @@ var require_api2 = __commonJS({
       }
       Object.defineProperty(o, k2, desc);
     } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     });
     var __exportStar = exports2 && exports2.__exportStar || function(m, exports3) {
-      for (var p in m)
-        if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p))
-          __createBinding(exports3, m, p);
+      for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p)) __createBinding(exports3, m, p);
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.LSPErrorCodes = exports2.createProtocolConnection = void 0;
@@ -6364,8 +6351,7 @@ var require_main3 = __commonJS({
   "node_modules/vscode-languageserver-protocol/lib/node/main.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
         desc = { enumerable: true, get: function() {
@@ -6374,14 +6360,11 @@ var require_main3 = __commonJS({
       }
       Object.defineProperty(o, k2, desc);
     } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     });
     var __exportStar = exports2 && exports2.__exportStar || function(m, exports3) {
-      for (var p in m)
-        if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p))
-          __createBinding(exports3, m, p);
+      for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p)) __createBinding(exports3, m, p);
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.createProtocolConnection = void 0;
@@ -8615,8 +8598,7 @@ var require_api3 = __commonJS({
   "node_modules/vscode-languageserver/lib/common/api.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
         desc = { enumerable: true, get: function() {
@@ -8625,14 +8607,11 @@ var require_api3 = __commonJS({
       }
       Object.defineProperty(o, k2, desc);
     } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     });
     var __exportStar = exports2 && exports2.__exportStar || function(m, exports3) {
-      for (var p in m)
-        if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p))
-          __createBinding(exports3, m, p);
+      for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p)) __createBinding(exports3, m, p);
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.ProposedFeatures = exports2.NotebookDocuments = exports2.TextDocuments = exports2.SemanticTokensBuilder = void 0;
@@ -8666,8 +8645,7 @@ var require_main4 = __commonJS({
   "node_modules/vscode-languageserver/lib/node/main.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
         desc = { enumerable: true, get: function() {
@@ -8676,18 +8654,15 @@ var require_main4 = __commonJS({
       }
       Object.defineProperty(o, k2, desc);
     } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
+      if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     });
     var __exportStar = exports2 && exports2.__exportStar || function(m, exports3) {
-      for (var p in m)
-        if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p))
-          __createBinding(exports3, m, p);
+      for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports3, p)) __createBinding(exports3, m, p);
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.createConnection = exports2.Files = void 0;
-    var node_util_1 = require("util");
+    var node_util_1 = require("node:util");
     var Is2 = require_is();
     var server_1 = require_server();
     var fm = require_files();
@@ -8928,6 +8903,10 @@ var require_node3 = __commonJS({
     module2.exports = require_main4();
   }
 });
+
+// src/language/main.ts
+var main_exports = {};
+module.exports = __toCommonJS(main_exports);
 
 // node_modules/langium/lib/lsp/completion/completion-provider.js
 var import_vscode_languageserver = __toESM(require_main4(), 1);
@@ -10982,6 +10961,7 @@ var RegExpParser = class {
         };
       case "$":
         return { type: "EndAnchor", loc: this.loc(begin) };
+      // '\b' or '\B'
       case "\\":
         switch (this.popChar()) {
           case "b":
@@ -10996,6 +10976,7 @@ var RegExpParser = class {
             };
         }
         throw Error("Invalid Assertion Escape");
+      // '(?=' or '(?!'
       case "(":
         this.consumeChar("?");
         let type;
@@ -11248,11 +11229,17 @@ var RegExpParser = class {
   }
   classPatternCharacterAtom() {
     switch (this.peekChar()) {
+      // istanbul ignore next
       case "\n":
+      // istanbul ignore next
       case "\r":
+      // istanbul ignore next
       case "\u2028":
+      // istanbul ignore next
       case "\u2029":
+      // istanbul ignore next
       case "\\":
+      // istanbul ignore next
       case "]":
         throw Error("TBD");
       default:
@@ -11294,10 +11281,15 @@ var RegExpParser = class {
   }
   classAtom() {
     switch (this.peekChar()) {
+      // istanbul ignore next
       case "]":
+      // istanbul ignore next
       case "\n":
+      // istanbul ignore next
       case "\r":
+      // istanbul ignore next
       case "\u2028":
+      // istanbul ignore next
       case "\u2029":
         throw Error("TBD");
       case "\\":
@@ -11309,6 +11301,8 @@ var RegExpParser = class {
   classEscape() {
     this.consumeChar("\\");
     switch (this.peekChar()) {
+      // Matches a backspace.
+      // (Not to be confused with \b word boundary outside characterClass)
       case "b":
         this.consumeChar("b");
         return { type: "Character", value: cc("\b") };
@@ -11385,20 +11379,35 @@ var RegExpParser = class {
   patternCharacter() {
     const nextChar = this.popChar();
     switch (nextChar) {
+      // istanbul ignore next
       case "\n":
+      // istanbul ignore next
       case "\r":
+      // istanbul ignore next
       case "\u2028":
+      // istanbul ignore next
       case "\u2029":
+      // istanbul ignore next
       case "^":
+      // istanbul ignore next
       case "$":
+      // istanbul ignore next
       case "\\":
+      // istanbul ignore next
       case ".":
+      // istanbul ignore next
       case "*":
+      // istanbul ignore next
       case "+":
+      // istanbul ignore next
       case "?":
+      // istanbul ignore next
       case "(":
+      // istanbul ignore next
       case ")":
+      // istanbul ignore next
       case "[":
+      // istanbul ignore next
       case "|":
         throw Error("TBD");
       default:
@@ -11445,7 +11454,10 @@ var RegExpParser = class {
     switch (this.peekChar(0)) {
       case ".":
       case "\\":
+      // atomEscape
       case "[":
+      // characterClass
+      // TODO: isAtom must be called before isAssertion - disambiguate
       case "(":
         return true;
       default:
@@ -11457,6 +11469,7 @@ var RegExpParser = class {
       case "^":
       case "$":
         return true;
+      // '\b' or '\B'
       case "\\":
         switch (this.peekChar(1)) {
           case "b":
@@ -11465,6 +11478,7 @@ var RegExpParser = class {
           default:
             return false;
         }
+      // '(?=' or '(?!'
       case "(":
         return this.peekChar(1) === "?" && (this.peekChar(2) === "=" || this.peekChar(2) === "!");
       default:
@@ -12931,21 +12945,17 @@ var LIB;
   "use strict";
   var t = { 470: (t2) => {
     function e2(t3) {
-      if ("string" != typeof t3)
-        throw new TypeError("Path must be a string. Received " + JSON.stringify(t3));
+      if ("string" != typeof t3) throw new TypeError("Path must be a string. Received " + JSON.stringify(t3));
     }
     function r2(t3, e3) {
       for (var r3, n3 = "", i = 0, o = -1, s = 0, h = 0; h <= t3.length; ++h) {
-        if (h < t3.length)
-          r3 = t3.charCodeAt(h);
+        if (h < t3.length) r3 = t3.charCodeAt(h);
         else {
-          if (47 === r3)
-            break;
+          if (47 === r3) break;
           r3 = 47;
         }
         if (47 === r3) {
-          if (o === h - 1 || 1 === s)
-            ;
+          if (o === h - 1 || 1 === s) ;
           else if (o !== h - 1 && 2 === s) {
             if (n3.length < 2 || 2 !== i || 46 !== n3.charCodeAt(n3.length - 1) || 46 !== n3.charCodeAt(n3.length - 2)) {
               if (n3.length > 2) {
@@ -12960,11 +12970,9 @@ var LIB;
               }
             }
             e3 && (n3.length > 0 ? n3 += "/.." : n3 = "..", i = 2);
-          } else
-            n3.length > 0 ? n3 += "/" + t3.slice(o + 1, h) : n3 = t3.slice(o + 1, h), i = h - o - 1;
+          } else n3.length > 0 ? n3 += "/" + t3.slice(o + 1, h) : n3 = t3.slice(o + 1, h), i = h - o - 1;
           o = h, s = 0;
-        } else
-          46 === r3 && -1 !== s ? ++s : s = -1;
+        } else 46 === r3 && -1 !== s ? ++s : s = -1;
       }
       return n3;
     }
@@ -12975,71 +12983,55 @@ var LIB;
       }
       return n3 = r2(n3, !i), i ? n3.length > 0 ? "/" + n3 : "/" : n3.length > 0 ? n3 : ".";
     }, normalize: function(t3) {
-      if (e2(t3), 0 === t3.length)
-        return ".";
+      if (e2(t3), 0 === t3.length) return ".";
       var n3 = 47 === t3.charCodeAt(0), i = 47 === t3.charCodeAt(t3.length - 1);
       return 0 !== (t3 = r2(t3, !n3)).length || n3 || (t3 = "."), t3.length > 0 && i && (t3 += "/"), n3 ? "/" + t3 : t3;
     }, isAbsolute: function(t3) {
       return e2(t3), t3.length > 0 && 47 === t3.charCodeAt(0);
     }, join: function() {
-      if (0 === arguments.length)
-        return ".";
+      if (0 === arguments.length) return ".";
       for (var t3, r3 = 0; r3 < arguments.length; ++r3) {
         var i = arguments[r3];
         e2(i), i.length > 0 && (void 0 === t3 ? t3 = i : t3 += "/" + i);
       }
       return void 0 === t3 ? "." : n2.normalize(t3);
     }, relative: function(t3, r3) {
-      if (e2(t3), e2(r3), t3 === r3)
-        return "";
-      if ((t3 = n2.resolve(t3)) === (r3 = n2.resolve(r3)))
-        return "";
-      for (var i = 1; i < t3.length && 47 === t3.charCodeAt(i); ++i)
-        ;
-      for (var o = t3.length, s = o - i, h = 1; h < r3.length && 47 === r3.charCodeAt(h); ++h)
-        ;
+      if (e2(t3), e2(r3), t3 === r3) return "";
+      if ((t3 = n2.resolve(t3)) === (r3 = n2.resolve(r3))) return "";
+      for (var i = 1; i < t3.length && 47 === t3.charCodeAt(i); ++i) ;
+      for (var o = t3.length, s = o - i, h = 1; h < r3.length && 47 === r3.charCodeAt(h); ++h) ;
       for (var a2 = r3.length - h, c = s < a2 ? s : a2, f = -1, u = 0; u <= c; ++u) {
         if (u === c) {
           if (a2 > c) {
-            if (47 === r3.charCodeAt(h + u))
-              return r3.slice(h + u + 1);
-            if (0 === u)
-              return r3.slice(h + u);
-          } else
-            s > c && (47 === t3.charCodeAt(i + u) ? f = u : 0 === u && (f = 0));
+            if (47 === r3.charCodeAt(h + u)) return r3.slice(h + u + 1);
+            if (0 === u) return r3.slice(h + u);
+          } else s > c && (47 === t3.charCodeAt(i + u) ? f = u : 0 === u && (f = 0));
           break;
         }
         var l = t3.charCodeAt(i + u);
-        if (l !== r3.charCodeAt(h + u))
-          break;
+        if (l !== r3.charCodeAt(h + u)) break;
         47 === l && (f = u);
       }
       var g = "";
-      for (u = i + f + 1; u <= o; ++u)
-        u !== o && 47 !== t3.charCodeAt(u) || (0 === g.length ? g += ".." : g += "/..");
+      for (u = i + f + 1; u <= o; ++u) u !== o && 47 !== t3.charCodeAt(u) || (0 === g.length ? g += ".." : g += "/..");
       return g.length > 0 ? g + r3.slice(h + f) : (h += f, 47 === r3.charCodeAt(h) && ++h, r3.slice(h));
     }, _makeLong: function(t3) {
       return t3;
     }, dirname: function(t3) {
-      if (e2(t3), 0 === t3.length)
-        return ".";
-      for (var r3 = t3.charCodeAt(0), n3 = 47 === r3, i = -1, o = true, s = t3.length - 1; s >= 1; --s)
-        if (47 === (r3 = t3.charCodeAt(s))) {
-          if (!o) {
-            i = s;
-            break;
-          }
-        } else
-          o = false;
+      if (e2(t3), 0 === t3.length) return ".";
+      for (var r3 = t3.charCodeAt(0), n3 = 47 === r3, i = -1, o = true, s = t3.length - 1; s >= 1; --s) if (47 === (r3 = t3.charCodeAt(s))) {
+        if (!o) {
+          i = s;
+          break;
+        }
+      } else o = false;
       return -1 === i ? n3 ? "/" : "." : n3 && 1 === i ? "//" : t3.slice(0, i);
     }, basename: function(t3, r3) {
-      if (void 0 !== r3 && "string" != typeof r3)
-        throw new TypeError('"ext" argument must be a string');
+      if (void 0 !== r3 && "string" != typeof r3) throw new TypeError('"ext" argument must be a string');
       e2(t3);
       var n3, i = 0, o = -1, s = true;
       if (void 0 !== r3 && r3.length > 0 && r3.length <= t3.length) {
-        if (r3.length === t3.length && r3 === t3)
-          return "";
+        if (r3.length === t3.length && r3 === t3) return "";
         var h = r3.length - 1, a2 = -1;
         for (n3 = t3.length - 1; n3 >= 0; --n3) {
           var c = t3.charCodeAt(n3);
@@ -13048,26 +13040,22 @@ var LIB;
               i = n3 + 1;
               break;
             }
-          } else
-            -1 === a2 && (s = false, a2 = n3 + 1), h >= 0 && (c === r3.charCodeAt(h) ? -1 == --h && (o = n3) : (h = -1, o = a2));
+          } else -1 === a2 && (s = false, a2 = n3 + 1), h >= 0 && (c === r3.charCodeAt(h) ? -1 == --h && (o = n3) : (h = -1, o = a2));
         }
         return i === o ? o = a2 : -1 === o && (o = t3.length), t3.slice(i, o);
       }
-      for (n3 = t3.length - 1; n3 >= 0; --n3)
-        if (47 === t3.charCodeAt(n3)) {
-          if (!s) {
-            i = n3 + 1;
-            break;
-          }
-        } else
-          -1 === o && (s = false, o = n3 + 1);
+      for (n3 = t3.length - 1; n3 >= 0; --n3) if (47 === t3.charCodeAt(n3)) {
+        if (!s) {
+          i = n3 + 1;
+          break;
+        }
+      } else -1 === o && (s = false, o = n3 + 1);
       return -1 === o ? "" : t3.slice(i, o);
     }, extname: function(t3) {
       e2(t3);
       for (var r3 = -1, n3 = 0, i = -1, o = true, s = 0, h = t3.length - 1; h >= 0; --h) {
         var a2 = t3.charCodeAt(h);
-        if (47 !== a2)
-          -1 === i && (o = false, i = h + 1), 46 === a2 ? -1 === r3 ? r3 = h : 1 !== s && (s = 1) : -1 !== r3 && (s = -1);
+        if (47 !== a2) -1 === i && (o = false, i = h + 1), 46 === a2 ? -1 === r3 ? r3 = h : 1 !== s && (s = 1) : -1 !== r3 && (s = -1);
         else if (!o) {
           n3 = h + 1;
           break;
@@ -13075,8 +13063,7 @@ var LIB;
       }
       return -1 === r3 || -1 === i || 0 === s || 1 === s && r3 === i - 1 && r3 === n3 + 1 ? "" : t3.slice(r3, i);
     }, format: function(t3) {
-      if (null === t3 || "object" != typeof t3)
-        throw new TypeError('The "pathObject" argument must be of type Object. Received type ' + typeof t3);
+      if (null === t3 || "object" != typeof t3) throw new TypeError('The "pathObject" argument must be of type Object. Received type ' + typeof t3);
       return function(t4, e3) {
         var r3 = e3.dir || e3.root, n3 = e3.base || (e3.name || "") + (e3.ext || "");
         return r3 ? r3 === e3.root ? r3 + n3 : r3 + "/" + n3 : n3;
@@ -13084,55 +13071,45 @@ var LIB;
     }, parse: function(t3) {
       e2(t3);
       var r3 = { root: "", dir: "", base: "", ext: "", name: "" };
-      if (0 === t3.length)
-        return r3;
+      if (0 === t3.length) return r3;
       var n3, i = t3.charCodeAt(0), o = 47 === i;
       o ? (r3.root = "/", n3 = 1) : n3 = 0;
-      for (var s = -1, h = 0, a2 = -1, c = true, f = t3.length - 1, u = 0; f >= n3; --f)
-        if (47 !== (i = t3.charCodeAt(f)))
-          -1 === a2 && (c = false, a2 = f + 1), 46 === i ? -1 === s ? s = f : 1 !== u && (u = 1) : -1 !== s && (u = -1);
-        else if (!c) {
-          h = f + 1;
-          break;
-        }
+      for (var s = -1, h = 0, a2 = -1, c = true, f = t3.length - 1, u = 0; f >= n3; --f) if (47 !== (i = t3.charCodeAt(f))) -1 === a2 && (c = false, a2 = f + 1), 46 === i ? -1 === s ? s = f : 1 !== u && (u = 1) : -1 !== s && (u = -1);
+      else if (!c) {
+        h = f + 1;
+        break;
+      }
       return -1 === s || -1 === a2 || 0 === u || 1 === u && s === a2 - 1 && s === h + 1 ? -1 !== a2 && (r3.base = r3.name = 0 === h && o ? t3.slice(1, a2) : t3.slice(h, a2)) : (0 === h && o ? (r3.name = t3.slice(1, s), r3.base = t3.slice(1, a2)) : (r3.name = t3.slice(h, s), r3.base = t3.slice(h, a2)), r3.ext = t3.slice(s, a2)), h > 0 ? r3.dir = t3.slice(0, h - 1) : o && (r3.dir = "/"), r3;
     }, sep: "/", delimiter: ":", win32: null, posix: null };
     n2.posix = n2, t2.exports = n2;
   } }, e = {};
   function r(n2) {
     var i = e[n2];
-    if (void 0 !== i)
-      return i.exports;
+    if (void 0 !== i) return i.exports;
     var o = e[n2] = { exports: {} };
     return t[n2](o, o.exports, r), o.exports;
   }
   r.d = (t2, e2) => {
-    for (var n2 in e2)
-      r.o(e2, n2) && !r.o(t2, n2) && Object.defineProperty(t2, n2, { enumerable: true, get: e2[n2] });
+    for (var n2 in e2) r.o(e2, n2) && !r.o(t2, n2) && Object.defineProperty(t2, n2, { enumerable: true, get: e2[n2] });
   }, r.o = (t2, e2) => Object.prototype.hasOwnProperty.call(t2, e2), r.r = (t2) => {
     "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(t2, Symbol.toStringTag, { value: "Module" }), Object.defineProperty(t2, "__esModule", { value: true });
   };
   var n = {};
   (() => {
     let t2;
-    if (r.r(n), r.d(n, { URI: () => f, Utils: () => P }), "object" == typeof process)
-      t2 = "win32" === process.platform;
+    if (r.r(n), r.d(n, { URI: () => f, Utils: () => P }), "object" == typeof process) t2 = "win32" === process.platform;
     else if ("object" == typeof navigator) {
       let e3 = navigator.userAgent;
       t2 = e3.indexOf("Windows") >= 0;
     }
     const e2 = /^\w[\w\d+.-]*$/, i = /^\//, o = /^\/\//;
     function s(t3, r2) {
-      if (!t3.scheme && r2)
-        throw new Error(`[UriError]: Scheme is missing: {scheme: "", authority: "${t3.authority}", path: "${t3.path}", query: "${t3.query}", fragment: "${t3.fragment}"}`);
-      if (t3.scheme && !e2.test(t3.scheme))
-        throw new Error("[UriError]: Scheme contains illegal characters.");
+      if (!t3.scheme && r2) throw new Error(`[UriError]: Scheme is missing: {scheme: "", authority: "${t3.authority}", path: "${t3.path}", query: "${t3.query}", fragment: "${t3.fragment}"}`);
+      if (t3.scheme && !e2.test(t3.scheme)) throw new Error("[UriError]: Scheme contains illegal characters.");
       if (t3.path) {
         if (t3.authority) {
-          if (!i.test(t3.path))
-            throw new Error('[UriError]: If a URI contains an authority component, then the path component must either be empty or begin with a slash ("/") character');
-        } else if (o.test(t3.path))
-          throw new Error('[UriError]: If a URI does not contain an authority component, then the path cannot begin with two slash characters ("//")');
+          if (!i.test(t3.path)) throw new Error('[UriError]: If a URI contains an authority component, then the path component must either be empty or begin with a slash ("/") character');
+        } else if (o.test(t3.path)) throw new Error('[UriError]: If a URI does not contain an authority component, then the path cannot begin with two slash characters ("//")');
       }
     }
     const h = "", a2 = "/", c = /^(([^:/?#]+?):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/;
@@ -13162,8 +13139,7 @@ var LIB;
         return m(this, false);
       }
       with(t3) {
-        if (!t3)
-          return this;
+        if (!t3) return this;
         let { scheme: e3, authority: r2, path: n2, query: i2, fragment: o2 } = t3;
         return void 0 === e3 ? e3 = this.scheme : null === e3 && (e3 = h), void 0 === r2 ? r2 = this.authority : null === r2 && (r2 = h), void 0 === n2 ? n2 = this.path : null === n2 && (n2 = h), void 0 === i2 ? i2 = this.query : null === i2 && (i2 = h), void 0 === o2 ? o2 = this.fragment : null === o2 && (o2 = h), e3 === this.scheme && r2 === this.authority && n2 === this.path && i2 === this.query && o2 === this.fragment ? this : new l(e3, r2, n2, i2, o2);
       }
@@ -13191,8 +13167,7 @@ var LIB;
       }
       static revive(t3) {
         if (t3) {
-          if (t3 instanceof f)
-            return t3;
+          if (t3 instanceof f) return t3;
           {
             const e3 = new l(t3);
             return e3._formatted = t3.external, e3._fsPath = t3._sep === u ? t3.fsPath : null, e3;
@@ -13224,8 +13199,7 @@ var LIB;
       let n2, i2 = -1;
       for (let o2 = 0; o2 < t3.length; o2++) {
         const s2 = t3.charCodeAt(o2);
-        if (s2 >= 97 && s2 <= 122 || s2 >= 65 && s2 <= 90 || s2 >= 48 && s2 <= 57 || 45 === s2 || 46 === s2 || 95 === s2 || 126 === s2 || e3 && 47 === s2 || r2 && 91 === s2 || r2 && 93 === s2 || r2 && 58 === s2)
-          -1 !== i2 && (n2 += encodeURIComponent(t3.substring(i2, o2)), i2 = -1), void 0 !== n2 && (n2 += t3.charAt(o2));
+        if (s2 >= 97 && s2 <= 122 || s2 >= 65 && s2 <= 90 || s2 >= 48 && s2 <= 57 || 45 === s2 || 46 === s2 || 95 === s2 || 126 === s2 || e3 && 47 === s2 || r2 && 91 === s2 || r2 && 93 === s2 || r2 && 58 === s2) -1 !== i2 && (n2 += encodeURIComponent(t3.substring(i2, o2)), i2 = -1), void 0 !== n2 && (n2 += t3.charAt(o2));
         else {
           void 0 === n2 && (n2 = t3.substr(0, o2));
           const e4 = g[s2];
@@ -13292,8 +13266,7 @@ var LIB;
         let i2 = w.resolve(r2, ...e3);
         return n2 && i2[0] === x && !t4.authority && (i2 = i2.substring(1)), t4.with({ path: i2 });
       }, t3.dirname = function(t4) {
-        if (0 === t4.path.length || t4.path === x)
-          return t4;
+        if (0 === t4.path.length || t4.path === x) return t4;
         let e3 = w.dirname(t4.path);
         return 1 === e3.length && 46 === e3.charCodeAt(0) && (e3 = ""), t4.with({ path: e3 });
       }, t3.basename = function(t4) {
@@ -16426,6 +16399,7 @@ var GAstVisitor = class {
         return this.visitTerminal(nodeAny);
       case Rule:
         return this.visitRule(nodeAny);
+      /* c8 ignore next 2 */
       default:
         throw Error("non exhaustive match");
     }
@@ -16728,7 +16702,11 @@ function firstCharOptimizedIndices(ast, result, ignoreCase) {
         const term = terms[i];
         switch (term.type) {
           case "EndAnchor":
+          // A group back reference cannot affect potential starting char.
+          // because if a back reference is the first production than automatically
+          // the group being referenced has had to come BEFORE so its codes have already been added
           case "GroupBackReference":
+          // assertions do not affect potential starting codes
           case "Lookahead":
           case "NegativeLookahead":
           case "StartAnchor":
@@ -16774,6 +16752,7 @@ function firstCharOptimizedIndices(ast, result, ignoreCase) {
           case "Group":
             firstCharOptimizedIndices(atom2.value, result, ignoreCase);
             break;
+          /* istanbul ignore next */
           default:
             throw Error("Non Exhaustive Match");
         }
@@ -16788,6 +16767,7 @@ function firstCharOptimizedIndices(ast, result, ignoreCase) {
         }
       }
       break;
+    /* istanbul ignore next */
     default:
       throw Error("non exhaustive match!");
   }
@@ -18964,18 +18944,17 @@ function buildAlternativesLookAheadFunc(alts, hasPredicates, tokenMatcher2, dyna
         if (currPredicate !== void 0 && currPredicate.call(this) === false) {
           continue;
         }
-        nextPath:
-          for (let j = 0; j < currNumOfPaths; j++) {
-            const currPath = currAlt[j];
-            const currPathLength = currPath.length;
-            for (let i = 0; i < currPathLength; i++) {
-              const nextToken = this.LA(i + 1);
-              if (tokenMatcher2(nextToken, currPath[i]) === false) {
-                continue nextPath;
-              }
+        nextPath: for (let j = 0; j < currNumOfPaths; j++) {
+          const currPath = currAlt[j];
+          const currPathLength = currPath.length;
+          for (let i = 0; i < currPathLength; i++) {
+            const nextToken = this.LA(i + 1);
+            if (tokenMatcher2(nextToken, currPath[i]) === false) {
+              continue nextPath;
             }
-            return t;
           }
+          return t;
+        }
       }
       return void 0;
     };
@@ -19005,18 +18984,17 @@ function buildAlternativesLookAheadFunc(alts, hasPredicates, tokenMatcher2, dyna
       for (let t = 0; t < numOfAlts; t++) {
         const currAlt = alts[t];
         const currNumOfPaths = currAlt.length;
-        nextPath:
-          for (let j = 0; j < currNumOfPaths; j++) {
-            const currPath = currAlt[j];
-            const currPathLength = currPath.length;
-            for (let i = 0; i < currPathLength; i++) {
-              const nextToken = this.LA(i + 1);
-              if (tokenMatcher2(nextToken, currPath[i]) === false) {
-                continue nextPath;
-              }
+        nextPath: for (let j = 0; j < currNumOfPaths; j++) {
+          const currPath = currAlt[j];
+          const currPathLength = currPath.length;
+          for (let i = 0; i < currPathLength; i++) {
+            const nextToken = this.LA(i + 1);
+            if (tokenMatcher2(nextToken, currPath[i]) === false) {
+              continue nextPath;
             }
-            return t;
           }
+          return t;
+        }
       }
       return void 0;
     };
@@ -19050,18 +19028,17 @@ function buildSingleAlternativeLookaheadFunction(alt, tokenMatcher2, dynamicToke
     }
   } else {
     return function() {
-      nextPath:
-        for (let j = 0; j < numOfPaths; j++) {
-          const currPath = alt[j];
-          const currPathLength = currPath.length;
-          for (let i = 0; i < currPathLength; i++) {
-            const nextToken = this.LA(i + 1);
-            if (tokenMatcher2(nextToken, currPath[i]) === false) {
-              continue nextPath;
-            }
+      nextPath: for (let j = 0; j < numOfPaths; j++) {
+        const currPath = alt[j];
+        const currPathLength = currPath.length;
+        for (let i = 0; i < currPathLength; i++) {
+          const nextToken = this.LA(i + 1);
+          if (tokenMatcher2(nextToken, currPath[i]) === false) {
+            continue nextPath;
           }
-          return true;
         }
+        return true;
+      }
       return false;
     };
   }
@@ -19245,22 +19222,21 @@ function getLookaheadPathsForOptionalProd(occurrence, ruleGrammar, prodType, k) 
   return lookAheadSequenceFromAlternatives([insideFlat, afterFlat], k);
 }
 function containsPath(alternative, searchPath) {
-  compareOtherPath:
-    for (let i = 0; i < alternative.length; i++) {
-      const otherPath = alternative[i];
-      if (otherPath.length !== searchPath.length) {
-        continue;
-      }
-      for (let j = 0; j < otherPath.length; j++) {
-        const searchTok = searchPath[j];
-        const otherTok = otherPath[j];
-        const matchingTokens = searchTok === otherTok || otherTok.categoryMatchesMap[searchTok.tokenTypeIdx] !== void 0;
-        if (matchingTokens === false) {
-          continue compareOtherPath;
-        }
-      }
-      return true;
+  compareOtherPath: for (let i = 0; i < alternative.length; i++) {
+    const otherPath = alternative[i];
+    if (otherPath.length !== searchPath.length) {
+      continue;
     }
+    for (let j = 0; j < otherPath.length; j++) {
+      const searchTok = searchPath[j];
+      const otherTok = otherPath[j];
+      const matchingTokens = searchTok === otherTok || otherTok.categoryMatchesMap[searchTok.tokenTypeIdx] !== void 0;
+      if (matchingTokens === false) {
+        continue compareOtherPath;
+      }
+    }
+    return true;
+  }
   return false;
 }
 function isStrictPrefixOfPath(prefix, other) {
@@ -30958,7 +30934,7 @@ function createDefaultSharedLSPModule(context) {
 }
 
 // node_modules/langium/lib/node/node-file-system-provider.js
-var fs = __toESM(require("fs"), 1);
+var fs = __toESM(require("node:fs"), 1);
 var NodeFileSystemProvider = class {
   constructor() {
     this.encoding = "utf-8";
@@ -30982,7 +30958,7 @@ var NodeFileSystem = {
 };
 
 // src/language/main.ts
-var import_node2 = __toESM(require_node3(), 1);
+var import_node2 = __toESM(require_node3());
 
 // src/language/generated/ast.ts
 var Signal = "Signal";
@@ -31930,23 +31906,51 @@ function createSdvmlServices(context) {
     createDefaultSharedModule(context),
     SdvmlGeneratedSharedModule
   );
-  const Sdvml = inject(
+  const Sdvml2 = inject(
     createDefaultModule({ shared: shared2 }),
     SdvmlGeneratedModule,
     SdvmlModule
   );
-  shared2.ServiceRegistry.register(Sdvml);
-  registerValidationChecks(Sdvml);
+  shared2.ServiceRegistry.register(Sdvml2);
+  registerValidationChecks(Sdvml2);
   if (!context.connection) {
     shared2.workspace.ConfigurationProvider.initialized({});
   }
-  return { shared: shared2, Sdvml };
+  return { shared: shared2, Sdvml: Sdvml2 };
 }
 
 // src/language/main.ts
 var connection = (0, import_node2.createConnection)(import_node2.ProposedFeatures.all);
-var { shared } = createSdvmlServices(__spreadValues({ connection }, NodeFileSystem));
+var { shared, Sdvml } = createSdvmlServices(__spreadValues({ connection }, NodeFileSystem));
 startLanguageServer(shared);
+console.debug("language/main.ts");
+connection.onRequest("modelRequest", async (params) => {
+  console.debug("connection.onRequest('modelRequest', async (params) => {");
+  const uri = URI.parse(params.uri);
+  let entryDocument = shared.workspace.LangiumDocuments.getDocument(uri);
+  if (!entryDocument) {
+    await shared.workspace.DocumentBuilder.update([uri], []);
+    entryDocument = shared.workspace.LangiumDocuments.getDocument(uri);
+  }
+  if (entryDocument) {
+    const jsonSerializer = Sdvml.serializer.JsonSerializer;
+    connection.sendNotification(new import_node2.NotificationType("node/DocumentChangeOnRequestToSDVMLDiagram"), {
+      uri: [entryDocument.uri.toString(true)],
+      content: [jsonSerializer.serialize(entryDocument.parseResult.value)]
+    });
+  }
+});
+var sdvmlSerializer = Sdvml.serializer.JsonSerializer;
+shared.workspace.DocumentBuilder.onBuildPhase(DocumentState.Validated, (documents) => {
+  const sdvmlDocuments = shared.workspace.LangiumDocuments.all.filter((doc) => doc.uri.toString().endsWith(".sdvml"));
+  const sdvmlUris = sdvmlDocuments.map((doc) => doc.uri.toString(true)).toArray();
+  const sdvmlContent = sdvmlDocuments.map((doc) => sdvmlSerializer.serialize(doc.parseResult.value)).toArray();
+  console.debug("connection.sendNotification(new NotificationType<DocumentChange>('node/DocumentChangeToSDVMLDiagram'), {");
+  connection.sendNotification(new import_node2.NotificationType("node/DocumentChangeToSDVMLDiagram"), {
+    uri: sdvmlUris,
+    content: sdvmlContent
+  });
+});
 /*! Bundled license information:
 
 lodash-es/lodash.js:

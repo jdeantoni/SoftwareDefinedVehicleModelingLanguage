@@ -1,10 +1,13 @@
 //@ts-check
 import * as esbuild from 'esbuild';
+import { copy } from 'esbuild-plugin-copy'
 
 const watch = process.argv.includes('--watch');
 const minify = process.argv.includes('--minify');
 
 const success = watch ? 'Watch build succeeded' : 'Build succeeded';
+
+
 
 function getTime() {
     const date = new Date();
@@ -40,17 +43,47 @@ const ctx = await esbuild.context({
     outExtension: {
         '.js': '.cjs',
     },
-    loader: { '.ts': 'ts' },
+    loader: { '.ts': 'ts',
+            '.ttf': 'file' // 👈 Ajoute le support pour les fichiers .ttf
+     },
     external: ['vscode'],
     platform: 'node',
     sourcemap: !minify,
     minify,
     plugins,
 });
+const diagramWebviewCtx = await esbuild.context({
+	entryPoints: ['src/webview/main.ts'],
+	outfile: 'out/webview.js',
+	bundle: true,
+	target: 'ES2021',
+	loader: { '.ts': 'ts', '.css': 'css', '.ttf': 'dataurl' },
+	platform: 'browser',
+	sourcemap: !minify,
+	minify: minify,
+	plugins: [
+		...plugins,
+		copy({
+			resolveFrom: 'cwd',
+			assets: [{
+				from: ['./node_modules/@vscode/codicons/dist/*.css', './node_modules/@vscode/codicons/dist/*.ttf'],
+				to: ['./out'],
+			},
+            {
+                from: ['./node_modules/@vscode/codicons/dist/*.css','./node_modules/@vscode/codicons/dist/codicon.ttf'],
+                to: './dist/assets/' // 👈 Copie le fichier dans le dossier de sortie
+            }
+        ]
+		}),
+	],
+})
 
 if (watch) {
-    await ctx.watch();
+	await ctx.watch()
+    await diagramWebviewCtx.watch()
 } else {
-    await ctx.rebuild();
-    ctx.dispose();
+	await ctx.rebuild()
+    await diagramWebviewCtx.rebuild()
+	ctx.dispose()
+    diagramWebviewCtx.dispose()
 }

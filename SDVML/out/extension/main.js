@@ -1,9 +1,12 @@
 import * as path from 'node:path';
 import { LanguageClient, TransportKind } from 'vscode-languageclient/node.js';
+import { startDiagram } from './diagram/diagram-starter.js';
 let client;
 // This function is called when the extension is activated.
 export function activate(context) {
+    console.debug("export function activate(context: vscode.ExtensionContext): void {");
     client = startLanguageClient(context);
+    startDiagram(context);
 }
 // This function is called when the extension is deactivated.
 export function deactivate() {
@@ -13,6 +16,7 @@ export function deactivate() {
     return undefined;
 }
 function startLanguageClient(context) {
+    console.debug("extension/main.ts:startLanguageClient()");
     const serverModule = context.asAbsolutePath(path.join('out', 'language', 'main.cjs'));
     // The debug options for the server
     // --inspect=6009: runs the server in Node's Inspector mode so VS Code can attach to the server for debugging.
@@ -41,6 +45,9 @@ function startLanguageClient(context) {
     const client = new LanguageClient('sdvml', 'sdvml', serverOptions, clientOptions);
     // Start the client. This will also launch the server
     client.start();
+    return client;
+}
+export function getLanguageClient() {
     return client;
 }
 //# sourceMappingURL=main.js.map
