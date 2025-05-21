@@ -11,7 +11,7 @@ import { AbstractJsonModelStorage, ActionDispatcher } from '@eclipse-glsp/server
 import { inject } from 'inversify';
 import { generateModelFromAST } from './sdvml-diagram-model.js';
 import { getLanguageClient } from '../../extension/main.js';
-import { sdvmlModelState } from './sdvml-model-state.js';
+import { SDVMLModelState } from './sdvml-model-state.js';
 export class sdvmlModelStorage extends AbstractJsonModelStorage {
     constructor() {
         super();
@@ -43,8 +43,8 @@ export class sdvmlModelStorage extends AbstractJsonModelStorage {
     saveSourceModel() { }
 }
 __decorate([
-    inject(sdvmlModelState),
-    __metadata("design:type", sdvmlModelState)
+    inject(SDVMLModelState),
+    __metadata("design:type", SDVMLModelState)
 ], sdvmlModelStorage.prototype, "modelState", void 0);
 __decorate([
     inject(ActionDispatcher),

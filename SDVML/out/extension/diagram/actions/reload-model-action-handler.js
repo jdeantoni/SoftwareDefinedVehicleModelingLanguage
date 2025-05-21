@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { EditorContextService, isViewport, RequestModelAction, SetModelAction, SetViewportAction, UpdateModelAction, } from '@eclipse-glsp/client';
 import { inject, injectable } from 'inversify';
 import { ReloadModelAction } from './reload-model-action.js';
-export let ReloadModelActionHandler = class ReloadModelActionHandler {
+let ReloadModelActionHandler = class ReloadModelActionHandler {
     handle(action) {
         if (ReloadModelAction.is(action)) {
             if (this.editorContext) {
@@ -37,4 +37,5 @@ __decorate([
 ReloadModelActionHandler = __decorate([
     injectable()
 ], ReloadModelActionHandler);
+export { ReloadModelActionHandler };
 //# sourceMappingURL=reload-model-action-handler.js.map

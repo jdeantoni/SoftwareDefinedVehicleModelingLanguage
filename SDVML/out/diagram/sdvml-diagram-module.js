@@ -7,43 +7,37 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { CompoundOperationHandler, DiagramModule, } from '@eclipse-glsp/server/node.js';
 import { injectable } from 'inversify';
 import { sdvmlDiagramConfiguration } from './sdvml-diagram-configuration.js';
-import { sdvmlModelState } from './model/sdvml-model-state.js';
+import { SDVMLModelState } from './model/sdvml-model-state.js';
 import { sdvmlModelStorage } from './model/sdvml-model-storage.js';
 import { sdvmlGModelFactory } from './model/sdvml-gmodel-factory.js';
 import { sdvmlModelIndex } from './model/sdvml-diagram-model-index.js';
 import { sdvmlApplyLabelEditHandler } from './handler/sdvml-apply-label-edit-handler.js';
-export let SdvmlDiagramModule = class SdvmlDiagramModule extends DiagramModule {
+import "../diagram/view/nodeStyles.css";
+let SdvmlDiagramModule = class SdvmlDiagramModule extends DiagramModule {
     constructor() {
         super(...arguments);
         this.diagramType = 'sdvml-diagram';
     }
     bindDiagramConfiguration() {
-        console.debug("1");
         return sdvmlDiagramConfiguration;
     }
     bindSourceModelStorage() {
-        console.debug("2");
         return sdvmlModelStorage;
     }
     bindModelState() {
-        console.debug("3");
-        return { service: sdvmlModelState };
+        return { service: SDVMLModelState };
     }
     bindGModelFactory() {
-        console.debug("4");
         return sdvmlGModelFactory;
     }
     configureActionHandlers(binding) {
-        console.debug("5");
         super.configureActionHandlers(binding);
     }
     configureOperationHandlers(binding) {
-        console.debug("6");
         binding.add(sdvmlApplyLabelEditHandler);
         binding.add(CompoundOperationHandler);
     }
     bindGModelIndex() {
-        console.debug("7");
         this.context.bind(sdvmlModelIndex).toSelf().inSingletonScope();
         return { service: sdvmlModelIndex };
     }
@@ -51,4 +45,5 @@ export let SdvmlDiagramModule = class SdvmlDiagramModule extends DiagramModule {
 SdvmlDiagramModule = __decorate([
     injectable()
 ], SdvmlDiagramModule);
+export { SdvmlDiagramModule };
 //# sourceMappingURL=sdvml-diagram-module.js.map

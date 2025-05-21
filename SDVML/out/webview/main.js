@@ -1,5 +1,4 @@
 import 'reflect-metadata';
-import { launchsdvmlDiagram } from './sdvml-starter.js';
-console.debug("webview/main.ts");
-launchsdvmlDiagram();
+import { launchSDVMLDiagram } from './sdvml-starter.js';
+launchSDVMLDiagram();
 //# sourceMappingURL=main.js.map

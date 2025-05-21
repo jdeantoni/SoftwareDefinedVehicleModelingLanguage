@@ -1,19 +1,19 @@
 import { DefaultModelState, JsonModelState } from '@eclipse-glsp/server'
 import { inject, injectable } from 'inversify'
-import { sdvmlDiagram } from './sdvml-diagram-model.js'
+import { SDVMLDiagram } from './sdvml-diagram-model.js'
 import { sdvmlModelIndex } from './sdvml-diagram-model-index.js'
 
 @injectable()
-export class sdvmlModelState extends DefaultModelState implements JsonModelState<sdvmlDiagram> {
+export class SDVMLModelState extends DefaultModelState implements JsonModelState<SDVMLDiagram> {
 	@inject(sdvmlModelIndex)
 	override readonly index!: sdvmlModelIndex
-	protected _sdvml!: sdvmlDiagram
+	protected _sdvml!: SDVMLDiagram
 
-	get sourceModel(): sdvmlDiagram {
+	get sourceModel(): SDVMLDiagram {
 		return this._sdvml
 	}
 
-	updateSourceModel(sdvml: sdvmlDiagram): void {
+	updateSourceModel(sdvml: SDVMLDiagram): void {
 		this._sdvml = sdvml
 		this.index.indexsdvml(sdvml)
 	}

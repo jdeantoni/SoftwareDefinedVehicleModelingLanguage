@@ -10,10 +10,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { ApplyLabelEditOperation } from '@eclipse-glsp/protocol';
 import { GLSPServerError, JsonOperationHandler } from '@eclipse-glsp/server/node.js';
 import { inject, injectable } from 'inversify';
-import { sdvmlModelState } from '../model/sdvml-model-state.js';
+import { SDVMLModelState } from '../model/sdvml-model-state.js';
 import { getLanguageClient } from '../../extension/main.js';
 import { createAndSendCodeAction, createCodeActionParams } from './sdvml-code-action-utils.js';
-export let sdvmlApplyLabelEditHandler = class sdvmlApplyLabelEditHandler extends JsonOperationHandler {
+let sdvmlApplyLabelEditHandler = class sdvmlApplyLabelEditHandler extends JsonOperationHandler {
     constructor() {
         super(...arguments);
         this.operationType = ApplyLabelEditOperation.KIND;
@@ -32,7 +32,7 @@ export let sdvmlApplyLabelEditHandler = class sdvmlApplyLabelEditHandler extends
                     throw new GLSPServerError(`Could not retrieve the parent node for the label with id ${operation.labelId}`);
                 }
                 const codeActionParams = createCodeActionParams('editDescription', this.modelState.sourceUri, {
-                    objectIdentifier: (_a = entryNode.sourceNode) === null || _a === void 0 ? void 0 : _a.name,
+                    objectIdentifier: (_a = entryNode.parent) === null || _a === void 0 ? void 0 : _a.name,
                     newValue: `'${operation.text}'`,
                 });
                 return createAndSendCodeAction(languageClient, codeActionParams);
@@ -41,10 +41,11 @@ export let sdvmlApplyLabelEditHandler = class sdvmlApplyLabelEditHandler extends
     }
 };
 __decorate([
-    inject(sdvmlModelState),
-    __metadata("design:type", sdvmlModelState)
+    inject(SDVMLModelState),
+    __metadata("design:type", SDVMLModelState)
 ], sdvmlApplyLabelEditHandler.prototype, "modelState", void 0);
 sdvmlApplyLabelEditHandler = __decorate([
     injectable()
 ], sdvmlApplyLabelEditHandler);
+export { sdvmlApplyLabelEditHandler };
 //# sourceMappingURL=sdvml-apply-label-edit-handler.js.map

@@ -6,23 +6,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { GModelIndex } from '@eclipse-glsp/server';
 import { injectable } from 'inversify';
-export let sdvmlModelIndex = class sdvmlModelIndex extends GModelIndex {
+let sdvmlModelIndex = class sdvmlModelIndex extends GModelIndex {
     constructor() {
         super(...arguments);
-        this.idToEntryNodeElements = new Map();
+        this.idToSDVMLNodeElements = new Map();
     }
     indexsdvml(sdvml) {
         var _a;
-        this.idToEntryNodeElements.clear();
-        for (const element of (_a = sdvml === null || sdvml === void 0 ? void 0 : sdvml.nodes) !== null && _a !== void 0 ? _a : []) {
-            this.idToEntryNodeElements.set(element.id, element);
+        this.idToSDVMLNodeElements.clear();
+        for (const element of (_a = sdvml === null || sdvml === void 0 ? void 0 : sdvml.sensorSignals) !== null && _a !== void 0 ? _a : []) {
+            this.idToSDVMLNodeElements.set(element.id, element);
         }
     }
     findEntryNode(id) {
-        return this.idToEntryNodeElements.get(id);
+        return this.idToSDVMLNodeElements.get(id);
     }
 };
 sdvmlModelIndex = __decorate([
     injectable()
 ], sdvmlModelIndex);
+export { sdvmlModelIndex };
 //# sourceMappingURL=sdvml-diagram-model-index.js.map

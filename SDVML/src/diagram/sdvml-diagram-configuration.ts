@@ -1,5 +1,6 @@
 import {
   DiagramConfiguration,
+
   getDefaultMapping,
   GModelElement,
   GModelElementConstructor,
@@ -11,7 +12,7 @@ import { injectable } from "inversify";
 
 @injectable()
 export class sdvmlDiagramConfiguration implements DiagramConfiguration {
-  layoutKind = ServerLayoutKind.MANUAL;
+  layoutKind = ServerLayoutKind.AUTOMATIC;
   needsClientLayout = true;
   animatedUpdate = true;
 
@@ -23,7 +24,28 @@ export class sdvmlDiagramConfiguration implements DiagramConfiguration {
   get shapeTypeHints(): ShapeTypeHint[] {
     return [
       {
-        elementTypeId: 'node:entry',
+        elementTypeId: 'node:sensorsignalnode',
+        deletable: true,
+        reparentable: false,
+        repositionable: true,
+        resizable: true,
+      },
+      {
+        elementTypeId: 'node:actuatorsignalnode',
+        deletable: true,
+        reparentable: false,
+        repositionable: true,
+        resizable: true,
+      },
+      {
+        elementTypeId: 'node:componentnode',
+        deletable: true,
+        reparentable: false,
+        repositionable: true,
+        resizable: true,
+      },
+      {
+        elementTypeId: 'node:inport',
         deletable: true,
         reparentable: false,
         repositionable: true,
@@ -35,4 +57,9 @@ export class sdvmlDiagramConfiguration implements DiagramConfiguration {
   get edgeTypeHints(): EdgeTypeHint[] {
 		return []
 	}
+
+  
 }
+
+
+

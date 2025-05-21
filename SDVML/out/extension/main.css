@@ -1,3 +1,12 @@
+/* src/diagram/view/nodeStyles.css */
+.sensorsignalnode {
+  fill: #ee4063;
+}
+.inport {
+  fill: rgb(180, 6, 6);
+  font-size: 300%;
+}
+
 /* node_modules/@eclipse-glsp/client/css/autocomplete-palette.css */
 .autocomplete-palette {
   position: absolute;

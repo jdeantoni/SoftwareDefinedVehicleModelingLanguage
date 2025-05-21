@@ -1,6 +1,8 @@
 import {
 	ConsoleLogger,
 	ContainerConfiguration,
+	GEdge,
+	GEdgeView,
 	LogLevel,
 	RoundedCornerNodeView,
 	TYPES,
@@ -15,6 +17,9 @@ import {
 	GLabel,
 	GLabelView,
 	GNode,
+	GRoutingHandle,
+	GRoutingHandleView,
+	RectangularNodeView,
 	SetModelAction,
 	UpdateModelAction,
 } from '@eclipse-glsp/sprotty'
@@ -22,6 +27,7 @@ import 'balloon-css/balloon.min.css'
 import { Container, ContainerModule } from 'inversify'
 import { ReloadModelActionHandler } from './actions/reload-model-action-handler.js'
 import { ReloadModelAction } from './actions/reload-model-action.js'
+import { SensorSignalNodeView } from '../../diagram/view/CustomNodeViews.js'
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 const sdvmlDiagramModule = new ContainerModule((bind: any, unbind: any, isBound: any, rebind: any) => {
@@ -34,8 +40,14 @@ const sdvmlDiagramModule = new ContainerModule((bind: any, unbind: any, isBound:
 	configureActionHandler(context, ReloadModelAction.KIND, ReloadModelActionHandler)
 	configureActionHandler(context, SetModelAction.KIND, ReloadModelActionHandler)
 	configureActionHandler(context, UpdateModelAction.KIND, ReloadModelActionHandler)
+	
+	configureModelElement(context,DefaultTypes.ROUTING_POINT, GRoutingHandle, GRoutingHandleView);
+	configureModelElement(context, DefaultTypes.EDGE, GEdge, GEdgeView);
+	configureModelElement(context, 'node:componentnode', GNode, RectangularNodeView)
+	configureModelElement(context, 'node:inport', GNode, RectangularNodeView)
+	configureModelElement(context, 'node:sensorsignalnode', GNode, SensorSignalNodeView)
+	configureModelElement(context, 'node:actuatorsignalnode', GNode, RoundedCornerNodeView)
 
-	configureModelElement(context, 'node:entry', GNode, RoundedCornerNodeView)
 	configureModelElement(context, DefaultTypes.LABEL, GLabel, GLabelView, { enable: [editLabelFeature] })
 })
 

@@ -1,7 +1,7 @@
 import { ApplyLabelEditOperation } from '@eclipse-glsp/protocol'
 import { Command, GLSPServerError, JsonOperationHandler, MaybePromise } from '@eclipse-glsp/server/node.js'
 import { inject, injectable } from 'inversify'
-import { sdvmlModelState } from '../model/sdvml-model-state.js'
+import { SDVMLModelState } from '../model/sdvml-model-state.js'
 import { getLanguageClient } from '../../extension/main.js'
 import { createAndSendCodeAction, createCodeActionParams } from './sdvml-code-action-utils.js'
 
@@ -9,8 +9,8 @@ import { createAndSendCodeAction, createCodeActionParams } from './sdvml-code-ac
 export class sdvmlApplyLabelEditHandler extends JsonOperationHandler {
 	readonly operationType = ApplyLabelEditOperation.KIND
 
-	@inject(sdvmlModelState)
-	protected override readonly modelState!: sdvmlModelState
+	@inject(SDVMLModelState)
+	protected override readonly modelState!: SDVMLModelState
 
 	override createCommand(operation: ApplyLabelEditOperation): MaybePromise<Command | undefined> {
 		const languageClient = getLanguageClient()
@@ -26,7 +26,7 @@ export class sdvmlApplyLabelEditHandler extends JsonOperationHandler {
 				}
 
 				const codeActionParams = createCodeActionParams('editDescription', this.modelState.sourceUri, {
-					objectIdentifier: entryNode.sourceNode?.name,
+					objectIdentifier: entryNode.parent?.name,
 					newValue: `'${operation.text}'`,
 				})
 

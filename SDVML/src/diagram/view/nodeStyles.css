@@ -1,0 +1,8 @@
+.sensorsignalnode {
+  fill: #ee4063; /* pink */
+}
+
+.inport {
+  fill: rgb(180, 6, 6);
+  font-size: 300%;
+}

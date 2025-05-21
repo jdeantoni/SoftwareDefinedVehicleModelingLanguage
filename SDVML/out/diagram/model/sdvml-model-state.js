@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { DefaultModelState } from '@eclipse-glsp/server';
 import { inject, injectable } from 'inversify';
 import { sdvmlModelIndex } from './sdvml-diagram-model-index.js';
-export let sdvmlModelState = class sdvmlModelState extends DefaultModelState {
+let SDVMLModelState = class SDVMLModelState extends DefaultModelState {
     get sourceModel() {
         return this._sdvml;
     }
@@ -22,8 +22,9 @@ export let sdvmlModelState = class sdvmlModelState extends DefaultModelState {
 __decorate([
     inject(sdvmlModelIndex),
     __metadata("design:type", sdvmlModelIndex)
-], sdvmlModelState.prototype, "index", void 0);
-sdvmlModelState = __decorate([
+], SDVMLModelState.prototype, "index", void 0);
+SDVMLModelState = __decorate([
     injectable()
-], sdvmlModelState);
+], SDVMLModelState);
+export { SDVMLModelState };
 //# sourceMappingURL=sdvml-model-state.js.map

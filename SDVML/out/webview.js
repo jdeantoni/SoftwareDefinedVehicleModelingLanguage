@@ -1,4 +1,3 @@
-"use strict";
 (() => {
   var __create = Object.create;
   var __defProp = Object.defineProperty;
@@ -15623,7 +15622,7 @@ ${ERROR_MSGS.TRYING_TO_RESOLVE_BINDINGS((0, serialization_1.getServiceIdentifier
       exports.CircularNodeView = CircularNodeView = __decorate([
         (0, inversify_1.injectable)()
       ], CircularNodeView);
-      var RectangularNodeView = class RectangularNodeView extends views_1.ShapeView {
+      var RectangularNodeView2 = class RectangularNodeView extends views_1.ShapeView {
         render(node, context, args) {
           if (!this.isVisible(node, context)) {
             return void 0;
@@ -15636,10 +15635,10 @@ ${ERROR_MSGS.TRYING_TO_RESOLVE_BINDINGS((0, serialization_1.getServiceIdentifier
           );
         }
       };
-      exports.RectangularNodeView = RectangularNodeView;
-      exports.RectangularNodeView = RectangularNodeView = __decorate([
+      exports.RectangularNodeView = RectangularNodeView2;
+      exports.RectangularNodeView = RectangularNodeView2 = __decorate([
         (0, inversify_1.injectable)()
-      ], RectangularNodeView);
+      ], RectangularNodeView2);
       var DiamondNodeView = class DiamondNodeView extends views_1.ShapeView {
         render(node, context, args) {
           if (!this.isVisible(node, context)) {
@@ -37164,7 +37163,7 @@ ${JSON.stringify(message, null, 4)}`);
       };
       exports.GGraph = GGraph;
       GGraph.DEFAULT_FEATURES = [...sprotty_1.SGraphImpl.DEFAULT_FEATURES, model_1.containerFeature, args_feature_1.argsFeature];
-      var GEdge = class extends sprotty_1.SEdgeImpl {
+      var GEdge2 = class extends sprotty_1.SEdgeImpl {
         localToParent(point) {
           const bounds = (0, sprotty_1.getRouteBounds)(this.routingPoints);
           const result = {
@@ -37194,8 +37193,8 @@ ${JSON.stringify(message, null, 4)}`);
           return result;
         }
       };
-      exports.GEdge = GEdge;
-      GEdge.DEFAULT_FEATURES = [...sprotty_1.SEdgeImpl.DEFAULT_FEATURES, args_feature_1.argsFeature];
+      exports.GEdge = GEdge2;
+      GEdge2.DEFAULT_FEATURES = [...sprotty_1.SEdgeImpl.DEFAULT_FEATURES, args_feature_1.argsFeature];
     }
   });
 
@@ -55217,7 +55216,7 @@ ${JSON.stringify(message, null, 4)}`);
       var sprotty_1 = require_lib4();
       var inversify_1 = require_cjs4();
       var argument_utils_1 = require_argument_utils();
-      var GEdgeView = class GEdgeView extends sprotty_1.PolylineEdgeView {
+      var GEdgeView2 = class GEdgeView extends sprotty_1.PolylineEdgeView {
         render(edge, context) {
           const router = this.edgeRouterRegistry.get(edge.routerKind);
           const route = router.route(edge);
@@ -55255,10 +55254,10 @@ ${JSON.stringify(message, null, 4)}`);
           return path;
         }
       };
-      exports.GEdgeView = GEdgeView;
-      exports.GEdgeView = GEdgeView = __decorate([
+      exports.GEdgeView = GEdgeView2;
+      exports.GEdgeView = GEdgeView2 = __decorate([
         (0, inversify_1.injectable)()
-      ], GEdgeView);
+      ], GEdgeView2);
     }
   });
 
@@ -55459,7 +55458,7 @@ ${JSON.stringify(message, null, 4)}`);
       var inversify_1 = require_cjs4();
       var argument_utils_1 = require_argument_utils();
       var rounded_corner_1 = require_rounded_corner();
-      var RoundedCornerNodeView2 = class RoundedCornerNodeView extends sprotty_1.RectangularNodeView {
+      var RoundedCornerNodeView3 = class RoundedCornerNodeView extends sprotty_1.RectangularNodeView {
         render(node, context) {
           const cornerRadius = argument_utils_1.CornerRadius.from(node);
           if (!cornerRadius) {
@@ -55502,10 +55501,10 @@ ${JSON.stringify(message, null, 4)}`);
           return path;
         }
       };
-      exports.RoundedCornerNodeView = RoundedCornerNodeView2;
-      exports.RoundedCornerNodeView = RoundedCornerNodeView2 = __decorate([
+      exports.RoundedCornerNodeView = RoundedCornerNodeView3;
+      exports.RoundedCornerNodeView = RoundedCornerNodeView3 = __decorate([
         (0, inversify_1.injectable)()
-      ], RoundedCornerNodeView2);
+      ], RoundedCornerNodeView3);
       function toClipPathId(node) {
         return `${node.id}_clip_path`;
       }
@@ -58437,7 +58436,6 @@ Trying to resolve bindings for "${k2(e3.serviceIdentifier)}"`), new Error(s4);
   var import_client, ReloadModelAction;
   var init_reload_model_action = __esm({
     "src/extension/diagram/actions/reload-model-action.ts"() {
-      "use strict";
       import_client = __toESM(require_lib5());
       ((ReloadModelAction2) => {
         ReloadModelAction2.KIND = "reloadModel";
@@ -58460,7 +58458,6 @@ Trying to resolve bindings for "${k2(e3.serviceIdentifier)}"`), new Error(s4);
   var import_client2, ReloadModelActionHandler;
   var init_reload_model_action_handler = __esm({
     "src/extension/diagram/actions/reload-model-action-handler.ts"() {
-      "use strict";
       import_client2 = __toESM(require_lib5());
       init_esm4();
       init_reload_model_action();
@@ -58492,49 +58489,70 @@ Trying to resolve bindings for "${k2(e3.serviceIdentifier)}"`), new Error(s4);
     }
   });
 
+  // src/diagram/view/CustomNodeViews.ts
+  var import_client3, SensorSignalNodeView;
+  var init_CustomNodeViews = __esm({
+    "src/diagram/view/CustomNodeViews.ts"() {
+      import_client3 = __toESM(require_lib5());
+      SensorSignalNodeView = class extends import_client3.RoundedCornerNodeView {
+        render(node, context) {
+          const vnode = super.render(node, context);
+          if (vnode === void 0) {
+            return vnode;
+          }
+          return vnode;
+        }
+      };
+    }
+  });
+
   // src/extension/diagram/sdvml-diagram-module.ts
   function initializesdvmlDiagramContainer(container, ...containerConfiguration) {
-    return (0, import_client3.initializeDiagramContainer)(container, sdvmlDiagramModule, ...containerConfiguration);
+    return (0, import_client4.initializeDiagramContainer)(container, sdvmlDiagramModule, ...containerConfiguration);
   }
-  var import_client3, import_sprotty, sdvmlDiagramModule;
+  var import_client4, import_sprotty, sdvmlDiagramModule;
   var init_sdvml_diagram_module = __esm({
     "src/extension/diagram/sdvml-diagram-module.ts"() {
-      "use strict";
-      import_client3 = __toESM(require_lib5());
+      import_client4 = __toESM(require_lib5());
       import_sprotty = __toESM(require_lib4());
       init_balloon_min();
       init_esm4();
       init_reload_model_action_handler();
       init_reload_model_action();
+      init_CustomNodeViews();
       sdvmlDiagramModule = new kt((bind, unbind, isBound, rebind) => {
-        rebind(import_client3.TYPES.ILogger).to(import_client3.ConsoleLogger).inSingletonScope();
-        rebind(import_client3.TYPES.LogLevel).toConstantValue(import_client3.LogLevel.warn);
+        rebind(import_client4.TYPES.ILogger).to(import_client4.ConsoleLogger).inSingletonScope();
+        rebind(import_client4.TYPES.LogLevel).toConstantValue(import_client4.LogLevel.warn);
         const context = { bind, unbind, isBound, rebind };
-        (0, import_client3.configureDefaultModelElements)(context);
+        (0, import_client4.configureDefaultModelElements)(context);
         bind(ReloadModelActionHandler).toSelf().inSingletonScope();
-        (0, import_client3.configureActionHandler)(context, ReloadModelAction.KIND, ReloadModelActionHandler);
-        (0, import_client3.configureActionHandler)(context, import_sprotty.SetModelAction.KIND, ReloadModelActionHandler);
-        (0, import_client3.configureActionHandler)(context, import_sprotty.UpdateModelAction.KIND, ReloadModelActionHandler);
-        (0, import_sprotty.configureModelElement)(context, "node:entry", import_sprotty.GNode, import_client3.RoundedCornerNodeView);
+        (0, import_client4.configureActionHandler)(context, ReloadModelAction.KIND, ReloadModelActionHandler);
+        (0, import_client4.configureActionHandler)(context, import_sprotty.SetModelAction.KIND, ReloadModelActionHandler);
+        (0, import_client4.configureActionHandler)(context, import_sprotty.UpdateModelAction.KIND, ReloadModelActionHandler);
+        (0, import_sprotty.configureModelElement)(context, import_sprotty.DefaultTypes.ROUTING_POINT, import_sprotty.GRoutingHandle, import_sprotty.GRoutingHandleView);
+        (0, import_sprotty.configureModelElement)(context, import_sprotty.DefaultTypes.EDGE, import_client4.GEdge, import_client4.GEdgeView);
+        (0, import_sprotty.configureModelElement)(context, "node:componentnode", import_sprotty.GNode, import_sprotty.RectangularNodeView);
+        (0, import_sprotty.configureModelElement)(context, "node:inport", import_sprotty.GNode, import_sprotty.RectangularNodeView);
+        (0, import_sprotty.configureModelElement)(context, "node:sensorsignalnode", import_sprotty.GNode, SensorSignalNodeView);
+        (0, import_sprotty.configureModelElement)(context, "node:actuatorsignalnode", import_sprotty.GNode, import_client4.RoundedCornerNodeView);
         (0, import_sprotty.configureModelElement)(context, import_sprotty.DefaultTypes.LABEL, import_sprotty.GLabel, import_sprotty.GLabelView, { enable: [import_sprotty.editLabelFeature] });
       });
     }
   });
 
   // src/webview/sdvml-starter.ts
-  function launchsdvmlDiagram() {
-    new sdvmlStarter();
+  function launchSDVMLDiagram() {
+    new SDVMLStarter();
   }
-  var import_reflect_metadata2, import_vscode_integration_webview, sdvmlStarter;
+  var import_reflect_metadata2, import_vscode_integration_webview, SDVMLStarter;
   var init_sdvml_starter = __esm({
     "src/webview/sdvml-starter.ts"() {
-      "use strict";
       import_reflect_metadata2 = __toESM(require_Reflect());
       import_vscode_integration_webview = __toESM(require_lib8());
       init_glsp_vscode();
       init_esm4();
       init_sdvml_diagram_module();
-      sdvmlStarter = class extends import_vscode_integration_webview.GLSPStarter {
+      SDVMLStarter = class extends import_vscode_integration_webview.GLSPStarter {
         createContainer(...containerConfiguration) {
           return initializesdvmlDiagramContainer(new Pt(), ...containerConfiguration);
         }
@@ -58547,8 +58565,7 @@ Trying to resolve bindings for "${k2(e3.serviceIdentifier)}"`), new Error(s4);
     "src/webview/main.ts"() {
       var import_reflect_metadata3 = __toESM(require_Reflect());
       init_sdvml_starter();
-      console.debug("webview/main.ts");
-      launchsdvmlDiagram();
+      launchSDVMLDiagram();
     }
   });
   require_main2();

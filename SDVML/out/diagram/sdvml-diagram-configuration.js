@@ -6,9 +6,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { getDefaultMapping, ServerLayoutKind } from "@eclipse-glsp/server";
 import { injectable } from "inversify";
-export let sdvmlDiagramConfiguration = class sdvmlDiagramConfiguration {
+let sdvmlDiagramConfiguration = class sdvmlDiagramConfiguration {
     constructor() {
-        this.layoutKind = ServerLayoutKind.MANUAL;
+        this.layoutKind = ServerLayoutKind.AUTOMATIC;
         this.needsClientLayout = true;
         this.animatedUpdate = true;
     }
@@ -19,7 +19,28 @@ export let sdvmlDiagramConfiguration = class sdvmlDiagramConfiguration {
     get shapeTypeHints() {
         return [
             {
-                elementTypeId: 'node:entry',
+                elementTypeId: 'node:sensorsignalnode',
+                deletable: true,
+                reparentable: false,
+                repositionable: true,
+                resizable: true,
+            },
+            {
+                elementTypeId: 'node:actuatorsignalnode',
+                deletable: true,
+                reparentable: false,
+                repositionable: true,
+                resizable: true,
+            },
+            {
+                elementTypeId: 'node:componentnode',
+                deletable: true,
+                reparentable: false,
+                repositionable: true,
+                resizable: true,
+            },
+            {
+                elementTypeId: 'node:inport',
                 deletable: true,
                 reparentable: false,
                 repositionable: true,
@@ -34,4 +55,5 @@ export let sdvmlDiagramConfiguration = class sdvmlDiagramConfiguration {
 sdvmlDiagramConfiguration = __decorate([
     injectable()
 ], sdvmlDiagramConfiguration);
+export { sdvmlDiagramConfiguration };
 //# sourceMappingURL=sdvml-diagram-configuration.js.map

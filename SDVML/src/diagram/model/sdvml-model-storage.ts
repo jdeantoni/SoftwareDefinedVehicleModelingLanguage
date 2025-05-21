@@ -2,12 +2,12 @@ import { AbstractJsonModelStorage, ActionDispatcher, MaybePromise } from '@eclip
 import { inject } from 'inversify'
 import {generateModelFromAST } from './sdvml-diagram-model.js'
 import { getLanguageClient } from '../../extension/main.js'
-import { sdvmlModelState } from './sdvml-model-state.js'
+import { SDVMLModelState } from './sdvml-model-state.js'
 import { DocumentChange } from '../../language/main.js'
 
 export class sdvmlModelStorage extends AbstractJsonModelStorage {
-	@inject(sdvmlModelState)
-	protected override modelState!: sdvmlModelState
+	@inject(SDVMLModelState)
+	protected override modelState!: SDVMLModelState
 
 	@inject(ActionDispatcher)
 	protected actionDispatcher!: ActionDispatcher
