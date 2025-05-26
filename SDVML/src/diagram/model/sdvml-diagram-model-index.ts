@@ -8,7 +8,7 @@ export class sdvmlModelIndex extends GModelIndex {
 
 	indexsdvml(sdvml: SDVMLDiagram | undefined): void {
 		this.idToSDVMLNodeElements.clear()
-		for (const element of sdvml?.sensorSignals ?? []) {
+		for (const element of sdvml?.vss.sensorSignals ?? []) {
 			this.idToSDVMLNodeElements.set(element.id, element)
 		}
 	}

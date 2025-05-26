@@ -18,7 +18,6 @@ import { sdvmlGModelFactory } from './model/sdvml-gmodel-factory.js'
 import { sdvmlModelIndex } from './model/sdvml-diagram-model-index.js'
 import { sdvmlApplyLabelEditHandler } from './handler/sdvml-apply-label-edit-handler.js'
 
-import "../diagram/view/nodeStyles.css";
 
 @injectable()
 export class SdvmlDiagramModule extends DiagramModule {

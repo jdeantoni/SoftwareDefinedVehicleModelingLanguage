@@ -7,6 +7,8 @@ import { configureELKLayoutModule } from '@eclipse-glsp/layout-elk'
 import { SdvmlDiagramModule } from '../../diagram/sdvml-diagram-module.js'
 import SDVMLEditorProvider from './sdvml-editor-provider.js'
 
+
+
 export async function startDiagram(context: vscode.ExtensionContext): Promise<void> {
 	console.debug("export async function startDiagram(context: vscode.ExtensionContext): Promise<void> {")
 	const diagramServer = new NodeGlspVscodeServer({
@@ -44,3 +46,5 @@ function createServerModules(): ContainerModule[] {
 	const mainModule = new ServerModule().configureDiagramModule(sdvmlDiagramModule, elkLayoutModule)
 	return [appModule, mainModule]
 } 
+
+

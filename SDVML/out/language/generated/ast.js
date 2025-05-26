@@ -59,9 +59,13 @@ export const Subscriber = 'Subscriber';
 export function isSubscriber(item) {
     return reflection.isInstance(item, Subscriber);
 }
+export const VSS = 'VSS';
+export function isVSS(item) {
+    return reflection.isInstance(item, VSS);
+}
 export class SdvmlAstReflection extends langium.AbstractAstReflection {
     getAllTypes() {
-        return [Actuator, Component, EventTriggering, Model, PeriodicTriggering, Publisher, RandomVar, Sensor, Service, Signal, Subscriber, TriggeringRule];
+        return [Actuator, Component, EventTriggering, Model, PeriodicTriggering, Publisher, RandomVar, Sensor, Service, Signal, Subscriber, TriggeringRule, VSS];
     }
     computeIsSubtype(subtype, supertype) {
         switch (subtype) {
@@ -126,7 +130,7 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                     properties: [
                         { name: 'components', defaultValue: [] },
                         { name: 'name' },
-                        { name: 'signals', defaultValue: [] }
+                        { name: 'vss' }
                     ]
                 };
             }
@@ -180,6 +184,14 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                     name: Subscriber,
                     properties: [
                         { name: 'name' }
+                    ]
+                };
+            }
+            case VSS: {
+                return {
+                    name: VSS,
+                    properties: [
+                        { name: 'signals', defaultValue: [] }
                     ]
                 };
             }

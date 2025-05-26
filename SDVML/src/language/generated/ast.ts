@@ -24,6 +24,7 @@ export type SdvmlKeywordNames =
     | ":"
     | "AD"
     | "Actuator"
+    | "App"
     | "Component"
     | "DL"
     | "ExecTime"
@@ -31,6 +32,7 @@ export type SdvmlKeywordNames =
     | "SSP"
     | "Sensor"
     | "Signal"
+    | "VSS"
     | "ms"
     | "on"
     | "periodic"
@@ -58,7 +60,7 @@ export function isTriggeringRule(item: unknown): item is TriggeringRule {
 }
 
 export interface Actuator extends langium.AstNode {
-    readonly $container: Model;
+    readonly $container: VSS;
     readonly $type: 'Actuator';
     ad: RandomVar;
     name: string;
@@ -102,7 +104,7 @@ export interface Model extends langium.AstNode {
     readonly $type: 'Model';
     components: Array<Component>;
     name: string;
-    signals: Array<Signal>;
+    vss: VSS;
 }
 
 export const Model = 'Model';
@@ -149,7 +151,7 @@ export function isRandomVar(item: unknown): item is RandomVar {
 }
 
 export interface Sensor extends langium.AstNode {
-    readonly $container: Model;
+    readonly $container: VSS;
     readonly $type: 'Sensor';
     dl: RandomVar;
     name: string;
@@ -188,6 +190,18 @@ export function isSubscriber(item: unknown): item is Subscriber {
     return reflection.isInstance(item, Subscriber);
 }
 
+export interface VSS extends langium.AstNode {
+    readonly $container: Model;
+    readonly $type: 'VSS';
+    signals: Array<Signal>;
+}
+
+export const VSS = 'VSS';
+
+export function isVSS(item: unknown): item is VSS {
+    return reflection.isInstance(item, VSS);
+}
+
 export type SdvmlAstType = {
     Actuator: Actuator
     Component: Component
@@ -201,12 +215,13 @@ export type SdvmlAstType = {
     Signal: Signal
     Subscriber: Subscriber
     TriggeringRule: TriggeringRule
+    VSS: VSS
 }
 
 export class SdvmlAstReflection extends langium.AbstractAstReflection {
 
     getAllTypes(): string[] {
-        return [Actuator, Component, EventTriggering, Model, PeriodicTriggering, Publisher, RandomVar, Sensor, Service, Signal, Subscriber, TriggeringRule];
+        return [Actuator, Component, EventTriggering, Model, PeriodicTriggering, Publisher, RandomVar, Sensor, Service, Signal, Subscriber, TriggeringRule, VSS];
     }
 
     protected override computeIsSubtype(subtype: string, supertype: string): boolean {
@@ -274,7 +289,7 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                     properties: [
                         { name: 'components', defaultValue: [] },
                         { name: 'name' },
-                        { name: 'signals', defaultValue: [] }
+                        { name: 'vss' }
                     ]
                 };
             }
@@ -328,6 +343,14 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                     name: Subscriber,
                     properties: [
                         { name: 'name' }
+                    ]
+                };
+            }
+            case VSS: {
+                return {
+                    name: VSS,
+                    properties: [
+                        { name: 'signals', defaultValue: [] }
                     ]
                 };
             }

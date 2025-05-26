@@ -14,7 +14,7 @@ let sdvmlModelIndex = class sdvmlModelIndex extends GModelIndex {
     indexsdvml(sdvml) {
         var _a;
         this.idToSDVMLNodeElements.clear();
-        for (const element of (_a = sdvml === null || sdvml === void 0 ? void 0 : sdvml.sensorSignals) !== null && _a !== void 0 ? _a : []) {
+        for (const element of (_a = sdvml === null || sdvml === void 0 ? void 0 : sdvml.vss.sensorSignals) !== null && _a !== void 0 ? _a : []) {
             this.idToSDVMLNodeElements.set(element.id, element);
         }
     }

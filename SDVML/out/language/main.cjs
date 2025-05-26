@@ -30972,9 +30972,10 @@ var RandomVar = "RandomVar";
 var Sensor = "Sensor";
 var Service = "Service";
 var Subscriber = "Subscriber";
+var VSS = "VSS";
 var SdvmlAstReflection = class extends AbstractAstReflection {
   getAllTypes() {
-    return [Actuator, Component, EventTriggering, Model, PeriodicTriggering, Publisher, RandomVar, Sensor, Service, Signal, Subscriber, TriggeringRule];
+    return [Actuator, Component, EventTriggering, Model, PeriodicTriggering, Publisher, RandomVar, Sensor, Service, Signal, Subscriber, TriggeringRule, VSS];
   }
   computeIsSubtype(subtype, supertype) {
     switch (subtype) {
@@ -31039,7 +31040,7 @@ var SdvmlAstReflection = class extends AbstractAstReflection {
           properties: [
             { name: "components", defaultValue: [] },
             { name: "name" },
-            { name: "signals", defaultValue: [] }
+            { name: "vss" }
           ]
         };
       }
@@ -31096,6 +31097,14 @@ var SdvmlAstReflection = class extends AbstractAstReflection {
           ]
         };
       }
+      case VSS: {
+        return {
+          name: VSS,
+          properties: [
+            { name: "signals", defaultValue: [] }
+          ]
+        };
+      }
       default: {
         return {
           name: type,
@@ -31132,7 +31141,7 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@12"
+                "$ref": "#/rules@13"
               },
               "arguments": []
             }
@@ -31142,38 +31151,77 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
             "value": ":"
           },
           {
-            "$type": "Alternatives",
-            "elements": [
-              {
-                "$type": "Assignment",
-                "feature": "components",
-                "operator": "+=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@5"
-                  },
-                  "arguments": []
-                }
+            "$type": "Assignment",
+            "feature": "vss",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@1"
               },
-              {
-                "$type": "Assignment",
-                "feature": "signals",
-                "operator": "+=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@6"
-                  },
-                  "arguments": []
-                }
-              }
-            ],
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "App"
+          },
+          {
+            "$type": "Keyword",
+            "value": ":"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "components",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@6"
+              },
+              "arguments": []
+            },
             "cardinality": "*"
           }
         ]
       },
       "definesHiddenTokens": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "VSS",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "VSS"
+          },
+          {
+            "$type": "Keyword",
+            "value": ":"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "signals",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@7"
+              },
+              "arguments": []
+            },
+            "cardinality": "*"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
       "hiddenTokens": [],
       "parameters": [],
@@ -31192,7 +31240,7 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@13"
+                "$ref": "#/rules@14"
               },
               "arguments": []
             }
@@ -31208,7 +31256,7 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@13"
+                "$ref": "#/rules@14"
               },
               "arguments": []
             }
@@ -31231,14 +31279,14 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@3"
+              "$ref": "#/rules@4"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@4"
+              "$ref": "#/rules@5"
             },
             "arguments": []
           }
@@ -31268,7 +31316,7 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@1"
+                "$ref": "#/rules@2"
               },
               "arguments": []
             }
@@ -31307,12 +31355,12 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
             "terminal": {
               "$type": "CrossReference",
               "type": {
-                "$ref": "#/rules@10"
+                "$ref": "#/rules@11"
               },
               "terminal": {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@12"
+                  "$ref": "#/rules@13"
                 },
                 "arguments": []
               },
@@ -31345,7 +31393,7 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@12"
+                "$ref": "#/rules@13"
               },
               "arguments": []
             }
@@ -31360,7 +31408,7 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@9"
+                    "$ref": "#/rules@10"
                   },
                   "arguments": []
                 }
@@ -31372,7 +31420,7 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@10"
+                    "$ref": "#/rules@11"
                   },
                   "arguments": []
                 }
@@ -31384,7 +31432,7 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@11"
+                    "$ref": "#/rules@12"
                   },
                   "arguments": []
                 }
@@ -31410,14 +31458,14 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@7"
+              "$ref": "#/rules@8"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@8"
+              "$ref": "#/rules@9"
             },
             "arguments": []
           }
@@ -31451,7 +31499,7 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@12"
+                "$ref": "#/rules@13"
               },
               "arguments": []
             }
@@ -31475,7 +31523,7 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@1"
+                "$ref": "#/rules@2"
               },
               "arguments": []
             }
@@ -31503,7 +31551,7 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@1"
+                "$ref": "#/rules@2"
               },
               "arguments": []
             }
@@ -31546,7 +31594,7 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@12"
+                "$ref": "#/rules@13"
               },
               "arguments": []
             }
@@ -31562,7 +31610,7 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@2"
+                "$ref": "#/rules@3"
               },
               "arguments": []
             }
@@ -31586,7 +31634,7 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@1"
+                "$ref": "#/rules@2"
               },
               "arguments": []
             }
@@ -31625,7 +31673,7 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@12"
+                "$ref": "#/rules@13"
               },
               "arguments": []
             }
@@ -31656,7 +31704,7 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@12"
+                "$ref": "#/rules@13"
               },
               "arguments": []
             }
@@ -31687,7 +31735,7 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@12"
+                "$ref": "#/rules@13"
               },
               "arguments": []
             }
@@ -31703,7 +31751,7 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@2"
+                "$ref": "#/rules@3"
               },
               "arguments": []
             }
@@ -31719,7 +31767,7 @@ var SdvmlGrammar = () => loadedSdvmlGrammar != null ? loadedSdvmlGrammar : loade
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@1"
+                "$ref": "#/rules@2"
               },
               "arguments": []
             }

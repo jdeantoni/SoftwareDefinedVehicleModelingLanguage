@@ -33,9 +33,9 @@ export class SdvmlCodeActionProvider implements CodeActionProvider {
 		const data = params.context.diagnostics[0].data
 		switch (only) {
             case 'editId':
-				return this.editAction('Edit Entry Id', rootAst.signals, 'id', uri, data)
+				return this.editAction('Edit Entry Id', rootAst.vss.signals, 'id', uri, data)
 			case 'editDescription':
-				return this.editAction('Edit Entry Description', rootAst.signals, 'description', uri, data)
+				return this.editAction('Edit Entry Description', rootAst.vss.signals, 'description', uri, data)
 			default:
 				return undefined
         }

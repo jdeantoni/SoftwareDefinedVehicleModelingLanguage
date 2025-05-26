@@ -12,7 +12,6 @@ import { sdvmlModelStorage } from './model/sdvml-model-storage.js';
 import { sdvmlGModelFactory } from './model/sdvml-gmodel-factory.js';
 import { sdvmlModelIndex } from './model/sdvml-diagram-model-index.js';
 import { sdvmlApplyLabelEditHandler } from './handler/sdvml-apply-label-edit-handler.js';
-import "../diagram/view/nodeStyles.css";
 let SdvmlDiagramModule = class SdvmlDiagramModule extends DiagramModule {
     constructor() {
         super(...arguments);

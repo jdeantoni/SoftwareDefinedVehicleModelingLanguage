@@ -1,23 +1,26 @@
 import { AnyObject, Dimension, hasArrayProp, hasObjectProp, hasStringProp, Point } from '@eclipse-glsp/server'
 import { MD5 } from 'object-hash'
-import { Signal, Model, isSensor, isActuator, Sensor, Actuator, Component } from '../../language/generated/ast.js'
+import { Signal, Model, isSensor, isActuator, Sensor, Actuator, Component, VSS } from '../../language/generated/ast.js'
 
 
 export interface SDVMLNode{
 	id: string
 	parent?: Signal | Component | Model
 
-	position: Point
+	position?: Point
 	size?: Dimension
 }
 
 export interface SDVMLDiagram {
 	id: string
-	sensorSignals: SensorSignalNode[]
-	actuatorSignals: ActuatorSignalNode[]
+	vss: VSSNode
 	components: ComponentNode[]
 }
 
+export interface VSSNode extends SDVMLNode{
+	sensorSignals: SensorSignalNode[]
+	actuatorSignals: ActuatorSignalNode[]
+}
 export function issdvmlDiagram(object: object | undefined): object is SDVMLDiagram {
 	return AnyObject.is(object) && hasStringProp(object, 'id') && hasArrayProp(object, 'nodes')
 }
@@ -39,15 +42,25 @@ export function isEntryNode(object: object | undefined): object is SensorSignalN
 }
 
 export function generateModelFromAST(model: Model, existingDiagram: SDVMLDiagram): SDVMLDiagram {
-	const sensorSignalsNodes : SensorSignalNode[] = model.signals.filter(sig => isSensor(sig)).flatMap((sig) => createDiagramSensorSignalNodes(sig as Sensor, existingDiagram))
-	const actuatorSignalsNodes : ActuatorSignalNode []= model.signals.filter(sig => isActuator(sig)).flatMap((sig) => createDiagramActuatorSignalNodes(sig as Actuator, existingDiagram))
+	const vssNode: VSSNode = createVSSNode(model.vss,existingDiagram)
 	const componentNodes : ComponentNode[] = model.components.flatMap((comp) => createDiagramComponentNodes(comp, existingDiagram))
 	return {
 		id: 'sdvml', //this needSignalntNodes]
-		sensorSignals: [...sensorSignalsNodes],
-		actuatorSignals: [...actuatorSignalsNodes],
+		vss:vssNode,
 		components : [...componentNodes]
 	}
+}
+
+function createVSSNode(vss: VSS, existingDiagram: SDVMLDiagram): VSSNode {
+	const sensorSignalsNodes : SensorSignalNode[] = vss.signals.filter(sig => isSensor(sig)).flatMap((sig) => createDiagramSensorSignalNodes(sig as Sensor, existingDiagram))
+	const actuatorSignalsNodes : ActuatorSignalNode []= vss.signals.filter(sig => isActuator(sig)).flatMap((sig) => createDiagramActuatorSignalNodes(sig as Actuator, existingDiagram))
+	return {
+		id: 'vss', //this needSignalntNodes]
+		sensorSignals: [...sensorSignalsNodes],
+		actuatorSignals: [...actuatorSignalsNodes],
+		parent: vss.$container
+	}
+
 }
 
 function createDiagramSensorSignalNodes(rootNode: Sensor, existingDiagram: SDVMLDiagram): SensorSignalNode [] {
@@ -72,7 +85,7 @@ function createSensorDiagramNode(rootNode: Signal, existingDiagram: SDVMLDiagram
 	const rootNodeHash = MD5(rootNode)
 		let existingNode: SensorSignalNode | undefined
 		if (existingDiagram) {
-			existingDiagram.sensorSignals.forEach((node) => {
+			existingDiagram.vss.sensorSignals.forEach((node) => {
 				if (node.id == rootNode.name) {
 					existingNode = node
 				}
@@ -109,7 +122,7 @@ function createActuatorDiagramNode(rootNode: Signal, existingDiagram: SDVMLDiagr
 	const rootNodeHash = MD5(rootNode)
 		let existingNode: ActuatorSignalNode | undefined
 		if (existingDiagram) {
-			existingDiagram.actuatorSignals.forEach((node) => {
+			existingDiagram.vss.actuatorSignals.forEach((node) => {
 				if (node.id == rootNode.name) {
 					existingNode = node
 				}
@@ -146,7 +159,7 @@ function createComponentNode(rootNode: Component, existingDiagram: SDVMLDiagram)
 	const rootNodeHash = MD5(rootNode)
 		let existingNode: ComponentNode | undefined
 		if (existingDiagram) {
-			existingDiagram.sensorSignals.forEach((node) => {
+			existingDiagram.vss.sensorSignals.forEach((node) => {
 				if (node.id == rootNode.name) {
 					existingNode = node
 				}

@@ -17,11 +17,11 @@ export function generateIFScript(model, filePath, destination) {
     ifContent.append("system " + model.name + ";\n");
     ifContent.append("type int = range 0 .. 255;\n");
     var sigNames = [];
-    for (var sig of model.signals) {
+    for (var sig of model.vss.signals) {
         sigNames.push(sig.name);
         ifContent.append("Signal " + sig.name + "();\n");
     }
-    for (var sig of model.signals) {
+    for (var sig of model.vss.signals) {
         var sigName = sig.name;
         if (isSensor(sig)) {
             prettyPrintSensorSignal(sig, ifContent, sigName);

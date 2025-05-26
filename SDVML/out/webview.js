@@ -21983,7 +21983,7 @@ ${ERROR_MSGS.TRYING_TO_RESOLVE_BINDINGS((0, serialization_1.getServiceIdentifier
       exports.SGraphView = SGraphView = __decorate([
         (0, inversify_1.injectable)()
       ], SGraphView);
-      var PolylineEdgeView = class PolylineEdgeView extends views_2.RoutableView {
+      var PolylineEdgeView2 = class PolylineEdgeView extends views_2.RoutableView {
         render(edge, context, args) {
           const route = this.edgeRouterRegistry.route(edge, args);
           if (route.length === 0) {
@@ -22033,15 +22033,15 @@ ${ERROR_MSGS.TRYING_TO_RESOLVE_BINDINGS((0, serialization_1.getServiceIdentifier
           return (0, jsx_1.svg)("text", { "class-sprotty-edge-dangling": true, title: message }, "?");
         }
       };
-      exports.PolylineEdgeView = PolylineEdgeView;
+      exports.PolylineEdgeView = PolylineEdgeView2;
       __decorate([
         (0, inversify_1.inject)(routing_1.EdgeRouterRegistry),
         __metadata("design:type", routing_1.EdgeRouterRegistry)
-      ], PolylineEdgeView.prototype, "edgeRouterRegistry", void 0);
-      exports.PolylineEdgeView = PolylineEdgeView = __decorate([
+      ], PolylineEdgeView2.prototype, "edgeRouterRegistry", void 0);
+      exports.PolylineEdgeView = PolylineEdgeView2 = __decorate([
         (0, inversify_1.injectable)()
-      ], PolylineEdgeView);
-      var JumpingPolylineEdgeView = class JumpingPolylineEdgeView extends PolylineEdgeView {
+      ], PolylineEdgeView2);
+      var JumpingPolylineEdgeView = class JumpingPolylineEdgeView extends PolylineEdgeView2 {
         constructor() {
           super(...arguments);
           this.jumpOffsetBefore = 5;
@@ -55216,7 +55216,7 @@ ${JSON.stringify(message, null, 4)}`);
       var sprotty_1 = require_lib4();
       var inversify_1 = require_cjs4();
       var argument_utils_1 = require_argument_utils();
-      var GEdgeView2 = class GEdgeView extends sprotty_1.PolylineEdgeView {
+      var GEdgeView = class GEdgeView extends sprotty_1.PolylineEdgeView {
         render(edge, context) {
           const router = this.edgeRouterRegistry.get(edge.routerKind);
           const route = router.route(edge);
@@ -55254,10 +55254,10 @@ ${JSON.stringify(message, null, 4)}`);
           return path;
         }
       };
-      exports.GEdgeView = GEdgeView2;
-      exports.GEdgeView = GEdgeView2 = __decorate([
+      exports.GEdgeView = GEdgeView;
+      exports.GEdgeView = GEdgeView = __decorate([
         (0, inversify_1.injectable)()
-      ], GEdgeView2);
+      ], GEdgeView);
     }
   });
 
@@ -58506,6 +58506,12 @@ Trying to resolve bindings for "${k2(e3.serviceIdentifier)}"`), new Error(s4);
     }
   });
 
+  // src/diagram/view/nodeStyles.css
+  var init_nodeStyles = __esm({
+    "src/diagram/view/nodeStyles.css"() {
+    }
+  });
+
   // src/extension/diagram/sdvml-diagram-module.ts
   function initializesdvmlDiagramContainer(container, ...containerConfiguration) {
     return (0, import_client4.initializeDiagramContainer)(container, sdvmlDiagramModule, ...containerConfiguration);
@@ -58520,6 +58526,7 @@ Trying to resolve bindings for "${k2(e3.serviceIdentifier)}"`), new Error(s4);
       init_reload_model_action_handler();
       init_reload_model_action();
       init_CustomNodeViews();
+      init_nodeStyles();
       sdvmlDiagramModule = new kt((bind, unbind, isBound, rebind) => {
         rebind(import_client4.TYPES.ILogger).to(import_client4.ConsoleLogger).inSingletonScope();
         rebind(import_client4.TYPES.LogLevel).toConstantValue(import_client4.LogLevel.warn);
@@ -58530,7 +58537,8 @@ Trying to resolve bindings for "${k2(e3.serviceIdentifier)}"`), new Error(s4);
         (0, import_client4.configureActionHandler)(context, import_sprotty.SetModelAction.KIND, ReloadModelActionHandler);
         (0, import_client4.configureActionHandler)(context, import_sprotty.UpdateModelAction.KIND, ReloadModelActionHandler);
         (0, import_sprotty.configureModelElement)(context, import_sprotty.DefaultTypes.ROUTING_POINT, import_sprotty.GRoutingHandle, import_sprotty.GRoutingHandleView);
-        (0, import_sprotty.configureModelElement)(context, import_sprotty.DefaultTypes.EDGE, import_client4.GEdge, import_client4.GEdgeView);
+        (0, import_sprotty.configureModelElement)(context, "edge:pushsub", import_client4.GEdge, import_sprotty.PolylineEdgeView);
+        (0, import_sprotty.configureModelElement)(context, "node:vss", import_sprotty.GNode, import_sprotty.RectangularNodeView);
         (0, import_sprotty.configureModelElement)(context, "node:componentnode", import_sprotty.GNode, import_sprotty.RectangularNodeView);
         (0, import_sprotty.configureModelElement)(context, "node:inport", import_sprotty.GNode, import_sprotty.RectangularNodeView);
         (0, import_sprotty.configureModelElement)(context, "node:sensorsignalnode", import_sprotty.GNode, SensorSignalNodeView);

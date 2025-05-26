@@ -35,11 +35,11 @@ export function generateIFScript(
     ifContent.append("type int = range 0 .. 255;\n");
 
     var sigNames:string[] = [];
-    for(var sig of model.signals){
+    for(var sig of model.vss.signals){
         sigNames.push(sig.name);
         ifContent.append("Signal "+sig.name+"();\n")
     }
-    for(var sig of model.signals){
+    for(var sig of model.vss.signals){
         var sigName=sig.name;
         if (isSensor(sig)){
             prettyPrintSensorSignal(sig, ifContent, sigName);

@@ -1,10 +1,16 @@
 grammar Sdvml
 
 entry Model:
-    "SDV" name=ID":"(
-        components+=Component |
-        signals+=Signal
-    )*;
+    "SDV" name=ID":"
+        vss=VSS
+        "App" ":"
+        components+=Component*
+    ;
+
+VSS:
+    "VSS" ":"
+        (signals+=Signal*)
+    ;
 
 RandomVar:
     mean=INT "+/-" stdDev=INT

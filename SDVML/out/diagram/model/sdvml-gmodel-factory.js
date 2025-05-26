@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { ArgsUtil, GEdge, GGraph, GLabel, GNode, GPort } from '@eclipse-glsp/server';
+import { ArgsUtil, GGraph, GLabel, GNode, GPort } from '@eclipse-glsp/server';
 import { inject, injectable } from 'inversify';
 import { SDVMLModelState } from './sdvml-model-state.js';
 let sdvmlGModelFactory = class sdvmlGModelFactory {
@@ -17,24 +17,31 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
     createModel() {
         const sdvml = this.modelState.sourceModel;
         this.modelState.index.indexsdvml(sdvml);
-        const sensorSigNodes = [...sdvml.sensorSignals.flatMap((ssn) => this.generateSensorNode(ssn))];
-        const actuatorSigNodes = [...sdvml.actuatorSignals.flatMap((asn) => this.generateActuatorNode(asn))];
+        const sensorSigNodes = [...sdvml.vss.sensorSignals.flatMap((ssn) => this.generateSensorNode(ssn))];
+        const actuatorSigNodes = [...sdvml.vss.actuatorSignals.flatMap((asn) => this.generateActuatorNode(asn))];
+        const vssBuilder = GNode.builder().type('node:vss').id(sdvml.vss.id).layout('vbox').position({ x: 0, y: 0 });
+        vssBuilder.addChildren(sensorSigNodes).addChildren(actuatorSigNodes);
+        vssBuilder.size(500, 100);
+        const vssNode = vssBuilder.build();
         const compNodes = [...sdvml.components.flatMap((comp) => this.generateComponentNode(comp))];
-        console.error("test elem ID ");
-        this.elementNameToId.forEach((value, key) => {
-            console.error(`${key}: ${value}`);
-        });
-        const myEdge = GEdge.builder()
-            .id('edge1')
-            .type('edge') // Or another edge type
-            .source(compNodes[0]) // Connects from the output port
-            .target(actuatorSigNodes[0]) // Connects to another node's input port
-            .addRoutingPoint(0, 100)
-            .build();
+        // console.error("test elem ID ")
+        // this.elementNameToId.forEach((value, key) => {
+        // 	console.error(`${key}: ${value}`);
+        // });
+        // const myEdge = GEdge.builder()
+        // 	.id('edge1')
+        // 	.type('edge:pushsub') // Or another edge type
+        // 	.source(compNodes[0]) // Connects from the output port
+        // 	.target(actuatorSigNodes[0]) // Connects to another node's input port
+        // 	  .addRoutingPoint(0, 100)
+        //       .addCssClass('pushsub')
+        // 	  .addCssClass('sprotty-edge')
+        // 	  .addCssClass('arrow')
+        // 	.build();
         const newRoot = GGraph.builder() //
             .id('sdvml')
-            .addChildren(actuatorSigNodes).addChildren(sensorSigNodes).addChildren(compNodes)
-            .addChildren(myEdge)
+            .addChildren(vssNode).addChildren(compNodes)
+            // .addChildren(myEdge)
             .size(500, 500)
             .build();
         // for (var c of newRoot.children){
@@ -70,7 +77,7 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
     generateActuatorNode(actuatorSigNode) {
         var _a;
         const sourceNode = actuatorSigNode.parent;
-        const builder = GNode.builder().type('node:actuatorsignalnode').id(actuatorSigNode.id).layout('vbox').position(actuatorSigNode.position);
+        const builder = GNode.builder().type("node:actuatorsignalnode").id(actuatorSigNode.id).layout('vbox').position(actuatorSigNode.position);
         let nodeSize = actuatorSigNode.size;
         // console.error("nodeSize="+nodeSize?.height)
         if (!nodeSize) {
@@ -86,7 +93,7 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
             .text(((_a = sourceNode === null || sourceNode === void 0 ? void 0 : sourceNode.name.toString()) !== null && _a !== void 0 ? _a : '') + ": VSS")
             .id(`${actuatorSigNode.id}_label`)
             .build());
-        builder.addCssClass('node:actuatorsignalnode');
+        builder.addCssClass('actuatorsignalnode');
         const res = builder.build();
         this.elementNameToId.set(actuatorSigNode.name, res.id);
         return res;
@@ -109,9 +116,10 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
             .text(((_a = sourceNode === null || sourceNode === void 0 ? void 0 : sourceNode.name.toString()) !== null && _a !== void 0 ? _a : '') + ": Comp")
             .id(`${compNode.id}_label`)
             .build());
-        builder.addCssClass('node:componentnode');
+        builder.addCssClass('componentnode');
         const inPort = GPort.builder()
             .id('myNode_inPort1') // Unique ID, perhaps derived from parent node ID
+            .type('node:inport')
             .size(10, 10) // Example: 10x10px square port
             .addCssClass('inport')
             .build();

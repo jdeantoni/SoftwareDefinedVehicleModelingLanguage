@@ -1,8 +1,26 @@
-.sensorsignalnode {
-  fill: #ee4063; /* pink */
+
+
+.componentnode {
+  background-color: #ee4063; /* pink */
+  /* stroke-width: 5px;
+  outline-color: aquamarine;
+    outline-style: solid;
+    outline-width: 2px;
+    fill: #82848a;
+     stroke: #ee4063; */
 }
 
 .inport {
   fill: rgb(180, 6, 6);
   font-size: 300%;
+}
+
+.inport:hover {
+  fill: white;
+  font-size: 300%;
+}
+
+.sprotty-label {
+    fill: blueviolet;
+    text-align: center;
 }

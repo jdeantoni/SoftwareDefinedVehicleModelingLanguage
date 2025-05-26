@@ -2933,4 +2933,21 @@ button[data-balloon] {
   white-space: normal;
   width: 100%;
 }
+
+/* src/diagram/view/nodeStyles.css */
+.componentnode {
+  background-color: #ee4063;
+}
+.inport {
+  fill: rgb(180, 6, 6);
+  font-size: 300%;
+}
+.inport:hover {
+  fill: white;
+  font-size: 300%;
+}
+.sprotty-label {
+  fill: blueviolet;
+  text-align: center;
+}
 /*# sourceMappingURL=webview.css.map */
