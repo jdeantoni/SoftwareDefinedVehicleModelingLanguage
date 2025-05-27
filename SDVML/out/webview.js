@@ -15600,7 +15600,7 @@ ${ERROR_MSGS.TRYING_TO_RESOLVE_BINDINGS((0, serialization_1.getServiceIdentifier
       exports.SvgViewportView = SvgViewportView = __decorate([
         (0, inversify_1.injectable)()
       ], SvgViewportView);
-      var CircularNodeView = class CircularNodeView extends views_1.ShapeView {
+      var CircularNodeView2 = class CircularNodeView extends views_1.ShapeView {
         render(node, context, args) {
           if (!this.isVisible(node, context)) {
             return void 0;
@@ -15618,10 +15618,10 @@ ${ERROR_MSGS.TRYING_TO_RESOLVE_BINDINGS((0, serialization_1.getServiceIdentifier
           return d3 > 0 ? d3 / 2 : 0;
         }
       };
-      exports.CircularNodeView = CircularNodeView;
-      exports.CircularNodeView = CircularNodeView = __decorate([
+      exports.CircularNodeView = CircularNodeView2;
+      exports.CircularNodeView = CircularNodeView2 = __decorate([
         (0, inversify_1.injectable)()
-      ], CircularNodeView);
+      ], CircularNodeView2);
       var RectangularNodeView2 = class RectangularNodeView extends views_1.ShapeView {
         render(node, context, args) {
           if (!this.isVisible(node, context)) {
@@ -31568,15 +31568,15 @@ ${JSON.stringify(message, null, 4)}`);
       exports.DiamondNodeView = DiamondNodeView = __decorate([
         (0, inversify_1.injectable)()
       ], DiamondNodeView);
-      var CircularNodeView = class CircularNodeView extends sprotty_1.CircularNodeView {
+      var CircularNodeView2 = class CircularNodeView extends sprotty_1.CircularNodeView {
         render(node, context, args) {
           return applyHiddenBoundingRect(node, context, super.render(node, context, args));
         }
       };
-      exports.CircularNodeView = CircularNodeView;
-      exports.CircularNodeView = CircularNodeView = __decorate([
+      exports.CircularNodeView = CircularNodeView2;
+      exports.CircularNodeView = CircularNodeView2 = __decorate([
         (0, inversify_1.injectable)()
-      ], CircularNodeView);
+      ], CircularNodeView2);
       function hiddenBoundingRect(withBounds, context) {
         return !context || context.targetKind === "hidden" ? (0, sprotty_1.svg)("rect", { attrs: { [sprotty_1.ATTR_BBOX_ELEMENT]: true }, ...protocol_1.Bounds.dimension(withBounds.bounds), style: { fill: "transparent" } }) : void 0;
       }
@@ -58541,6 +58541,7 @@ Trying to resolve bindings for "${k2(e3.serviceIdentifier)}"`), new Error(s4);
         (0, import_sprotty.configureModelElement)(context, "node:vss", import_sprotty.GNode, import_sprotty.RectangularNodeView);
         (0, import_sprotty.configureModelElement)(context, "node:componentnode", import_sprotty.GNode, import_sprotty.RectangularNodeView);
         (0, import_sprotty.configureModelElement)(context, "node:inport", import_sprotty.GNode, import_sprotty.RectangularNodeView);
+        (0, import_sprotty.configureModelElement)(context, "node:outport", import_sprotty.GNode, import_sprotty.CircularNodeView);
         (0, import_sprotty.configureModelElement)(context, "node:sensorsignalnode", import_sprotty.GNode, SensorSignalNodeView);
         (0, import_sprotty.configureModelElement)(context, "node:actuatorsignalnode", import_sprotty.GNode, import_client4.RoundedCornerNodeView);
         (0, import_sprotty.configureModelElement)(context, import_sprotty.DefaultTypes.LABEL, import_sprotty.GLabel, import_sprotty.GLabelView, { enable: [import_sprotty.editLabelFeature] });

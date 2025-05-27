@@ -6,6 +6,7 @@ import * as vscode from 'vscode'
 import { configureELKLayoutModule } from '@eclipse-glsp/layout-elk'
 import { SdvmlDiagramModule } from '../../diagram/sdvml-diagram-module.js'
 import SDVMLEditorProvider from './sdvml-editor-provider.js'
+import { LayoutConfigurator } from './LayoutConfigurator.js'
 
 
 
@@ -41,7 +42,10 @@ export async function startDiagram(context: vscode.ExtensionContext): Promise<vo
 
 function createServerModules(): ContainerModule[] {
 	const appModule = createAppModule({ logLevel: LogLevel.debug, fileLog: false, consoleLog: true })
-	const elkLayoutModule = configureELKLayoutModule({ algorithms: ['layered'] })
+	const elkLayoutModule = configureELKLayoutModule({ 
+		algorithms: ['layered'],
+		layoutConfigurator: LayoutConfigurator
+	})
 	const sdvmlDiagramModule = new SdvmlDiagramModule()
 	const mainModule = new ServerModule().configureDiagramModule(sdvmlDiagramModule, elkLayoutModule)
 	return [appModule, mainModule]

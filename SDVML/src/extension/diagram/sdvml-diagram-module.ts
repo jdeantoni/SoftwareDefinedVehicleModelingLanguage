@@ -11,6 +11,7 @@ import {
 	initializeDiagramContainer,
 } from '@eclipse-glsp/client'
 import {
+	CircularNodeView,
 	configureModelElement,
 	DefaultTypes,
 	editLabelFeature,
@@ -51,6 +52,7 @@ const sdvmlDiagramModule = new ContainerModule((bind: any, unbind: any, isBound:
 	configureModelElement(context, 'node:vss', GNode, RectangularNodeView)
 	configureModelElement(context, 'node:componentnode', GNode, RectangularNodeView)
 	configureModelElement(context, 'node:inport', GNode, RectangularNodeView)
+	configureModelElement(context, 'node:outport', GNode, CircularNodeView)
 	configureModelElement(context, 'node:sensorsignalnode', GNode, SensorSignalNodeView)
 	configureModelElement(context, 'node:actuatorsignalnode', GNode, RoundedCornerNodeView)
 

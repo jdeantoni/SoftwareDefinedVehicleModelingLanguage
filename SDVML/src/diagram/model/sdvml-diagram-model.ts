@@ -4,6 +4,7 @@ import { Signal, Model, isSensor, isActuator, Sensor, Actuator, Component, VSS }
 
 
 export interface SDVMLNode{
+	
 	id: string
 	parent?: Signal | Component | Model
 
@@ -31,6 +32,8 @@ export interface SensorSignalNode extends SDVMLNode {
 
 export interface ComponentNode extends SDVMLNode {
 	name:string
+	subscribers: SensorSignalNode[]
+	publishers: ActuatorSignalNode[]
 }
 
 export interface ActuatorSignalNode extends SDVMLNode{
@@ -40,6 +43,11 @@ export interface ActuatorSignalNode extends SDVMLNode{
 export function isEntryNode(object: object | undefined): object is SensorSignalNode {
 	return AnyObject.is(object) && hasStringProp(object, 'id') && hasObjectProp(object, 'position')
 }
+
+
+let sensorSignalNodes : SensorSignalNode[] = []
+let actuatorSignalNodes : SensorSignalNode[] = []
+
 
 export function generateModelFromAST(model: Model, existingDiagram: SDVMLDiagram): SDVMLDiagram {
 	const vssNode: VSSNode = createVSSNode(model.vss,existingDiagram)
@@ -52,26 +60,27 @@ export function generateModelFromAST(model: Model, existingDiagram: SDVMLDiagram
 }
 
 function createVSSNode(vss: VSS, existingDiagram: SDVMLDiagram): VSSNode {
-	const sensorSignalsNodes : SensorSignalNode[] = vss.signals.filter(sig => isSensor(sig)).flatMap((sig) => createDiagramSensorSignalNodes(sig as Sensor, existingDiagram))
-	const actuatorSignalsNodes : ActuatorSignalNode []= vss.signals.filter(sig => isActuator(sig)).flatMap((sig) => createDiagramActuatorSignalNodes(sig as Actuator, existingDiagram))
+	sensorSignalNodes = vss.signals.filter(sig => isSensor(sig)).flatMap((sig) => createDiagramSensorSignalNodes(sig as Sensor, existingDiagram))
+	actuatorSignalNodes= vss.signals.filter(sig => isActuator(sig)).flatMap((sig) => createDiagramActuatorSignalNodes(sig as Actuator, existingDiagram))
 	return {
 		id: 'vss', //this needSignalntNodes]
-		sensorSignals: [...sensorSignalsNodes],
-		actuatorSignals: [...actuatorSignalsNodes],
+		sensorSignals: [...sensorSignalNodes],
+		actuatorSignals: [...actuatorSignalNodes],
 		parent: vss.$container
 	}
 
 }
 
 function createDiagramSensorSignalNodes(rootNode: Sensor, existingDiagram: SDVMLDiagram): SensorSignalNode [] {
-	const diagramNode = createSensorDiagramNode(rootNode, existingDiagram)
-	let nodes: SensorSignalNode[] = [diagramNode]
+	const sensorNode = createSensorDiagramNode(rootNode, existingDiagram)
+	let nodes: SensorSignalNode[] = [sensorNode]
 	return nodes
 }
 
 function createDiagramComponentNodes(rootNode: Component, existingDiagram: SDVMLDiagram): ComponentNode [] {
-	const diagramNode = createComponentNode(rootNode, existingDiagram)
-	let nodes: SensorSignalNode[] = [diagramNode]
+	const compNode = createComponentNode(rootNode, existingDiagram)
+	// console.error("subscribers: "+compNode.subscribers.map(s => s.name))
+	let nodes: ComponentNode[] = [compNode]
 	return nodes
 }
 
@@ -159,7 +168,7 @@ function createComponentNode(rootNode: Component, existingDiagram: SDVMLDiagram)
 	const rootNodeHash = MD5(rootNode)
 		let existingNode: ComponentNode | undefined
 		if (existingDiagram) {
-			existingDiagram.vss.sensorSignals.forEach((node) => {
+			existingDiagram.components.forEach((node) => {
 				if (node.id == rootNode.name) {
 					existingNode = node
 				}
@@ -173,6 +182,8 @@ function createComponentNode(rootNode: Component, existingDiagram: SDVMLDiagram)
 				parent: rootNode,
 				position: existingNode.position,
 				size: existingNode.size,
+				subscribers:existingNode.subscribers,
+				publishers:existingNode.publishers
 			}
 		}
 	
@@ -189,5 +200,7 @@ function createComponentNode(rootNode: Component, existingDiagram: SDVMLDiagram)
 			height: 10,
 			width: 10
 		},
+		subscribers: sensorSignalNodes.filter(s => rootNode.subscribers.find(sn => sn.name == s.name) != undefined),
+		publishers: actuatorSignalNodes.filter(s => rootNode.publishers.find(sn => sn.name == s.name) != undefined)
 	}
 }

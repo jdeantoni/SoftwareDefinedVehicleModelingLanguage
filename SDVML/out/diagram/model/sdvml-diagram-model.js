@@ -7,6 +7,8 @@ export function issdvmlDiagram(object) {
 export function isEntryNode(object) {
     return AnyObject.is(object) && hasStringProp(object, 'id') && hasObjectProp(object, 'position');
 }
+let sensorSignalNodes = [];
+let actuatorSignalNodes = [];
 export function generateModelFromAST(model, existingDiagram) {
     const vssNode = createVSSNode(model.vss, existingDiagram);
     const componentNodes = model.components.flatMap((comp) => createDiagramComponentNodes(comp, existingDiagram));
@@ -17,23 +19,24 @@ export function generateModelFromAST(model, existingDiagram) {
     };
 }
 function createVSSNode(vss, existingDiagram) {
-    const sensorSignalsNodes = vss.signals.filter(sig => isSensor(sig)).flatMap((sig) => createDiagramSensorSignalNodes(sig, existingDiagram));
-    const actuatorSignalsNodes = vss.signals.filter(sig => isActuator(sig)).flatMap((sig) => createDiagramActuatorSignalNodes(sig, existingDiagram));
+    sensorSignalNodes = vss.signals.filter(sig => isSensor(sig)).flatMap((sig) => createDiagramSensorSignalNodes(sig, existingDiagram));
+    actuatorSignalNodes = vss.signals.filter(sig => isActuator(sig)).flatMap((sig) => createDiagramActuatorSignalNodes(sig, existingDiagram));
     return {
         id: 'vss',
-        sensorSignals: [...sensorSignalsNodes],
-        actuatorSignals: [...actuatorSignalsNodes],
+        sensorSignals: [...sensorSignalNodes],
+        actuatorSignals: [...actuatorSignalNodes],
         parent: vss.$container
     };
 }
 function createDiagramSensorSignalNodes(rootNode, existingDiagram) {
-    const diagramNode = createSensorDiagramNode(rootNode, existingDiagram);
-    let nodes = [diagramNode];
+    const sensorNode = createSensorDiagramNode(rootNode, existingDiagram);
+    let nodes = [sensorNode];
     return nodes;
 }
 function createDiagramComponentNodes(rootNode, existingDiagram) {
-    const diagramNode = createComponentNode(rootNode, existingDiagram);
-    let nodes = [diagramNode];
+    const compNode = createComponentNode(rootNode, existingDiagram);
+    // console.error("subscribers: "+compNode.subscribers.map(s => s.name))
+    let nodes = [compNode];
     return nodes;
 }
 function createDiagramActuatorSignalNodes(rootNode, existingDiagram) {
@@ -111,7 +114,7 @@ function createComponentNode(rootNode, existingDiagram) {
     const rootNodeHash = MD5(rootNode);
     let existingNode;
     if (existingDiagram) {
-        existingDiagram.vss.sensorSignals.forEach((node) => {
+        existingDiagram.components.forEach((node) => {
             if (node.id == rootNode.name) {
                 existingNode = node;
             }
@@ -124,6 +127,8 @@ function createComponentNode(rootNode, existingDiagram) {
             parent: rootNode,
             position: existingNode.position,
             size: existingNode.size,
+            subscribers: existingNode.subscribers,
+            publishers: existingNode.publishers
         };
     }
     return {
@@ -138,6 +143,8 @@ function createComponentNode(rootNode, existingDiagram) {
             height: 10,
             width: 10
         },
+        subscribers: sensorSignalNodes.filter(s => rootNode.subscribers.find(sn => sn.name == s.name) != undefined),
+        publishers: actuatorSignalNodes.filter(s => rootNode.publishers.find(sn => sn.name == s.name) != undefined)
     };
 }
 //# sourceMappingURL=sdvml-diagram-model.js.map

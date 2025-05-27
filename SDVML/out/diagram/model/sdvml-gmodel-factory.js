@@ -7,19 +7,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { ArgsUtil, GGraph, GLabel, GNode, GPort } from '@eclipse-glsp/server';
+import { ArgsUtil, GGraph, GLabel, GNode, GEdge, GPort } from '@eclipse-glsp/server';
 import { inject, injectable } from 'inversify';
 import { SDVMLModelState } from './sdvml-model-state.js';
 let sdvmlGModelFactory = class sdvmlGModelFactory {
     constructor() {
-        this.elementNameToId = new Map();
+        this.elementNameToNode = new Map();
     }
     createModel() {
         const sdvml = this.modelState.sourceModel;
         this.modelState.index.indexsdvml(sdvml);
         const sensorSigNodes = [...sdvml.vss.sensorSignals.flatMap((ssn) => this.generateSensorNode(ssn))];
         const actuatorSigNodes = [...sdvml.vss.actuatorSignals.flatMap((asn) => this.generateActuatorNode(asn))];
-        const vssBuilder = GNode.builder().type('node:vss').id(sdvml.vss.id).layout('vbox').position({ x: 0, y: 0 });
+        const vssBuilder = GNode.builder().type('node:vss').id(sdvml.vss.id).layout('vbox').addLayoutOption("hAlign", "center").addLayoutOption("minWidth", "700").position({ x: 0, y: 0 });
         vssBuilder.addChildren(sensorSigNodes).addChildren(actuatorSigNodes);
         vssBuilder.size(500, 100);
         const vssNode = vssBuilder.build();
@@ -28,16 +28,6 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
         // this.elementNameToId.forEach((value, key) => {
         // 	console.error(`${key}: ${value}`);
         // });
-        // const myEdge = GEdge.builder()
-        // 	.id('edge1')
-        // 	.type('edge:pushsub') // Or another edge type
-        // 	.source(compNodes[0]) // Connects from the output port
-        // 	.target(actuatorSigNodes[0]) // Connects to another node's input port
-        // 	  .addRoutingPoint(0, 100)
-        //       .addCssClass('pushsub')
-        // 	  .addCssClass('sprotty-edge')
-        // 	  .addCssClass('arrow')
-        // 	.build();
         const newRoot = GGraph.builder() //
             .id('sdvml')
             .addChildren(vssNode).addChildren(compNodes)
@@ -71,7 +61,7 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
         builder.addCssClass('sensorsignalnode')
             .addArgs(ArgsUtil.cornerRadius(3));
         const res = builder.build();
-        this.elementNameToId.set(sensorSigNode.name, res.id);
+        this.elementNameToNode.set(sensorSigNode.name, res);
         return res;
     }
     generateActuatorNode(actuatorSigNode) {
@@ -95,7 +85,7 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
             .build());
         builder.addCssClass('actuatorsignalnode');
         const res = builder.build();
-        this.elementNameToId.set(actuatorSigNode.name, res.id);
+        this.elementNameToNode.set(actuatorSigNode.name, res);
         return res;
     }
     generateComponentNode(compNode) {
@@ -117,15 +107,56 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
             .id(`${compNode.id}_label`)
             .build());
         builder.addCssClass('componentnode');
-        const inPort = GPort.builder()
-            .id('myNode_inPort1') // Unique ID, perhaps derived from parent node ID
-            .type('node:inport')
-            .size(10, 10) // Example: 10x10px square port
-            .addCssClass('inport')
-            .build();
-        builder.addChildren(inPort);
+        let subNameToPortNode = new Map();
+        for (let sub of compNode.subscribers) {
+            const inPort = GPort.builder()
+                .id(compNode.name + '_' + sub.name) // Unique ID, perhaps derived from parent node ID
+                .type('node:inport')
+                .size(10, 10) // Example: 10x10px square port
+                .addCssClass('inport')
+                .build();
+            subNameToPortNode.set(sub.name, inPort);
+            builder.addChildren(inPort);
+        }
+        let pubNameToPortNode = new Map();
+        for (let pub of compNode.publishers) {
+            const outPort = GPort.builder()
+                .id(compNode.name + '_' + pub.name) // Unique ID, perhaps derived from parent node ID
+                .type('node:outport')
+                .size(10, 10) // Example: 10x10px square port
+                .addCssClass('outport')
+                .build();
+            pubNameToPortNode.set(pub.name, outPort);
+            builder.addChildren(outPort);
+        }
+        for (let sub of compNode.subscribers) {
+            const myEdge = GEdge.builder()
+                .id('edge_' + sub.name)
+                .type('edge:pushsub') // Or another edge type
+                .source(this.elementNameToNode.get(sub.name)) // Connects from the output port
+                .target(subNameToPortNode.get(sub.name)) // Connects to another node's input port
+                .addRoutingPoint(0, 100)
+                .addCssClass('pushsub')
+                .addCssClass('sprotty-edge')
+                .addCssClass('arrow')
+                .build();
+            builder.addChildren(myEdge);
+        }
+        for (let pub of compNode.publishers) {
+            const myEdge = GEdge.builder()
+                .id('edge_' + pub.name)
+                .type('edge:pushsub') // Or another edge type
+                .source(pubNameToPortNode.get(pub.name)) // Connects from the output port
+                .target(this.elementNameToNode.get(pub.name)) // Connects to another node's input port
+                .addRoutingPoint(0, 100)
+                .addCssClass('pushsub')
+                .addCssClass('sprotty-edge')
+                .addCssClass('arrow')
+                .build();
+            builder.addChildren(myEdge);
+        }
         const res = builder.build();
-        this.elementNameToId.set(compNode.name, res.id);
+        //this.elementNameToNode.set(compNode.name,res)
         return res;
     }
 };
