@@ -11,6 +11,9 @@ import {
   GPort,
   GNode
 } from "@eclipse-glsp/server";
+
+
+
 import { injectable } from "inversify";
 
 @injectable()
@@ -19,6 +22,7 @@ export class sdvmlDiagramConfiguration implements DiagramConfiguration {
   needsClientLayout = true;
   needsServerLayout = true;
   animatedUpdate = true;
+
 
   get typeMapping(): Map<string, GModelElementConstructor<GModelElement>> {
     const defaultMappings = getDefaultMapping();
@@ -31,6 +35,7 @@ export class sdvmlDiagramConfiguration implements DiagramConfiguration {
 
         // BPMN Types
         defaultMappings.set("node:sensorsignalnode", GNode);
+        defaultMappings.set("container", GNode);
         defaultMappings.set("node:actuatorsignalnode", GNode);
         defaultMappings.set("node:componentnode", GNode);
         defaultMappings.set("node:vssnode", GNode);

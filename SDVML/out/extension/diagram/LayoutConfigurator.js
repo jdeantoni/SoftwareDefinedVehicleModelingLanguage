@@ -10,7 +10,8 @@ let LayoutConfigurator = class LayoutConfigurator extends AbstractLayoutConfigur
     graphOptions(graph) {
         return {
             'elk.algorithm': 'layered',
-            'elk.layered.considerModelOrder.strategy': 'NODES_AND_EDGES'
+            'elk.direction': 'right'
+            // 'elk.layered.considerModelOrder.strategy': 'NODES_AND_EDGES'
         };
     }
 };

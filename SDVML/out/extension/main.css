@@ -1616,21 +1616,21 @@
   text-anchor: middle;
 }
 .sprotty g .movement-not-allowed > .sprotty-node {
-  stroke: var(--glsp-error-foreground) !important;
+  stroke: var(--glsp-error-foreground);
   stroke-width: 1.5px;
 }
-.sprotty-resize-handle.movement-not-allowed {
-  stroke: var(--glsp-error-foreground) !important;
-  fill: var(--glsp-error-foreground) !important;
+.sprotty .sprotty-resize-handle.movement-not-allowed {
+  stroke: var(--glsp-error-foreground);
+  fill: var(--glsp-error-foreground);
 }
 .sprotty .error > .sprotty-node {
-  filter: drop-shadow(0px 0px 2px var(--glsp-error-foreground)) !important;
+  filter: drop-shadow(0px 0px 2px var(--glsp-error-foreground));
 }
 .sprotty .warning > .sprotty-node {
-  filter: drop-shadow(0px 0px 2px var(--glsp-warning-foreground)) !important;
+  filter: drop-shadow(0px 0px 2px var(--glsp-warning-foreground));
 }
 .sprotty .info > .sprotty-node {
-  filter: drop-shadow(0px 0px 2px var(--glsp-info-foreground)) !important;
+  filter: drop-shadow(0px 0px 2px var(--glsp-info-foreground));
 }
 .sprotty svg {
   border-style: solid;
@@ -1696,22 +1696,97 @@
   border-top: 1px solid rgba(212, 212, 212, 0.2);
   fill: transparent;
 }
-.search-hidden {
-  opacity: 0.4;
-}
-.search-highlighted .sprotty-node,
-.search-highlighted .sprotty-edge {
-  stroke-width: 1.5px;
-  stroke-width: 2px;
-  stroke-dashoffset: 5;
-  stroke-dasharray: 5, 5;
-  stroke-linecap: round;
-  stroke: rgb(218, 89, 15) !important;
-  stroke: #130bf7 !important;
-}
 .ui-extension.hidden {
   display: none;
   opacity: 0;
+}
+
+/* node_modules/@eclipse-glsp/client/css/key-shortcut.css */
+.keyboard-shortcuts-menu {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #ededee;
+  margin-bottom: 20px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  bottom: 0;
+  right: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  line-height: 1.5;
+  font-size: 16px;
+  z-index: 9999;
+  width: 400px;
+  max-height: 512px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.keyboard-shortcuts-menu h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+.keyboard-shortcuts-menu kbd {
+  background-color: #e4e1e1;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  color: #333;
+  display: inline-block;
+  font-size: 0.85em;
+  font-weight: 600;
+  line-height: 1;
+  padding: 2px 4px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+}
+.keyboard-shortcuts-menu kbd:active {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2) inset;
+}
+.keyboard-shortcuts-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  padding: 10px;
+  padding-top: 3px;
+  overflow: auto;
+  right: 40px;
+  top: 25px;
+  text-align: left;
+  display: block;
+  z-index: 1000;
+  color: black;
+}
+.shortcut-entry-container {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 10px;
+}
+#key-shortcut-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  background: #cccccc;
+  border: none;
+  cursor: pointer;
+}
+.column-title {
+  text-align: left;
+}
+.menu-header {
+  padding: 0.4em;
+  text-align: left;
+  background: #cccccc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.shortcut-table thead th {
+  border-bottom: 2px solid #000;
 }
 
 /* node_modules/@eclipse-glsp/client/css/command-palette.css */
@@ -1993,99 +2068,11 @@
   --glsp-navigation-highlight: rgba(136, 68, 68, 0.2);
 }
 .navigable-element {
-  stroke: var(--glsp-navigation-highlight) !important;
+  stroke: var(--glsp-navigation-highlight);
 }
 .navigable-element .sprotty-edge.arrow {
-  fill: var(--glsp-navigation-highlight) !important;
-  stroke: var(--glsp-navigation-highlight) !important;
-}
-
-/* node_modules/@eclipse-glsp/client/css/key-shortcut.css */
-.keyboard-shortcuts-menu {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #ededee;
-  margin-bottom: 20px;
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  bottom: 0;
-  right: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  line-height: 1.5;
-  font-size: 16px;
-  z-index: 9999;
-  width: 400px;
-  max-height: 512px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-.keyboard-shortcuts-menu h3 {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 0;
-  margin-bottom: 10px;
-  padding: 10px;
-}
-.keyboard-shortcuts-menu kbd {
-  background-color: #e4e1e1;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
-  color: #333;
-  display: inline-block;
-  font-size: 0.85em;
-  font-weight: 600;
-  line-height: 1;
-  padding: 2px 4px;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-  white-space: nowrap;
-}
-.keyboard-shortcuts-menu kbd:active {
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2) inset;
-}
-.keyboard-shortcuts-container {
-  display: flex;
-  flex-direction: column;
-  max-height: 100%;
-  padding: 10px;
-  padding-top: 3px;
-  overflow: auto;
-  right: 40px;
-  top: 25px;
-  text-align: left;
-  display: block;
-  z-index: 1000;
-  color: black;
-}
-.shortcut-entry-container {
-  display: flex;
-  justify-content: space-between;
-  margin-right: 10px;
-}
-#key-shortcut-close-btn {
-  position: absolute;
-  top: 14px;
-  right: 5px;
-  font-size: 16px;
-  font-weight: bold;
-  background: #cccccc;
-  border: none;
-  cursor: pointer;
-}
-.column-title {
-  text-align: left;
-}
-.menu-header {
-  padding: 0.4em;
-  text-align: left;
-  background: #cccccc;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-.shortcut-table thead th {
-  border-bottom: 2px solid #000;
+  fill: var(--glsp-navigation-highlight);
+  stroke: var(--glsp-navigation-highlight);
 }
 
 /* node_modules/@eclipse-glsp/client/css/keyboard.css */
@@ -2098,8 +2085,16 @@
   right: 0.5rem;
   grid-template-columns: auto auto auto;
 }
+.grid-container.grid-visible {
+  opacity: 0.7;
+  visibility: visible;
+}
+.grid-container.grid-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
 .grid-container:focus {
-  opacity: 1 !important;
+  opacity: 1;
 }
 .grid-item {
   border: 1px solid rgba(0, 0, 0, 0.6);
@@ -2153,6 +2148,20 @@
 }
 .accessibility-tool-palette.collapsible-palette + .minimize-palette-button {
   top: 50px;
+}
+
+/* node_modules/@eclipse-glsp/client/css/search.css */
+.search-hidden {
+  opacity: 0.4;
+}
+.search-highlighted .sprotty-node,
+.search-highlighted .sprotty-edge {
+  stroke-width: 1.5px;
+  stroke-width: 2px;
+  stroke-dashoffset: 5;
+  stroke-dasharray: 5, 5;
+  stroke-linecap: round;
+  stroke: #130bf7;
 }
 
 /* node_modules/@eclipse-glsp/client/css/toast.css */

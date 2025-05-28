@@ -15,7 +15,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR MIT
  ********************************************************************************/
 
-import { ChangeBoundsOperation, Command, Dimension, GNode, GPort, JsonOperationHandler, MaybePromise, Point } from '@eclipse-glsp/server';
+import { ChangeBoundsOperation, Command, Dimension, GNode, JsonOperationHandler, MaybePromise, Point } from '@eclipse-glsp/server';
 import { inject, injectable } from 'inversify';
 import { SDVMLModelState } from '../model/sdvml-model-state';
 
@@ -33,17 +33,17 @@ export class NodeChangeBoundsHandler extends JsonOperationHandler {
     }
 
     protected changeElementBounds(elementId: string, newSize: Dimension, newPosition?: Point): void {
-        console.error(">> change bounds:" + elementId+"  "+newPosition)
+        // console.error(">> change bounds:" + elementId+"  "+newPosition)
         const index = this.modelState.index;
 
         const node = index.findByClass(elementId, GNode);
-        console.error(">>>> node: "+node.id)
+        // console.error(">>>> node: "+node.id)
         let nodeShape = undefined
         if (elementId.startsWith("port")){
-            console.error(">>>> port change bound")
+            // console.error(">>>> port change bound")
             nodeShape = node ? index.findNode("port"+node.id) : undefined;
         }else{
-            console.error(">>>> node change bound")
+            // console.error(">>>> node change bound")
             nodeShape = node ? index.findNode(node.id) : undefined;
         }
         

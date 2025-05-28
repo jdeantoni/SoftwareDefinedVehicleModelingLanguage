@@ -22,6 +22,7 @@ let sdvmlDiagramConfiguration = class sdvmlDiagramConfiguration {
         defaultMappings.set("node:outport", GPort);
         // BPMN Types
         defaultMappings.set("node:sensorsignalnode", GNode);
+        defaultMappings.set("container", GNode);
         defaultMappings.set("node:actuatorsignalnode", GNode);
         defaultMappings.set("node:componentnode", GNode);
         defaultMappings.set("node:vssnode", GNode);

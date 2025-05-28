@@ -22250,7 +22250,7 @@ ${ERROR_MSGS.TRYING_TO_RESOLVE_BINDINGS((0, serialization_1.getServiceIdentifier
       exports.BezierCurveEdgeView = BezierCurveEdgeView = __decorate([
         (0, inversify_1.injectable)()
       ], BezierCurveEdgeView);
-      var SRoutingHandleView = class SRoutingHandleView {
+      var SRoutingHandleView2 = class SRoutingHandleView {
         constructor() {
           this.minimalPointDistance = 10;
         }
@@ -22273,14 +22273,14 @@ ${ERROR_MSGS.TRYING_TO_RESOLVE_BINDINGS((0, serialization_1.getServiceIdentifier
           return 7;
         }
       };
-      exports.SRoutingHandleView = SRoutingHandleView;
+      exports.SRoutingHandleView = SRoutingHandleView2;
       __decorate([
         (0, inversify_1.inject)(routing_1.EdgeRouterRegistry),
         __metadata("design:type", routing_1.EdgeRouterRegistry)
-      ], SRoutingHandleView.prototype, "edgeRouterRegistry", void 0);
-      exports.SRoutingHandleView = SRoutingHandleView = __decorate([
+      ], SRoutingHandleView2.prototype, "edgeRouterRegistry", void 0);
+      exports.SRoutingHandleView = SRoutingHandleView2 = __decorate([
         (0, inversify_1.injectable)()
-      ], SRoutingHandleView);
+      ], SRoutingHandleView2);
       var SLabelView = class SLabelView extends views_1.ShapeView {
         render(label, context) {
           if (!(0, model_1.isEdgeLayoutable)(label) && !this.isVisible(label, context)) {
@@ -22312,7 +22312,7 @@ ${ERROR_MSGS.TRYING_TO_RESOLVE_BINDINGS((0, serialization_1.getServiceIdentifier
       exports.SCompartmentView = SCompartmentView = __decorate([
         (0, inversify_1.injectable)()
       ], SCompartmentView);
-      var SBezierCreateHandleView = class SBezierCreateHandleView extends SRoutingHandleView {
+      var SBezierCreateHandleView = class SBezierCreateHandleView extends SRoutingHandleView2 {
         render(handle, context, args) {
           if (args) {
             const theRoute = args.route;
@@ -22342,7 +22342,7 @@ ${ERROR_MSGS.TRYING_TO_RESOLVE_BINDINGS((0, serialization_1.getServiceIdentifier
       exports.SBezierCreateHandleView = SBezierCreateHandleView = __decorate([
         (0, inversify_1.injectable)()
       ], SBezierCreateHandleView);
-      var SBezierControlHandleView = class SBezierControlHandleView extends SRoutingHandleView {
+      var SBezierControlHandleView = class SBezierControlHandleView extends SRoutingHandleView2 {
         render(handle, context, args) {
           if (args) {
             const theRoute = args.route;
@@ -29960,7 +29960,7 @@ ${JSON.stringify(message, null, 4)}`);
     "node_modules/@eclipse-glsp/protocol/lib/action-protocol/viewport.js"(exports) {
       "use strict";
       Object.defineProperty(exports, "__esModule", { value: true });
-      exports.FitToScreenAction = exports.CenterAction = void 0;
+      exports.MoveViewportAction = exports.FitToScreenAction = exports.CenterAction = void 0;
       var type_util_1 = require_type_util();
       var base_protocol_1 = require_base_protocol();
       var CenterAction;
@@ -29998,6 +29998,18 @@ ${JSON.stringify(message, null, 4)}`);
         }
         FitToScreenAction2.create = create;
       })(FitToScreenAction || (exports.FitToScreenAction = FitToScreenAction = {}));
+      var MoveViewportAction;
+      (function(MoveViewportAction2) {
+        MoveViewportAction2.KIND = "moveViewport";
+        function is(object) {
+          return base_protocol_1.Action.hasKind(object, MoveViewportAction2.KIND);
+        }
+        MoveViewportAction2.is = is;
+        function create(options) {
+          return { kind: MoveViewportAction2.KIND, ...options };
+        }
+        MoveViewportAction2.create = create;
+      })(MoveViewportAction || (exports.MoveViewportAction = MoveViewportAction = {}));
     }
   });
 
@@ -30905,6 +30917,12 @@ ${JSON.stringify(message, null, 4)}`);
           return { dispose: cb };
         }
         Disposable2.create = create;
+        function dispose(value) {
+          if (is(value)) {
+            value.dispose();
+          }
+        }
+        Disposable2.dispose = dispose;
       })(Disposable || (exports.Disposable = Disposable = {}));
       var DisposableCollection = class {
         constructor(...toDispose) {
@@ -31076,7 +31094,7 @@ ${JSON.stringify(message, null, 4)}`);
       };
       Object.defineProperty(exports, "__esModule", { value: true });
       exports.SvgExporter = exports.ExportSvgPostprocessor = exports.ExportSvgKeyListener = exports.ExportSvgCommand = exports.isExpandable = exports.expandFeature = exports.isEdgeLayoutable = exports.edgeLayoutFeature = exports.checkEdgePlacement = exports.DEFAULT_EDGE_PLACEMENT = exports.DeleteContextMenuItemProvider = exports.ContextMenuProviderRegistry = exports.RevealNamedElementActionProvider = exports.CommandPaletteActionProviderRegistry = exports.GButton = exports.configureButtonHandler = exports.ButtonHandlerRegistry = exports.layoutableChildFeature = exports.layoutContainerFeature = exports.isSizeable = exports.isLayoutableChild = exports.isLayoutContainer = exports.isBoundsAware = exports.isAlignable = exports.getAbsoluteClientBounds = exports.getAbsoluteBounds = exports.findChildrenAtPosition = exports.boundsFeature = exports.alignFeature = exports.GShapeElement = exports.FocusFixPostprocessor = exports.PopupMouseTool = exports.MouseTool = exports.MousePositionTracker = exports.KeyTool = exports.createFeatureSet = exports.SModelRegistry = exports.GModelFactory = exports.EMPTY_ROOT = exports.isParent = exports.createRandomId = exports.ModelIndexImpl = exports.GParentElement = exports.GModelRoot = exports.GModelElement = exports.GChildElement = exports.onAction = exports.configureActionHandler = exports.ActionHandlerRegistry = exports.ActionDispatcher = void 0;
-      exports.JumpingPolylineEdgeView = exports.GRoutingHandleView = exports.GLabelView = exports.GCompartmentView = exports.GBezierCreateHandleView = exports.GBezierControlHandleView = exports.BezierCurveEdgeView = exports.SGraphImpl = exports.SEdgeImpl = exports.GPort = exports.GNode = exports.GLabel = exports.GGraphIndex = exports.GCompartment = exports.GViewportRootElement = exports.SprottySelectCommand = exports.SprottySelectAllCommand = exports.SelectMouseListener = exports.SelectKeyboardListener = exports.GetSelectionCommand = exports.selectFeature = exports.isSelected = exports.isSelectable = exports.isConnectable = exports.getRouteBounds = exports.getAbsoluteRouteBounds = exports.edgeInProgressTargetHandleID = exports.edgeInProgressID = exports.connectableFeature = exports.GRoutingHandle = exports.GRoutableElement = exports.GDanglingAnchor = exports.GConnectableElement = exports.isProjectable = exports.getProjections = exports.getProjectedBounds = exports.getModelBounds = exports.moveFeature = exports.isMoveable = exports.isLocateable = exports.isDecoration = exports.decorationFeature = exports.SIssueMarkerImpl = exports.GDecoration = exports.popupFeature = exports.isHoverable = exports.hoverFeedbackFeature = exports.hasPopupFeature = exports.isFadeable = exports.fadeFeature = void 0;
+      exports.JumpingPolylineEdgeView = exports.SRoutingHandleView = exports.GLabelView = exports.GCompartmentView = exports.GBezierCreateHandleView = exports.GBezierControlHandleView = exports.BezierCurveEdgeView = exports.SGraphImpl = exports.SEdgeImpl = exports.GPort = exports.GNode = exports.GLabel = exports.GGraphIndex = exports.GCompartment = exports.GViewportRootElement = exports.SprottySelectCommand = exports.SprottySelectAllCommand = exports.SelectMouseListener = exports.SelectKeyboardListener = exports.GetSelectionCommand = exports.selectFeature = exports.isSelected = exports.isSelectable = exports.isConnectable = exports.getRouteBounds = exports.getAbsoluteRouteBounds = exports.edgeInProgressTargetHandleID = exports.edgeInProgressID = exports.connectableFeature = exports.GRoutingHandle = exports.GRoutableElement = exports.GDanglingAnchor = exports.GConnectableElement = exports.isProjectable = exports.getProjections = exports.getProjectedBounds = exports.getModelBounds = exports.moveFeature = exports.isMoveable = exports.isLocateable = exports.isDecoration = exports.decorationFeature = exports.SIssueMarkerImpl = exports.GDecoration = exports.popupFeature = exports.isHoverable = exports.hoverFeedbackFeature = exports.hasPopupFeature = exports.isFadeable = exports.fadeFeature = void 0;
       exports.SvgViewportView = exports.RectangularNodeView = exports.EmptyGroupView = exports.RectangularPort = exports.RectangularNode = exports.GShapedPreRenderedElement = exports.GPreRenderedElement = exports.GHtmlRoot = exports.GForeignObjectElement = exports.DiamondNode = exports.CircularPort = exports.CircularNode = exports.SGraphView = exports.PolylineEdgeViewWithGapsOnIntersections = exports.PolylineEdgeView = void 0;
       __exportStar(require_lib3(), exports);
       __exportStar(require_di(), exports);
@@ -31472,7 +31490,7 @@ ${JSON.stringify(message, null, 4)}`);
       Object.defineProperty(exports, "GLabelView", { enumerable: true, get: function() {
         return views_1.SLabelView;
       } });
-      Object.defineProperty(exports, "GRoutingHandleView", { enumerable: true, get: function() {
+      Object.defineProperty(exports, "SRoutingHandleView", { enumerable: true, get: function() {
         return views_1.SRoutingHandleView;
       } });
       Object.defineProperty(exports, "JumpingPolylineEdgeView", { enumerable: true, get: function() {
@@ -31639,7 +31657,13 @@ ${JSON.stringify(message, null, 4)}`);
         IChangeBoundsManager: Symbol("IChangeBoundsManager"),
         IGridManager: Symbol("IGridManager"),
         IDebugManager: Symbol("IDebugManager"),
-        Grid: Symbol("Grid")
+        Grid: Symbol("Grid"),
+        ZoomFactors: Symbol("ZoomFactors"),
+        /**
+         * Experimental shortcut manager.
+         * The API is not stable yet.
+         */
+        IShortcutManager: Symbol("IShortcutManager")
       };
     }
   });
@@ -32383,24 +32407,31 @@ ${JSON.stringify(message, null, 4)}`);
             onSelect: (item) => this.onSelect(item),
             render: (item, currentValue) => this.renderSuggestions(item, currentValue),
             customize: (input, inputRect, container, maxHeight) => {
+              var _a4;
               this.customizeInputElement(input, inputRect, container, maxHeight);
+              const selectedSuggestionChanged = (_a4 = this.options) === null || _a4 === void 0 ? void 0 : _a4.selectedSuggestionChanged;
+              if (selectedSuggestionChanged) {
+                this.observer = new MutationObserver((mutations) => this.handleContainerMutations(mutations, selectedSuggestionChanged));
+                this.observer.observe(container, { childList: true, attributes: true, subtree: true });
+              }
             }
           };
         }
         customizeInputElement(input, inputRect, container, maxHeight) {
-          var _a4;
           container.style.position = "fixed";
           if (this.containerElement) {
             this.containerElement.appendChild(container);
-            if (this.options && this.options.selectedSuggestionChanged) {
-              const selectedElement = container.querySelector(".selected");
-              if (selectedElement !== null && selectedElement !== void 0) {
-                const index = Array.from(container.children).indexOf(selectedElement);
-                this.options.selectedSuggestionChanged((_a4 = this.contextActions) === null || _a4 === void 0 ? void 0 : _a4[index]);
-              } else {
-                this.options.selectedSuggestionChanged(void 0);
-              }
-            }
+          }
+          this.container = container;
+        }
+        handleContainerMutations(mutations, selectionChanged) {
+          var _a4;
+          const selectedElement = this.container.querySelector(".selected");
+          if (selectedElement !== null && selectedElement !== void 0) {
+            const index = Array.from(this.container.children).indexOf(selectedElement);
+            selectionChanged((_a4 = this.contextActions) === null || _a4 === void 0 ? void 0 : _a4[index]);
+          } else {
+            selectionChanged(void 0);
           }
         }
         updateSuggestions(update, text, root, ...contextElementIds) {
@@ -32556,6 +32587,10 @@ ${JSON.stringify(message, null, 4)}`);
       exports.CSS_UI_EXTENSION_CLASS = "ui-extension";
       exports.CSS_HIDDEN_EXTENSION_CLASS = "hidden";
       var GLSPAbstractUIExtension = class GLSPAbstractUIExtension extends sprotty_1.AbstractUIExtension {
+        constructor() {
+          super(...arguments);
+          this.toDisposeOnHide = new sprotty_1.DisposableCollection();
+        }
         get diagramContainerId() {
           return this.options.baseDiv;
         }
@@ -32631,11 +32666,149 @@ ${JSON.stringify(message, null, 4)}`);
         toggleContainerVisible() {
           this.setContainerVisible(!this.isContainerVisible());
         }
+        hide() {
+          super.hide();
+          this.toDisposeOnHide.dispose();
+        }
       };
       exports.GLSPAbstractUIExtension = GLSPAbstractUIExtension;
       exports.GLSPAbstractUIExtension = GLSPAbstractUIExtension = __decorate([
         (0, inversify_1.injectable)()
       ], GLSPAbstractUIExtension);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/base/messages.json
+  var require_messages2 = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/base/messages.json"(exports, module) {
+      module.exports = {
+        navigation: {
+          default_navigation_mode_activated: "Navigation On: Use arrow keys to select preceding (\u2190) or succeding (\u2192) elements. Use the up (\u2191) and down (\u2193) arrows to navigate paths. Press 'N' to exit.",
+          default_navigation_mode_deactivated: "Navigation Off: Press 'N' for default navigation, 'ALT+N' for position based navigation.",
+          local_navigation_mode_activated: "Position based Nav On: Navigate nearest elements using arrow keys: (\u2191) for above, (\u2193) for below, (\u2190) for previous, (\u2192) for next element. Press 'ALT+N' to exit.",
+          local_navigation_mode_deactivated: "Position based Nav Off: Press 'N' for default navigation, 'ALT+N' for position based navigation.",
+          shortcut_local_mode: "Activate local navigation mode",
+          shortcut_global_mode: "Activate global navigation mode"
+        },
+        focus: {
+          focus_not_set: "Focus not set",
+          focus_on: "Currently focused: ",
+          focus_off: "Currently no element is focused.",
+          focus_within: "Within",
+          shortcut_focus_palette: "Focus on tool palette",
+          shortcut_focus_graph: "Focus on graph"
+        },
+        resize: {
+          resize_mode_activated: "Resize On: Use plus(+) and minus(-) to resize, 'CTRL'+'0' for default size. Press 'ESC' to exit.",
+          resize_mode_deactivated: "Resize Off: Press 'ALT'+'A' for resize mode.",
+          shortcut_activate: "Activate resize mode for selected element",
+          shortcut_deactivate: "Deactivate resize handler",
+          shortcut_increase: "Increase size of element",
+          shortcut_decrease: "Decrease size of element",
+          shortcut_reset: "Set element size to default"
+        },
+        move: {
+          shortcut_move: "Move element"
+        },
+        grid: {
+          zoom_in_grid: "Select a digit from 1-9 to zoom in on the respective box.",
+          shortcut_zoom_in: "Zoom in via grid"
+        },
+        search: {
+          shortcut_activate: "Activate search for elements",
+          placeholder: "Search for elements...",
+          label: "Search Field"
+        },
+        tool_palette: {
+          label: "Tool Palette",
+          delete_button: "Enable deletion tool",
+          marquee_button: "Enable marquee tool",
+          marquee_message: "Currently marquee tool is only usable with mouse.",
+          search_placeholder: "Search...",
+          search_button: "Filter palette entries",
+          selection_button: "Enable selection tool",
+          validate_button: "Validate model",
+          reset_viewport_button: "Reset Viewport",
+          toggle_grid_button: "Toggle Grid",
+          debug_mode_button: "Debug Mode",
+          minimize: "Minimize palette",
+          maximize: "Maximize palette",
+          no_items: "No results found."
+        },
+        viewport: {
+          shortcut_move_viewport: "Move viewport",
+          shortcut_zoom_viewport: "Zoom viewport",
+          shortcut_zoom_element: "Zoom element"
+        },
+        shortcut: {
+          title: "Keyboard Shortcuts",
+          header_command: "Command",
+          header_shortcut: "Keybinding",
+          menu_title: "Shortcut Menu",
+          group_move: "Move",
+          group_graph: "Graph",
+          group_resize: "Resize",
+          group_focus: "Focus",
+          group_zoom: "Zoom",
+          group_navigation: "Navigation",
+          group_grid: "Grid",
+          group_search: "Search",
+          group_tool_palette: "Tool Palette",
+          group_viewport: "Viewport"
+        },
+        diagram: {
+          label: "Diagram"
+        },
+        autocomplete: {
+          no_suggestions: "No suggestions available"
+        }
+      };
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/base/messages.js
+  var require_messages3 = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/base/messages.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.repeatOnMessagesUpdated = exports.updateMessages = exports.onMessagesUpdated = exports.messages = void 0;
+      var sprotty_1 = require_lib4();
+      var rawMessages = require_messages2();
+      var deepUpdate = (target, updates) => {
+        for (const key in updates) {
+          if (!Object.prototype.hasOwnProperty.call(updates, key) || key === "__proto__" || key === "constructor") {
+            continue;
+          }
+          if (updates[key] && typeof updates[key] === "object" && !Array.isArray(updates[key])) {
+            if (!target[key]) {
+              target[key] = {};
+            }
+            deepUpdate(target[key], updates[key]);
+          } else {
+            target[key] = updates[key];
+          }
+        }
+      };
+      exports.messages = rawMessages;
+      var messagesUpdatedEmitter = new sprotty_1.Emitter();
+      exports.onMessagesUpdated = messagesUpdatedEmitter.event;
+      var updateMessages = (updates) => {
+        deepUpdate(exports.messages, updates);
+        messagesUpdatedEmitter.fire(exports.messages);
+      };
+      exports.updateMessages = updateMessages;
+      function repeatOnMessagesUpdated(listener, options = { initial: true }) {
+        let cleanup = options.initial ? listener(exports.messages) : {};
+        const updateListener = (0, exports.onMessagesUpdated)(() => {
+          sprotty_1.Disposable.dispose(cleanup);
+          cleanup = listener();
+        });
+        return sprotty_1.Disposable.create(() => {
+          sprotty_1.Disposable.dispose(cleanup);
+          updateListener.dispose();
+        });
+      }
+      exports.repeatOnMessagesUpdated = repeatOnMessagesUpdated;
     }
   });
 
@@ -32659,11 +32832,12 @@ ${JSON.stringify(message, null, 4)}`);
       require_autocomplete_palette();
       var ui_extension_1 = require_ui_extension2();
       var auto_complete_widget_1 = require_auto_complete_widget();
+      var messages_1 = require_messages3();
       var BaseAutocompletePalette = class extends ui_extension_1.GLSPAbstractUIExtension {
         constructor() {
           super(...arguments);
           this.autoSuggestionSettings = {
-            noSuggestionsMessage: "No suggestions available",
+            noSuggestionsMessage: messages_1.messages.autocomplete.no_suggestions,
             suggestionsClass: "command-palette-suggestions",
             debounceWaitMs: 50,
             showOnFocus: true
@@ -34312,6 +34486,51 @@ ${JSON.stringify(message, null, 4)}`);
     }
   });
 
+  // node_modules/@eclipse-glsp/client/lib/base/shortcuts/shortcuts-manager.js
+  var require_shortcuts_manager = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/base/shortcuts/shortcuts-manager.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.ShortcutManager = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var ShortcutManager = class ShortcutManager {
+        constructor() {
+          this.registrations = /* @__PURE__ */ new Map();
+          this.onDidChangeEmitter = new sprotty_1.Emitter();
+          this.onDidChange = this.onDidChangeEmitter.event;
+        }
+        getShortcuts() {
+          return this.registrations;
+        }
+        getRegistrations() {
+          return Array.from(this.registrations.values()).flat();
+        }
+        register(token, shortcuts) {
+          this.registrations.set(token, shortcuts);
+          this.onDidChangeEmitter.fire(this.registrations);
+          return sprotty_1.Disposable.create(() => {
+            this.deregister(token);
+          });
+        }
+        deregister(token) {
+          this.registrations.delete(token);
+          this.onDidChangeEmitter.fire(this.registrations);
+        }
+      };
+      exports.ShortcutManager = ShortcutManager;
+      exports.ShortcutManager = ShortcutManager = __decorate([
+        (0, inversify_1.injectable)()
+      ], ShortcutManager);
+    }
+  });
+
   // node_modules/@eclipse-glsp/client/lib/base/tool-manager/tool.js
   var require_tool = __commonJS({
     "node_modules/@eclipse-glsp/client/lib/base/tool-manager/tool.js"(exports) {
@@ -34746,6 +34965,7 @@ ${JSON.stringify(message, null, 4)}`);
       var mouse_position_tracker_1 = require_mouse_position_tracker();
       var selection_clearing_mouse_listener_1 = require_selection_clearing_mouse_listener();
       var selection_service_1 = require_selection_service();
+      var shortcuts_manager_1 = require_shortcuts_manager();
       var tool_1 = require_tool();
       var tool_manager_1 = require_tool_manager();
       var ui_extension_registry_1 = require_ui_extension_registry2();
@@ -34805,6 +35025,7 @@ ${JSON.stringify(message, null, 4)}`);
         (0, sprotty_1.bindOrRebind)(context, sprotty_1.TYPES.UIExtensionRegistry).toService(ui_extension_registry_1.GLSPUIExtensionRegistry);
         bind(sprotty_1.TYPES.IDiagramStartup).toService(ui_extension_registry_1.GLSPUIExtensionRegistry);
         bind(sprotty_1.TYPES.EmptyArray).toDynamicValue(() => []);
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IShortcutManager, shortcuts_manager_1.ShortcutManager);
       }, {
         featureId: Symbol("default")
       });
@@ -34877,6606 +35098,6 @@ ${JSON.stringify(message, null, 4)}`);
         }
       };
       exports.DragAwareMouseListener = DragAwareMouseListener;
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/change-bounds/model.js
-  var require_model19 = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/change-bounds/model.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.SResizeHandle = exports.removeResizeHandles = exports.addResizeHandles = exports.GResizeHandle = exports.isBoundsAwareMoveable = exports.ResizeHandleLocation = exports.isResizable = exports.resizeFeature = void 0;
-      var sprotty_1 = require_lib4();
-      var css_feedback_1 = require_css_feedback();
-      exports.resizeFeature = Symbol("resizeFeature");
-      function isResizable(element) {
-        return (0, sprotty_1.isBoundsAware)(element) && (0, sprotty_1.isSelectable)(element) && element instanceof sprotty_1.GParentElement && element.hasFeature(exports.resizeFeature);
-      }
-      exports.isResizable = isResizable;
-      var ResizeHandleLocation;
-      (function(ResizeHandleLocation2) {
-        ResizeHandleLocation2["TopLeft"] = "top-left";
-        ResizeHandleLocation2["Top"] = "top";
-        ResizeHandleLocation2["TopRight"] = "top-right";
-        ResizeHandleLocation2["Right"] = "right";
-        ResizeHandleLocation2["BottomRight"] = "bottom-right";
-        ResizeHandleLocation2["Bottom"] = "bottom";
-        ResizeHandleLocation2["BottomLeft"] = "bottom-left";
-        ResizeHandleLocation2["Left"] = "left";
-      })(ResizeHandleLocation || (exports.ResizeHandleLocation = ResizeHandleLocation = {}));
-      (function(ResizeHandleLocation2) {
-        ResizeHandleLocation2.CORNERS = [
-          ResizeHandleLocation2.TopLeft,
-          ResizeHandleLocation2.TopRight,
-          ResizeHandleLocation2.BottomRight,
-          ResizeHandleLocation2.BottomLeft
-        ];
-        ResizeHandleLocation2.CROSS = [
-          ResizeHandleLocation2.Top,
-          ResizeHandleLocation2.Right,
-          ResizeHandleLocation2.Bottom,
-          ResizeHandleLocation2.Left
-        ];
-        ResizeHandleLocation2.ALL = [...ResizeHandleLocation2.CORNERS, ...ResizeHandleLocation2.CROSS];
-        function opposite(location2) {
-          switch (location2) {
-            case ResizeHandleLocation2.TopLeft:
-              return ResizeHandleLocation2.BottomRight;
-            case ResizeHandleLocation2.Top:
-              return ResizeHandleLocation2.Bottom;
-            case ResizeHandleLocation2.TopRight:
-              return ResizeHandleLocation2.BottomLeft;
-            case ResizeHandleLocation2.Right:
-              return ResizeHandleLocation2.Left;
-            case ResizeHandleLocation2.BottomRight:
-              return ResizeHandleLocation2.TopLeft;
-            case ResizeHandleLocation2.Bottom:
-              return ResizeHandleLocation2.Top;
-            case ResizeHandleLocation2.BottomLeft:
-              return ResizeHandleLocation2.TopRight;
-            case ResizeHandleLocation2.Left:
-              return ResizeHandleLocation2.Right;
-          }
-        }
-        ResizeHandleLocation2.opposite = opposite;
-        function direction(location2) {
-          switch (location2) {
-            case ResizeHandleLocation2.TopLeft:
-              return [sprotty_1.Direction.Up, sprotty_1.Direction.Left];
-            case ResizeHandleLocation2.Top:
-              return [sprotty_1.Direction.Up];
-            case ResizeHandleLocation2.TopRight:
-              return [sprotty_1.Direction.Up, sprotty_1.Direction.Right];
-            case ResizeHandleLocation2.Right:
-              return [sprotty_1.Direction.Right];
-            case ResizeHandleLocation2.BottomRight:
-              return [sprotty_1.Direction.Down, sprotty_1.Direction.Right];
-            case ResizeHandleLocation2.Bottom:
-              return [sprotty_1.Direction.Down];
-            case ResizeHandleLocation2.BottomLeft:
-              return [sprotty_1.Direction.Down, sprotty_1.Direction.Left];
-            case ResizeHandleLocation2.Left:
-              return [sprotty_1.Direction.Left];
-          }
-        }
-        ResizeHandleLocation2.direction = direction;
-      })(ResizeHandleLocation || (exports.ResizeHandleLocation = ResizeHandleLocation = {}));
-      function isBoundsAwareMoveable(element) {
-        return (0, sprotty_1.isMoveable)(element) && (0, sprotty_1.isBoundsAware)(element);
-      }
-      exports.isBoundsAwareMoveable = isBoundsAwareMoveable;
-      var GResizeHandle = class _GResizeHandle extends sprotty_1.GChildElement {
-        constructor(location2, type = _GResizeHandle.TYPE, hoverFeedback = false) {
-          super();
-          this.location = location2;
-          this.type = type;
-          this.hoverFeedback = hoverFeedback;
-        }
-        hasFeature(feature) {
-          return feature === sprotty_1.hoverFeedbackFeature;
-        }
-        isNwResize() {
-          return this.location === ResizeHandleLocation.TopLeft;
-        }
-        isNResize() {
-          return this.location === ResizeHandleLocation.Top;
-        }
-        isNeResize() {
-          return this.location === ResizeHandleLocation.TopRight;
-        }
-        isEResize() {
-          return this.location === ResizeHandleLocation.Right;
-        }
-        isSeResize() {
-          return this.location === ResizeHandleLocation.BottomRight;
-        }
-        isSResize() {
-          return this.location === ResizeHandleLocation.Bottom;
-        }
-        isSwResize() {
-          return this.location === ResizeHandleLocation.BottomLeft;
-        }
-        isWResize() {
-          return this.location === ResizeHandleLocation.Left;
-        }
-        isNwSeResize() {
-          return this.isNwResize() || this.isSeResize();
-        }
-        isNeSwResize() {
-          return this.isNeResize() || this.isSwResize();
-        }
-        static getHandlePosition(first, second) {
-          const bounds = _GResizeHandle.is(first) ? first.parent.bounds : first instanceof sprotty_1.GModelElement ? first.bounds : first;
-          const location2 = _GResizeHandle.is(first) ? first.location : second;
-          switch (location2) {
-            case ResizeHandleLocation.TopLeft:
-              return sprotty_1.Bounds.topLeft(bounds);
-            case ResizeHandleLocation.Top:
-              return sprotty_1.Bounds.topCenter(bounds);
-            case ResizeHandleLocation.TopRight:
-              return sprotty_1.Bounds.topRight(bounds);
-            case ResizeHandleLocation.Right:
-              return sprotty_1.Bounds.middleRight(bounds);
-            case ResizeHandleLocation.BottomRight:
-              return sprotty_1.Bounds.bottomRight(bounds);
-            case ResizeHandleLocation.Bottom:
-              return sprotty_1.Bounds.bottomCenter(bounds);
-            case ResizeHandleLocation.BottomLeft:
-              return sprotty_1.Bounds.bottomLeft(bounds);
-            case ResizeHandleLocation.Left:
-              return sprotty_1.Bounds.middleLeft(bounds);
-          }
-        }
-        static getCursorCss(handle) {
-          switch (handle.location) {
-            case ResizeHandleLocation.TopLeft:
-              return css_feedback_1.CursorCSS.RESIZE_NW;
-            case ResizeHandleLocation.Top:
-              return css_feedback_1.CursorCSS.RESIZE_N;
-            case ResizeHandleLocation.TopRight:
-              return css_feedback_1.CursorCSS.RESIZE_NE;
-            case ResizeHandleLocation.Right:
-              return css_feedback_1.CursorCSS.RESIZE_E;
-            case ResizeHandleLocation.BottomRight:
-              return css_feedback_1.CursorCSS.RESIZE_SE;
-            case ResizeHandleLocation.Bottom:
-              return css_feedback_1.CursorCSS.RESIZE_S;
-            case ResizeHandleLocation.BottomLeft:
-              return css_feedback_1.CursorCSS.RESIZE_SW;
-            case ResizeHandleLocation.Left:
-              return css_feedback_1.CursorCSS.RESIZE_W;
-          }
-        }
-        static is(handle) {
-          return typeof handle === "object" && !!handle && "type" in handle && handle.type === _GResizeHandle.TYPE;
-        }
-      };
-      exports.GResizeHandle = GResizeHandle;
-      exports.SResizeHandle = GResizeHandle;
-      GResizeHandle.TYPE = "resize-handle";
-      function addResizeHandles(element, locations = ResizeHandleLocation.CORNERS) {
-        for (const location2 of ResizeHandleLocation.ALL) {
-          const existing = element.children.find((child) => child instanceof GResizeHandle && child.location === location2);
-          if (locations.includes(location2) && !existing) {
-            element.add(new GResizeHandle(location2));
-          } else if (!locations.includes(location2) && existing) {
-            element.remove(existing);
-          }
-        }
-      }
-      exports.addResizeHandles = addResizeHandles;
-      function removeResizeHandles(element) {
-        element.removeAll((child) => child instanceof GResizeHandle);
-      }
-      exports.removeResizeHandles = removeResizeHandles;
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/helper-lines/model.js
-  var require_model20 = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/helper-lines/model.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.Direction = exports.getDirectionFrom = exports.getDirectionOf = exports.isSelectionBounds = exports.SelectionBounds = exports.SELECTION_BOUNDS = exports.isHelperLine = exports.HelperLine = exports.HELPER_LINE = exports.HelperLineType = void 0;
-      var sprotty_1 = require_lib4();
-      var uuid_1 = require_commonjs_browser();
-      var model_1 = require_model19();
-      exports.HelperLineType = {
-        Left: "left",
-        Right: "right",
-        Center: "center",
-        Top: "top",
-        Bottom: "bottom",
-        Middle: "middle",
-        LeftRight: "left-right",
-        RightLeft: "right-left",
-        BottomTop: "bottom-top",
-        TopBottom: "top-bottom"
-      };
-      exports.HELPER_LINE = "helper-line";
-      var HelperLine = class extends sprotty_1.GChildElement {
-        constructor(startPoint = sprotty_1.Point.ORIGIN, endPoint = sprotty_1.Point.ORIGIN, lineType = exports.HelperLineType.Left) {
-          super();
-          this.startPoint = startPoint;
-          this.endPoint = endPoint;
-          this.lineType = lineType;
-          this.id = (0, uuid_1.v4)();
-          this.type = exports.HELPER_LINE;
-        }
-        get isLeft() {
-          return this.lineType === exports.HelperLineType.Left || this.lineType === exports.HelperLineType.LeftRight;
-        }
-        get isRight() {
-          return this.lineType === exports.HelperLineType.Right || this.lineType === exports.HelperLineType.RightLeft;
-        }
-        get isTop() {
-          return this.lineType === exports.HelperLineType.Top || this.lineType === exports.HelperLineType.TopBottom;
-        }
-        get isBottom() {
-          return this.lineType === exports.HelperLineType.Bottom || this.lineType === exports.HelperLineType.BottomTop;
-        }
-        get isMiddle() {
-          return this.lineType === exports.HelperLineType.Middle;
-        }
-        get isCenter() {
-          return this.lineType === exports.HelperLineType.Center;
-        }
-      };
-      exports.HelperLine = HelperLine;
-      function isHelperLine(element) {
-        return element.type === exports.HELPER_LINE;
-      }
-      exports.isHelperLine = isHelperLine;
-      exports.SELECTION_BOUNDS = "selection-bounds";
-      var SelectionBounds = class extends sprotty_1.GShapeElement {
-        constructor(bounds) {
-          super();
-          this.id = (0, uuid_1.v4)();
-          this.type = exports.SELECTION_BOUNDS;
-          if (bounds) {
-            this.bounds = bounds;
-          }
-        }
-      };
-      exports.SelectionBounds = SelectionBounds;
-      function isSelectionBounds(element) {
-        return element.type === exports.SELECTION_BOUNDS;
-      }
-      exports.isSelectionBounds = isSelectionBounds;
-      exports.getDirectionOf = sprotty_1.Vector.direction;
-      function getDirectionFrom(resize) {
-        if (resize === model_1.ResizeHandleLocation.TopLeft) {
-          return [sprotty_1.Direction.Up, sprotty_1.Direction.Left];
-        }
-        if (resize === model_1.ResizeHandleLocation.TopRight) {
-          return [sprotty_1.Direction.Up, sprotty_1.Direction.Right];
-        }
-        if (resize === model_1.ResizeHandleLocation.BottomLeft) {
-          return [sprotty_1.Direction.Down, sprotty_1.Direction.Left];
-        }
-        if (resize === model_1.ResizeHandleLocation.BottomRight) {
-          return [sprotty_1.Direction.Down, sprotty_1.Direction.Right];
-        }
-        return [];
-      }
-      exports.getDirectionFrom = getDirectionFrom;
-      var sprotty_2 = require_lib4();
-      Object.defineProperty(exports, "Direction", { enumerable: true, get: function() {
-        return sprotty_2.Direction;
-      } });
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/change-bounds/position-snapper.js
-  var require_position_snapper = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/change-bounds/position-snapper.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var __param = exports && exports.__param || function(paramIndex, decorator) {
-        return function(target, key) {
-          decorator(target, key, paramIndex);
-        };
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.PositionSnapper = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var model_1 = require_model20();
-      var PositionSnapper = class PositionSnapper {
-        constructor(snapper, helperLineManager) {
-          this.snapper = snapper;
-          this.helperLineManager = helperLineManager;
-        }
-        snapPosition(position, element, isSnap = true) {
-          return isSnap && this.snapper ? this.snapper.snap(position, element) : { x: position.x, y: position.y };
-        }
-        snapDelta(positionDelta, element, isSnap, directions) {
-          const delta = this.snapPosition(positionDelta, element, isSnap);
-          const minimumDelta = this.getMinimumDelta(element, isSnap, directions);
-          if (!minimumDelta) {
-            return delta;
-          }
-          delta.x = Math.abs(delta.x) >= minimumDelta.x ? delta.x : 0;
-          delta.y = Math.abs(delta.y) >= minimumDelta.y ? delta.y : 0;
-          return delta;
-        }
-        getMinimumDelta(target, isSnap, directions) {
-          return this.getHelperLineMinimum(target, isSnap, directions);
-        }
-        getHelperLineMinimum(target, isSnap, directions) {
-          if (!this.helperLineManager) {
-            return void 0;
-          }
-          const helperLines = target.root.children.filter((child) => (0, model_1.isHelperLine)(child));
-          if (helperLines.length === 0) {
-            return void 0;
-          }
-          const minimum = { x: 0, y: 0 };
-          if (directions.includes(model_1.Direction.Left) && helperLines.some((line) => line.isLeft || line.isCenter)) {
-            minimum.x = this.helperLineManager.getMinimumMoveDelta(target, isSnap, model_1.Direction.Left);
-          } else if (directions.includes(model_1.Direction.Right) && helperLines.some((line) => line.isRight || line.isCenter)) {
-            minimum.x = this.helperLineManager.getMinimumMoveDelta(target, isSnap, model_1.Direction.Right);
-          }
-          if (directions.includes(model_1.Direction.Up) && helperLines.some((line) => line.isTop || line.isMiddle)) {
-            minimum.y = this.helperLineManager.getMinimumMoveDelta(target, isSnap, model_1.Direction.Up);
-          } else if (directions.includes(model_1.Direction.Down) && helperLines.some((line) => line.isBottom || line.isMiddle)) {
-            minimum.y = this.helperLineManager.getMinimumMoveDelta(target, isSnap, model_1.Direction.Down);
-          }
-          return minimum;
-        }
-      };
-      exports.PositionSnapper = PositionSnapper;
-      exports.PositionSnapper = PositionSnapper = __decorate([
-        (0, inversify_1.injectable)(),
-        __param(0, (0, inversify_1.optional)()),
-        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.ISnapper)),
-        __param(1, (0, inversify_1.optional)()),
-        __param(1, (0, inversify_1.inject)(sprotty_1.TYPES.IHelperLineManager)),
-        __metadata("design:paramtypes", [Object, Object])
-      ], PositionSnapper);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/bounds/layout-data.js
-  var require_layout_data = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/bounds/layout-data.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.LayoutAware = void 0;
-      var LayoutAware;
-      (function(LayoutAware2) {
-        function is(element) {
-          return "layoutData" in element;
-        }
-        LayoutAware2.is = is;
-        function getLayoutData(element) {
-          return is(element) ? element.layoutData : void 0;
-        }
-        LayoutAware2.getLayoutData = getLayoutData;
-        function setLayoutData(element, data) {
-          element.layoutData = data;
-        }
-        LayoutAware2.setLayoutData = setLayoutData;
-        function setComputedDimensions(element, computedDimensions) {
-          ensureLayoutAware(element).layoutData.computedDimensions = computedDimensions;
-        }
-        LayoutAware2.setComputedDimensions = setComputedDimensions;
-        function getComputedDimensions(element) {
-          var _a4;
-          return (_a4 = getLayoutData(element)) === null || _a4 === void 0 ? void 0 : _a4.computedDimensions;
-        }
-        LayoutAware2.getComputedDimensions = getComputedDimensions;
-        function ensureLayoutAware(element) {
-          var _a4;
-          element.layoutData = (_a4 = element.layoutData) !== null && _a4 !== void 0 ? _a4 : {};
-          return element;
-        }
-      })(LayoutAware || (exports.LayoutAware = LayoutAware = {}));
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/bounds/freeform-layout.js
-  var require_freeform_layout = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/bounds/freeform-layout.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.FreeFormLayouter = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var layout_data_1 = require_layout_data();
-      var FreeFormLayouter = class FreeFormLayouter extends sprotty_1.AbstractLayout {
-        layout(container, layouter) {
-          const boundsData = layouter.getBoundsData(container);
-          const options = this.getLayoutOptions(container);
-          const childrenSize = this.getChildrenSize(container, options, layouter);
-          const maxWidth = childrenSize.width > 0 ? childrenSize.width + options.paddingLeft + options.paddingRight : 0;
-          const maxHeight = childrenSize.height > 0 ? childrenSize.height + options.paddingTop + options.paddingBottom : 0;
-          if (childrenSize.width > 0 && childrenSize.height > 0) {
-            const offset = this.layoutChildren(container, layouter, options, maxWidth, maxHeight);
-            const computed = this.getComputedContainerDimensions(options, childrenSize.width, childrenSize.height);
-            layout_data_1.LayoutAware.setComputedDimensions(boundsData, computed);
-            boundsData.bounds = this.getFinalContainerBounds(container, offset, options, computed.width, computed.height);
-            boundsData.boundsChanged = true;
-          } else {
-            boundsData.bounds = { x: boundsData.bounds.x, y: boundsData.bounds.y, width: 0, height: 0 };
-            boundsData.boundsChanged = true;
-          }
-        }
-        getChildrenSize(container, containerOptions, layouter) {
-          let maxX = 0;
-          let maxY = 0;
-          container.children.forEach((child) => {
-            const bounds = layouter.getBoundsData(child).bounds;
-            if (bounds !== void 0 && sprotty_1.Dimension.isValid(bounds)) {
-              const childMaxX = bounds.x + bounds.width;
-              const childMaxY = bounds.y + bounds.height;
-              maxX = Math.max(maxX, childMaxX);
-              maxY = Math.max(maxY, childMaxY);
-            }
-          });
-          return {
-            width: maxX,
-            height: maxY
-          };
-        }
-        layoutChild(child, boundsData, bounds, childOptions, containerOptions, currentOffset, maxWidth, maxHeight) {
-          boundsData.bounds = {
-            x: child.bounds.x,
-            y: child.bounds.y,
-            width: bounds.width,
-            height: bounds.height
-          };
-          boundsData.boundsChanged = true;
-          return currentOffset;
-        }
-        getComputedContainerDimensions(options, maxWidth, maxHeight) {
-          return {
-            width: maxWidth + options.paddingLeft + options.paddingRight,
-            height: maxHeight + options.paddingTop + options.paddingBottom
-          };
-        }
-        getFinalContainerBounds(container, lastOffset, options, maxWidth, maxHeight) {
-          const result = {
-            x: container.bounds.x,
-            y: container.bounds.y,
-            width: Math.max(options.minWidth, maxWidth),
-            height: Math.max(options.minHeight, maxHeight)
-          };
-          return result;
-        }
-        getDefaultLayoutOptions() {
-          return {
-            resizeContainer: true,
-            paddingTop: 0,
-            paddingBottom: 0,
-            paddingLeft: 0,
-            paddingRight: 0,
-            paddingFactor: 1,
-            minWidth: 0,
-            minHeight: 0
-          };
-        }
-        spread(a3, b3) {
-          return { ...a3, ...b3 };
-        }
-      };
-      exports.FreeFormLayouter = FreeFormLayouter;
-      FreeFormLayouter.KIND = "freeform";
-      exports.FreeFormLayouter = FreeFormLayouter = __decorate([
-        (0, inversify_1.injectable)()
-      ], FreeFormLayouter);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/bounds/local-bounds.js
-  var require_local_bounds = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/bounds/local-bounds.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var __param = exports && exports.__param || function(paramIndex, decorator) {
-        return function(target, key) {
-          decorator(target, key, paramIndex);
-        };
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.LocalComputedBoundsCommand = exports.LocalComputedBoundsAction = exports.LocalRequestBoundsAction = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var glsp_model_source_1 = require_glsp_model_source();
-      var layout_data_1 = require_layout_data();
-      var LocalRequestBoundsAction;
-      (function(LocalRequestBoundsAction2) {
-        function is(object) {
-          return sprotty_1.RequestBoundsAction.is(object) && !glsp_model_source_1.ServerAction.is(object) && (0, sprotty_1.hasArrayProp)(object, "elementIDs", true);
-        }
-        LocalRequestBoundsAction2.is = is;
-        function create(newRoot, elementIDs) {
-          return {
-            ...sprotty_1.RequestBoundsAction.create(newRoot),
-            elementIDs
-          };
-        }
-        LocalRequestBoundsAction2.create = create;
-        function fromCommand({ root }, actionDispatcher, cause, elementIDs) {
-          actionDispatcher.dispatch(LocalRequestBoundsAction2.create(root, elementIDs));
-          return {
-            model: root,
-            modelChanged: false,
-            cause
-          };
-        }
-        LocalRequestBoundsAction2.fromCommand = fromCommand;
-      })(LocalRequestBoundsAction || (exports.LocalRequestBoundsAction = LocalRequestBoundsAction = {}));
-      var LocalComputedBoundsAction;
-      (function(LocalComputedBoundsAction2) {
-        function is(object) {
-          return sprotty_1.ComputedBoundsAction.is(object) && glsp_model_source_1.ServerAction.is(object);
-        }
-        LocalComputedBoundsAction2.is = is;
-        function mark(action) {
-          glsp_model_source_1.ServerAction.mark(action);
-          return action;
-        }
-        LocalComputedBoundsAction2.mark = mark;
-      })(LocalComputedBoundsAction || (exports.LocalComputedBoundsAction = LocalComputedBoundsAction = {}));
-      var LocalComputedBoundsCommand = class LocalComputedBoundsCommand extends sprotty_1.Command {
-        constructor(action) {
-          super();
-          this.action = action;
-        }
-        execute(context) {
-          var _a4, _b2;
-          if (LocalComputedBoundsAction.is(this.action)) {
-            if (!this.viewerOptions.needsClientLayout) {
-              return context.root;
-            }
-            this.computedBoundsApplicator.apply(context.root, this.action);
-            (_a4 = this.action.layoutData) === null || _a4 === void 0 ? void 0 : _a4.forEach(({ elementId, layoutData }) => {
-              const element = context.root.index.getById(elementId);
-              if (element !== void 0) {
-                layout_data_1.LayoutAware.setLayoutData(element, layoutData);
-              }
-            });
-            return context.root;
-          }
-          (_b2 = this.action.layoutData) === null || _b2 === void 0 ? void 0 : _b2.forEach(({ elementId, layoutData }) => {
-            const element = context.root.index.getById(elementId);
-            if (element !== void 0) {
-              layout_data_1.LayoutAware.setLayoutData(element, layoutData);
-            }
-          });
-          return {
-            model: context.root,
-            modelChanged: false
-          };
-        }
-        undo(context) {
-          return context.root;
-        }
-        redo(context) {
-          return context.root;
-        }
-      };
-      exports.LocalComputedBoundsCommand = LocalComputedBoundsCommand;
-      LocalComputedBoundsCommand.KIND = sprotty_1.ComputedBoundsAction.KIND;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.ComputedBoundsApplicator),
-        __metadata("design:type", sprotty_1.ComputedBoundsApplicator)
-      ], LocalComputedBoundsCommand.prototype, "computedBoundsApplicator", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.ViewerOptions),
-        __metadata("design:type", Object)
-      ], LocalComputedBoundsCommand.prototype, "viewerOptions", void 0);
-      exports.LocalComputedBoundsCommand = LocalComputedBoundsCommand = __decorate([
-        (0, inversify_1.injectable)(),
-        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.Action)),
-        __metadata("design:paramtypes", [Object])
-      ], LocalComputedBoundsCommand);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/bounds/glsp-hidden-bounds-updater.js
-  var require_glsp_hidden_bounds_updater = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/bounds/glsp-hidden-bounds-updater.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.GLSPHiddenBoundsUpdater = exports.BoundsDataExt = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var gmodel_util_1 = require_gmodel_util();
-      var layout_data_1 = require_layout_data();
-      var local_bounds_1 = require_local_bounds();
-      var BoundsDataExt = class extends sprotty_1.BoundsData {
-      };
-      exports.BoundsDataExt = BoundsDataExt;
-      var GLSPHiddenBoundsUpdater = class GLSPHiddenBoundsUpdater extends sprotty_1.HiddenBoundsUpdater {
-        constructor() {
-          super(...arguments);
-          this.element2route = [];
-        }
-        getElement2BoundsData() {
-          return this["element2boundsData"];
-        }
-        decorate(vnode, element) {
-          super.decorate(vnode, element);
-          if ((0, gmodel_util_1.isRoutable)(element)) {
-            this.element2route.push((0, gmodel_util_1.calcElementAndRoute)(element, this.edgeRouterRegistry));
-          }
-          return vnode;
-        }
-        postUpdate(cause) {
-          if (local_bounds_1.LocalRequestBoundsAction.is(cause) && cause.elementIDs) {
-            this.focusOnElements(cause.elementIDs);
-          }
-          this.getBoundsFromDOM();
-          this.layouter.layout(this.getElement2BoundsData());
-          const resizes = [];
-          const alignments = [];
-          const layoutData = [];
-          this.getElement2BoundsData().forEach((boundsData, element) => {
-            if (boundsData.boundsChanged && boundsData.bounds !== void 0) {
-              const resize = {
-                elementId: element.id,
-                newSize: {
-                  width: boundsData.bounds.width,
-                  height: boundsData.bounds.height
-                }
-              };
-              if (element instanceof sprotty_1.GChildElement && (0, sprotty_1.isLayoutContainer)(element.parent)) {
-                resize.newPosition = {
-                  x: boundsData.bounds.x,
-                  y: boundsData.bounds.y
-                };
-              }
-              resizes.push(resize);
-            }
-            if (boundsData.alignmentChanged && boundsData.alignment !== void 0) {
-              alignments.push({
-                elementId: element.id,
-                newAlignment: boundsData.alignment
-              });
-            }
-            if (layout_data_1.LayoutAware.is(boundsData)) {
-              layoutData.push({ elementId: element.id, layoutData: boundsData.layoutData });
-            }
-          });
-          const routes = this.element2route.length === 0 ? void 0 : this.element2route;
-          const responseId = cause.requestId;
-          const revision = this.root !== void 0 ? this.root.revision : void 0;
-          const computedBoundsAction = sprotty_1.ComputedBoundsAction.create(resizes, { revision, alignments, layoutData, routes, responseId });
-          if (local_bounds_1.LocalRequestBoundsAction.is(cause)) {
-            local_bounds_1.LocalComputedBoundsAction.mark(computedBoundsAction);
-          }
-          this.actionDispatcher.dispatch(computedBoundsAction);
-          this.getElement2BoundsData().clear();
-          this.element2route = [];
-        }
-        focusOnElements(elementIDs) {
-          const data = this.getElement2BoundsData();
-          if (data.size > 0) {
-            const index = [...data.keys()][0].index;
-            const relevantIds = new Set(elementIDs.flatMap((elementId) => this.expandElementId(elementId, index, elementIDs)));
-            data.forEach((_bounds, element) => !relevantIds.has(element.id) && data.delete(element));
-          }
-        }
-        expandElementId(id, index, elementIDs) {
-          return (0, gmodel_util_1.getDescendantIds)(index.getById(id));
-        }
-      };
-      exports.GLSPHiddenBoundsUpdater = GLSPHiddenBoundsUpdater;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.EdgeRouterRegistry),
-        (0, inversify_1.optional)(),
-        __metadata("design:type", sprotty_1.EdgeRouterRegistry)
-      ], GLSPHiddenBoundsUpdater.prototype, "edgeRouterRegistry", void 0);
-      exports.GLSPHiddenBoundsUpdater = GLSPHiddenBoundsUpdater = __decorate([
-        (0, inversify_1.injectable)()
-      ], GLSPHiddenBoundsUpdater);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/bounds/hbox-layout.js
-  var require_hbox_layout2 = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/bounds/hbox-layout.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.HBoxLayouterExt = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var layout_data_1 = require_layout_data();
-      var HBoxLayouterExt = class HBoxLayouterExt extends sprotty_1.HBoxLayouter {
-        layout(container, layouter) {
-          var _a4, _b2;
-          const boundsData = layouter.getBoundsData(container);
-          const options = this.getLayoutOptions(container);
-          const childrenSize = this.getChildrenSize(container, options, layouter);
-          const fixedSize = this.getFixedContainerBounds(container, options, layouter);
-          const currentWidth = boundsData.bounds ? ((_a4 = boundsData.bounds) === null || _a4 === void 0 ? void 0 : _a4.width) - options.paddingLeft - options.paddingRight : 0;
-          const currentHeight = boundsData.bounds ? ((_b2 = boundsData.bounds) === null || _b2 === void 0 ? void 0 : _b2.height) - options.paddingTop - options.paddingBottom : 0;
-          const maxWidth = options.paddingFactor * (options.resizeContainer ? Math.max(fixedSize.width - options.paddingLeft - options.paddingRight, childrenSize.width) : Math.max(0, fixedSize.width - options.paddingLeft - options.paddingRight));
-          const maxHeight = options.paddingFactor * (options.resizeContainer ? Math.max(fixedSize.height - options.paddingTop - options.paddingBottom, childrenSize.height) : Math.max(0, fixedSize.height - options.paddingTop - options.paddingBottom));
-          const width = Math.max(currentWidth, maxWidth);
-          const height = Math.max(currentHeight, maxHeight);
-          const grabWidth = width - childrenSize.width;
-          const grabbingChildren = container.children.map((child) => this.getChildLayoutOptions(child, options)).filter((opt) => opt.hGrab).length;
-          if (width > 0 && height > 0) {
-            const offset = this.layoutChildren(container, layouter, options, width, height, grabWidth, grabbingChildren);
-            const computed = this.getComputedContainerDimensions(options, childrenSize.width, childrenSize.height);
-            layout_data_1.LayoutAware.setComputedDimensions(boundsData, computed);
-            boundsData.bounds = this.getFinalContainerBounds(container, offset, options, computed.width, computed.height);
-            boundsData.boundsChanged = true;
-          }
-        }
-        getChildrenSize(container, containerOptions, layouter) {
-          let maxWidth = 0;
-          let maxHeight = -1;
-          let isFirst = true;
-          container.children.forEach((child) => {
-            if ((0, sprotty_1.isLayoutableChild)(child)) {
-              const bounds = layouter.getBoundsData(child).bounds;
-              if (bounds !== void 0 && sprotty_1.Dimension.isValid(bounds)) {
-                maxWidth += bounds.width;
-                if (isFirst) {
-                  isFirst = false;
-                } else {
-                  maxWidth += containerOptions.hGap;
-                }
-                maxHeight = Math.max(maxHeight, bounds.height);
-              }
-            }
-          });
-          const result = {
-            width: maxWidth,
-            height: maxHeight
-          };
-          return result;
-        }
-        layoutChildren(container, layouter, containerOptions, maxWidth, maxHeight, grabWidth, grabbingChildren) {
-          let currentOffset = {
-            x: containerOptions.paddingLeft + 0.5 * (maxWidth - maxWidth / containerOptions.paddingFactor),
-            y: containerOptions.paddingTop + 0.5 * (maxHeight - maxHeight / containerOptions.paddingFactor)
-          };
-          container.children.forEach((child) => {
-            if ((0, sprotty_1.isLayoutableChild)(child)) {
-              const boundsData = layouter.getBoundsData(child);
-              const bounds = boundsData.bounds;
-              const childOptions = this.getChildLayoutOptions(child, containerOptions);
-              if (bounds !== void 0 && sprotty_1.Dimension.isValid(bounds)) {
-                currentOffset = this.layoutChild(child, boundsData, bounds, childOptions, containerOptions, currentOffset, maxWidth, maxHeight, grabWidth, grabbingChildren);
-              }
-            }
-          });
-          return currentOffset;
-        }
-        layoutChild(child, boundsData, bounds, childOptions, containerOptions, currentOffset, maxWidth, maxHeight, grabWidth, grabbingChildren) {
-          const vAlign = childOptions.vGrab ? "top" : childOptions.vAlign;
-          const dy = this.getDy(vAlign, bounds, maxHeight);
-          let offset = super.layoutChild(child, boundsData, bounds, childOptions, containerOptions, currentOffset, maxWidth, maxHeight);
-          boundsData.bounds = {
-            ...boundsData.bounds,
-            x: currentOffset.x,
-            y: currentOffset.y + dy
-          };
-          if (childOptions.vGrab) {
-            boundsData.bounds = {
-              x: boundsData.bounds.x,
-              y: boundsData.bounds.y,
-              width: boundsData.bounds.width,
-              height: maxHeight
-            };
-            boundsData.boundsChanged = true;
-          }
-          if (childOptions.hGrab && grabWidth && grabbingChildren) {
-            const width = boundsData.bounds.width + grabWidth / grabbingChildren;
-            boundsData.bounds = {
-              x: boundsData.bounds.x,
-              y: boundsData.bounds.y,
-              width,
-              height: boundsData.bounds.height
-            };
-            boundsData.boundsChanged = true;
-            offset = { x: currentOffset.x + width, y: currentOffset.y };
-          }
-          return offset;
-        }
-        getFixedContainerBounds(container, layoutOptions, layouter) {
-          var _a4, _b2;
-          const currentContainer = container;
-          if ((0, sprotty_1.isBoundsAware)(currentContainer)) {
-            const bounds = currentContainer.bounds;
-            const elementOptions = this.getElementLayoutOptions(currentContainer);
-            const width = (_a4 = elementOptions === null || elementOptions === void 0 ? void 0 : elementOptions.prefWidth) !== null && _a4 !== void 0 ? _a4 : 0;
-            const height = (_b2 = elementOptions === null || elementOptions === void 0 ? void 0 : elementOptions.prefHeight) !== null && _b2 !== void 0 ? _b2 : 0;
-            return { ...bounds, width, height };
-          }
-          return sprotty_1.Bounds.EMPTY;
-        }
-        getChildLayoutOptions(child, containerOptions) {
-          return super.getChildLayoutOptions(child, this.filterContainerOptions(containerOptions));
-        }
-        getLayoutOptions(element) {
-          return super.getLayoutOptions(element);
-        }
-        getElementLayoutOptions(element) {
-          return element.layoutOptions;
-        }
-        getComputedContainerDimensions(options, maxWidth, maxHeight) {
-          return {
-            width: maxWidth + options.paddingLeft + options.paddingRight,
-            height: maxHeight + options.paddingTop + options.paddingBottom
-          };
-        }
-        getFinalContainerBounds(container, lastOffset, options, computedWidth, computedHeight) {
-          var _a4, _b2;
-          const elementOptions = this.getElementLayoutOptions(container);
-          const width = (_a4 = elementOptions === null || elementOptions === void 0 ? void 0 : elementOptions.prefWidth) !== null && _a4 !== void 0 ? _a4 : options.minWidth;
-          const height = (_b2 = elementOptions === null || elementOptions === void 0 ? void 0 : elementOptions.prefHeight) !== null && _b2 !== void 0 ? _b2 : options.minHeight;
-          const result = {
-            x: container.bounds.x,
-            y: container.bounds.y,
-            width: Math.max(width, computedWidth),
-            height: Math.max(height, computedHeight)
-          };
-          return result;
-        }
-        getDefaultLayoutOptions() {
-          return {
-            resizeContainer: true,
-            paddingTop: 5,
-            paddingBottom: 5,
-            paddingLeft: 5,
-            paddingRight: 5,
-            paddingFactor: 1,
-            hGap: 1,
-            vAlign: "center",
-            minWidth: 0,
-            minHeight: 0,
-            hGrab: false,
-            vGrab: false,
-            // eslint-disable-next-line no-null/no-null
-            prefHeight: null,
-            // eslint-disable-next-line no-null/no-null
-            prefWidth: null
-          };
-        }
-        filterContainerOptions(containerOptions) {
-          const localOptions = { vGrab: false, hGrab: false, prefHeight: null, prefWidth: null };
-          return { ...containerOptions, ...localOptions };
-        }
-      };
-      exports.HBoxLayouterExt = HBoxLayouterExt;
-      HBoxLayouterExt.KIND = sprotty_1.HBoxLayouter.KIND;
-      exports.HBoxLayouterExt = HBoxLayouterExt = __decorate([
-        (0, inversify_1.injectable)()
-      ], HBoxLayouterExt);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/bounds/layouter.js
-  var require_layouter = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/bounds/layouter.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.StatefulLayouterExt = exports.LayouterExt = void 0;
-      var inversify_1 = require_cjs4();
-      var sprotty_1 = require_lib4();
-      var LayouterExt = class LayouterExt extends sprotty_1.Layouter {
-        layout(element2boundsData) {
-          new StatefulLayouterExt(element2boundsData, this.layoutRegistry, this.logger).layout();
-        }
-      };
-      exports.LayouterExt = LayouterExt;
-      exports.LayouterExt = LayouterExt = __decorate([
-        (0, inversify_1.injectable)()
-      ], LayouterExt);
-      var StatefulLayouterExt = class extends sprotty_1.StatefulLayouter {
-        /**
-         *
-         * @param elementToBoundsData The map of element to bounds data. Bounds Data are computed from the hidden
-         * SVG rendering pass.
-         * @param layoutRegistry2 The registry of available layouts.
-         * @param log The log.
-         */
-        constructor(elementToBoundsData, layoutRegistry2, log) {
-          super(elementToBoundsData, layoutRegistry2, log);
-          this.elementToBoundsData = elementToBoundsData;
-          this.layoutRegistry2 = layoutRegistry2;
-          this.toBeLayouted2 = [];
-          elementToBoundsData.forEach((data, element) => {
-            if ((0, sprotty_1.isLayoutContainer)(element)) {
-              this.toBeLayouted2.push(element);
-            }
-          });
-          for (const element of this.toBeLayouted2) {
-            elementToBoundsData.delete(element);
-          }
-        }
-        getBoundsData(element) {
-          let boundsData = this.elementToBoundsData.get(element);
-          let bounds = element.bounds;
-          if ((0, sprotty_1.isLayoutContainer)(element) && this.toBeLayouted2.indexOf(element) >= 0) {
-            bounds = this.doLayout(element);
-          } else if ((0, sprotty_1.isLayoutContainer)(element)) {
-            bounds = {
-              x: 0,
-              y: 0,
-              width: -1,
-              height: -1
-            };
-          }
-          if (!boundsData) {
-            boundsData = {
-              bounds,
-              boundsChanged: false,
-              alignmentChanged: false
-            };
-            this.elementToBoundsData.set(element, boundsData);
-          }
-          return boundsData;
-        }
-        layout() {
-          while (this.toBeLayouted2.length > 0) {
-            const element = this.toBeLayouted2[0];
-            this.doLayout(element);
-          }
-          this.toBeLayouted2 = [];
-          this.elementToBoundsData.forEach((data, element) => {
-            if ((0, sprotty_1.isLayoutContainer)(element)) {
-              this.toBeLayouted2.push(element);
-            }
-          });
-          while (this.toBeLayouted2.length > 0) {
-            const element = this.toBeLayouted2[0];
-            this.doLayout(element);
-          }
-        }
-        doLayout(element) {
-          const index = this.toBeLayouted2.indexOf(element);
-          if (index >= 0) {
-            this.toBeLayouted2.splice(index, 1);
-          }
-          const layout = this.layoutRegistry2.get(element.layout);
-          if (layout) {
-            layout.layout(element, this);
-          }
-          const boundsData = this.elementToBoundsData.get(element);
-          if (boundsData !== void 0 && boundsData.bounds !== void 0) {
-            return boundsData.bounds;
-          } else {
-            this.log.error(element, "Layout failed");
-            return sprotty_1.Bounds.EMPTY;
-          }
-        }
-      };
-      exports.StatefulLayouterExt = StatefulLayouterExt;
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/bounds/set-bounds-feedback-command.js
-  var require_set_bounds_feedback_command = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/bounds/set-bounds-feedback-command.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.SetBoundsFeedbackCommand = exports.SetBoundsFeedbackAction = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var ranked_1 = require_ranked();
-      var local_bounds_1 = require_local_bounds();
-      var SetBoundsFeedbackAction;
-      (function(SetBoundsFeedbackAction2) {
-        SetBoundsFeedbackAction2.KIND = "setBoundsFeedback";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, SetBoundsFeedbackAction2.KIND);
-        }
-        SetBoundsFeedbackAction2.is = is;
-        function create(bounds) {
-          return { kind: SetBoundsFeedbackAction2.KIND, bounds };
-        }
-        SetBoundsFeedbackAction2.create = create;
-      })(SetBoundsFeedbackAction || (exports.SetBoundsFeedbackAction = SetBoundsFeedbackAction = {}));
-      var SetBoundsFeedbackCommand = class SetBoundsFeedbackCommand extends sprotty_1.SetBoundsCommand {
-        constructor() {
-          super(...arguments);
-          this.rank = ranked_1.Ranked.DEFAULT_RANK;
-        }
-        execute(context) {
-          super.execute(context);
-          this.action.bounds.forEach((bounds) => {
-            var _a4;
-            const element = context.root.index.getById(bounds.elementId);
-            if (element && (0, sprotty_1.isLayoutContainer)(element)) {
-              const options = (_a4 = element.layoutOptions) !== null && _a4 !== void 0 ? _a4 : {};
-              options.prefHeight = bounds.newSize.height;
-              options.prefWidth = bounds.newSize.width;
-              element.layoutOptions = options;
-            }
-          });
-          const elementIDs = this.action.bounds.map((bounds) => bounds.elementId);
-          return local_bounds_1.LocalRequestBoundsAction.fromCommand(context, this.actionDispatcher, this.action, elementIDs);
-        }
-      };
-      exports.SetBoundsFeedbackCommand = SetBoundsFeedbackCommand;
-      SetBoundsFeedbackCommand.KIND = SetBoundsFeedbackAction.KIND;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], SetBoundsFeedbackCommand.prototype, "actionDispatcher", void 0);
-      exports.SetBoundsFeedbackCommand = SetBoundsFeedbackCommand = __decorate([
-        (0, inversify_1.injectable)()
-      ], SetBoundsFeedbackCommand);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/bounds/vbox-layout.js
-  var require_vbox_layout2 = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/bounds/vbox-layout.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.VBoxLayouterExt = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var layout_data_1 = require_layout_data();
-      var VBoxLayouterExt = class VBoxLayouterExt extends sprotty_1.VBoxLayouter {
-        layout(container, layouter) {
-          var _a4, _b2;
-          const boundsData = layouter.getBoundsData(container);
-          const options = this.getLayoutOptions(container);
-          const childrenSize = this.getChildrenSize(container, options, layouter);
-          const fixedSize = this.getFixedContainerBounds(container, options, layouter);
-          const currentWidth = (((_a4 = boundsData.bounds) === null || _a4 === void 0 ? void 0 : _a4.width) || 0) - options.paddingLeft - options.paddingRight;
-          const currentHeight = (((_b2 = boundsData.bounds) === null || _b2 === void 0 ? void 0 : _b2.height) || 0) - options.paddingTop - options.paddingBottom;
-          const maxWidth = options.paddingFactor * (options.resizeContainer ? Math.max(fixedSize.width - options.paddingLeft - options.paddingRight, childrenSize.width) : Math.max(0, fixedSize.width - options.paddingLeft - options.paddingRight));
-          const maxHeight = options.paddingFactor * (options.resizeContainer ? Math.max(fixedSize.height - options.paddingTop - options.paddingBottom, childrenSize.height) : Math.max(0, fixedSize.height - options.paddingTop - options.paddingBottom));
-          const width = Math.max(currentWidth, maxWidth);
-          const height = Math.max(currentHeight, maxHeight);
-          const grabHeight = height - childrenSize.height;
-          const grabbingChildren = container.children.map((child) => this.getChildLayoutOptions(child, options)).filter((opt) => opt.vGrab).length;
-          if (maxWidth > 0 && maxHeight > 0) {
-            const offset = this.layoutChildren(container, layouter, options, width, height, grabHeight, grabbingChildren);
-            const computed = this.getComputedContainerDimensions(options, childrenSize.width, childrenSize.height);
-            layout_data_1.LayoutAware.setComputedDimensions(boundsData, computed);
-            boundsData.bounds = this.getFinalContainerBounds(container, offset, options, computed.width, computed.height);
-            boundsData.boundsChanged = true;
-          }
-        }
-        getChildrenSize(container, containerOptions, layouter) {
-          let maxWidth = -1;
-          let maxHeight = 0;
-          let isFirst = true;
-          container.children.forEach((child) => {
-            if ((0, sprotty_1.isLayoutableChild)(child)) {
-              const bounds = layouter.getBoundsData(child).bounds;
-              if (bounds !== void 0 && sprotty_1.Dimension.isValid(bounds)) {
-                maxHeight += bounds.height;
-                if (isFirst) {
-                  isFirst = false;
-                } else {
-                  maxHeight += containerOptions.vGap;
-                }
-                maxWidth = Math.max(maxWidth, bounds.width);
-              }
-            }
-          });
-          const result = {
-            width: maxWidth,
-            height: maxHeight
-          };
-          return result;
-        }
-        layoutChildren(container, layouter, containerOptions, maxWidth, maxHeight, grabHeight, grabbingChildren) {
-          let currentOffset = {
-            x: containerOptions.paddingLeft + 0.5 * (maxWidth - maxWidth / containerOptions.paddingFactor),
-            y: containerOptions.paddingTop + 0.5 * (maxHeight - maxHeight / containerOptions.paddingFactor)
-          };
-          container.children.forEach((child) => {
-            if ((0, sprotty_1.isLayoutableChild)(child)) {
-              const boundsData = layouter.getBoundsData(child);
-              const bounds = boundsData.bounds;
-              const childOptions = this.getChildLayoutOptions(child, containerOptions);
-              if (bounds !== void 0 && sprotty_1.Dimension.isValid(bounds)) {
-                currentOffset = this.layoutChild(child, boundsData, bounds, childOptions, containerOptions, currentOffset, maxWidth, maxHeight, grabHeight, grabbingChildren);
-              }
-            }
-          });
-          return currentOffset;
-        }
-        layoutChild(child, boundsData, bounds, childOptions, containerOptions, currentOffset, maxWidth, maxHeight, grabHeight, grabbingChildren) {
-          const hAlign = childOptions.hGrab ? "left" : childOptions.hAlign;
-          const dx = this.getDx(hAlign, bounds, maxWidth);
-          let offset = super.layoutChild(child, boundsData, bounds, childOptions, containerOptions, currentOffset, maxWidth, maxHeight);
-          boundsData.bounds = {
-            ...boundsData.bounds,
-            x: currentOffset.x + dx,
-            y: currentOffset.y
-          };
-          if (childOptions.hGrab) {
-            boundsData.bounds = {
-              x: boundsData.bounds.x,
-              y: boundsData.bounds.y,
-              width: maxWidth,
-              height: boundsData.bounds.height
-            };
-            boundsData.boundsChanged = true;
-          }
-          if (childOptions.vGrab && grabHeight && grabbingChildren) {
-            const height = boundsData.bounds.height + grabHeight / grabbingChildren;
-            boundsData.bounds = {
-              x: boundsData.bounds.x,
-              y: boundsData.bounds.y,
-              width: boundsData.bounds.width,
-              height
-            };
-            boundsData.boundsChanged = true;
-            offset = { x: currentOffset.x, y: currentOffset.y + height };
-          }
-          return offset;
-        }
-        getFixedContainerBounds(container, layoutOptions, layouter) {
-          var _a4, _b2;
-          const currentContainer = container;
-          if ((0, sprotty_1.isBoundsAware)(currentContainer)) {
-            const bounds = currentContainer.bounds;
-            const elementOptions = this.getElementLayoutOptions(currentContainer);
-            const width = (_a4 = elementOptions === null || elementOptions === void 0 ? void 0 : elementOptions.prefWidth) !== null && _a4 !== void 0 ? _a4 : 0;
-            const height = (_b2 = elementOptions === null || elementOptions === void 0 ? void 0 : elementOptions.prefHeight) !== null && _b2 !== void 0 ? _b2 : 0;
-            return { ...bounds, width, height };
-          }
-          return sprotty_1.Bounds.EMPTY;
-        }
-        getChildLayoutOptions(child, containerOptions) {
-          return super.getChildLayoutOptions(child, this.filterContainerOptions(containerOptions));
-        }
-        getLayoutOptions(element) {
-          return super.getLayoutOptions(element);
-        }
-        getElementLayoutOptions(element) {
-          return element.layoutOptions;
-        }
-        getComputedContainerDimensions(options, maxWidth, maxHeight) {
-          return {
-            width: maxWidth + options.paddingLeft + options.paddingRight,
-            height: maxHeight + options.paddingTop + options.paddingBottom
-          };
-        }
-        getFinalContainerBounds(container, lastOffset, options, computedWidth, computedHeight) {
-          var _a4, _b2;
-          const elementOptions = this.getElementLayoutOptions(container);
-          const width = (_a4 = elementOptions === null || elementOptions === void 0 ? void 0 : elementOptions.prefWidth) !== null && _a4 !== void 0 ? _a4 : options.minWidth;
-          const height = (_b2 = elementOptions === null || elementOptions === void 0 ? void 0 : elementOptions.prefHeight) !== null && _b2 !== void 0 ? _b2 : options.minHeight;
-          const result = {
-            x: container.bounds.x,
-            y: container.bounds.y,
-            width: Math.max(width, computedWidth),
-            height: Math.max(height, computedHeight)
-          };
-          return result;
-        }
-        getDefaultLayoutOptions() {
-          return {
-            resizeContainer: true,
-            paddingTop: 5,
-            paddingBottom: 5,
-            paddingLeft: 5,
-            paddingRight: 5,
-            paddingFactor: 1,
-            vGap: 1,
-            hAlign: "center",
-            minWidth: 0,
-            minHeight: 0,
-            hGrab: false,
-            vGrab: false,
-            // eslint-disable-next-line no-null/no-null
-            prefHeight: null,
-            // eslint-disable-next-line no-null/no-null
-            prefWidth: null
-          };
-        }
-        filterContainerOptions(containerOptions) {
-          const localOptions = { vGrab: false, hGrab: false, prefHeight: null, prefWidth: null };
-          return { ...containerOptions, ...localOptions };
-        }
-      };
-      exports.VBoxLayouterExt = VBoxLayouterExt;
-      VBoxLayouterExt.KIND = sprotty_1.VBoxLayouter.KIND;
-      exports.VBoxLayouterExt = VBoxLayouterExt = __decorate([
-        (0, inversify_1.injectable)()
-      ], VBoxLayouterExt);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/bounds/bounds-module.js
-  var require_bounds_module = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/bounds/bounds-module.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.boundsModule = void 0;
-      var sprotty_1 = require_lib4();
-      var position_snapper_1 = require_position_snapper();
-      var freeform_layout_1 = require_freeform_layout();
-      var glsp_hidden_bounds_updater_1 = require_glsp_hidden_bounds_updater();
-      var hbox_layout_1 = require_hbox_layout2();
-      var layouter_1 = require_layouter();
-      var local_bounds_1 = require_local_bounds();
-      var set_bounds_feedback_command_1 = require_set_bounds_feedback_command();
-      var vbox_layout_1 = require_vbox_layout2();
-      exports.boundsModule = new sprotty_1.FeatureModule((bind, _unbind, isBound, _rebind) => {
-        const context = { bind, isBound };
-        (0, sprotty_1.configureCommand)(context, sprotty_1.SetBoundsCommand);
-        (0, sprotty_1.configureCommand)(context, sprotty_1.RequestBoundsCommand);
-        bind(sprotty_1.HiddenBoundsUpdater).toSelf().inSingletonScope();
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.HiddenVNodePostprocessor, glsp_hidden_bounds_updater_1.GLSPHiddenBoundsUpdater);
-        (0, sprotty_1.configureCommand)(context, local_bounds_1.LocalComputedBoundsCommand);
-        (0, sprotty_1.configureCommand)(context, set_bounds_feedback_command_1.SetBoundsFeedbackCommand);
-        bind(sprotty_1.TYPES.Layouter).to(layouter_1.LayouterExt).inSingletonScope();
-        bind(sprotty_1.TYPES.LayoutRegistry).to(sprotty_1.LayoutRegistry).inSingletonScope();
-        (0, sprotty_1.configureLayout)(context, sprotty_1.VBoxLayouter.KIND, vbox_layout_1.VBoxLayouterExt);
-        (0, sprotty_1.configureLayout)(context, sprotty_1.HBoxLayouter.KIND, hbox_layout_1.HBoxLayouterExt);
-        (0, sprotty_1.configureLayout)(context, freeform_layout_1.FreeFormLayouter.KIND, freeform_layout_1.FreeFormLayouter);
-        bind(position_snapper_1.PositionSnapper).toSelf();
-      }, { featureId: Symbol("bounds") });
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/css/command-palette.css
-  var require_command_palette2 = __commonJS({
-    "node_modules/@eclipse-glsp/client/css/command-palette.css"(exports, module) {
-      module.exports = {};
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/command-palette/command-palette.js
-  var require_command_palette3 = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/command-palette/command-palette.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.GlspCommandPalette = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var ui_extension_1 = require_ui_extension2();
-      var GlspCommandPalette = class GlspCommandPalette extends sprotty_1.CommandPalette {
-        initializeContents(containerElement) {
-          super.initializeContents(containerElement);
-          containerElement.classList.add(ui_extension_1.CSS_UI_EXTENSION_CLASS);
-        }
-        setContainerVisible(visible) {
-          var _a4, _b2;
-          if (visible) {
-            (_a4 = this.containerElement) === null || _a4 === void 0 ? void 0 : _a4.classList.remove(ui_extension_1.CSS_HIDDEN_EXTENSION_CLASS);
-          } else {
-            (_b2 = this.containerElement) === null || _b2 === void 0 ? void 0 : _b2.classList.add(ui_extension_1.CSS_HIDDEN_EXTENSION_CLASS);
-          }
-        }
-      };
-      exports.GlspCommandPalette = GlspCommandPalette;
-      exports.GlspCommandPalette = GlspCommandPalette = __decorate([
-        (0, inversify_1.injectable)()
-      ], GlspCommandPalette);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/command-palette/command-palette-tool.js
-  var require_command_palette_tool = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/command-palette/command-palette-tool.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var CommandPaletteTool_1;
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.CommandPaletteTool = void 0;
-      var inversify_1 = require_cjs4();
-      var sprotty_1 = require_lib4();
-      var CommandPaletteTool = CommandPaletteTool_1 = class CommandPaletteTool {
-        postConstruct() {
-          this.commandPaletteKeyListener = this.createCommandPaletteKeyListener();
-        }
-        get id() {
-          return CommandPaletteTool_1.ID;
-        }
-        enable() {
-          this.keyTool.register(this.commandPaletteKeyListener);
-        }
-        disable() {
-          this.keyTool.deregister(this.commandPaletteKeyListener);
-        }
-        createCommandPaletteKeyListener() {
-          return new sprotty_1.CommandPaletteKeyListener();
-        }
-      };
-      exports.CommandPaletteTool = CommandPaletteTool;
-      CommandPaletteTool.ID = "glsp.command-palette-tool";
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.KeyTool),
-        __metadata("design:type", sprotty_1.KeyTool)
-      ], CommandPaletteTool.prototype, "keyTool", void 0);
-      __decorate([
-        (0, inversify_1.postConstruct)(),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", []),
-        __metadata("design:returntype", void 0)
-      ], CommandPaletteTool.prototype, "postConstruct", null);
-      exports.CommandPaletteTool = CommandPaletteTool = CommandPaletteTool_1 = __decorate([
-        (0, inversify_1.injectable)()
-      ], CommandPaletteTool);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/command-palette/server-command-palette-provider.js
-  var require_server_command_palette_provider = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/command-palette/server-command-palette-provider.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.ServerCommandPaletteActionProvider = exports.ServerCommandPalette = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var editor_context_service_1 = require_editor_context_service();
-      var ServerCommandPalette;
-      (function(ServerCommandPalette2) {
-        ServerCommandPalette2.CONTEXT_ID = "command-palette";
-        ServerCommandPalette2.TEXT = "text";
-        ServerCommandPalette2.INDEX = "index";
-      })(ServerCommandPalette || (exports.ServerCommandPalette = ServerCommandPalette = {}));
-      var ServerCommandPaletteActionProvider = class ServerCommandPaletteActionProvider {
-        async getActions(_root, text, _lastMousePosition, index) {
-          const requestAction = sprotty_1.RequestContextActions.create({
-            contextId: ServerCommandPalette.CONTEXT_ID,
-            editorContext: this.editorContext.get({
-              [ServerCommandPalette.TEXT]: text,
-              [ServerCommandPalette.INDEX]: index ? index : 0
-            })
-          });
-          const response = await this.actionDispatcher.requestUntil(requestAction);
-          return response ? this.getPaletteActionsFromResponse(response) : [];
-        }
-        getPaletteActionsFromResponse(action) {
-          if (sprotty_1.SetContextActions.is(action)) {
-            return action.actions;
-          }
-          return [];
-        }
-      };
-      exports.ServerCommandPaletteActionProvider = ServerCommandPaletteActionProvider;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], ServerCommandPaletteActionProvider.prototype, "actionDispatcher", void 0);
-      __decorate([
-        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
-        __metadata("design:type", editor_context_service_1.EditorContextService)
-      ], ServerCommandPaletteActionProvider.prototype, "editorContext", void 0);
-      exports.ServerCommandPaletteActionProvider = ServerCommandPaletteActionProvider = __decorate([
-        (0, inversify_1.injectable)()
-      ], ServerCommandPaletteActionProvider);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/command-palette/command-palette-module.js
-  var require_command_palette_module = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/command-palette/command-palette-module.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.commandPaletteModule = void 0;
-      var sprotty_1 = require_lib4();
-      require_command_palette2();
-      var command_palette_1 = require_command_palette3();
-      var command_palette_tool_1 = require_command_palette_tool();
-      var server_command_palette_provider_1 = require_server_command_palette_provider();
-      exports.commandPaletteModule = new sprotty_1.FeatureModule((bind) => {
-        (0, sprotty_1.bindAsService)(bind, sprotty_1.TYPES.IUIExtension, command_palette_1.GlspCommandPalette);
-        bind(sprotty_1.TYPES.ICommandPaletteActionProviderRegistry).to(sprotty_1.CommandPaletteActionProviderRegistry).inSingletonScope();
-        (0, sprotty_1.bindAsService)(bind, sprotty_1.TYPES.ICommandPaletteActionProvider, server_command_palette_provider_1.ServerCommandPaletteActionProvider);
-        (0, sprotty_1.bindAsService)(bind, sprotty_1.TYPES.IDefaultTool, command_palette_tool_1.CommandPaletteTool);
-      }, { featureId: Symbol("commandPalette") });
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/context-menu/glsp-context-menu-mouse-listener.js
-  var require_glsp_context_menu_mouse_listener = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/context-menu/glsp-context-menu-mouse-listener.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.GLSPContextMenuMouseListener = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var focus_state_change_action_1 = require_focus_state_change_action();
-      var GLSPContextMenuMouseListener = class GLSPContextMenuMouseListener extends sprotty_1.MouseListener {
-        initialize() {
-          var _a4;
-          (_a4 = this.contextMenuServiceProvider) === null || _a4 === void 0 ? void 0 : _a4.call(this).then((menuService) => this.menuService = menuService);
-        }
-        /**
-         * Opens the context menu.
-         */
-        contextMenu(target, event) {
-          return this.openContextMenu(target, event);
-        }
-        /**
-         * Opens the context menu.
-         *
-         *   - update selection state (if context menu target is selectable)
-         *   - query the context menu service and the context menu elements
-         *   - show the context menu
-         *   - send a focus state change to indicate that the diagram becomes inactive, once the context menu is shown
-         *
-         * When the context menu is closed, we focus the diagram element again.
-         */
-        openContextMenu(target, event) {
-          if (!this.menuService || !this.menuProvider) {
-            return [];
-          }
-          return [this.showContextMenuItems(target, event)];
-        }
-        async showContextMenuItems(target, event) {
-          await this.handleContextElementSelection(target, event);
-          const mousePosition = { x: event.x, y: event.y };
-          const menuItems = await this.menuProvider.getItems(target.root, mousePosition);
-          this.menuService.show(menuItems, mousePosition, () => this.focusEventTarget(event));
-          return focus_state_change_action_1.FocusStateChangedAction.create(false);
-        }
-        // Clear selection if the context menu target is not selectable
-        // Otherwise either maintain current selection if target is already selected or single select the current target.
-        async handleContextElementSelection(target, event) {
-          const selectableTarget = (0, sprotty_1.findParentByFeature)(target, sprotty_1.isSelectable);
-          if (!selectableTarget) {
-            return this.actionDispatcher.dispatch(sprotty_1.SelectAction.setSelection([]));
-          }
-          if (!selectableTarget.selected) {
-            return this.actionDispatcher.dispatch(sprotty_1.SelectAction.setSelection([selectableTarget.id]));
-          }
-          return;
-        }
-        focusEventTarget(event) {
-          const targetElement = event.target instanceof SVGElement ? event.target : void 0;
-          const svgParentElement = targetElement === null || targetElement === void 0 ? void 0 : targetElement.closest("svg");
-          if (svgParentElement) {
-            svgParentElement.focus();
-          }
-        }
-      };
-      exports.GLSPContextMenuMouseListener = GLSPContextMenuMouseListener;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IContextMenuServiceProvider),
-        (0, inversify_1.optional)(),
-        __metadata("design:type", Function)
-      ], GLSPContextMenuMouseListener.prototype, "contextMenuServiceProvider", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IContextMenuProviderRegistry),
-        (0, inversify_1.optional)(),
-        __metadata("design:type", sprotty_1.ContextMenuProviderRegistry)
-      ], GLSPContextMenuMouseListener.prototype, "menuProvider", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], GLSPContextMenuMouseListener.prototype, "actionDispatcher", void 0);
-      __decorate([
-        (0, inversify_1.postConstruct)(),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", []),
-        __metadata("design:returntype", void 0)
-      ], GLSPContextMenuMouseListener.prototype, "initialize", null);
-      exports.GLSPContextMenuMouseListener = GLSPContextMenuMouseListener = __decorate([
-        (0, inversify_1.injectable)()
-      ], GLSPContextMenuMouseListener);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/context-menu/server-context-menu-provider.js
-  var require_server_context_menu_provider = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/context-menu/server-context-menu-provider.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.ServerContextMenuItemProvider = exports.ServerContextMenu = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var editor_context_service_1 = require_editor_context_service();
-      var ServerContextMenu;
-      (function(ServerContextMenu2) {
-        ServerContextMenu2.CONTEXT_ID = "context-menu";
-      })(ServerContextMenu || (exports.ServerContextMenu = ServerContextMenu = {}));
-      var ServerContextMenuItemProvider = class ServerContextMenuItemProvider {
-        async getItems(root, _lastMousePosition) {
-          const selectedElementIds = Array.from(root.index.all().filter(sprotty_1.isSelected).map((e2) => e2.id));
-          const editorContext = this.editorContext.getWithSelection(selectedElementIds);
-          const requestAction = sprotty_1.RequestContextActions.create({ contextId: ServerContextMenu.CONTEXT_ID, editorContext });
-          const response = await this.actionDispatcher.requestUntil(requestAction);
-          return response ? this.getContextActionsFromResponse(response) : [];
-        }
-        getContextActionsFromResponse(action) {
-          if (sprotty_1.SetContextActions.is(action)) {
-            return action.actions;
-          }
-          return [];
-        }
-      };
-      exports.ServerContextMenuItemProvider = ServerContextMenuItemProvider;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], ServerContextMenuItemProvider.prototype, "actionDispatcher", void 0);
-      __decorate([
-        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
-        __metadata("design:type", editor_context_service_1.EditorContextService)
-      ], ServerContextMenuItemProvider.prototype, "editorContext", void 0);
-      exports.ServerContextMenuItemProvider = ServerContextMenuItemProvider = __decorate([
-        (0, inversify_1.injectable)()
-      ], ServerContextMenuItemProvider);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/context-menu/context-menu-module.js
-  var require_context_menu_module = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/context-menu/context-menu-module.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.contextMenuModule = void 0;
-      var sprotty_1 = require_lib4();
-      var glsp_context_menu_mouse_listener_1 = require_glsp_context_menu_mouse_listener();
-      var server_context_menu_provider_1 = require_server_context_menu_provider();
-      exports.contextMenuModule = new sprotty_1.FeatureModule((bind) => {
-        bind(sprotty_1.TYPES.IContextMenuServiceProvider).toProvider((ctx) => async () => {
-          if (ctx.container.isBound(sprotty_1.TYPES.IContextMenuService)) {
-            return ctx.container.get(sprotty_1.TYPES.IContextMenuService);
-          }
-          console.warn("'TYPES.IContextMenuService' is not bound. Use no-op implementation instead");
-          return { show: () => {
-          } };
-        });
-        (0, sprotty_1.bindAsService)(bind, sprotty_1.TYPES.MouseListener, glsp_context_menu_mouse_listener_1.GLSPContextMenuMouseListener);
-        bind(sprotty_1.TYPES.IContextMenuProviderRegistry).to(sprotty_1.ContextMenuProviderRegistry);
-        (0, sprotty_1.bindAsService)(bind, sprotty_1.TYPES.IContextMenuItemProvider, server_context_menu_provider_1.ServerContextMenuItemProvider);
-      }, { featureId: Symbol("contextMenu") });
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/copy-paste/copy-paste-handler.js
-  var require_copy_paste_handler = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/copy-paste/copy-paste-handler.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.ServerCopyPasteHandler = exports.LocalClipboardService = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var uuid_1 = require_commonjs_browser();
-      var editor_context_service_1 = require_editor_context_service();
-      var LocalClipboardService = class LocalClipboardService {
-        clear() {
-          this.currentId = void 0;
-          this.data = void 0;
-        }
-        put(data, id) {
-          this.currentId = id;
-          this.data = data;
-        }
-        get(id) {
-          if (id !== this.currentId) {
-            return void 0;
-          }
-          return this.data;
-        }
-      };
-      exports.LocalClipboardService = LocalClipboardService;
-      exports.LocalClipboardService = LocalClipboardService = __decorate([
-        (0, inversify_1.injectable)()
-      ], LocalClipboardService);
-      function toClipboardId(clipboardId) {
-        return JSON.stringify({ clipboardId });
-      }
-      function isClipboardId(jsonData) {
-        return jsonData !== void 0 && "clipboardId" in jsonData;
-      }
-      function getClipboardIdFromDataTransfer(dataTransfer) {
-        const jsonString = dataTransfer.getData(CLIPBOARD_DATA_FORMAT);
-        const jsonObject = jsonString ? JSON.parse(jsonString) : void 0;
-        return isClipboardId(jsonObject) ? jsonObject.clipboardId : void 0;
-      }
-      var CLIPBOARD_DATA_FORMAT = "text/plain";
-      var ServerCopyPasteHandler = class ServerCopyPasteHandler {
-        handleCopy(event) {
-          if (event.clipboardData && this.shouldCopy(event)) {
-            const clipboardId = (0, uuid_1.v4)();
-            event.clipboardData.setData(CLIPBOARD_DATA_FORMAT, toClipboardId(clipboardId));
-            this.actionDispatcher.request(sprotty_1.RequestClipboardDataAction.create(this.editorContext.get())).then((action) => this.clipboardService.put(action.clipboardData, clipboardId));
-            event.preventDefault();
-          } else {
-            if (event.clipboardData) {
-              event.clipboardData.clearData();
-            }
-            this.clipboardService.clear();
-          }
-        }
-        handleCut(event) {
-          if (event.clipboardData && this.shouldCopy(event)) {
-            this.handleCopy(event);
-            this.actionDispatcher.dispatch(sprotty_1.CutOperation.create(this.editorContext.get()));
-            event.preventDefault();
-          }
-        }
-        handlePaste(event) {
-          if (event.clipboardData && this.shouldPaste(event)) {
-            const clipboardId = getClipboardIdFromDataTransfer(event.clipboardData);
-            const clipboardData = this.clipboardService.get(clipboardId);
-            if (clipboardData) {
-              this.actionDispatcher.dispatch(sprotty_1.PasteOperation.create({ clipboardData, editorContext: this.editorContext.get() }));
-            }
-            event.preventDefault();
-          }
-        }
-        shouldCopy(_event) {
-          return this.editorContext.get().selectedElementIds.length > 0 && this.isDiagramActive();
-        }
-        shouldPaste(_event) {
-          return this.isDiagramActive();
-        }
-        isDiagramActive() {
-          var _a4, _b2;
-          return ((_b2 = (_a4 = document.activeElement) === null || _a4 === void 0 ? void 0 : _a4.parentElement) === null || _b2 === void 0 ? void 0 : _b2.id) === this.viewerOptions.baseDiv;
-        }
-      };
-      exports.ServerCopyPasteHandler = ServerCopyPasteHandler;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], ServerCopyPasteHandler.prototype, "actionDispatcher", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.ViewerOptions),
-        __metadata("design:type", Object)
-      ], ServerCopyPasteHandler.prototype, "viewerOptions", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IAsyncClipboardService),
-        __metadata("design:type", Object)
-      ], ServerCopyPasteHandler.prototype, "clipboardService", void 0);
-      __decorate([
-        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
-        __metadata("design:type", editor_context_service_1.EditorContextService)
-      ], ServerCopyPasteHandler.prototype, "editorContext", void 0);
-      exports.ServerCopyPasteHandler = ServerCopyPasteHandler = __decorate([
-        (0, inversify_1.injectable)()
-      ], ServerCopyPasteHandler);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/copy-paste/copy-paste-standalone.js
-  var require_copy_paste_standalone = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/copy-paste/copy-paste-standalone.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.CopyPasteStartup = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var CopyPasteStartup = class CopyPasteStartup {
-        constructor() {
-          this.toDispose = new sprotty_1.DisposableCollection();
-        }
-        modelRootChanged(root) {
-          if (root.id !== sprotty_1.EMPTY_ROOT.id) {
-            this.graphElementId = this.domHelper.createUniqueDOMElementId(root);
-          }
-        }
-        postModelInitialization() {
-          if (!this.copyPasteHandler) {
-            return;
-          }
-          const copyListener = (e2) => {
-            var _a4, _b2;
-            if (this.graphElementId && ((_a4 = document.activeElement) === null || _a4 === void 0 ? void 0 : _a4.id) === this.graphElementId) {
-              (_b2 = this.copyPasteHandler) === null || _b2 === void 0 ? void 0 : _b2.handleCopy(e2);
-            }
-          };
-          const cutListener = (e2) => {
-            var _a4, _b2;
-            if (this.graphElementId && ((_a4 = document.activeElement) === null || _a4 === void 0 ? void 0 : _a4.id) === this.graphElementId) {
-              (_b2 = this.copyPasteHandler) === null || _b2 === void 0 ? void 0 : _b2.handleCut(e2);
-            }
-          };
-          const pasteListener = (e2) => {
-            var _a4, _b2;
-            if (this.graphElementId && ((_a4 = document.activeElement) === null || _a4 === void 0 ? void 0 : _a4.id) === this.graphElementId) {
-              (_b2 = this.copyPasteHandler) === null || _b2 === void 0 ? void 0 : _b2.handlePaste(e2);
-            }
-          };
-          window.addEventListener("copy", copyListener);
-          window.addEventListener("cut", cutListener);
-          window.addEventListener("paste", pasteListener);
-          this.toDispose.push(sprotty_1.Disposable.create(() => {
-            window.removeEventListener("copy", copyListener);
-            window.removeEventListener("cut", cutListener);
-            window.removeEventListener("paste", pasteListener);
-          }));
-        }
-        dispose() {
-          this.toDispose.dispose();
-        }
-      };
-      exports.CopyPasteStartup = CopyPasteStartup;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.ICopyPasteHandler),
-        (0, inversify_1.optional)(),
-        __metadata("design:type", Object)
-      ], CopyPasteStartup.prototype, "copyPasteHandler", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.DOMHelper),
-        __metadata("design:type", sprotty_1.DOMHelper)
-      ], CopyPasteStartup.prototype, "domHelper", void 0);
-      __decorate([
-        (0, inversify_1.preDestroy)(),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", []),
-        __metadata("design:returntype", void 0)
-      ], CopyPasteStartup.prototype, "dispose", null);
-      exports.CopyPasteStartup = CopyPasteStartup = __decorate([
-        (0, inversify_1.injectable)()
-      ], CopyPasteStartup);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/copy-paste/copy-paste-modules.js
-  var require_copy_paste_modules = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/copy-paste/copy-paste-modules.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.standaloneCopyPasteModule = exports.copyPasteModule = void 0;
-      var sprotty_1 = require_lib4();
-      var copy_paste_handler_1 = require_copy_paste_handler();
-      var copy_paste_standalone_1 = require_copy_paste_standalone();
-      exports.copyPasteModule = new sprotty_1.FeatureModule((bind, _unbind, isBound) => {
-        bind(sprotty_1.TYPES.ICopyPasteHandler).to(copy_paste_handler_1.ServerCopyPasteHandler);
-        bind(sprotty_1.TYPES.IAsyncClipboardService).to(copy_paste_handler_1.LocalClipboardService).inSingletonScope();
-      }, { featureId: Symbol("copyPaste") });
-      exports.standaloneCopyPasteModule = new sprotty_1.FeatureModule((bind, _unbind, isBound) => {
-        (0, sprotty_1.bindAsService)(bind, sprotty_1.TYPES.IDiagramStartup, copy_paste_standalone_1.CopyPasteStartup);
-        bind(sprotty_1.TYPES.IGModelRootListener).toService(copy_paste_standalone_1.CopyPasteStartup);
-      }, {
-        featureId: Symbol("standaloneCopyPaste"),
-        requires: exports.copyPasteModule
-      });
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/css/decoration.css
-  var require_decoration = __commonJS({
-    "node_modules/@eclipse-glsp/client/css/decoration.css"(exports, module) {
-      module.exports = {};
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/decoration/decoration-placer.js
-  var require_decoration_placer2 = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/decoration/decoration-placer.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var GlspDecorationPlacer_1;
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.GlspDecorationPlacer = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var GlspDecorationPlacer = GlspDecorationPlacer_1 = class GlspDecorationPlacer extends sprotty_1.DecorationPlacer {
-        getPosition(element) {
-          if (element instanceof sprotty_1.GChildElement && element.parent instanceof sprotty_1.GRoutableElement) {
-            return super.getPosition(element);
-          }
-          if ((0, sprotty_1.isSizeable)(element)) {
-            return {
-              x: -GlspDecorationPlacer_1.DECORATION_OFFSET.x,
-              y: -GlspDecorationPlacer_1.DECORATION_OFFSET.y
-            };
-          }
-          return sprotty_1.Point.ORIGIN;
-        }
-      };
-      exports.GlspDecorationPlacer = GlspDecorationPlacer;
-      GlspDecorationPlacer.DECORATION_OFFSET = { x: 12, y: 10 };
-      exports.GlspDecorationPlacer = GlspDecorationPlacer = GlspDecorationPlacer_1 = __decorate([
-        (0, inversify_1.injectable)()
-      ], GlspDecorationPlacer);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/decoration/decoration-module.js
-  var require_decoration_module = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/decoration/decoration-module.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.decorationModule = void 0;
-      var sprotty_1 = require_lib4();
-      require_decoration();
-      var decoration_placer_1 = require_decoration_placer2();
-      exports.decorationModule = new sprotty_1.FeatureModule((bind) => {
-        (0, sprotty_1.bindAsService)(bind, sprotty_1.TYPES.IVNodePostprocessor, decoration_placer_1.GlspDecorationPlacer);
-      }, { featureId: Symbol("decoration") });
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/element-template/add-template-element.js
-  var require_add_template_element = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/element-template/add-template-element.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var __param = exports && exports.__param || function(paramIndex, decorator) {
-        return function(target, key) {
-          decorator(target, key, paramIndex);
-        };
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.templateToSchema = exports.AddTemplateElementsFeedbackCommand = exports.getTemplateElementId = exports.AddTemplateElementsAction = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var feedback_command_1 = require_feedback_command();
-      var gmodel_util_1 = require_gmodel_util();
-      var local_bounds_1 = require_local_bounds();
-      var AddTemplateElementsAction;
-      (function(AddTemplateElementsAction2) {
-        AddTemplateElementsAction2.KIND = "addTemplateElements";
-        function create(options) {
-          return {
-            kind: AddTemplateElementsAction2.KIND,
-            ...options
-          };
-        }
-        AddTemplateElementsAction2.create = create;
-      })(AddTemplateElementsAction || (exports.AddTemplateElementsAction = AddTemplateElementsAction = {}));
-      function getTemplateElementId(template) {
-        return typeof template === "string" ? `${template}_feedback` : template.id;
-      }
-      exports.getTemplateElementId = getTemplateElementId;
-      var AddTemplateElementsFeedbackCommand = class AddTemplateElementsFeedbackCommand extends feedback_command_1.FeedbackCommand {
-        constructor(action) {
-          super();
-          this.action = action;
-        }
-        execute(context) {
-          const templateElements = this.action.templates.map((template) => templateToSchema(template, context)).filter(gmodel_util_1.isNotUndefined).map((schema) => context.modelFactory.createElement(schema)).map((element) => this.applyRootCssClasses(element, this.action.addClasses, this.action.removeClasses));
-          templateElements.forEach((templateElement) => context.root.add(templateElement));
-          const templateElementIDs = templateElements.map((element) => element.id);
-          return local_bounds_1.LocalRequestBoundsAction.fromCommand(context, this.actionDispatcher, this.action, templateElementIDs);
-        }
-        applyRootCssClasses(element, addClasses, removeClasses) {
-          element.cssClasses = modifyCssClasses(element.cssClasses, addClasses, removeClasses);
-          return element;
-        }
-      };
-      exports.AddTemplateElementsFeedbackCommand = AddTemplateElementsFeedbackCommand;
-      AddTemplateElementsFeedbackCommand.KIND = AddTemplateElementsAction.KIND;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], AddTemplateElementsFeedbackCommand.prototype, "actionDispatcher", void 0);
-      exports.AddTemplateElementsFeedbackCommand = AddTemplateElementsFeedbackCommand = __decorate([
-        (0, inversify_1.injectable)(),
-        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.Action)),
-        __metadata("design:paramtypes", [Object])
-      ], AddTemplateElementsFeedbackCommand);
-      function templateToSchema(template, context) {
-        if (typeof template === "string") {
-          const element = context.root.index.getById(template);
-          const schema = element ? context.modelFactory.createSchema(element) : void 0;
-          if (schema) {
-            adaptSchemaIds(schema);
-          }
-          return schema;
-        }
-        return template;
-      }
-      exports.templateToSchema = templateToSchema;
-      function adaptSchemaIds(schema) {
-        var _a4;
-        schema.id = getTemplateElementId(schema.id);
-        (_a4 = schema.children) === null || _a4 === void 0 ? void 0 : _a4.forEach((child) => adaptSchemaIds(child));
-        return schema;
-      }
-      function modifyCssClasses(source, toAdd, toRemove) {
-        const classes = source !== null && source !== void 0 ? source : [];
-        if (toAdd) {
-          (0, sprotty_1.distinctAdd)(classes, ...toAdd);
-        }
-        if (toRemove) {
-          (0, sprotty_1.remove)(classes, ...toRemove);
-        }
-        return classes;
-      }
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/element-template/remove-template-element.js
-  var require_remove_template_element = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/element-template/remove-template-element.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var __param = exports && exports.__param || function(paramIndex, decorator) {
-        return function(target, key) {
-          decorator(target, key, paramIndex);
-        };
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.RemoveTemplateElementsFeedbackCommand = exports.RemoveTemplateElementsAction = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var feedback_command_1 = require_feedback_command();
-      var add_template_element_1 = require_add_template_element();
-      var RemoveTemplateElementsAction;
-      (function(RemoveTemplateElementsAction2) {
-        RemoveTemplateElementsAction2.KIND = "removeTemplateElements";
-        function create(options) {
-          return {
-            kind: RemoveTemplateElementsAction2.KIND,
-            ...options
-          };
-        }
-        RemoveTemplateElementsAction2.create = create;
-      })(RemoveTemplateElementsAction || (exports.RemoveTemplateElementsAction = RemoveTemplateElementsAction = {}));
-      var RemoveTemplateElementsFeedbackCommand = class RemoveTemplateElementsFeedbackCommand extends feedback_command_1.FeedbackCommand {
-        constructor(action) {
-          super();
-          this.action = action;
-        }
-        execute(context) {
-          const index = context.root.index;
-          for (const template of this.action.templates) {
-            const element = index.getById((0, add_template_element_1.getTemplateElementId)(template));
-            if (element && element instanceof sprotty_1.GChildElement) {
-              element.parent.remove(element);
-            }
-          }
-          return context.root;
-        }
-      };
-      exports.RemoveTemplateElementsFeedbackCommand = RemoveTemplateElementsFeedbackCommand;
-      RemoveTemplateElementsFeedbackCommand.KIND = RemoveTemplateElementsAction.KIND;
-      exports.RemoveTemplateElementsFeedbackCommand = RemoveTemplateElementsFeedbackCommand = __decorate([
-        (0, inversify_1.injectable)(),
-        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.Action)),
-        __metadata("design:paramtypes", [Object])
-      ], RemoveTemplateElementsFeedbackCommand);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/element-template/element-template-module.js
-  var require_element_template_module = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/element-template/element-template-module.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.elementTemplateModule = void 0;
-      var sprotty_1 = require_lib4();
-      var add_template_element_1 = require_add_template_element();
-      var remove_template_element_1 = require_remove_template_element();
-      exports.elementTemplateModule = new sprotty_1.FeatureModule((bind, unbind, isBound, rebind) => {
-        const context = { bind, unbind, isBound, rebind };
-        (0, sprotty_1.configureCommand)(context, add_template_element_1.AddTemplateElementsFeedbackCommand);
-        (0, sprotty_1.configureCommand)(context, remove_template_element_1.RemoveTemplateElementsFeedbackCommand);
-      }, { featureId: Symbol("elementTemplate") });
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/export/export-svg-action-handler.js
-  var require_export_svg_action_handler = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/export/export-svg-action-handler.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.ExportSvgActionHandler = void 0;
-      var file_saver_1 = require_FileSaver_min();
-      var inversify_1 = require_cjs4();
-      var ExportSvgActionHandler = class ExportSvgActionHandler {
-        handle(action) {
-          const blob = new Blob([action.svg], { type: "text/plain;charset=utf-8" });
-          (0, file_saver_1.saveAs)(blob, "diagram.svg");
-        }
-      };
-      exports.ExportSvgActionHandler = ExportSvgActionHandler;
-      exports.ExportSvgActionHandler = ExportSvgActionHandler = __decorate([
-        (0, inversify_1.injectable)()
-      ], ExportSvgActionHandler);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/export/glsp-svg-exporter.js
-  var require_glsp_svg_exporter = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/export/glsp-svg-exporter.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.GLSPSvgExporter = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var uuid_1 = require_commonjs_browser();
-      var GLSPSvgExporter = class GLSPSvgExporter extends sprotty_1.SvgExporter {
-        export(root, request) {
-          var _a4;
-          if (typeof document !== "undefined") {
-            let svgElement = this.findSvgElement();
-            if (svgElement) {
-              svgElement = this.prepareSvgElement(svgElement, root, request);
-              const serializedSvg = this.createSvg(svgElement, root, (_a4 = request === null || request === void 0 ? void 0 : request.options) !== null && _a4 !== void 0 ? _a4 : {}, request);
-              const svgExport = this.getSvgExport(serializedSvg, svgElement, root, request);
-              this.actionDispatcher.dispatch(sprotty_1.ExportSvgAction.create(svgExport, { responseId: request === null || request === void 0 ? void 0 : request.requestId, options: request === null || request === void 0 ? void 0 : request.options }));
-            }
-          }
-        }
-        createSvg(svgElement, root, options, cause) {
-          const originalId = svgElement.id;
-          try {
-            svgElement.id = originalId || (0, uuid_1.v4)();
-            return super.createSvg(svgElement, root, options, cause);
-          } finally {
-            svgElement.id = originalId;
-          }
-        }
-        findSvgElement() {
-          const div = document.getElementById(this.options.hiddenDiv);
-          return div && div.querySelector("svg");
-        }
-        prepareSvgElement(svgElement, root, request) {
-          return svgElement;
-        }
-        copyStyles(source, target, skippedProperties) {
-          this.copyStyle(source, target, skippedProperties);
-          for (let i2 = 0; i2 < source.childNodes.length; ++i2) {
-            const sourceChild = source.childNodes[i2];
-            const targetChild = target.childNodes[i2];
-            if (sourceChild instanceof Element) {
-              this.copyStyles(sourceChild, targetChild, []);
-            }
-          }
-        }
-        copyStyle(source, target, skippedProperties) {
-          const sourceStyle = getComputedStyle(source);
-          const targetStyle = getComputedStyle(target);
-          let style = "";
-          for (let i2 = 0; i2 < sourceStyle.length; i2++) {
-            const propertyName = sourceStyle[i2];
-            if (!skippedProperties.includes(propertyName)) {
-              const propertyValue = sourceStyle.getPropertyValue(propertyName);
-              const propertyPriority = sourceStyle.getPropertyPriority(propertyName);
-              if (targetStyle.getPropertyValue(propertyName) !== propertyValue) {
-                if (this.shouldUpdateStyle(target)) {
-                  target.style.setProperty(propertyName, propertyValue);
-                } else {
-                  style += `${propertyName}: ${propertyValue}${propertyPriority ? " !" + propertyPriority : ""}; `;
-                }
-              }
-            }
-          }
-          if (style !== "") {
-            target.setAttribute("style", style.trim());
-          }
-        }
-        shouldUpdateStyle(element) {
-          return "tagName" in element && "style" in element;
-        }
-        getSvgExport(serializedSvgElement, svgElement, root, request) {
-          const svgExportStyle = this.getSvgExportStyle(svgElement, root, request);
-          return svgExportStyle ? serializedSvgElement.replace('style="', `style="${svgExportStyle}`) : serializedSvgElement;
-        }
-        getSvgExportStyle(svgElement, root, request) {
-          const bounds = this.getBounds(root, document);
-          return `width: ${bounds.width}px !important;height: ${bounds.height}px !important;border: none !important;cursor: default !important;`;
-        }
-      };
-      exports.GLSPSvgExporter = GLSPSvgExporter;
-      exports.GLSPSvgExporter = GLSPSvgExporter = __decorate([
-        (0, inversify_1.injectable)()
-      ], GLSPSvgExporter);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/export/export-modules.js
-  var require_export_modules = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/export/export-modules.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.standaloneExportModule = exports.exportModule = void 0;
-      var sprotty_1 = require_lib4();
-      var export_svg_action_handler_1 = require_export_svg_action_handler();
-      var glsp_svg_exporter_1 = require_glsp_svg_exporter();
-      exports.exportModule = new sprotty_1.FeatureModule((bind, _unbind, isBound) => {
-        const context = { bind, isBound };
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.HiddenVNodePostprocessor, sprotty_1.ExportSvgPostprocessor);
-        (0, sprotty_1.configureCommand)(context, sprotty_1.ExportSvgCommand);
-        bind(sprotty_1.TYPES.SvgExporter).to(glsp_svg_exporter_1.GLSPSvgExporter).inSingletonScope();
-      }, { featureId: Symbol("export") });
-      exports.standaloneExportModule = new sprotty_1.FeatureModule((bind, _unbind, isBound) => {
-        const context = { bind, isBound };
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.KeyListener, sprotty_1.ExportSvgKeyListener);
-        bind(export_svg_action_handler_1.ExportSvgActionHandler).toSelf().inSingletonScope();
-        (0, sprotty_1.configureActionHandler)(context, sprotty_1.ExportSvgAction.KIND, export_svg_action_handler_1.ExportSvgActionHandler);
-      }, { featureId: Symbol("standaloneExport"), requires: exports.exportModule });
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/hints/model.js
-  var require_model21 = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/hints/model.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.isReparentable = exports.reparentFeature = exports.isContainable = exports.containerFeature = void 0;
-      exports.containerFeature = Symbol("containable");
-      function isContainable(element) {
-        return element.hasFeature(exports.containerFeature);
-      }
-      exports.isContainable = isContainable;
-      exports.reparentFeature = Symbol("reparentFeature");
-      function isReparentable(element) {
-        return element.hasFeature(exports.reparentFeature);
-      }
-      exports.isReparentable = isReparentable;
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/model.js
-  var require_model22 = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/model.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.GEdge = exports.GGraph = void 0;
-      var sprotty_1 = require_lib4();
-      var args_feature_1 = require_args_feature();
-      var model_1 = require_model21();
-      var GGraph = class extends sprotty_1.SGraphImpl {
-        isContainableElement(_input) {
-          return true;
-        }
-      };
-      exports.GGraph = GGraph;
-      GGraph.DEFAULT_FEATURES = [...sprotty_1.SGraphImpl.DEFAULT_FEATURES, model_1.containerFeature, args_feature_1.argsFeature];
-      var GEdge2 = class extends sprotty_1.SEdgeImpl {
-        localToParent(point) {
-          const bounds = (0, sprotty_1.getRouteBounds)(this.routingPoints);
-          const result = {
-            x: point.x + bounds.x,
-            y: point.y + bounds.y,
-            width: -1,
-            height: -1
-          };
-          if ((0, sprotty_1.isBounds)(point)) {
-            result.width = point.width;
-            result.height = point.height;
-          }
-          return result;
-        }
-        parentToLocal(point) {
-          const bounds = (0, sprotty_1.getRouteBounds)(this.routingPoints);
-          const result = {
-            x: point.x - bounds.x,
-            y: point.y - bounds.y,
-            width: -1,
-            height: -1
-          };
-          if ((0, sprotty_1.isBounds)(point)) {
-            result.width = point.width;
-            result.height = point.height;
-          }
-          return result;
-        }
-      };
-      exports.GEdge = GEdge2;
-      GEdge2.DEFAULT_FEATURES = [...sprotty_1.SEdgeImpl.DEFAULT_FEATURES, args_feature_1.argsFeature];
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/reconnect/model.js
-  var require_model23 = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/reconnect/model.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.GReconnectHandle = exports.createReconnectHandle = exports.isTargetRoutingHandle = exports.isSourceRoutingHandle = exports.removeReconnectHandles = exports.addReconnectHandles = exports.isReconnectHandle = exports.isReconnectable = exports.reconnectFeature = void 0;
-      var sprotty_1 = require_lib4();
-      exports.reconnectFeature = Symbol("reconnectFeature");
-      function isReconnectable(element) {
-        return element instanceof sprotty_1.GRoutableElement && element.hasFeature(exports.reconnectFeature);
-      }
-      exports.isReconnectable = isReconnectable;
-      var ROUTING_HANDLE_SOURCE_INDEX = -2;
-      function isReconnectHandle(element) {
-        return element !== void 0 && element instanceof GReconnectHandle;
-      }
-      exports.isReconnectHandle = isReconnectHandle;
-      function addReconnectHandles(element) {
-        removeReconnectHandles(element);
-        createReconnectHandle(element, "source", ROUTING_HANDLE_SOURCE_INDEX);
-        createReconnectHandle(element, "target", element.routingPoints.length);
-      }
-      exports.addReconnectHandles = addReconnectHandles;
-      function removeReconnectHandles(element) {
-        element.removeAll((child) => child instanceof GReconnectHandle);
-      }
-      exports.removeReconnectHandles = removeReconnectHandles;
-      function isSourceRoutingHandle(edge, routingHandle) {
-        return routingHandle.pointIndex === ROUTING_HANDLE_SOURCE_INDEX;
-      }
-      exports.isSourceRoutingHandle = isSourceRoutingHandle;
-      function isTargetRoutingHandle(edge, routingHandle) {
-        return routingHandle.pointIndex === edge.routingPoints.length;
-      }
-      exports.isTargetRoutingHandle = isTargetRoutingHandle;
-      function createReconnectHandle(edge, kind, routingPointIndex) {
-        const handle = new GReconnectHandle();
-        handle.kind = kind;
-        handle.pointIndex = routingPointIndex;
-        handle.type = "routing-point";
-        if (kind === "target" && edge.id === sprotty_1.edgeInProgressID) {
-          handle.id = sprotty_1.edgeInProgressTargetHandleID;
-        }
-        edge.add(handle);
-        return handle;
-      }
-      exports.createReconnectHandle = createReconnectHandle;
-      var GReconnectHandle = class extends sprotty_1.GRoutingHandle {
-        hasFeature(feature) {
-          return feature !== sprotty_1.selectFeature && super.hasFeature(feature);
-        }
-      };
-      exports.GReconnectHandle = GReconnectHandle;
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/hints/type-hint-provider.js
-  var require_type_hint_provider = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/hints/type-hint-provider.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var __param = exports && exports.__param || function(paramIndex, decorator) {
-        return function(target, key) {
-          decorator(target, key, paramIndex);
-        };
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.TypeHintProvider = exports.ApplyTypeHintsCommand = exports.ApplyTypeHintsAction = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var feedback_command_1 = require_feedback_command();
-      var model_1 = require_model22();
-      var gmodel_util_1 = require_gmodel_util();
-      var model_2 = require_model19();
-      var model_3 = require_model23();
-      var model_4 = require_model21();
-      var ApplyTypeHintsAction;
-      (function(ApplyTypeHintsAction2) {
-        ApplyTypeHintsAction2.KIND = "applyTypeHints";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, ApplyTypeHintsAction2.KIND);
-        }
-        ApplyTypeHintsAction2.is = is;
-        function create() {
-          return { kind: ApplyTypeHintsAction2.KIND };
-        }
-        ApplyTypeHintsAction2.create = create;
-      })(ApplyTypeHintsAction || (exports.ApplyTypeHintsAction = ApplyTypeHintsAction = {}));
-      var ApplyTypeHintsCommand = class ApplyTypeHintsCommand extends feedback_command_1.FeedbackCommand {
-        constructor(action) {
-          super();
-          this.action = action;
-          this.rank = -10;
-        }
-        execute(context) {
-          context.root.index.all().forEach((element) => {
-            if (element instanceof sprotty_1.GShapeElement || element instanceof sprotty_1.GModelRoot) {
-              return this.applyShapeTypeHint(element);
-            }
-            if (element instanceof model_1.GEdge) {
-              this.applyEdgeTypeHint(element);
-            }
-          });
-          return context.root;
-        }
-        applyEdgeTypeHint(element) {
-          const hint = this.typeHintProvider.getEdgeTypeHint(element);
-          if (hint && element.features instanceof Set) {
-            addOrRemove(element.features, sprotty_1.deletableFeature, hint.deletable);
-            addOrRemove(element.features, sprotty_1.editFeature, hint.routable);
-            addOrRemove(element.features, model_3.reconnectFeature, hint.repositionable);
-          }
-        }
-        applyShapeTypeHint(element) {
-          const hint = this.typeHintProvider.getShapeTypeHint(element);
-          if (hint && element.features instanceof Set) {
-            addOrRemove(element.features, sprotty_1.deletableFeature, hint.deletable);
-            addOrRemove(element.features, sprotty_1.moveFeature, hint.repositionable);
-            addOrRemove(element.features, model_2.resizeFeature, hint.resizable);
-            addOrRemove(element.features, model_4.reparentFeature, hint.reparentable);
-            addOrRemove(element.features, model_4.containerFeature, true);
-            if ((0, model_4.isContainable)(element)) {
-              element.isContainableElement = (input) => this.isContainableElement(input, hint);
-            }
-            const fallbackCanConnect = (0, sprotty_1.isConnectable)(element) ? element.canConnect.bind(element) : void 0;
-            addOrRemove(element.features, sprotty_1.connectableFeature, true);
-            if ((0, sprotty_1.isConnectable)(element)) {
-              element.canConnect = (routable, role) => this.canConnect(routable, role, element, fallbackCanConnect);
-            }
-          }
-        }
-        /**
-         * Type hints aware wrapper function for  `Connectable.canConnect`. After type hints have been applied
-         * the `canConnect` implementation of `connectable` model elements  (with a matching hint) will forward to this method.
-         */
-        canConnect(routable, role, element, fallbackCanConnect) {
-          var _a4;
-          const edgeHint = this.typeHintProvider.getEdgeTypeHint(routable.type);
-          if (!edgeHint) {
-            return (_a4 = fallbackCanConnect === null || fallbackCanConnect === void 0 ? void 0 : fallbackCanConnect(routable, role)) !== null && _a4 !== void 0 ? _a4 : false;
-          }
-          const validElementIds = role === "source" ? edgeHint.sourceElementTypeIds : edgeHint.targetElementTypeIds;
-          if (!validElementIds) {
-            return true;
-          }
-          const elementType = element.type + ":";
-          return validElementIds.some((type) => elementType.startsWith(type));
-        }
-        /**
-         * Type hints aware wrapper function for  `Containable.isContainableElement`. After type hints have been applied
-         * the `isContainableElement` implementation of `containable` model elements (with a matching hint) will forward to this method.
-         */
-        isContainableElement(input, hint) {
-          var _a4, _b2;
-          const elemenType = (0, gmodel_util_1.getElementTypeId)(input) + ":";
-          return (_b2 = (_a4 = hint.containableElementTypeIds) === null || _a4 === void 0 ? void 0 : _a4.some((type) => elemenType.startsWith(type))) !== null && _b2 !== void 0 ? _b2 : false;
-        }
-      };
-      exports.ApplyTypeHintsCommand = ApplyTypeHintsCommand;
-      ApplyTypeHintsCommand.KIND = ApplyTypeHintsAction.KIND;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.ITypeHintProvider),
-        __metadata("design:type", Object)
-      ], ApplyTypeHintsCommand.prototype, "typeHintProvider", void 0);
-      exports.ApplyTypeHintsCommand = ApplyTypeHintsCommand = __decorate([
-        (0, inversify_1.injectable)(),
-        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.Action)),
-        __metadata("design:paramtypes", [Object])
-      ], ApplyTypeHintsCommand);
-      function addOrRemove(features, feature, add) {
-        if (add && !features.has(feature)) {
-          features.add(feature);
-        } else if (!add && features.has(feature)) {
-          features.delete(feature);
-        }
-      }
-      var TypeHintProvider = class TypeHintProvider {
-        constructor() {
-          this.shapeHints = /* @__PURE__ */ new Map();
-          this.edgeHints = /* @__PURE__ */ new Map();
-        }
-        init() {
-          this.typeHintsFeedback = this.feedbackActionDispatcher.createEmitter();
-        }
-        handle(action) {
-          this.shapeHints.clear();
-          this.edgeHints.clear();
-          action.shapeHints.forEach((hint) => this.shapeHints.set(hint.elementTypeId, hint));
-          action.edgeHints.forEach((hint) => this.edgeHints.set(hint.elementTypeId, hint));
-          this.typeHintsFeedback.add(ApplyTypeHintsAction.create()).submit();
-        }
-        getShapeTypeHint(input) {
-          return this.getTypeHint(input, this.shapeHints);
-        }
-        getEdgeTypeHint(input) {
-          return this.getTypeHint(input, this.edgeHints);
-        }
-        getTypeHint(input, hints) {
-          const type = (0, gmodel_util_1.getElementTypeId)(input);
-          let hint = hints.get(type);
-          if (hint === void 0) {
-            const subtypes = type.split(":");
-            while (hint === void 0 && subtypes.length > 0) {
-              subtypes.pop();
-              hint = hints.get(subtypes.join(":"));
-              if (hint) {
-                hints.set(type, hint);
-                break;
-              }
-            }
-          }
-          return hint;
-        }
-        async postRequestModel() {
-          const setTypeHintsAction = await this.actionDispatcher.request(sprotty_1.RequestTypeHintsAction.create());
-          this.handle(setTypeHintsAction);
-        }
-      };
-      exports.TypeHintProvider = TypeHintProvider;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IFeedbackActionDispatcher),
-        __metadata("design:type", Object)
-      ], TypeHintProvider.prototype, "feedbackActionDispatcher", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], TypeHintProvider.prototype, "actionDispatcher", void 0);
-      __decorate([
-        (0, inversify_1.postConstruct)(),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", []),
-        __metadata("design:returntype", void 0)
-      ], TypeHintProvider.prototype, "init", null);
-      exports.TypeHintProvider = TypeHintProvider = __decorate([
-        (0, inversify_1.injectable)()
-      ], TypeHintProvider);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/hints/type-hints-module.js
-  var require_type_hints_module = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/hints/type-hints-module.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.typeHintsModule = void 0;
-      var sprotty_1 = require_lib4();
-      var type_hint_provider_1 = require_type_hint_provider();
-      exports.typeHintsModule = new sprotty_1.FeatureModule((bind, unbind, isBound) => {
-        const context = { bind, unbind, isBound };
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.ITypeHintProvider, type_hint_provider_1.TypeHintProvider);
-        bind(sprotty_1.TYPES.IDiagramStartup).toService(type_hint_provider_1.TypeHintProvider);
-        (0, sprotty_1.configureActionHandler)(context, sprotty_1.SetTypeHintsAction.KIND, type_hint_provider_1.TypeHintProvider);
-        (0, sprotty_1.configureCommand)(context, type_hint_provider_1.ApplyTypeHintsCommand);
-      }, { featureId: Symbol("typeHints") });
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/tools/base-tools.js
-  var require_base_tools = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/tools/base-tools.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.BaseCreationTool = exports.BaseEditTool = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var editor_context_service_1 = require_editor_context_service();
-      var tool_1 = require_tool();
-      var key_tool_1 = require_key_tool2();
-      var mouse_tool_1 = require_mouse_tool2();
-      var BaseEditTool = class BaseEditTool {
-        constructor() {
-          this.toDisposeOnDisable = new sprotty_1.DisposableCollection();
-        }
-        disable() {
-          this.toDisposeOnDisable.dispose();
-        }
-        get isEditTool() {
-          return true;
-        }
-        dispatchActions(actions) {
-          return this.actionDispatcher.dispatchAll(actions);
-        }
-        createFeedbackEmitter() {
-          return this.feedbackDispatcher.createEmitter();
-        }
-        registerFeedback(feedbackActions, feedbackEmitter = this, cleanupActions) {
-          return this.feedbackDispatcher.registerFeedback(feedbackEmitter, feedbackActions, cleanupActions);
-        }
-        deregisterFeedback(feedbackEmitter = this, cleanupActions) {
-          this.feedbackDispatcher.deregisterFeedback(feedbackEmitter, cleanupActions);
-        }
-      };
-      exports.BaseEditTool = BaseEditTool;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IFeedbackActionDispatcher),
-        __metadata("design:type", Object)
-      ], BaseEditTool.prototype, "feedbackDispatcher", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], BaseEditTool.prototype, "actionDispatcher", void 0);
-      __decorate([
-        (0, inversify_1.inject)(mouse_tool_1.GLSPMouseTool),
-        __metadata("design:type", mouse_tool_1.GLSPMouseTool)
-      ], BaseEditTool.prototype, "mouseTool", void 0);
-      __decorate([
-        (0, inversify_1.inject)(key_tool_1.GLSPKeyTool),
-        __metadata("design:type", key_tool_1.GLSPKeyTool)
-      ], BaseEditTool.prototype, "keyTool", void 0);
-      __decorate([
-        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
-        __metadata("design:type", editor_context_service_1.EditorContextService)
-      ], BaseEditTool.prototype, "editorContext", void 0);
-      exports.BaseEditTool = BaseEditTool = __decorate([
-        (0, inversify_1.injectable)()
-      ], BaseEditTool);
-      var BaseCreationTool = class BaseCreationTool extends BaseEditTool {
-        handle(action) {
-          if (this.isTriggerAction(action)) {
-            this.triggerAction = action;
-            return tool_1.EnableToolsAction.create([this.id]);
-          }
-        }
-        enable() {
-          if (this.triggerAction === void 0) {
-            throw new TypeError(`Could not enable tool ${this.id}. The triggerAction cannot be undefined.`);
-          }
-          this.doEnable();
-        }
-      };
-      exports.BaseCreationTool = BaseCreationTool;
-      exports.BaseCreationTool = BaseCreationTool = __decorate([
-        (0, inversify_1.injectable)()
-      ], BaseCreationTool);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/utils/viewpoint-util.js
-  var require_viewpoint_util = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/utils/viewpoint-util.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.outsideOfViewport = exports.absoluteToLocal = exports.absoluteToParent = exports.toAbsoluteSize = exports.toAbsolutePosition = exports.toAbsoluteBounds = exports.getViewportBounds = exports.getAbsolutePositionByPoint = exports.getAbsolutePosition = void 0;
-      var sprotty_1 = require_lib4();
-      function getAbsolutePosition(target, mouseEvent) {
-        return getAbsolutePositionByPoint(target, { x: mouseEvent.pageX, y: mouseEvent.pageY });
-      }
-      exports.getAbsolutePosition = getAbsolutePosition;
-      function getAbsolutePositionByPoint(target, point) {
-        let position = sprotty_1.Point.subtract(point, target.root.canvasBounds);
-        const viewport = (0, sprotty_1.findParentByFeature)(target, sprotty_1.isViewport);
-        if (viewport) {
-          const zoom = viewport.zoom;
-          const zoomedScroll = sprotty_1.Point.multiplyScalar(viewport.scroll, zoom);
-          position = sprotty_1.Point.add(position, zoomedScroll);
-          position = sprotty_1.Point.divideScalar(position, zoom);
-        }
-        return position;
-      }
-      exports.getAbsolutePositionByPoint = getAbsolutePositionByPoint;
-      function getViewportBounds(target, bounds) {
-        const topLeft = getAbsolutePositionByPoint(target, sprotty_1.Bounds.topLeft(bounds));
-        const bottomRight = getAbsolutePositionByPoint(target, sprotty_1.Bounds.bottomRight(bounds));
-        return sprotty_1.Bounds.from(topLeft, bottomRight);
-      }
-      exports.getViewportBounds = getViewportBounds;
-      function toAbsoluteBounds(element) {
-        const location2 = (0, sprotty_1.isAlignable)(element) ? element.alignment : sprotty_1.Point.ORIGIN;
-        const x3 = location2.x;
-        const y3 = location2.y;
-        const width = element.bounds.width;
-        const height = element.bounds.height;
-        return (0, sprotty_1.translateBounds)({ x: x3, y: y3, width, height }, element, element.root);
-      }
-      exports.toAbsoluteBounds = toAbsoluteBounds;
-      function toAbsolutePosition(target) {
-        return toAbsoluteBounds(target);
-      }
-      exports.toAbsolutePosition = toAbsolutePosition;
-      function toAbsoluteSize(target) {
-        return toAbsoluteBounds(target);
-      }
-      exports.toAbsoluteSize = toAbsoluteSize;
-      function absoluteToParent(element, absolutePoint) {
-        if ((0, sprotty_1.isBoundsAware)(element.parent)) {
-          return absoluteToLocal(element.parent, absolutePoint);
-        }
-        return absoluteToLocal(element, absolutePoint);
-      }
-      exports.absoluteToParent = absoluteToParent;
-      function absoluteToLocal(element, absolutePoint) {
-        const absoluteElementBounds = toAbsoluteBounds(element);
-        return sprotty_1.Point.subtract(absolutePoint, absoluteElementBounds);
-      }
-      exports.absoluteToLocal = absoluteToLocal;
-      function outsideOfViewport(point, viewport) {
-        return point.x < viewport.scroll.x || point.x > viewport.scroll.x + viewport.canvasBounds.width || point.y < viewport.scroll.y || point.y > viewport.scroll.y + viewport.canvasBounds.height;
-      }
-      exports.outsideOfViewport = outsideOfViewport;
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/tools/edge-creation/view.js
-  var require_view2 = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/tools/edge-creation/view.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.FeedbackEdgeEndView = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var FeedbackEdgeEndView = class FeedbackEdgeEndView {
-        render(model, context) {
-          var _a4;
-          const position = (_a4 = model.position) !== null && _a4 !== void 0 ? _a4 : sprotty_1.Point.ORIGIN;
-          return (0, sprotty_1.svg)("g", { x: position.x, y: position.y });
-        }
-      };
-      exports.FeedbackEdgeEndView = FeedbackEdgeEndView;
-      exports.FeedbackEdgeEndView = FeedbackEdgeEndView = __decorate([
-        (0, inversify_1.injectable)()
-      ], FeedbackEdgeEndView);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/tools/edge-creation/dangling-edge-feedback.js
-  var require_dangling_edge_feedback = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/tools/edge-creation/dangling-edge-feedback.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var __param = exports && exports.__param || function(paramIndex, decorator) {
-        return function(target, key) {
-          decorator(target, key, paramIndex);
-        };
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.configureDanglingFeedbackEdge = exports.removeDanglingFeedbackEdge = exports.drawFeedbackEdge = exports.defaultFeedbackEdgeSchema = exports.feedbackEdgeEndId = exports.feedbackEdgeId = exports.FeedbackEdgeEnd = exports.RemoveFeedbackEdgeCommand = exports.RemoveFeedbackEdgeAction = exports.DrawFeedbackEdgeCommand = exports.DrawFeedbackEdgeAction = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var feedback_action_dispatcher_1 = require_feedback_action_dispatcher();
-      var feedback_command_1 = require_feedback_command();
-      var gmodel_util_1 = require_gmodel_util();
-      var viewpoint_util_1 = require_viewpoint_util();
-      var view_1 = require_view2();
-      var DrawFeedbackEdgeAction;
-      (function(DrawFeedbackEdgeAction2) {
-        DrawFeedbackEdgeAction2.KIND = "drawFeedbackEdge";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, DrawFeedbackEdgeAction2.KIND);
-        }
-        DrawFeedbackEdgeAction2.is = is;
-        function create(options) {
-          return {
-            kind: DrawFeedbackEdgeAction2.KIND,
-            ...options
-          };
-        }
-        DrawFeedbackEdgeAction2.create = create;
-      })(DrawFeedbackEdgeAction || (exports.DrawFeedbackEdgeAction = DrawFeedbackEdgeAction = {}));
-      var DrawFeedbackEdgeCommand = class DrawFeedbackEdgeCommand extends feedback_command_1.FeedbackCommand {
-        constructor(action) {
-          super();
-          this.action = action;
-        }
-        execute(context) {
-          drawFeedbackEdge(context, this.action.sourceId, this.action.elementTypeId, this.action.edgeSchema);
-          return context.root;
-        }
-      };
-      exports.DrawFeedbackEdgeCommand = DrawFeedbackEdgeCommand;
-      DrawFeedbackEdgeCommand.KIND = DrawFeedbackEdgeAction.KIND;
-      exports.DrawFeedbackEdgeCommand = DrawFeedbackEdgeCommand = __decorate([
-        (0, inversify_1.injectable)(),
-        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.Action)),
-        __metadata("design:paramtypes", [Object])
-      ], DrawFeedbackEdgeCommand);
-      var RemoveFeedbackEdgeAction;
-      (function(RemoveFeedbackEdgeAction2) {
-        RemoveFeedbackEdgeAction2.KIND = "removeFeedbackEdgeCommand";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, RemoveFeedbackEdgeAction2.KIND);
-        }
-        RemoveFeedbackEdgeAction2.is = is;
-        function create() {
-          return { kind: RemoveFeedbackEdgeAction2.KIND };
-        }
-        RemoveFeedbackEdgeAction2.create = create;
-      })(RemoveFeedbackEdgeAction || (exports.RemoveFeedbackEdgeAction = RemoveFeedbackEdgeAction = {}));
-      var RemoveFeedbackEdgeCommand = class RemoveFeedbackEdgeCommand extends feedback_command_1.FeedbackCommand {
-        execute(context) {
-          removeDanglingFeedbackEdge(context.root);
-          return context.root;
-        }
-      };
-      exports.RemoveFeedbackEdgeCommand = RemoveFeedbackEdgeCommand;
-      RemoveFeedbackEdgeCommand.KIND = RemoveFeedbackEdgeAction.KIND;
-      exports.RemoveFeedbackEdgeCommand = RemoveFeedbackEdgeCommand = __decorate([
-        (0, inversify_1.injectable)()
-      ], RemoveFeedbackEdgeCommand);
-      var FeedbackEdgeEnd = class _FeedbackEdgeEnd extends sprotty_1.GDanglingAnchor {
-        constructor(sourceId, elementTypeId, feedbackEdge = void 0, type = _FeedbackEdgeEnd.TYPE) {
-          super();
-          this.sourceId = sourceId;
-          this.elementTypeId = elementTypeId;
-          this.feedbackEdge = feedbackEdge;
-          this.type = type;
-        }
-      };
-      exports.FeedbackEdgeEnd = FeedbackEdgeEnd;
-      FeedbackEdgeEnd.DEFAULT_FEATURES = [sprotty_1.deletableFeature, feedback_action_dispatcher_1.feedbackFeature];
-      FeedbackEdgeEnd.TYPE = "feedback-edge-end";
-      function feedbackEdgeId(root) {
-        return root.id + "_feedback_edge";
-      }
-      exports.feedbackEdgeId = feedbackEdgeId;
-      function feedbackEdgeEndId(root) {
-        return root.id + "_feedback_anchor";
-      }
-      exports.feedbackEdgeEndId = feedbackEdgeEndId;
-      exports.defaultFeedbackEdgeSchema = {
-        cssClasses: ["feedback-edge"],
-        opacity: 0.3
-      };
-      function drawFeedbackEdge(context, sourceId, elementTypeId, edgeTemplate) {
-        const root = context.root;
-        const sourceChild = root.index.getById(sourceId);
-        if (!sourceChild) {
-          return;
-        }
-        const source = (0, sprotty_1.findParentByFeature)(sourceChild, sprotty_1.isConnectable);
-        if (!source || !(0, sprotty_1.isBoundsAware)(source)) {
-          return;
-        }
-        const edgeEnd = new FeedbackEdgeEnd(source.id, elementTypeId);
-        edgeEnd.id = feedbackEdgeEndId(root);
-        edgeEnd.position = (0, viewpoint_util_1.toAbsolutePosition)(source);
-        const edgeSchema = {
-          id: feedbackEdgeId(root),
-          type: elementTypeId,
-          sourceId: source.id,
-          targetId: edgeEnd.id,
-          ...exports.defaultFeedbackEdgeSchema,
-          ...edgeTemplate
-        };
-        const feedbackEdge = context.modelFactory.createElement(edgeSchema);
-        if ((0, gmodel_util_1.isRoutable)(feedbackEdge)) {
-          edgeEnd.feedbackEdge = feedbackEdge;
-          root.add(edgeEnd);
-          root.add(feedbackEdge);
-        }
-      }
-      exports.drawFeedbackEdge = drawFeedbackEdge;
-      function removeDanglingFeedbackEdge(root) {
-        const feedbackEdge = root.index.getById(feedbackEdgeId(root));
-        const feedbackEdgeEnd = root.index.getById(feedbackEdgeEndId(root));
-        if (feedbackEdge instanceof sprotty_1.GChildElement) {
-          root.remove(feedbackEdge);
-        }
-        if (feedbackEdgeEnd instanceof sprotty_1.GChildElement) {
-          root.remove(feedbackEdgeEnd);
-        }
-      }
-      exports.removeDanglingFeedbackEdge = removeDanglingFeedbackEdge;
-      function configureDanglingFeedbackEdge(context) {
-        if (!context.isBound(DrawFeedbackEdgeCommand) && !context.isBound(RemoveFeedbackEdgeCommand) && !context.isBound(view_1.FeedbackEdgeEndView)) {
-          (0, sprotty_1.configureCommand)(context, DrawFeedbackEdgeCommand);
-          (0, sprotty_1.configureCommand)(context, RemoveFeedbackEdgeCommand);
-          (0, sprotty_1.configureView)(context, FeedbackEdgeEnd.TYPE, view_1.FeedbackEdgeEndView);
-        }
-      }
-      exports.configureDanglingFeedbackEdge = configureDanglingFeedbackEdge;
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/tools/edge-creation/edge-creation-tool-feedback.js
-  var require_edge_creation_tool_feedback = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/tools/edge-creation/edge-creation-tool-feedback.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.FeedbackEdgeEndMovingMouseListener = void 0;
-      var sprotty_1 = require_lib4();
-      var viewpoint_util_1 = require_viewpoint_util();
-      var dangling_edge_feedback_1 = require_dangling_edge_feedback();
-      var FeedbackEdgeEndMovingMouseListener = class extends sprotty_1.MouseListener {
-        constructor(anchorRegistry, feedbackDispatcher) {
-          super();
-          this.anchorRegistry = anchorRegistry;
-          this.feedbackDispatcher = feedbackDispatcher;
-          this.feedback = feedbackDispatcher.createEmitter();
-        }
-        mouseMove(target, event) {
-          const root = target.root;
-          const edgeEnd = root.index.getById((0, dangling_edge_feedback_1.feedbackEdgeEndId)(root));
-          if (!(edgeEnd instanceof dangling_edge_feedback_1.FeedbackEdgeEnd) || !edgeEnd.feedbackEdge) {
-            return [];
-          }
-          const edge = edgeEnd.feedbackEdge;
-          const position = (0, viewpoint_util_1.getAbsolutePosition)(edgeEnd, event);
-          const endAtMousePosition = (0, sprotty_1.findChildrenAtPosition)(target.root, position).reverse().find((element) => (0, sprotty_1.isConnectable)(element) && element.canConnect(edge, "target"));
-          if (endAtMousePosition instanceof sprotty_1.GConnectableElement && edge.source && (0, sprotty_1.isBoundsAware)(edge.source)) {
-            const anchor = this.computeAbsoluteAnchor(endAtMousePosition, sprotty_1.Bounds.center((0, viewpoint_util_1.toAbsoluteBounds)(edge.source)));
-            if (sprotty_1.Point.euclideanDistance(anchor, edgeEnd.position) > 1) {
-              this.feedback.add(sprotty_1.MoveAction.create([{ elementId: edgeEnd.id, toPosition: anchor }], { animate: false })).submit();
-            }
-          } else {
-            this.feedback.add(sprotty_1.MoveAction.create([{ elementId: edgeEnd.id, toPosition: position }], { animate: false })).submit();
-          }
-          return [];
-        }
-        computeAbsoluteAnchor(element, absoluteReferencePoint, offset) {
-          const referencePointInParent = (0, viewpoint_util_1.absoluteToParent)(element, absoluteReferencePoint);
-          const anchorComputer = this.anchorRegistry.get(sprotty_1.PolylineEdgeRouter.KIND, element.anchorKind);
-          let anchor = anchorComputer.getAnchor(element, referencePointInParent, offset);
-          if (element.parent !== element.root) {
-            const parent = (0, sprotty_1.findParentByFeature)(element.parent, sprotty_1.isBoundsAware);
-            if (parent) {
-              const absoluteParentPosition = (0, viewpoint_util_1.toAbsoluteBounds)(parent);
-              anchor = sprotty_1.Point.add(absoluteParentPosition, anchor);
-            }
-          }
-          return anchor;
-        }
-        dispose() {
-          this.feedback.dispose();
-        }
-      };
-      exports.FeedbackEdgeEndMovingMouseListener = FeedbackEdgeEndMovingMouseListener;
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/tools/edge-creation/edge-creation-tool.js
-  var require_edge_creation_tool = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/tools/edge-creation/edge-creation-tool.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var EdgeCreationTool_1;
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.EdgeCreationToolMouseListener = exports.EdgeCreationTool = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var drag_aware_mouse_listener_1 = require_drag_aware_mouse_listener();
-      var css_feedback_1 = require_css_feedback();
-      var tool_1 = require_tool();
-      var model_1 = require_model22();
-      var base_tools_1 = require_base_tools();
-      var dangling_edge_feedback_1 = require_dangling_edge_feedback();
-      var edge_creation_tool_feedback_1 = require_edge_creation_tool_feedback();
-      var EdgeCreationTool = EdgeCreationTool_1 = class EdgeCreationTool extends base_tools_1.BaseCreationTool {
-        constructor() {
-          super(...arguments);
-          this.isTriggerAction = sprotty_1.TriggerEdgeCreationAction.is;
-        }
-        get id() {
-          return EdgeCreationTool_1.ID;
-        }
-        doEnable() {
-          this.toolFeedback();
-          this.creationListener();
-          this.trackFeedbackEdge();
-        }
-        toolFeedback() {
-          const toolFeedback = this.createFeedbackEmitter().add((0, css_feedback_1.cursorFeedbackAction)(css_feedback_1.CursorCSS.OPERATION_NOT_ALLOWED), (0, css_feedback_1.cursorFeedbackAction)()).submit();
-          this.toDisposeOnDisable.push(toolFeedback);
-        }
-        creationListener() {
-          const creationListener = new EdgeCreationToolMouseListener(this.triggerAction, this.actionDispatcher, this.typeHintProvider, this, this.grid ? this.grid.x / 2 : void 0);
-          this.toDisposeOnDisable.push(creationListener, this.mouseTool.registerListener(creationListener));
-        }
-        trackFeedbackEdge() {
-          const mouseMovingFeedback = new edge_creation_tool_feedback_1.FeedbackEdgeEndMovingMouseListener(this.anchorRegistry, this.feedbackDispatcher);
-          this.toDisposeOnDisable.push(mouseMovingFeedback, this.mouseTool.registerListener(mouseMovingFeedback));
-        }
-      };
-      exports.EdgeCreationTool = EdgeCreationTool;
-      EdgeCreationTool.ID = "tool_create_edge";
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.AnchorComputerRegistry),
-        __metadata("design:type", sprotty_1.AnchorComputerRegistry)
-      ], EdgeCreationTool.prototype, "anchorRegistry", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.ITypeHintProvider),
-        __metadata("design:type", Object)
-      ], EdgeCreationTool.prototype, "typeHintProvider", void 0);
-      __decorate([
-        (0, inversify_1.optional)(),
-        (0, inversify_1.inject)(sprotty_1.TYPES.Grid),
-        __metadata("design:type", Object)
-      ], EdgeCreationTool.prototype, "grid", void 0);
-      exports.EdgeCreationTool = EdgeCreationTool = EdgeCreationTool_1 = __decorate([
-        (0, inversify_1.injectable)()
-      ], EdgeCreationTool);
-      var EdgeCreationToolMouseListener = class extends drag_aware_mouse_listener_1.DragAwareMouseListener {
-        constructor(triggerAction, actionDispatcher, typeHintProvider, tool, dragSensitivity) {
-          super(dragSensitivity);
-          this.triggerAction = triggerAction;
-          this.actionDispatcher = actionDispatcher;
-          this.typeHintProvider = typeHintProvider;
-          this.tool = tool;
-          this.dragSensitivity = dragSensitivity;
-          this.allowedTarget = false;
-          this.pendingDynamicCheck = false;
-          this.proxyEdge = new model_1.GEdge();
-          this.proxyEdge.type = triggerAction.elementTypeId;
-          this.cursorFeedback = tool.createFeedbackEmitter();
-          this.feedbackEdgeFeedback = tool.createFeedbackEmitter();
-        }
-        nonDraggingMouseUp(element, event) {
-          const result = [];
-          if (event.button === 0) {
-            if (!this.isSourceSelected()) {
-              if (this.currentTarget && this.allowedTarget) {
-                this.source = this.currentTarget.id;
-                this.feedbackEdgeFeedback.add(dangling_edge_feedback_1.DrawFeedbackEdgeAction.create({ elementTypeId: this.triggerAction.elementTypeId, sourceId: this.source }), dangling_edge_feedback_1.RemoveFeedbackEdgeAction.create()).submit();
-              }
-            } else if (this.currentTarget && this.allowedTarget) {
-              this.target = this.currentTarget.id;
-            }
-            if (this.source && this.target) {
-              result.push(this.getCreateOperation(element, event, this.source, this.target));
-              if (!this.isContinuousMode(element, event)) {
-                result.push(tool_1.EnableDefaultToolsAction.create());
-              } else {
-                this.dispose();
-              }
-            }
-          } else if (event.button === 2) {
-            this.dispose();
-            result.push(tool_1.EnableDefaultToolsAction.create());
-          }
-          return result;
-        }
-        /**
-         * Determines wether the tool should run in continuous mode (also called stamp mode) or not.
-         * If continuous mode is enabled, the tool will stay after a successful creation.
-         * The user can then create more elements of the same type without having to re-trigger the tool.
-         * By default, continuous mode is enabled if the user holds the CTRL key.
-         * @param element the current model element
-         * @param event
-         */
-        isContinuousMode(element, event) {
-          return (0, sprotty_1.isCtrlOrCmd)(event);
-        }
-        getCreateOperation(element, event, sourceElementId, targetElementId) {
-          return sprotty_1.CreateEdgeOperation.create({
-            elementTypeId: this.triggerAction.elementTypeId,
-            sourceElementId,
-            targetElementId,
-            args: this.getCreateEdgeOperationArgs(element, event)
-          });
-        }
-        getCreateEdgeOperationArgs(ctx, event) {
-          return { ...this.triggerAction.args };
-        }
-        isSourceSelected() {
-          return this.source !== void 0;
-        }
-        isTargetSelected() {
-          return this.target !== void 0;
-        }
-        mouseOver(target, event) {
-          const newCurrentTarget = (0, sprotty_1.findParentByFeature)(target, sprotty_1.isConnectable);
-          if (newCurrentTarget !== this.currentTarget) {
-            this.pendingDynamicCheck = false;
-            this.currentTarget = newCurrentTarget;
-            if (this.currentTarget) {
-              if (!this.isSourceSelected()) {
-                this.allowedTarget = this.canConnect(newCurrentTarget, "source");
-              } else if (!this.isTargetSelected()) {
-                this.allowedTarget = this.canConnect(newCurrentTarget, "target");
-              }
-              if (this.pendingDynamicCheck) {
-                return [(0, css_feedback_1.cursorFeedbackAction)(css_feedback_1.CursorCSS.EDGE_CHECK_PENDING)];
-              }
-            } else {
-              this.allowedTarget = false;
-            }
-            return [this.updateEdgeFeedback()];
-          }
-          return [];
-        }
-        updateEdgeFeedback() {
-          if (this.allowedTarget) {
-            const action = !this.isSourceSelected() ? (0, css_feedback_1.cursorFeedbackAction)(css_feedback_1.CursorCSS.EDGE_CREATION_SOURCE) : (0, css_feedback_1.cursorFeedbackAction)(css_feedback_1.CursorCSS.EDGE_CREATION_TARGET);
-            return action;
-          }
-          return (0, css_feedback_1.cursorFeedbackAction)(css_feedback_1.CursorCSS.OPERATION_NOT_ALLOWED);
-        }
-        canConnect(element, role) {
-          var _a4;
-          if (!element || !(0, sprotty_1.isConnectable)(element) || !element.canConnect(this.proxyEdge, role)) {
-            return false;
-          }
-          if (!this.isDynamic(this.proxyEdge.type)) {
-            return true;
-          }
-          const sourceElement = (_a4 = this.source) !== null && _a4 !== void 0 ? _a4 : element;
-          const targetElement = this.source ? element : void 0;
-          this.pendingDynamicCheck = true;
-          this.actionDispatcher.request(sprotty_1.RequestCheckEdgeAction.create({ sourceElement, targetElement, edgeType: this.proxyEdge.type })).then((result) => {
-            if (this.pendingDynamicCheck) {
-              this.allowedTarget = result.isValid;
-              this.actionDispatcher.dispatch(this.updateEdgeFeedback());
-              this.pendingDynamicCheck = false;
-            }
-          }).catch((err) => console.error("Dynamic edge check failed with: ", err));
-          return false;
-        }
-        isDynamic(edgeTypeId) {
-          var _a4;
-          const typeHint = this.typeHintProvider.getEdgeTypeHint(edgeTypeId);
-          return (_a4 = typeHint === null || typeHint === void 0 ? void 0 : typeHint.dynamic) !== null && _a4 !== void 0 ? _a4 : false;
-        }
-        dispose() {
-          this.source = void 0;
-          this.target = void 0;
-          this.currentTarget = void 0;
-          this.allowedTarget = false;
-          this.feedbackEdgeFeedback.dispose();
-          this.cursorFeedback.dispose();
-          super.dispose();
-        }
-      };
-      exports.EdgeCreationToolMouseListener = EdgeCreationToolMouseListener;
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/validation/issue-marker.js
-  var require_issue_marker = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/validation/issue-marker.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.getSeverity = exports.createGIssue = exports.getGIssueMarker = exports.getOrCreateGIssueMarker = exports.GIssueMarker = void 0;
-      var sprotty_1 = require_lib4();
-      var GIssueMarker = class extends sprotty_1.SIssueMarkerImpl {
-        constructor() {
-          super();
-          this.issues = [];
-          this.type = "marker";
-          this.features = new Set(sprotty_1.GDecoration.DEFAULT_FEATURES);
-        }
-        computeProjectionCssClasses() {
-          const severityCss = getSeverity(this);
-          this.projectionCssClasses = ["sprotty-issue", "sprotty-" + severityCss];
-        }
-      };
-      exports.GIssueMarker = GIssueMarker;
-      function getOrCreateGIssueMarker(modelElement) {
-        let issueMarker;
-        issueMarker = getGIssueMarker(modelElement);
-        if (issueMarker === void 0) {
-          issueMarker = new GIssueMarker();
-          if ((0, sprotty_1.isBoundsAware)(modelElement)) {
-            issueMarker.projectedBounds = modelElement.parentToLocal(modelElement.bounds);
-          }
-          modelElement.add(issueMarker);
-        }
-        return issueMarker;
-      }
-      exports.getOrCreateGIssueMarker = getOrCreateGIssueMarker;
-      function getGIssueMarker(modelElement) {
-        let issueMarker;
-        for (const child of modelElement.children) {
-          if (child instanceof GIssueMarker) {
-            issueMarker = child;
-          }
-        }
-        return issueMarker;
-      }
-      exports.getGIssueMarker = getGIssueMarker;
-      function createGIssue(marker, parent) {
-        const issue = {
-          message: marker.description,
-          severity: "info"
-        };
-        switch (marker.kind) {
-          case sprotty_1.MarkerKind.ERROR: {
-            issue.severity = "error";
-            break;
-          }
-          case sprotty_1.MarkerKind.INFO: {
-            issue.severity = "info";
-            break;
-          }
-          case sprotty_1.MarkerKind.WARNING: {
-            issue.severity = "warning";
-            break;
-          }
-        }
-        return issue;
-      }
-      exports.createGIssue = createGIssue;
-      function getSeverity(marker) {
-        let currentSeverity = "info";
-        for (const severity of marker.issues.map((s3) => s3.severity)) {
-          if (severity === "error") {
-            return severity;
-          }
-          if (severity === "warning" && currentSeverity === "info") {
-            currentSeverity = severity;
-          }
-        }
-        return currentSeverity;
-      }
-      exports.getSeverity = getSeverity;
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/hover/hover.js
-  var require_hover2 = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/hover/hover.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.GlspHoverMouseListener = void 0;
-      var inversify_1 = require_cjs4();
-      var sprotty_1 = require_lib4();
-      var focus_state_change_action_1 = require_focus_state_change_action();
-      var tool_1 = require_tool();
-      var edge_creation_tool_1 = require_edge_creation_tool();
-      var issue_marker_1 = require_issue_marker();
-      var GlspHoverMouseListener = class GlspHoverMouseListener extends sprotty_1.HoverMouseListener {
-        constructor() {
-          super(...arguments);
-          this.enableHover = true;
-        }
-        /**
-         * Stops mouse over timer and remove hover feedback, if focus is lost.
-         *
-         * This fixes strange effects that appear if the mouse left the element via e.g. a context menu,
-         * which explicitly removes the focus of the diagram.
-         * @see SelectionServiceAwareContextMenuMouseListener
-         * @param action should be a `FocusStateChangedAction`
-         * @returns a `HoverFeedbackAction` resetting the state, if the specified action indicates lost focus
-         */
-        handle(action) {
-          if (focus_state_change_action_1.FocusStateChangedAction.is(action) && !action.hasFocus) {
-            this.stopMouseOverTimer();
-            if (this.lastHoverFeedbackElementId) {
-              const previousTargetId = this.lastHoverFeedbackElementId;
-              this.lastHoverFeedbackElementId = void 0;
-              return sprotty_1.HoverFeedbackAction.create({ mouseoverElement: previousTargetId, mouseIsOver: false });
-            }
-          } else if (tool_1.EnableToolsAction.is(action)) {
-            this.enableHover = !action.toolIds.includes(edge_creation_tool_1.EdgeCreationTool.ID);
-          } else if (tool_1.EnableDefaultToolsAction.is(action)) {
-            this.enableHover = true;
-          }
-        }
-        mouseOver(target, event) {
-          if (this.enableHover) {
-            return super.mouseOver(target, event);
-          }
-          return [];
-        }
-        startMouseOverTimer(target, event) {
-          this.stopMouseOverTimer();
-          return new Promise((resolve) => {
-            this.state.mouseOverTimer = window.setTimeout(() => {
-              const popupBounds = this.computePopupBounds(target, { x: event.pageX, y: event.pageY });
-              if (target instanceof issue_marker_1.GIssueMarker) {
-                resolve(sprotty_1.SetPopupModelAction.create(this.createPopupModel(target, popupBounds)));
-              } else {
-                resolve(sprotty_1.RequestPopupModelAction.create({ elementId: target.id, bounds: popupBounds }));
-              }
-              this.state.popupOpen = true;
-              this.state.previousPopupElement = target;
-            }, this.options.popupOpenDelay);
-          });
-        }
-        createPopupModel(marker, bounds) {
-          if (marker.issues !== void 0 && marker.issues.length > 0) {
-            return {
-              type: "html",
-              id: "sprotty-popup",
-              children: [this.createMarkerIssuePopup(marker)],
-              canvasBounds: this.modifyBounds(bounds)
-            };
-          }
-          return { type: sprotty_1.EMPTY_ROOT.type, id: sprotty_1.EMPTY_ROOT.id };
-        }
-        createMarkerIssuePopup(marker) {
-          const message = this.createIssueMessage(marker);
-          return {
-            type: "pre-rendered",
-            id: "popup-title",
-            code: `<div class="${(0, issue_marker_1.getSeverity)(marker)}"><div class="sprotty-popup-title">${message}</div></div>`
-          };
-        }
-        createIssueMessage(marker) {
-          return "<ul>" + marker.issues.map((i2) => "<li>" + i2.severity.toUpperCase() + ": " + i2.message + "</li>").join("") + "</ul>";
-        }
-        modifyBounds(bounds) {
-          return bounds;
-        }
-      };
-      exports.GlspHoverMouseListener = GlspHoverMouseListener;
-      exports.GlspHoverMouseListener = GlspHoverMouseListener = __decorate([
-        (0, inversify_1.injectable)()
-      ], GlspHoverMouseListener);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/hover/hover-module.js
-  var require_hover_module = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/hover/hover-module.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.hoverModule = void 0;
-      var sprotty_1 = require_lib4();
-      var focus_state_change_action_1 = require_focus_state_change_action();
-      var tool_1 = require_tool();
-      var hover_1 = require_hover2();
-      exports.hoverModule = new sprotty_1.FeatureModule((bind, _unbind, isBound) => {
-        const context = { bind, isBound };
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.PopupVNodePostprocessor, sprotty_1.PopupPositionUpdater);
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.MouseListener, hover_1.GlspHoverMouseListener);
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.PopupMouseListener, sprotty_1.PopupHoverMouseListener);
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.KeyListener, sprotty_1.HoverKeyListener);
-        bind(sprotty_1.TYPES.HoverState).toConstantValue({
-          mouseOverTimer: void 0,
-          mouseOutTimer: void 0,
-          popupOpen: false,
-          previousPopupElement: void 0
-        });
-        bind(sprotty_1.ClosePopupActionHandler).toSelf().inSingletonScope();
-        (0, sprotty_1.configureCommand)(context, sprotty_1.HoverFeedbackCommand);
-        (0, sprotty_1.configureCommand)(context, sprotty_1.SetPopupModelCommand);
-        (0, sprotty_1.configureActionHandler)(context, sprotty_1.SetPopupModelCommand.KIND, sprotty_1.ClosePopupActionHandler);
-        (0, sprotty_1.configureActionHandler)(context, sprotty_1.FitToScreenCommand.KIND, sprotty_1.ClosePopupActionHandler);
-        (0, sprotty_1.configureActionHandler)(context, sprotty_1.CenterCommand.KIND, sprotty_1.ClosePopupActionHandler);
-        (0, sprotty_1.configureActionHandler)(context, sprotty_1.SetViewportCommand.KIND, sprotty_1.ClosePopupActionHandler);
-        (0, sprotty_1.configureActionHandler)(context, sprotty_1.MoveCommand.KIND, sprotty_1.ClosePopupActionHandler);
-        (0, sprotty_1.configureActionHandler)(context, focus_state_change_action_1.FocusStateChangedAction.KIND, sprotty_1.ClosePopupActionHandler);
-        (0, sprotty_1.configureActionHandler)(context, tool_1.EnableToolsAction.KIND, hover_1.GlspHoverMouseListener);
-        (0, sprotty_1.configureActionHandler)(context, tool_1.EnableDefaultToolsAction.KIND, hover_1.GlspHoverMouseListener);
-        (0, sprotty_1.configureActionHandler)(context, focus_state_change_action_1.FocusStateChangedAction.KIND, hover_1.GlspHoverMouseListener);
-      }, { featureId: Symbol("hover") });
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/label-edit-ui/label-edit-ui.js
-  var require_label_edit_ui = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/label-edit-ui/label-edit-ui.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.GlspEditLabelUI = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var ui_extension_1 = require_ui_extension2();
-      var GlspEditLabelUI = class GlspEditLabelUI extends sprotty_1.EditLabelUI {
-        initializeContents(containerElement) {
-          super.initializeContents(containerElement);
-          containerElement.classList.add(ui_extension_1.CSS_UI_EXTENSION_CLASS);
-        }
-        setContainerVisible(visible) {
-          var _a4, _b2;
-          if (visible) {
-            (_a4 = this.containerElement) === null || _a4 === void 0 ? void 0 : _a4.classList.remove(ui_extension_1.CSS_HIDDEN_EXTENSION_CLASS);
-            this.editControl.focus();
-          } else {
-            (_b2 = this.containerElement) === null || _b2 === void 0 ? void 0 : _b2.classList.add(ui_extension_1.CSS_HIDDEN_EXTENSION_CLASS);
-          }
-        }
-      };
-      exports.GlspEditLabelUI = GlspEditLabelUI;
-      exports.GlspEditLabelUI = GlspEditLabelUI = __decorate([
-        (0, inversify_1.injectable)()
-      ], GlspEditLabelUI);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/label-edit-ui/label-edit-ui-module.js
-  var require_label_edit_ui_module = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/label-edit-ui/label-edit-ui-module.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.labelEditUiModule = void 0;
-      var sprotty_1 = require_lib4();
-      var label_edit_ui_1 = require_label_edit_ui();
-      exports.labelEditUiModule = new sprotty_1.FeatureModule((bind, unbind, isBound, rebind, ...rest) => {
-        const context = { bind, unbind, isBound, rebind };
-        (0, sprotty_1.configureActionHandler)(context, sprotty_1.EditLabelAction.KIND, sprotty_1.EditLabelActionHandler);
-        bind(label_edit_ui_1.GlspEditLabelUI).toSelf().inSingletonScope();
-        bind(sprotty_1.TYPES.IUIExtension).toService(label_edit_ui_1.GlspEditLabelUI);
-      }, { featureId: Symbol("labelEditUi") });
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/label-edit/edit-label-tool.js
-  var require_edit_label_tool = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/label-edit/edit-label-tool.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var DirectLabelEditTool_1;
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.DirectLabelEditTool = void 0;
-      var inversify_1 = require_cjs4();
-      var sprotty_1 = require_lib4();
-      var base_tools_1 = require_base_tools();
-      var DirectLabelEditTool = DirectLabelEditTool_1 = class DirectLabelEditTool extends base_tools_1.BaseEditTool {
-        get id() {
-          return DirectLabelEditTool_1.ID;
-        }
-        createEditLabelMouseListener() {
-          return new sprotty_1.EditLabelMouseListener();
-        }
-        createEditLabelKeyListener() {
-          return new sprotty_1.EditLabelKeyListener();
-        }
-        enable() {
-          this.toDisposeOnDisable.push(this.mouseTool.registerListener(this.createEditLabelMouseListener()), this.keyTool.registerListener(this.createEditLabelKeyListener()));
-        }
-      };
-      exports.DirectLabelEditTool = DirectLabelEditTool;
-      DirectLabelEditTool.ID = "glsp.direct-label-edit-tool";
-      exports.DirectLabelEditTool = DirectLabelEditTool = DirectLabelEditTool_1 = __decorate([
-        (0, inversify_1.injectable)()
-      ], DirectLabelEditTool);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/label-edit/edit-label-validator.js
-  var require_edit_label_validator = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/label-edit/edit-label-validator.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.BalloonLabelValidationDecorator = exports.ServerEditLabelValidator = exports.LabelEditValidation = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var LabelEditValidation;
-      (function(LabelEditValidation2) {
-        LabelEditValidation2.CONTEXT_ID = "label-edit";
-        function toEditLabelValidationResult(status) {
-          const message = status.message;
-          let severity = "ok";
-          if (sprotty_1.ValidationStatus.isError(status)) {
-            severity = "error";
-          } else if (sprotty_1.ValidationStatus.isWarning(status)) {
-            severity = "warning";
-          }
-          return { message, severity };
-        }
-        LabelEditValidation2.toEditLabelValidationResult = toEditLabelValidationResult;
-        function createValidationRequestAction(value, labelId) {
-          return sprotty_1.RequestEditValidationAction.create({ contextId: LabelEditValidation2.CONTEXT_ID, modelElementId: labelId, text: value });
-        }
-        LabelEditValidation2.createValidationRequestAction = createValidationRequestAction;
-      })(LabelEditValidation || (exports.LabelEditValidation = LabelEditValidation = {}));
-      var ServerEditLabelValidator = class ServerEditLabelValidator {
-        async validate(value, label) {
-          const action = LabelEditValidation.createValidationRequestAction(value, label.id);
-          const response = await this.actionDispatcher.requestUntil(action);
-          return response ? this.getValidationResultFromResponse(response) : { severity: "ok" };
-        }
-        getValidationResultFromResponse(action) {
-          if (sprotty_1.SetEditValidationResultAction.is(action)) {
-            return LabelEditValidation.toEditLabelValidationResult(action.status);
-          }
-          return { severity: "ok" };
-        }
-      };
-      exports.ServerEditLabelValidator = ServerEditLabelValidator;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], ServerEditLabelValidator.prototype, "actionDispatcher", void 0);
-      exports.ServerEditLabelValidator = ServerEditLabelValidator = __decorate([
-        (0, inversify_1.injectable)()
-      ], ServerEditLabelValidator);
-      var BalloonLabelValidationDecorator = class BalloonLabelValidationDecorator {
-        decorate(input, result) {
-          const containerElement = input.parentElement;
-          if (!containerElement) {
-            return;
-          }
-          if (result.message) {
-            containerElement.setAttribute("data-balloon", result.message);
-            containerElement.setAttribute("data-balloon-pos", "up-left");
-            containerElement.setAttribute("data-balloon-visible", "true");
-          }
-          switch (result.severity) {
-            case "ok":
-              containerElement.classList.add("validation-ok");
-              break;
-            case "warning":
-              containerElement.classList.add("validation-warning");
-              break;
-            case "error":
-              containerElement.classList.add("validation-error");
-              break;
-          }
-        }
-        dispose(input) {
-          const containerElement = input.parentElement;
-          if (containerElement) {
-            containerElement.removeAttribute("data-balloon");
-            containerElement.removeAttribute("data-balloon-pos");
-            containerElement.removeAttribute("data-balloon-visible");
-            containerElement.classList.remove("validation-ok", "validation-warning", "validation-error");
-          }
-        }
-      };
-      exports.BalloonLabelValidationDecorator = BalloonLabelValidationDecorator;
-      exports.BalloonLabelValidationDecorator = BalloonLabelValidationDecorator = __decorate([
-        (0, inversify_1.injectable)()
-      ], BalloonLabelValidationDecorator);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/label-edit/label-edit-module.js
-  var require_label_edit_module = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/label-edit/label-edit-module.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.labelEditModule = void 0;
-      var sprotty_1 = require_lib4();
-      var edit_label_tool_1 = require_edit_label_tool();
-      var edit_label_validator_1 = require_edit_label_validator();
-      exports.labelEditModule = new sprotty_1.FeatureModule((bind, _unbind, isBound, _rebind) => {
-        bind(sprotty_1.TYPES.IEditLabelValidator).to(edit_label_validator_1.ServerEditLabelValidator);
-        bind(sprotty_1.TYPES.IEditLabelValidationDecorator).to(edit_label_validator_1.BalloonLabelValidationDecorator);
-        (0, sprotty_1.bindAsService)(bind, sprotty_1.TYPES.IDefaultTool, edit_label_tool_1.DirectLabelEditTool);
-        (0, sprotty_1.configureCommand)({ bind, isBound }, sprotty_1.ApplyLabelEditCommand);
-      }, { featureId: Symbol("labelEdit") });
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/utils/layout-utils.js
-  var require_layout_utils = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/utils/layout-utils.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.toValidElementAndBounds = exports.toValidElementMove = exports.isValidMove = exports.isValidSize = exports.getLayoutOptions = exports.minDimensions = exports.minHeight = exports.minWidth = void 0;
-      function minWidth(element) {
-        const layoutOptions = getLayoutOptions(element);
-        if (layoutOptions !== void 0 && typeof layoutOptions.minWidth === "number") {
-          return layoutOptions.minWidth;
-        }
-        return 1;
-      }
-      exports.minWidth = minWidth;
-      function minHeight(element) {
-        const layoutOptions = getLayoutOptions(element);
-        if (layoutOptions !== void 0 && typeof layoutOptions.minHeight === "number") {
-          return layoutOptions.minHeight;
-        }
-        return 1;
-      }
-      exports.minHeight = minHeight;
-      function minDimensions(element) {
-        return { width: minWidth(element), height: minHeight(element) };
-      }
-      exports.minDimensions = minDimensions;
-      function getLayoutOptions(element) {
-        const layoutOptions = element.layoutOptions;
-        if (layoutOptions !== void 0) {
-          return layoutOptions;
-        }
-        return void 0;
-      }
-      exports.getLayoutOptions = getLayoutOptions;
-      function isValidSize(element, size) {
-        return size.width >= minWidth(element) && size.height >= minHeight(element);
-      }
-      exports.isValidSize = isValidSize;
-      function isValidMove(element, newPosition, movementRestrictor) {
-        var _a4;
-        return (_a4 = movementRestrictor === null || movementRestrictor === void 0 ? void 0 : movementRestrictor.validate(element, newPosition)) !== null && _a4 !== void 0 ? _a4 : true;
-      }
-      exports.isValidMove = isValidMove;
-      function toValidElementMove(element, move, movementRestrictor) {
-        if (!isValidMove(element, move.toPosition, movementRestrictor)) {
-          return;
-        }
-        return move;
-      }
-      exports.toValidElementMove = toValidElementMove;
-      function toValidElementAndBounds(element, bounds, movementRestrictor) {
-        if (!isValidMove(element, bounds.newPosition, movementRestrictor)) {
-          return;
-        }
-        const elementMinWidth = minWidth(element);
-        if (bounds.newSize.width < elementMinWidth) {
-          bounds.newSize.width = elementMinWidth;
-        }
-        const elementMinHeight = minHeight(element);
-        if (bounds.newSize.height < elementMinHeight) {
-          bounds.newSize.height = elementMinHeight;
-        }
-        return bounds;
-      }
-      exports.toValidElementAndBounds = toValidElementAndBounds;
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/layout/layout-elements-action.js
-  var require_layout_elements_action = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/layout/layout-elements-action.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.AlignElementsActionHandler = exports.AlignElementsAction = exports.SelectFunction = exports.Alignment = exports.ResizeElementsActionHandler = exports.LayoutElementsActionHandler = exports.ResizeElementsAction = exports.ReduceFunction = exports.ResizeDimension = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var selection_service_1 = require_selection_service();
-      var gmodel_util_1 = require_gmodel_util();
-      var layout_utils_1 = require_layout_utils();
-      var model_1 = require_model19();
-      var ResizeDimension;
-      (function(ResizeDimension2) {
-        ResizeDimension2[ResizeDimension2["Width"] = 0] = "Width";
-        ResizeDimension2[ResizeDimension2["Height"] = 1] = "Height";
-        ResizeDimension2[ResizeDimension2["Width_And_Height"] = 2] = "Width_And_Height";
-      })(ResizeDimension || (exports.ResizeDimension = ResizeDimension = {}));
-      var ReduceFunction;
-      (function(ReduceFunction2) {
-        function min(...values) {
-          return Math.min(...values);
-        }
-        ReduceFunction2.min = min;
-        function max(...values) {
-          return Math.max(...values);
-        }
-        ReduceFunction2.max = max;
-        function avg(...values) {
-          return values.reduce((a3, b3) => a3 + b3, 0) / values.length;
-        }
-        ReduceFunction2.avg = avg;
-        function first(...values) {
-          return values[0];
-        }
-        ReduceFunction2.first = first;
-        function last(...values) {
-          return values[values.length - 1];
-        }
-        ReduceFunction2.last = last;
-        function get(type) {
-          return ReduceFunction2[type];
-        }
-        ReduceFunction2.get = get;
-      })(ReduceFunction || (exports.ReduceFunction = ReduceFunction = {}));
-      var ResizeElementsAction;
-      (function(ResizeElementsAction2) {
-        ResizeElementsAction2.KIND = "resizeElementAction";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, ResizeElementsAction2.KIND) && (0, sprotty_1.hasArrayProp)(object, "elementIds") && (0, sprotty_1.hasNumberProp)(object, "dimension") && (0, sprotty_1.hasStringProp)(object, "reduceFunction");
-        }
-        ResizeElementsAction2.is = is;
-        function create(options) {
-          return {
-            kind: ResizeElementsAction2.KIND,
-            dimension: ResizeDimension.Width,
-            elementIds: [],
-            ...options
-          };
-        }
-        ResizeElementsAction2.create = create;
-      })(ResizeElementsAction || (exports.ResizeElementsAction = ResizeElementsAction = {}));
-      var LayoutElementsActionHandler = class LayoutElementsActionHandler {
-        getSelectedElements(selection) {
-          const index = this.selectionService.getModelRoot().index;
-          const selectedElements = selection.elementIds.length > 0 ? selection.elementIds : this.selectionService.getSelectedElementIDs();
-          return (0, gmodel_util_1.getElements)(index, selectedElements, this.isActionElement);
-        }
-        dispatchAction(action) {
-          this.actionDispatcher.dispatch(action);
-        }
-        dispatchActions(actions) {
-          this.actionDispatcher.dispatchAll(actions);
-        }
-      };
-      exports.LayoutElementsActionHandler = LayoutElementsActionHandler;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], LayoutElementsActionHandler.prototype, "actionDispatcher", void 0);
-      __decorate([
-        (0, inversify_1.inject)(selection_service_1.SelectionService),
-        __metadata("design:type", selection_service_1.SelectionService)
-      ], LayoutElementsActionHandler.prototype, "selectionService", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IMovementRestrictor),
-        (0, inversify_1.optional)(),
-        __metadata("design:type", Object)
-      ], LayoutElementsActionHandler.prototype, "movementRestrictor", void 0);
-      exports.LayoutElementsActionHandler = LayoutElementsActionHandler = __decorate([
-        (0, inversify_1.injectable)()
-      ], LayoutElementsActionHandler);
-      var ResizeElementsActionHandler = class ResizeElementsActionHandler extends LayoutElementsActionHandler {
-        handle(action) {
-          const elements = this.getSelectedElements(action);
-          if (elements.length > 1) {
-            const reduceFn = ReduceFunction.get(action.reduceFunction);
-            switch (action.dimension) {
-              case ResizeDimension.Width:
-                return this.resizeWidth(elements, reduceFn);
-              case ResizeDimension.Height:
-                return this.resizeHeight(elements, reduceFn);
-              case ResizeDimension.Width_And_Height:
-                return this.resizeWidthAndHeight(elements, reduceFn);
-            }
-          }
-        }
-        resizeWidth(elements, reduceFn) {
-          const targetWidth = reduceFn(...elements.map((element) => element.bounds.width));
-          this.dispatchResizeActions(elements, (element, bounds) => {
-            const halfDiffWidth = 0.5 * (targetWidth - element.bounds.width);
-            bounds.newPosition.x = element.bounds.x - halfDiffWidth;
-            bounds.newSize.width = targetWidth;
-          });
-        }
-        resizeHeight(elements, reduceFn) {
-          const targetHeight = reduceFn(...elements.map((element) => element.bounds.height));
-          this.dispatchResizeActions(elements, (element, bounds) => {
-            const halfDiffHeight = 0.5 * (targetHeight - element.bounds.height);
-            bounds.newPosition.y = element.bounds.y - halfDiffHeight;
-            bounds.newSize.height = targetHeight;
-          });
-        }
-        resizeWidthAndHeight(elements, reduceFn) {
-          const targetWidth = reduceFn(...elements.map((element) => element.bounds.width));
-          const targetHeight = reduceFn(...elements.map((element) => element.bounds.height));
-          const targetDimension = { width: targetWidth, height: targetHeight };
-          this.dispatchResizeActions(elements, (element, bounds) => {
-            const difference = sprotty_1.Dimension.subtract(targetDimension, element.bounds);
-            const center = sprotty_1.Dimension.center(difference);
-            bounds.newPosition = sprotty_1.Point.subtract(element.bounds, center);
-            bounds.newSize = targetDimension;
-          });
-        }
-        dispatchResizeActions(elements, change) {
-          const elementAndBounds = [];
-          elements.forEach((element) => {
-            const elementChange = this.createElementAndBounds(element, change);
-            if (elementChange) {
-              elementAndBounds.push(elementChange);
-            }
-          });
-          this.dispatchActions([sprotty_1.SetBoundsAction.create(elementAndBounds), sprotty_1.ChangeBoundsOperation.create(elementAndBounds)]);
-        }
-        createElementAndBounds(element, change) {
-          const bounds = {
-            elementId: element.id,
-            newPosition: {
-              x: element.bounds.x,
-              y: element.bounds.y
-            },
-            newSize: {
-              width: element.bounds.width,
-              height: element.bounds.height
-            }
-          };
-          change(element, bounds);
-          return (0, layout_utils_1.toValidElementAndBounds)(element, bounds, this.movementRestrictor);
-        }
-        isActionElement(element) {
-          return (0, model_1.isResizable)(element);
-        }
-      };
-      exports.ResizeElementsActionHandler = ResizeElementsActionHandler;
-      exports.ResizeElementsActionHandler = ResizeElementsActionHandler = __decorate([
-        (0, inversify_1.injectable)()
-      ], ResizeElementsActionHandler);
-      var Alignment;
-      (function(Alignment2) {
-        Alignment2[Alignment2["Left"] = 0] = "Left";
-        Alignment2[Alignment2["Center"] = 1] = "Center";
-        Alignment2[Alignment2["Right"] = 2] = "Right";
-        Alignment2[Alignment2["Top"] = 3] = "Top";
-        Alignment2[Alignment2["Middle"] = 4] = "Middle";
-        Alignment2[Alignment2["Bottom"] = 5] = "Bottom";
-      })(Alignment || (exports.Alignment = Alignment = {}));
-      var SelectFunction;
-      (function(SelectFunction2) {
-        function all(elements) {
-          return elements;
-        }
-        SelectFunction2.all = all;
-        function first(elements) {
-          return [elements[0]];
-        }
-        SelectFunction2.first = first;
-        function last(elements) {
-          return [elements[elements.length - 1]];
-        }
-        SelectFunction2.last = last;
-        function get(kind) {
-          return SelectFunction2[kind];
-        }
-        SelectFunction2.get = get;
-      })(SelectFunction || (exports.SelectFunction = SelectFunction = {}));
-      var AlignElementsAction;
-      (function(AlignElementsAction2) {
-        AlignElementsAction2.KIND = "alignElements";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, AlignElementsAction2.KIND) && (0, sprotty_1.hasArrayProp)(object, "elementIds") && (0, sprotty_1.hasNumberProp)(object, "alignment") && (0, sprotty_1.hasStringProp)(object, "selectFunction");
-        }
-        AlignElementsAction2.is = is;
-        function create(options = {}) {
-          return {
-            kind: AlignElementsAction2.KIND,
-            elementIds: [],
-            alignment: Alignment.Left,
-            selectFunction: "all",
-            ...options
-          };
-        }
-        AlignElementsAction2.create = create;
-      })(AlignElementsAction || (exports.AlignElementsAction = AlignElementsAction = {}));
-      var AlignElementsActionHandler = class AlignElementsActionHandler extends LayoutElementsActionHandler {
-        handle(action) {
-          const elements = this.getSelectedElements(action);
-          const selectFn = SelectFunction.get(action.selectFunction);
-          const calculatedElements = selectFn(elements);
-          if (elements.length > 1) {
-            switch (action.alignment) {
-              case Alignment.Left:
-                return this.alignLeft(calculatedElements);
-              case Alignment.Center:
-                return this.alignCenter(calculatedElements);
-              case Alignment.Right:
-                return this.alignRight(calculatedElements);
-              case Alignment.Top:
-                return this.alignTop(calculatedElements);
-              case Alignment.Middle:
-                return this.alignMiddle(calculatedElements);
-              case Alignment.Bottom:
-                return this.alignBottom(calculatedElements);
-            }
-          }
-        }
-        alignLeft(elements) {
-          const minX = elements.map((element) => element.bounds.x).reduce((a3, b3) => Math.min(a3, b3));
-          this.dispatchAlignActions(elements, (_3, move) => move.toPosition.x = minX);
-        }
-        alignCenter(elements) {
-          const minX = elements.map((element) => element.bounds.x).reduce((a3, b3) => Math.min(a3, b3));
-          const maxX = elements.map((element) => element.bounds.x + element.bounds.width).reduce((a3, b3) => Math.max(a3, b3));
-          const diffX = maxX - minX;
-          const centerX = minX + 0.5 * diffX;
-          this.dispatchAlignActions(elements, (element, move) => move.toPosition.x = centerX - 0.5 * element.bounds.width);
-        }
-        alignRight(elements) {
-          const maxX = elements.map((element) => element.bounds.x + element.bounds.width).reduce((a3, b3) => Math.max(a3, b3));
-          this.dispatchAlignActions(elements, (element, move) => move.toPosition.x = maxX - element.bounds.width);
-        }
-        alignTop(elements) {
-          const minY = elements.map((element) => element.bounds.y).reduce((a3, b3) => Math.min(a3, b3));
-          this.dispatchAlignActions(elements, (_3, move) => move.toPosition.y = minY);
-        }
-        alignMiddle(elements) {
-          const minY = elements.map((element) => element.bounds.y).reduce((a3, b3) => Math.min(a3, b3));
-          const maxY = elements.map((element) => element.bounds.y + element.bounds.height).reduce((a3, b3) => Math.max(a3, b3));
-          const diffY = maxY - minY;
-          const middleY = minY + 0.5 * diffY;
-          this.dispatchAlignActions(elements, (element, move) => move.toPosition.y = middleY - 0.5 * element.bounds.height);
-        }
-        alignBottom(elements) {
-          const maxY = elements.map((element) => element.bounds.y + element.bounds.height).reduce((a3, b3) => Math.max(a3, b3));
-          this.dispatchAlignActions(elements, (element, move) => move.toPosition.y = maxY - element.bounds.height);
-        }
-        dispatchAlignActions(elements, change) {
-          const moves = [];
-          const elementAndBounds = [];
-          elements.forEach((element) => {
-            const move = this.createElementMove(element, change);
-            if (move) {
-              moves.push(move);
-              const elementAndBound = this.createElementAndBounds(element, move);
-              elementAndBounds.push(elementAndBound);
-            }
-          });
-          this.dispatchActions([sprotty_1.MoveAction.create(moves), sprotty_1.ChangeBoundsOperation.create(elementAndBounds)]);
-        }
-        createElementMove(element, change) {
-          const move = {
-            elementId: element.id,
-            fromPosition: {
-              x: element.bounds.x,
-              y: element.bounds.y
-            },
-            toPosition: {
-              x: element.bounds.x,
-              y: element.bounds.y
-            }
-          };
-          change(element, move);
-          return (0, layout_utils_1.toValidElementMove)(element, move, this.movementRestrictor);
-        }
-        createElementAndBounds(element, move) {
-          return {
-            elementId: element.id,
-            newPosition: {
-              x: move.toPosition.x,
-              y: move.toPosition.y
-            },
-            newSize: {
-              width: element.bounds.width,
-              height: element.bounds.height
-            }
-          };
-        }
-        isActionElement(element) {
-          return (0, model_1.isBoundsAwareMoveable)(element);
-        }
-      };
-      exports.AlignElementsActionHandler = AlignElementsActionHandler;
-      exports.AlignElementsActionHandler = AlignElementsActionHandler = __decorate([
-        (0, inversify_1.injectable)()
-      ], AlignElementsActionHandler);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/layout/layout-module.js
-  var require_layout_module = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/layout/layout-module.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.layoutModule = void 0;
-      var sprotty_1 = require_lib4();
-      var layout_elements_action_1 = require_layout_elements_action();
-      exports.layoutModule = new sprotty_1.FeatureModule((bind, _unbind, isBound) => {
-        const context = { bind, isBound };
-        (0, sprotty_1.configureActionHandler)(context, layout_elements_action_1.ResizeElementsAction.KIND, layout_elements_action_1.ResizeElementsActionHandler);
-        (0, sprotty_1.configureActionHandler)(context, layout_elements_action_1.AlignElementsAction.KIND, layout_elements_action_1.AlignElementsActionHandler);
-      }, { featureId: Symbol("layout") });
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/navigation/navigation-target-resolver.js
-  var require_navigation_target_resolver = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/navigation/navigation-target-resolver.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.NavigationTargetResolver = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var NavigationTargetResolver = class NavigationTargetResolver {
-        async resolve(navigationTarget) {
-          return this.resolveWithSourceUri(this.diagramOptions.sourceUri, navigationTarget);
-        }
-        async resolveWithSourceUri(sourceUri, target) {
-          const targetUri = decodeURIComponent(target.uri);
-          const normalizedSourceUri = sourceUri === null || sourceUri === void 0 ? void 0 : sourceUri.replace(/^file:\/\//, "");
-          const normalizedTargetUri = targetUri.replace(/^file:\/\//, "");
-          if (normalizedSourceUri && normalizedSourceUri !== normalizedTargetUri) {
-            this.logger.info("Source and Target URI are different. Can't resolve locally.", normalizedSourceUri, normalizedTargetUri);
-            return void 0;
-          }
-          if (sprotty_1.NavigationTarget.getElementIds(target).length > 0) {
-            return sprotty_1.SetResolvedNavigationTargetAction.create(sprotty_1.NavigationTarget.getElementIds(target));
-          }
-          const response = await this.requestResolution(target);
-          if (sprotty_1.SetResolvedNavigationTargetAction.is(response)) {
-            return response;
-          }
-          return void 0;
-        }
-        requestResolution(target) {
-          return this.dispatcher.request(sprotty_1.ResolveNavigationTargetAction.create(target));
-        }
-      };
-      exports.NavigationTargetResolver = NavigationTargetResolver;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], NavigationTargetResolver.prototype, "dispatcher", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.ILogger),
-        __metadata("design:type", Object)
-      ], NavigationTargetResolver.prototype, "logger", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IDiagramOptions),
-        __metadata("design:type", Object)
-      ], NavigationTargetResolver.prototype, "diagramOptions", void 0);
-      exports.NavigationTargetResolver = NavigationTargetResolver = __decorate([
-        (0, inversify_1.injectable)()
-      ], NavigationTargetResolver);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/navigation/navigation-action-handler.js
-  var require_navigation_action_handler = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/navigation/navigation-action-handler.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.NavigationActionHandler = exports.ProcessNavigationArgumentsAction = exports.NavigateAction = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var editor_context_service_1 = require_editor_context_service();
-      var navigation_target_resolver_1 = require_navigation_target_resolver();
-      var NavigateAction;
-      (function(NavigateAction2) {
-        NavigateAction2.KIND = "navigate";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, NavigateAction2.KIND) && (0, sprotty_1.hasStringProp)(object, "targetTypeId");
-        }
-        NavigateAction2.is = is;
-        function create(targetTypeId, options = {}) {
-          return {
-            kind: NavigateAction2.KIND,
-            targetTypeId,
-            ...options
-          };
-        }
-        NavigateAction2.create = create;
-      })(NavigateAction || (exports.NavigateAction = NavigateAction = {}));
-      var ProcessNavigationArgumentsAction;
-      (function(ProcessNavigationArgumentsAction2) {
-        ProcessNavigationArgumentsAction2.KIND = "processNavigationArguments";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, ProcessNavigationArgumentsAction2.KIND) && (0, sprotty_1.hasObjectProp)(object, "args");
-        }
-        ProcessNavigationArgumentsAction2.is = is;
-        function create(args) {
-          return {
-            kind: ProcessNavigationArgumentsAction2.KIND,
-            args
-          };
-        }
-        ProcessNavigationArgumentsAction2.create = create;
-      })(ProcessNavigationArgumentsAction || (exports.ProcessNavigationArgumentsAction = ProcessNavigationArgumentsAction = {}));
-      var NavigationActionHandler = class NavigationActionHandler {
-        constructor() {
-          this.notificationTimeout = 5e3;
-        }
-        handle(action) {
-          if (NavigateAction.is(action)) {
-            this.handleNavigateAction(action);
-          } else if (sprotty_1.NavigateToTargetAction.is(action)) {
-            this.handleNavigateToTarget(action);
-          } else if (ProcessNavigationArgumentsAction.is(action)) {
-            this.processNavigationArguments(action.args);
-          } else if (sprotty_1.NavigateToExternalTargetAction.is(action)) {
-            this.handleNavigateToExternalTarget(action);
-          }
-        }
-        async handleNavigateAction(action) {
-          try {
-            const editorContext = this.editorContext.get(action.args);
-            const response = await this.dispatcher.request(sprotty_1.RequestNavigationTargetsAction.create({ targetTypeId: action.targetTypeId, editorContext }));
-            if (sprotty_1.SetNavigationTargetsAction.is(response) && response.targets && response.targets.length === 1) {
-              if (response.targets.length > 1) {
-                this.logger.warn(this, "Processing of multiple targets is not supported yet. Only the first is being processed.", response.targets);
-              }
-              return this.dispatcher.dispatch(sprotty_1.NavigateToTargetAction.create(response.targets[0]));
-            }
-            this.warnAboutFailedNavigation("No valid navigation target found");
-          } catch (reason) {
-            this.logger.error(this, "Failed to obtain navigation target", reason, action);
-          }
-        }
-        async handleNavigateToTarget(action) {
-          try {
-            const resolvedElements = await this.resolveElements(action);
-            if (this.containsElementIdsOrArguments(resolvedElements)) {
-              this.navigateTo(resolvedElements);
-              this.handleResolutionArguments(resolvedElements);
-              return;
-            } else {
-              this.navigateToExternal(action.target);
-              return;
-            }
-          } catch (reason) {
-            this.logger.error(this, "Failed to navigate", reason, action);
-          }
-        }
-        resolveElements(action) {
-          return this.resolver.resolve(action.target);
-        }
-        containsElementIdsOrArguments(target) {
-          return target !== void 0 && (this.containsElementIds(target.elementIds) || this.containsArguments(target.args));
-        }
-        containsElementIds(elementIds) {
-          return elementIds !== void 0 && elementIds.length > 0;
-        }
-        containsArguments(args) {
-          return args !== void 0 && args !== void 0 && Object.keys(args).length > 0;
-        }
-        navigateTo(target) {
-          const elementIds = target.elementIds;
-          if (!this.containsElementIds(elementIds)) {
-            return;
-          }
-          this.dispatcher.dispatchAll([
-            sprotty_1.SelectAllAction.create(false),
-            sprotty_1.SelectAction.create({ selectedElementsIDs: elementIds }),
-            sprotty_1.CenterAction.create(elementIds)
-          ]);
-        }
-        handleResolutionArguments(target) {
-          const args = target.args;
-          if (!this.containsArguments(args)) {
-            return;
-          }
-          this.dispatcher.dispatch(ProcessNavigationArgumentsAction.create(args));
-        }
-        navigateToExternal(target) {
-          return this.dispatcher.dispatch(sprotty_1.NavigateToExternalTargetAction.create(target));
-        }
-        processNavigationArguments(args) {
-          if (args.info && args.info.toString().length > 0) {
-            this.notify("INFO", args.info.toString());
-          }
-          if (args.warning && args.warning.toString().length > 0) {
-            this.notify("WARNING", args.warning.toString());
-          }
-          if (args.error && args.error.toString().length > 0) {
-            this.notify("ERROR", args.error.toString());
-          }
-        }
-        async handleNavigateToExternalTarget(action) {
-          const handlers = this.actionHandlerRegistry.get(sprotty_1.NavigateToExternalTargetAction.KIND);
-          if (handlers.length === 1) {
-            this.warnAboutFailedNavigation("Could not resolve or navigate to target", action.target);
-          }
-        }
-        warnAboutFailedNavigation(msg, target) {
-          const message = `${msg}` + (target ? `: '${target.uri}' (arguments: ${JSON.stringify(target.args)})` : "");
-          this.logger.warn(this, msg, target);
-          this.notify("WARNING", message);
-        }
-        notify(severity, message) {
-          const timeout = this.notificationTimeout;
-          this.dispatcher.dispatchAll([sprotty_1.StatusAction.create(message, { severity, timeout }), sprotty_1.MessageAction.create(message, { severity })]);
-        }
-      };
-      exports.NavigationActionHandler = NavigationActionHandler;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.ILogger),
-        __metadata("design:type", Object)
-      ], NavigationActionHandler.prototype, "logger", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], NavigationActionHandler.prototype, "dispatcher", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.ActionHandlerRegistryProvider),
-        __metadata("design:type", Function)
-      ], NavigationActionHandler.prototype, "actionHandlerRegistryProvider", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IEditorContextServiceProvider),
-        __metadata("design:type", Function)
-      ], NavigationActionHandler.prototype, "editorContextService", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.ActionHandlerRegistry),
-        __metadata("design:type", sprotty_1.ActionHandlerRegistry)
-      ], NavigationActionHandler.prototype, "actionHandlerRegistry", void 0);
-      __decorate([
-        (0, inversify_1.inject)(navigation_target_resolver_1.NavigationTargetResolver),
-        __metadata("design:type", navigation_target_resolver_1.NavigationTargetResolver)
-      ], NavigationActionHandler.prototype, "resolver", void 0);
-      __decorate([
-        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
-        __metadata("design:type", editor_context_service_1.EditorContextService)
-      ], NavigationActionHandler.prototype, "editorContext", void 0);
-      exports.NavigationActionHandler = NavigationActionHandler = __decorate([
-        (0, inversify_1.injectable)()
-      ], NavigationActionHandler);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/navigation/navigation-module.js
-  var require_navigation_module = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/navigation/navigation-module.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.navigationModule = void 0;
-      var sprotty_1 = require_lib4();
-      var navigation_action_handler_1 = require_navigation_action_handler();
-      var navigation_target_resolver_1 = require_navigation_target_resolver();
-      exports.navigationModule = new sprotty_1.FeatureModule((bind, _unbind, isBound) => {
-        bind(navigation_target_resolver_1.NavigationTargetResolver).toSelf().inSingletonScope();
-        bind(navigation_action_handler_1.NavigationActionHandler).toSelf().inSingletonScope();
-        (0, sprotty_1.configureActionHandler)({ bind, isBound }, navigation_action_handler_1.NavigateAction.KIND, navigation_action_handler_1.NavigationActionHandler);
-        (0, sprotty_1.configureActionHandler)({ bind, isBound }, sprotty_1.NavigateToTargetAction.KIND, navigation_action_handler_1.NavigationActionHandler);
-        (0, sprotty_1.configureActionHandler)({ bind, isBound }, navigation_action_handler_1.ProcessNavigationArgumentsAction.KIND, navigation_action_handler_1.NavigationActionHandler);
-        (0, sprotty_1.configureActionHandler)({ bind, isBound }, sprotty_1.NavigateToExternalTargetAction.KIND, navigation_action_handler_1.NavigationActionHandler);
-      }, { featureId: Symbol("navigation") });
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/routing/edge-router.js
-  var require_edge_router = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/routing/edge-router.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.GLSPBezierEdgeRouter = exports.GLSPManhattanEdgeRouter = exports.GLSPPolylineEdgeRouter = exports.GLSPAbstractEdgeRouter = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var GLSPAbstractEdgeRouter = class GLSPAbstractEdgeRouter extends sprotty_1.AbstractEdgeRouter {
-        getTranslatedAnchor(connectable, refPoint, refContainer, edge, anchorCorrection) {
-          const anchor = super.getTranslatedAnchor(connectable, refPoint, refContainer, edge, anchorCorrection);
-          return sprotty_1.Point.isValid(anchor) ? anchor : refPoint;
-        }
-        cleanupRoutingPoints(edge, routingPoints, updateHandles, addRoutingPoints) {
-          if (ensureBounds(edge.source) && ensureBounds(edge.target)) {
-            super.cleanupRoutingPoints(edge, routingPoints, updateHandles, addRoutingPoints);
-          }
-        }
-      };
-      exports.GLSPAbstractEdgeRouter = GLSPAbstractEdgeRouter;
-      exports.GLSPAbstractEdgeRouter = GLSPAbstractEdgeRouter = __decorate([
-        (0, inversify_1.injectable)()
-      ], GLSPAbstractEdgeRouter);
-      var GLSPPolylineEdgeRouter = class GLSPPolylineEdgeRouter extends sprotty_1.PolylineEdgeRouter {
-        getTranslatedAnchor(connectable, refPoint, refContainer, edge, anchorCorrection) {
-          const anchor = super.getTranslatedAnchor(connectable, refPoint, refContainer, edge, anchorCorrection);
-          return sprotty_1.Point.isValid(anchor) ? anchor : refPoint;
-        }
-        cleanupRoutingPoints(edge, routingPoints, updateHandles, addRoutingPoints) {
-          if (ensureBounds(edge.source) && ensureBounds(edge.target)) {
-            super.cleanupRoutingPoints(edge, routingPoints, updateHandles, addRoutingPoints);
-          }
-        }
-      };
-      exports.GLSPPolylineEdgeRouter = GLSPPolylineEdgeRouter;
-      exports.GLSPPolylineEdgeRouter = GLSPPolylineEdgeRouter = __decorate([
-        (0, inversify_1.injectable)()
-      ], GLSPPolylineEdgeRouter);
-      var GLSPManhattanEdgeRouter = class GLSPManhattanEdgeRouter extends sprotty_1.ManhattanEdgeRouter {
-        getTranslatedAnchor(connectable, refPoint, refContainer, edge, anchorCorrection) {
-          const anchor = super.getTranslatedAnchor(connectable, refPoint, refContainer, edge, anchorCorrection);
-          return sprotty_1.Point.isValid(anchor) ? anchor : refPoint;
-        }
-        cleanupRoutingPoints(edge, routingPoints, updateHandles, addRoutingPoints) {
-          if (ensureBounds(edge.source) && ensureBounds(edge.target)) {
-            super.cleanupRoutingPoints(edge, routingPoints, updateHandles, addRoutingPoints);
-          }
-        }
-      };
-      exports.GLSPManhattanEdgeRouter = GLSPManhattanEdgeRouter;
-      exports.GLSPManhattanEdgeRouter = GLSPManhattanEdgeRouter = __decorate([
-        (0, inversify_1.injectable)()
-      ], GLSPManhattanEdgeRouter);
-      var GLSPBezierEdgeRouter = class GLSPBezierEdgeRouter extends sprotty_1.BezierEdgeRouter {
-        getTranslatedAnchor(connectable, refPoint, refContainer, edge, anchorCorrection) {
-          const anchor = super.getTranslatedAnchor(connectable, refPoint, refContainer, edge, anchorCorrection);
-          return sprotty_1.Point.isValid(anchor) ? anchor : refPoint;
-        }
-        cleanupRoutingPoints(edge, routingPoints, updateHandles, addRoutingPoints) {
-          if (ensureBounds(edge.source) && ensureBounds(edge.target)) {
-            super.cleanupRoutingPoints(edge, routingPoints, updateHandles, addRoutingPoints);
-          }
-        }
-      };
-      exports.GLSPBezierEdgeRouter = GLSPBezierEdgeRouter;
-      exports.GLSPBezierEdgeRouter = GLSPBezierEdgeRouter = __decorate([
-        (0, inversify_1.injectable)()
-      ], GLSPBezierEdgeRouter);
-      function ensureBounds(element) {
-        if (!element) {
-          return false;
-        }
-        if (element.bounds) {
-          return true;
-        }
-        if (element.position && element.size) {
-          element.bounds = { ...element.position, ...element.size };
-          return true;
-        }
-        return false;
-      }
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/routing/routing-module.js
-  var require_routing_module = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/routing/routing-module.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.routingModule = void 0;
-      var sprotty_1 = require_lib4();
-      var edge_router_1 = require_edge_router();
-      exports.routingModule = new sprotty_1.FeatureModule((bind, unbind, isBound, rebind) => {
-        const context = { bind, unbind, isBound, rebind };
-        bind(sprotty_1.EdgeRouterRegistry).toSelf().inSingletonScope();
-        bind(sprotty_1.AnchorComputerRegistry).toSelf().inSingletonScope();
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IEdgeRouter, edge_router_1.GLSPManhattanEdgeRouter);
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IAnchorComputer, sprotty_1.ManhattanEllipticAnchor);
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IAnchorComputer, sprotty_1.ManhattanRectangularAnchor);
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IAnchorComputer, sprotty_1.ManhattanDiamondAnchor);
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IEdgeRouter, edge_router_1.GLSPPolylineEdgeRouter);
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IAnchorComputer, sprotty_1.EllipseAnchor);
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IAnchorComputer, sprotty_1.RectangleAnchor);
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IAnchorComputer, sprotty_1.DiamondAnchor);
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IEdgeRouter, edge_router_1.GLSPBezierEdgeRouter);
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IAnchorComputer, sprotty_1.BezierEllipseAnchor);
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IAnchorComputer, sprotty_1.BezierRectangleAnchor);
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IAnchorComputer, sprotty_1.BezierDiamondAnchor);
-        (0, sprotty_1.configureCommand)({ bind, isBound }, sprotty_1.AddRemoveBezierSegmentCommand);
-      }, { featureId: Symbol("routing") });
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/select/select-feedback-command.js
-  var require_select_feedback_command = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/select/select-feedback-command.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var __param = exports && exports.__param || function(paramIndex, decorator) {
-        return function(target, key) {
-          decorator(target, key, paramIndex);
-        };
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.SelectFeedbackCommand = void 0;
-      var inversify_1 = require_cjs4();
-      var sprotty_1 = require_lib4();
-      var selection_service_1 = require_selection_service();
-      var SelectFeedbackCommand = class SelectFeedbackCommand extends sprotty_1.Command {
-        constructor(action) {
-          super();
-          this.action = action;
-          this.sprottySelectCommand = new sprotty_1.SprottySelectCommand({ ...action, kind: sprotty_1.SelectAction.KIND });
-        }
-        execute(context) {
-          return this.sprottySelectCommand.execute(context);
-        }
-        undo(context) {
-          return this.sprottySelectCommand.undo(context);
-        }
-        redo(context) {
-          return this.sprottySelectCommand.redo(context);
-        }
-      };
-      exports.SelectFeedbackCommand = SelectFeedbackCommand;
-      SelectFeedbackCommand.KIND = selection_service_1.SelectFeedbackAction.KIND;
-      exports.SelectFeedbackCommand = SelectFeedbackCommand = __decorate([
-        (0, inversify_1.injectable)(),
-        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.Action)),
-        __metadata("design:paramtypes", [Object])
-      ], SelectFeedbackCommand);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/select/select-mouse-listener.js
-  var require_select_mouse_listener = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/select/select-mouse-listener.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.RankedSelectMouseListener = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var ranked_1 = require_ranked();
-      var model_1 = require_model19();
-      var RankedSelectMouseListener = class RankedSelectMouseListener extends sprotty_1.SelectMouseListener {
-        constructor() {
-          super(...arguments);
-          this.rank = ranked_1.Ranked.DEFAULT_RANK - 100;
-        }
-        handleSelectTarget(selectableTarget, deselectedElements, event) {
-          const result = [];
-          result.push(sprotty_1.SelectAction.create({
-            selectedElementsIDs: [selectableTarget.id],
-            deselectedElementsIDs: deselectedElements.map((e2) => e2.id)
-          }));
-          result.push(sprotty_1.BringToFrontAction.create([selectableTarget.id]));
-          return result;
-        }
-        handleDeselectTarget(selectableTarget, event) {
-          const result = [];
-          result.push(sprotty_1.SelectAction.create({ selectedElementsIDs: [], deselectedElementsIDs: [selectableTarget.id] }));
-          return result;
-        }
-        handleDeselectAll(deselectedElements, event) {
-          const result = [];
-          result.push(sprotty_1.SelectAction.create({ selectedElementsIDs: [], deselectedElementsIDs: deselectedElements.map((e2) => e2.id) }));
-          return result;
-        }
-        handleButton(target, event) {
-          var _a4;
-          if (target instanceof model_1.GResizeHandle && ((_a4 = this.changeBoundsManager) === null || _a4 === void 0 ? void 0 : _a4.useSymmetricResize(event))) {
-            return [];
-          }
-          return super.handleButton(target, event);
-        }
-      };
-      exports.RankedSelectMouseListener = RankedSelectMouseListener;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IChangeBoundsManager),
-        (0, inversify_1.optional)(),
-        __metadata("design:type", Object)
-      ], RankedSelectMouseListener.prototype, "changeBoundsManager", void 0);
-      exports.RankedSelectMouseListener = RankedSelectMouseListener = __decorate([
-        (0, inversify_1.injectable)()
-      ], RankedSelectMouseListener);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/select/select-module.js
-  var require_select_module = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/select/select-module.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.standaloneSelectModule = exports.selectModule = void 0;
-      var sprotty_1 = require_lib4();
-      var selection_service_1 = require_selection_service();
-      var select_feedback_command_1 = require_select_feedback_command();
-      var select_mouse_listener_1 = require_select_mouse_listener();
-      exports.selectModule = new sprotty_1.FeatureModule((bind, _unbind, isBound) => {
-        const context = { bind, isBound };
-        (0, sprotty_1.configureCommand)(context, selection_service_1.SelectCommand);
-        (0, sprotty_1.configureCommand)(context, selection_service_1.SelectAllCommand);
-        (0, sprotty_1.configureCommand)(context, select_feedback_command_1.SelectFeedbackCommand);
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.MouseListener, select_mouse_listener_1.RankedSelectMouseListener);
-      }, { featureId: Symbol("select") });
-      exports.standaloneSelectModule = new sprotty_1.FeatureModule((bind) => {
-        (0, sprotty_1.bindAsService)(bind, sprotty_1.TYPES.KeyListener, sprotty_1.SelectKeyboardListener);
-      }, { featureId: Symbol("standaloneSelect"), requires: exports.selectModule });
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/source-model-watcher/source-model-changed-action-handler.js
-  var require_source_model_changed_action_handler = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/source-model-watcher/source-model-changed-action-handler.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.SourceModelChangedActionHandler = exports.ExternalSourceModelChangedHandler = void 0;
-      var inversify_1 = require_cjs4();
-      var sprotty_1 = require_lib4();
-      var ExternalSourceModelChangedHandler = class ExternalSourceModelChangedHandler {
-      };
-      exports.ExternalSourceModelChangedHandler = ExternalSourceModelChangedHandler;
-      exports.ExternalSourceModelChangedHandler = ExternalSourceModelChangedHandler = __decorate([
-        (0, inversify_1.injectable)()
-      ], ExternalSourceModelChangedHandler);
-      var SourceModelChangedActionHandler = class SourceModelChangedActionHandler {
-        handle(action) {
-          if (sprotty_1.SourceModelChangedAction.is(action)) {
-            if (this.externalModelSourceChangedHandler) {
-              this.externalModelSourceChangedHandler.notifySourceModelChange(action.sourceModelName, this.options).then((actions) => this.dispatcher.dispatchAll(actions));
-              return;
-            }
-            this.showSimpleNotification(action);
-          }
-        }
-        showSimpleNotification(action) {
-          const message = `The source model ${action.sourceModelName} has changed. You might want to consider reloading.`;
-          const timeout = 0;
-          const severity = "WARNING";
-          this.dispatcher.dispatchAll([sprotty_1.StatusAction.create(message, { severity, timeout }), sprotty_1.MessageAction.create(message, { severity })]);
-        }
-      };
-      exports.SourceModelChangedActionHandler = SourceModelChangedActionHandler;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], SourceModelChangedActionHandler.prototype, "dispatcher", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.ViewerOptions),
-        __metadata("design:type", Object)
-      ], SourceModelChangedActionHandler.prototype, "options", void 0);
-      __decorate([
-        (0, inversify_1.inject)(ExternalSourceModelChangedHandler),
-        (0, inversify_1.optional)(),
-        __metadata("design:type", ExternalSourceModelChangedHandler)
-      ], SourceModelChangedActionHandler.prototype, "externalModelSourceChangedHandler", void 0);
-      exports.SourceModelChangedActionHandler = SourceModelChangedActionHandler = __decorate([
-        (0, inversify_1.injectable)()
-      ], SourceModelChangedActionHandler);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/source-model-watcher/source-model-watcher-module.js
-  var require_source_model_watcher_module = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/source-model-watcher/source-model-watcher-module.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.sourceModelWatcherModule = void 0;
-      var sprotty_1 = require_lib4();
-      var source_model_changed_action_handler_1 = require_source_model_changed_action_handler();
-      exports.sourceModelWatcherModule = new sprotty_1.FeatureModule((bind, _unbind, isBound) => {
-        (0, sprotty_1.configureActionHandler)({ bind, isBound }, sprotty_1.SourceModelChangedAction.KIND, source_model_changed_action_handler_1.SourceModelChangedActionHandler);
-      }, { featureId: Symbol("sourceModelWatcher") });
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/css/status-overlay.css
-  var require_status_overlay = __commonJS({
-    "node_modules/@eclipse-glsp/client/css/status-overlay.css"(exports, module) {
-      module.exports = {};
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/status/status-overlay.js
-  var require_status_overlay2 = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/status/status-overlay.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var StatusOverlay_1;
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.StatusOverlay = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var ui_extension_1 = require_ui_extension2();
-      var StatusOverlay = StatusOverlay_1 = class StatusOverlay extends ui_extension_1.GLSPAbstractUIExtension {
-        id() {
-          return StatusOverlay_1.ID;
-        }
-        containerClass() {
-          return "sprotty-status";
-        }
-        initializeContents(containerElement) {
-          this.statusIconDiv = document.createElement("div");
-          containerElement.appendChild(this.statusIconDiv);
-          this.statusMessageDiv = document.createElement("div");
-          this.statusMessageDiv.classList.add("sprotty-status-message");
-          containerElement.appendChild(this.statusMessageDiv);
-        }
-        setStatus(status) {
-          if (this.statusMessageDiv) {
-            this.statusMessageDiv.textContent = status.message;
-            this.removeClasses(this.statusMessageDiv, 1);
-            this.statusMessageDiv.classList.add(status.severity.toLowerCase());
-          }
-          if (this.statusIconDiv) {
-            this.removeClasses(this.statusIconDiv, 0);
-            const classes = this.statusIconDiv.classList;
-            classes.add(status.severity.toLowerCase());
-            switch (status.severity) {
-              case "FATAL":
-                classes.add(...(0, sprotty_1.codiconCSSClasses)("error"));
-                break;
-              case "ERROR":
-                classes.add(...(0, sprotty_1.codiconCSSClasses)("warning"));
-                break;
-              case "WARNING":
-                classes.add(...(0, sprotty_1.codiconCSSClasses)("warning"));
-                break;
-              case "INFO":
-                classes.add(...(0, sprotty_1.codiconCSSClasses)("info"));
-                break;
-            }
-          }
-        }
-        clearStatus() {
-          this.setStatus(sprotty_1.StatusAction.create("", { severity: "NONE" }));
-        }
-        clearTimeout() {
-          if (this.pendingTimeout) {
-            window.clearTimeout(this.pendingTimeout);
-            this.pendingTimeout = void 0;
-          }
-        }
-        removeClasses(element, keep) {
-          const classes = element.classList;
-          while (classes.length > keep) {
-            const item = classes.item(classes.length - 1);
-            if (item) {
-              classes.remove(item);
-            }
-          }
-        }
-        handle(action) {
-          var _a4;
-          this.clearTimeout();
-          if (action.severity === "NONE") {
-            this.clearStatus();
-            return;
-          }
-          this.setStatus(action);
-          const statusTimeout = (_a4 = action.timeout) !== null && _a4 !== void 0 ? _a4 : -1;
-          if (statusTimeout > 0) {
-            this.pendingTimeout = window.setTimeout(() => this.clearStatus(), statusTimeout);
-          }
-        }
-        preInitialize() {
-          return this.actionDispatcher.dispatch(sprotty_1.SetUIExtensionVisibilityAction.create({ extensionId: this.id(), visible: true }));
-        }
-      };
-      exports.StatusOverlay = StatusOverlay;
-      StatusOverlay.ID = "glsp.server.status.overlay";
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], StatusOverlay.prototype, "actionDispatcher", void 0);
-      exports.StatusOverlay = StatusOverlay = StatusOverlay_1 = __decorate([
-        (0, inversify_1.injectable)()
-      ], StatusOverlay);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/status/status-module.js
-  var require_status_module = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/status/status-module.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.statusModule = void 0;
-      var sprotty_1 = require_lib4();
-      require_status_overlay();
-      var status_overlay_1 = require_status_overlay2();
-      exports.statusModule = new sprotty_1.FeatureModule((bind, unbind, isBound, rebind) => {
-        const context = { bind, unbind, isBound, rebind };
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IUIExtension, status_overlay_1.StatusOverlay);
-        bind(sprotty_1.TYPES.IDiagramStartup).toService(status_overlay_1.StatusOverlay);
-        (0, sprotty_1.configureActionHandler)(context, sprotty_1.StatusAction.KIND, status_overlay_1.StatusOverlay);
-      }, { featureId: Symbol("status") });
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/svg-metadata/metadata-placer.js
-  var require_metadata_placer = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/svg-metadata/metadata-placer.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.MetadataPlacer = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var model_1 = require_model22();
-      var MetadataPlacer = class MetadataPlacer {
-        decorate(vnode, element) {
-          if (element instanceof sprotty_1.GModelRoot) {
-            (0, sprotty_1.setAttr)(vnode, "data-svg-metadata-api", true);
-          }
-          (0, sprotty_1.setAttr)(vnode, "data-svg-metadata-type", element.type);
-          if (element instanceof sprotty_1.GChildElement) {
-            (0, sprotty_1.setAttr)(vnode, "data-svg-metadata-parent-id", this.domHelper.createUniqueDOMElementId(element.parent));
-          }
-          if (element instanceof model_1.GEdge) {
-            if (element.source !== void 0) {
-              (0, sprotty_1.setAttr)(vnode, "data-svg-metadata-edge-source-id", this.domHelper.createUniqueDOMElementId(element.source));
-            }
-            if (element.target !== void 0) {
-              (0, sprotty_1.setAttr)(vnode, "data-svg-metadata-edge-target-id", this.domHelper.createUniqueDOMElementId(element.target));
-            }
-          }
-          return vnode;
-        }
-        postUpdate() {
-        }
-      };
-      exports.MetadataPlacer = MetadataPlacer;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.DOMHelper),
-        __metadata("design:type", sprotty_1.DOMHelper)
-      ], MetadataPlacer.prototype, "domHelper", void 0);
-      exports.MetadataPlacer = MetadataPlacer = __decorate([
-        (0, inversify_1.injectable)()
-      ], MetadataPlacer);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/svg-metadata/svg-metadata-module.js
-  var require_svg_metadata_module = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/svg-metadata/svg-metadata-module.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.svgMetadataModule = void 0;
-      var sprotty_1 = require_lib4();
-      var metadata_placer_1 = require_metadata_placer();
-      exports.svgMetadataModule = new sprotty_1.FeatureModule((bind) => {
-        bind(metadata_placer_1.MetadataPlacer).toSelf().inSingletonScope();
-        bind(sprotty_1.TYPES.IVNodePostprocessor).toService(metadata_placer_1.MetadataPlacer);
-      }, { featureId: Symbol("svgMetadata") });
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/css/tool-palette.css
-  var require_tool_palette2 = __commonJS({
-    "node_modules/@eclipse-glsp/client/css/tool-palette.css"(exports, module) {
-      module.exports = {};
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/tools/deletion/delete-tool.js
-  var require_delete_tool = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/tools/deletion/delete-tool.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var DelKeyDeleteTool_1;
-      var MouseDeleteTool_1;
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.DeleteToolMouseListener = exports.MouseDeleteTool = exports.DeleteKeyListener = exports.DelKeyDeleteTool = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var css_feedback_1 = require_css_feedback();
-      var tool_1 = require_tool();
-      var base_tools_1 = require_base_tools();
-      var DelKeyDeleteTool = DelKeyDeleteTool_1 = class DelKeyDeleteTool {
-        constructor() {
-          this.isEditTool = true;
-          this.deleteKeyListener = new DeleteKeyListener();
-        }
-        get id() {
-          return DelKeyDeleteTool_1.ID;
-        }
-        enable() {
-          this.keytool.register(this.deleteKeyListener);
-        }
-        disable() {
-          this.keytool.deregister(this.deleteKeyListener);
-        }
-      };
-      exports.DelKeyDeleteTool = DelKeyDeleteTool;
-      DelKeyDeleteTool.ID = "glsp.delete-keyboard";
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.KeyTool),
-        __metadata("design:type", sprotty_1.KeyTool)
-      ], DelKeyDeleteTool.prototype, "keytool", void 0);
-      exports.DelKeyDeleteTool = DelKeyDeleteTool = DelKeyDeleteTool_1 = __decorate([
-        (0, inversify_1.injectable)()
-      ], DelKeyDeleteTool);
-      var DeleteKeyListener = class DeleteKeyListener extends sprotty_1.KeyListener {
-        keyDown(element, event) {
-          if ((0, sprotty_1.matchesKeystroke)(event, "Delete")) {
-            const deleteElementIds = Array.from(element.root.index.all().filter((e2) => (0, sprotty_1.isDeletable)(e2) && (0, sprotty_1.isSelectable)(e2) && e2.selected).filter((e2) => e2.id !== e2.root.id).map((e2) => e2.id));
-            if (deleteElementIds.length > 0) {
-              return [sprotty_1.DeleteElementOperation.create(deleteElementIds)];
-            }
-          }
-          return [];
-        }
-      };
-      exports.DeleteKeyListener = DeleteKeyListener;
-      exports.DeleteKeyListener = DeleteKeyListener = __decorate([
-        (0, inversify_1.injectable)()
-      ], DeleteKeyListener);
-      var MouseDeleteTool = MouseDeleteTool_1 = class MouseDeleteTool extends base_tools_1.BaseEditTool {
-        constructor() {
-          super(...arguments);
-          this.deleteToolMouseListener = new DeleteToolMouseListener();
-        }
-        get id() {
-          return MouseDeleteTool_1.ID;
-        }
-        enable() {
-          const cursorFeedback = this.createFeedbackEmitter().add((0, css_feedback_1.cursorFeedbackAction)(css_feedback_1.CursorCSS.ELEMENT_DELETION), (0, css_feedback_1.cursorFeedbackAction)()).submit();
-          this.toDisposeOnDisable.push(this.mouseTool.registerListener(this.deleteToolMouseListener), cursorFeedback);
-        }
-      };
-      exports.MouseDeleteTool = MouseDeleteTool;
-      MouseDeleteTool.ID = "glsp.delete-mouse";
-      exports.MouseDeleteTool = MouseDeleteTool = MouseDeleteTool_1 = __decorate([
-        (0, inversify_1.injectable)()
-      ], MouseDeleteTool);
-      var DeleteToolMouseListener = class DeleteToolMouseListener extends sprotty_1.MouseListener {
-        mouseUp(target, event) {
-          const deletableParent = (0, sprotty_1.findParentByFeature)(target, sprotty_1.isDeletable);
-          if (deletableParent === void 0) {
-            return [];
-          }
-          const result = [];
-          result.push(sprotty_1.DeleteElementOperation.create([deletableParent.id]));
-          if (!(0, sprotty_1.isCtrlOrCmd)(event)) {
-            result.push(tool_1.EnableDefaultToolsAction.create());
-          }
-          return result;
-        }
-      };
-      exports.DeleteToolMouseListener = DeleteToolMouseListener;
-      exports.DeleteToolMouseListener = DeleteToolMouseListener = __decorate([
-        (0, inversify_1.injectable)()
-      ], DeleteToolMouseListener);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/tools/marquee-selection/marquee-tool-feedback.js
-  var require_marquee_tool_feedback = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/tools/marquee-selection/marquee-tool-feedback.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var __param = exports && exports.__param || function(paramIndex, decorator) {
-        return function(target, key) {
-          decorator(target, key, paramIndex);
-        };
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.removeMarquee = exports.drawMarquee = exports.MARQUEE = exports.marqueeId = exports.MarqueeEndMovingMouseListener = exports.RemoveMarqueeCommand = exports.RemoveMarqueeAction = exports.DrawMarqueeCommand = exports.DrawMarqueeAction = void 0;
-      var inversify_1 = require_cjs4();
-      var sprotty_1 = require_lib4();
-      var feedback_command_1 = require_feedback_command();
-      var DrawMarqueeAction;
-      (function(DrawMarqueeAction2) {
-        DrawMarqueeAction2.KIND = "drawMarquee";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, DrawMarqueeAction2.KIND) && (0, sprotty_1.hasObjectProp)(object, "startPoint") && (0, sprotty_1.hasObjectProp)(object, "endPoint");
-        }
-        DrawMarqueeAction2.is = is;
-        function create(options) {
-          return {
-            kind: DrawMarqueeAction2.KIND,
-            ...options
-          };
-        }
-        DrawMarqueeAction2.create = create;
-      })(DrawMarqueeAction || (exports.DrawMarqueeAction = DrawMarqueeAction = {}));
-      var DrawMarqueeCommand = class DrawMarqueeCommand extends feedback_command_1.FeedbackCommand {
-        constructor(action) {
-          super();
-          this.action = action;
-        }
-        execute(context) {
-          drawMarquee(context, this.action.startPoint, this.action.endPoint);
-          return context.root;
-        }
-      };
-      exports.DrawMarqueeCommand = DrawMarqueeCommand;
-      DrawMarqueeCommand.KIND = DrawMarqueeAction.KIND;
-      exports.DrawMarqueeCommand = DrawMarqueeCommand = __decorate([
-        (0, inversify_1.injectable)(),
-        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.Action)),
-        __metadata("design:paramtypes", [Object])
-      ], DrawMarqueeCommand);
-      var RemoveMarqueeAction;
-      (function(RemoveMarqueeAction2) {
-        RemoveMarqueeAction2.KIND = "removeMarquee";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, RemoveMarqueeAction2.KIND);
-        }
-        RemoveMarqueeAction2.is = is;
-        function create() {
-          return { kind: RemoveMarqueeAction2.KIND };
-        }
-        RemoveMarqueeAction2.create = create;
-      })(RemoveMarqueeAction || (exports.RemoveMarqueeAction = RemoveMarqueeAction = {}));
-      var RemoveMarqueeCommand = class RemoveMarqueeCommand extends feedback_command_1.FeedbackCommand {
-        execute(context) {
-          removeMarquee(context.root);
-          return context.root;
-        }
-      };
-      exports.RemoveMarqueeCommand = RemoveMarqueeCommand;
-      RemoveMarqueeCommand.KIND = RemoveMarqueeAction.KIND;
-      exports.RemoveMarqueeCommand = RemoveMarqueeCommand = __decorate([
-        (0, inversify_1.injectable)()
-      ], RemoveMarqueeCommand);
-      var MarqueeEndMovingMouseListener = class extends sprotty_1.MouseListener {
-        constructor(anchorRegistry) {
-          super();
-          this.anchorRegistry = anchorRegistry;
-        }
-        mouseMove(target, event) {
-          return [];
-        }
-      };
-      exports.MarqueeEndMovingMouseListener = MarqueeEndMovingMouseListener;
-      function marqueeId(root) {
-        return root.id + "_" + exports.MARQUEE;
-      }
-      exports.marqueeId = marqueeId;
-      exports.MARQUEE = "marquee";
-      function drawMarquee(context, startPoint, endPoint) {
-        const root = context.root;
-        removeMarquee(root);
-        const marqueeSchema = {
-          type: exports.MARQUEE,
-          id: marqueeId(root),
-          startPoint,
-          endPoint
-        };
-        const marquee = context.modelFactory.createElement(marqueeSchema);
-        root.add(marquee);
-      }
-      exports.drawMarquee = drawMarquee;
-      function removeMarquee(root) {
-        const marquee = root.index.getById(marqueeId(root));
-        if (marquee instanceof sprotty_1.GChildElement) {
-          root.remove(marquee);
-        }
-      }
-      exports.removeMarquee = removeMarquee;
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/tools/marquee-selection/marquee-behavior.js
-  var require_marquee_behavior = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/tools/marquee-selection/marquee-behavior.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var __param = exports && exports.__param || function(paramIndex, decorator) {
-        return function(target, key) {
-          decorator(target, key, paramIndex);
-        };
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.MarqueeUtil = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var model_1 = require_model22();
-      var gmodel_util_1 = require_gmodel_util();
-      var viewpoint_util_1 = require_viewpoint_util();
-      var marquee_tool_feedback_1 = require_marquee_tool_feedback();
-      var MarqueeUtil = class MarqueeUtil {
-        constructor(marqueeBehavior = { entireElement: false, entireEdge: false }, domHelper) {
-          this.marqueeBehavior = marqueeBehavior;
-          this.domHelper = domHelper;
-        }
-        isContinuousMode(element, event) {
-          return event.shiftKey;
-        }
-        getMarkableNodes(root) {
-          return (0, gmodel_util_1.getMatchingElements)(root.index, this.isMarkableNode());
-        }
-        isMarkableNode() {
-          return (0, sprotty_1.typeGuard)((0, sprotty_1.toTypeGuard)(sprotty_1.GNode), gmodel_util_1.isSelectableAndBoundsAware);
-        }
-        getMarkableEdges(root) {
-          return (0, gmodel_util_1.getMatchingElements)(root.index, this.isMarkableEdge());
-        }
-        isMarkableEdge() {
-          return (0, sprotty_1.typeGuard)((0, sprotty_1.toTypeGuard)(model_1.GEdge), sprotty_1.isSelectable);
-        }
-        updateStartPoint(position) {
-          this.startPoint = position;
-        }
-        updateCurrentPoint(position) {
-          this.currentPoint = position;
-        }
-        isMarked(element) {
-          return element instanceof model_1.GEdge ? this.isMarkedEdge(element) : this.isMarkedNode(element);
-        }
-        drawMarqueeAction() {
-          return marquee_tool_feedback_1.DrawMarqueeAction.create({ startPoint: this.startPoint, endPoint: this.currentPoint });
-        }
-        isMarkedEdge(edge) {
-          const domId = this.domHelper.createUniqueDOMElementId(edge);
-          const domEdge = document.getElementById(domId);
-          if (!domEdge || domEdge.getAttribute("transform") || !domEdge.children[0]) {
-            return false;
-          }
-          const path = domEdge.children[0].getAttribute("d");
-          return this.isEdgePathMarked(path);
-        }
-        isMarkedNode(node) {
-          return this.isNodeMarked(this.getNodeBounds(node));
-        }
-        getNodeBounds(node) {
-          return (0, viewpoint_util_1.toAbsoluteBounds)(node);
-        }
-        isEdgePathMarked(path) {
-          if (!path) {
-            return false;
-          }
-          const points = path.split(/M|L/).filter((p3) => p3).map((p3) => {
-            const coord = p3.split(",");
-            return { x: parseInt(coord[0], 10), y: parseInt(coord[1], 10) };
-          });
-          return this.isEdgeMarked(points);
-        }
-        isEdgeMarked(points) {
-          return this.marqueeBehavior.entireEdge ? this.isEntireEdgeMarked(points) : this.isPartOfEdgeMarked(points);
-        }
-        isNodeMarked(elementBounds) {
-          const horizontallyIn = this.startPoint.x < this.currentPoint.x ? this.isElementBetweenXAxis(elementBounds, this.startPoint.x, this.currentPoint.x) : this.isElementBetweenXAxis(elementBounds, this.currentPoint.x, this.startPoint.x);
-          const verticallyIn = this.startPoint.y < this.currentPoint.y ? this.isElementBetweenYAxis(elementBounds, this.startPoint.y, this.currentPoint.y) : this.isElementBetweenYAxis(elementBounds, this.currentPoint.y, this.startPoint.y);
-          return horizontallyIn && verticallyIn;
-        }
-        isEntireEdgeMarked(points) {
-          for (let i2 = 0; i2 < points.length; i2++) {
-            if (!this.pointInRect(points[i2])) {
-              return false;
-            }
-          }
-          return true;
-        }
-        isPartOfEdgeMarked(points) {
-          for (let i2 = 0; i2 < points.length - 1; i2++) {
-            if (this.isLineMarked(points[i2], points[i2 + 1])) {
-              return true;
-            }
-          }
-          return false;
-        }
-        isLineMarked(point1, point2) {
-          const line = new sprotty_1.PointToPointLine(point1, point2);
-          return this.pointInRect(point1) || this.pointInRect(point2) || this.lineIntersect(line, this.startPoint, { x: this.startPoint.x, y: this.currentPoint.y }) || this.lineIntersect(line, this.startPoint, { x: this.currentPoint.x, y: this.startPoint.y }) || this.lineIntersect(line, { x: this.currentPoint.x, y: this.startPoint.y }, this.currentPoint) || this.lineIntersect(line, { x: this.startPoint.x, y: this.currentPoint.y }, this.currentPoint);
-        }
-        lineIntersect(line, p1, p22) {
-          return line.intersection(new sprotty_1.PointToPointLine(p1, p22)) !== void 0;
-        }
-        pointInRect(point) {
-          const boolX = this.startPoint.x <= this.currentPoint.x ? this.isBetween(point.x, this.startPoint.x, this.currentPoint.x) : this.isBetween(point.x, this.currentPoint.x, this.startPoint.x);
-          const boolY = this.startPoint.y <= this.currentPoint.y ? this.isBetween(point.y, this.startPoint.y, this.currentPoint.y) : this.isBetween(point.y, this.currentPoint.y, this.startPoint.y);
-          return boolX && boolY;
-        }
-        isElementBetweenXAxis(elementBounds, marqueeLeft, marqueeRight) {
-          const leftEdge = this.isBetween(elementBounds.x, marqueeLeft, marqueeRight);
-          const rightEdge = this.isBetween(elementBounds.x + elementBounds.width, marqueeLeft, marqueeRight);
-          if (this.marqueeBehavior.entireElement) {
-            return leftEdge && rightEdge;
-          }
-          return leftEdge || rightEdge || this.isBetween(marqueeLeft, elementBounds.x, elementBounds.x + elementBounds.width) || this.isBetween(marqueeRight, elementBounds.x, elementBounds.x + elementBounds.width);
-        }
-        isElementBetweenYAxis(elementBounds, marqueeTop, marqueeBottom) {
-          const topEdge = this.isBetween(elementBounds.y, marqueeTop, marqueeBottom);
-          const bottomEdge = this.isBetween(elementBounds.y + elementBounds.height, marqueeTop, marqueeBottom);
-          if (this.marqueeBehavior.entireElement) {
-            return topEdge && bottomEdge;
-          }
-          return topEdge || bottomEdge || this.isBetween(marqueeTop, elementBounds.y, elementBounds.y + elementBounds.height) || this.isBetween(marqueeBottom, elementBounds.y, elementBounds.y + elementBounds.height);
-        }
-        isBetween(x3, lower, upper) {
-          return lower <= x3 && x3 <= upper;
-        }
-      };
-      exports.MarqueeUtil = MarqueeUtil;
-      exports.MarqueeUtil = MarqueeUtil = __decorate([
-        (0, inversify_1.injectable)(),
-        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.IMarqueeBehavior)),
-        __param(0, (0, inversify_1.optional)()),
-        __param(1, (0, inversify_1.inject)(sprotty_1.TYPES.DOMHelper)),
-        __metadata("design:paramtypes", [Object, sprotty_1.DOMHelper])
-      ], MarqueeUtil);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/tools/marquee-selection/marquee-mouse-tool.js
-  var require_marquee_mouse_tool = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/tools/marquee-selection/marquee-mouse-tool.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var MarqueeMouseTool_1;
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.ShiftKeyListener = exports.MarqueeMouseListener = exports.MarqueeMouseTool = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var drag_aware_mouse_listener_1 = require_drag_aware_mouse_listener();
-      var css_feedback_1 = require_css_feedback();
-      var tool_1 = require_tool();
-      var gmodel_util_1 = require_gmodel_util();
-      var viewpoint_util_1 = require_viewpoint_util();
-      var base_tools_1 = require_base_tools();
-      var marquee_behavior_1 = require_marquee_behavior();
-      var marquee_tool_feedback_1 = require_marquee_tool_feedback();
-      var MarqueeMouseTool = MarqueeMouseTool_1 = class MarqueeMouseTool extends base_tools_1.BaseEditTool {
-        constructor() {
-          super(...arguments);
-          this.shiftKeyListener = new ShiftKeyListener();
-        }
-        get id() {
-          return MarqueeMouseTool_1.ID;
-        }
-        enable() {
-          this.toDisposeOnDisable.push(this.mouseTool.registerListener(new MarqueeMouseListener(this.editorContext.modelRoot, this.marqueeUtil)), this.keyTool.registerListener(this.shiftKeyListener), this.createFeedbackEmitter().add((0, css_feedback_1.cursorFeedbackAction)(css_feedback_1.CursorCSS.MARQUEE), (0, css_feedback_1.cursorFeedbackAction)()).submit());
-        }
-        get isEditTool() {
-          return false;
-        }
-      };
-      exports.MarqueeMouseTool = MarqueeMouseTool;
-      MarqueeMouseTool.ID = "glsp.marquee-mouse-tool";
-      __decorate([
-        (0, inversify_1.inject)(marquee_behavior_1.MarqueeUtil),
-        __metadata("design:type", marquee_behavior_1.MarqueeUtil)
-      ], MarqueeMouseTool.prototype, "marqueeUtil", void 0);
-      exports.MarqueeMouseTool = MarqueeMouseTool = MarqueeMouseTool_1 = __decorate([
-        (0, inversify_1.injectable)()
-      ], MarqueeMouseTool);
-      var MarqueeMouseListener = class extends drag_aware_mouse_listener_1.DragAwareMouseListener {
-        constructor(root, marqueeUtil) {
-          super();
-          this.marqueeUtil = marqueeUtil;
-          this.isActive = false;
-          this.nodes = this.marqueeUtil.getMarkableNodes(root);
-          this.edges = this.marqueeUtil.getMarkableEdges(root);
-        }
-        mouseDown(target, event) {
-          this.isActive = true;
-          this.marqueeUtil.updateStartPoint((0, viewpoint_util_1.getAbsolutePosition)(target, event));
-          if (event.ctrlKey) {
-            this.previouslySelected = (0, gmodel_util_1.getMatchingElements)(target.index, (0, sprotty_1.typeGuard)(gmodel_util_1.isSelectableAndBoundsAware, sprotty_1.isSelected)).map((e2) => e2.id);
-          }
-          return [];
-        }
-        mouseMove(target, event) {
-          this.marqueeUtil.updateCurrentPoint((0, viewpoint_util_1.getAbsolutePosition)(target, event));
-          if (this.isActive) {
-            const nodeIdsSelected = this.nodes.filter((e2) => this.marqueeUtil.isMarked(e2)).map((e2) => e2.id);
-            const edgeIdsSelected = this.edges.filter((e2) => this.marqueeUtil.isMarked(e2)).map((e2) => e2.id);
-            const currentSelected = nodeIdsSelected.concat(edgeIdsSelected);
-            const selection = currentSelected.concat(this.previouslySelected);
-            return [sprotty_1.SelectAction.setSelection(selection), this.marqueeUtil.drawMarqueeAction()];
-          }
-          return [];
-        }
-        mouseUp(target, event) {
-          this.isActive = false;
-          return this.marqueeUtil.isContinuousMode(target, event) ? [marquee_tool_feedback_1.RemoveMarqueeAction.create()] : [marquee_tool_feedback_1.RemoveMarqueeAction.create(), tool_1.EnableDefaultToolsAction.create()];
-        }
-      };
-      exports.MarqueeMouseListener = MarqueeMouseListener;
-      var ShiftKeyListener = class ShiftKeyListener extends sprotty_1.KeyListener {
-        keyUp(element, event) {
-          if (event.shiftKey) {
-            return [];
-          }
-          return [marquee_tool_feedback_1.RemoveMarqueeAction.create(), tool_1.EnableDefaultToolsAction.create()];
-        }
-      };
-      exports.ShiftKeyListener = ShiftKeyListener;
-      exports.ShiftKeyListener = ShiftKeyListener = __decorate([
-        (0, inversify_1.injectable)()
-      ], ShiftKeyListener);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/viewport/origin-viewport.js
-  var require_origin_viewport = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/viewport/origin-viewport.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var __param = exports && exports.__param || function(paramIndex, decorator) {
-        return function(target, key) {
-          decorator(target, key, paramIndex);
-        };
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.OriginViewportCommand = exports.OriginViewportAction = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var OriginViewportAction;
-      (function(OriginViewportAction2) {
-        OriginViewportAction2.KIND = "originViewport";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, OriginViewportAction2.KIND);
-        }
-        OriginViewportAction2.is = is;
-        function create(options = {}) {
-          return {
-            kind: OriginViewportAction2.KIND,
-            animate: true,
-            ...options
-          };
-        }
-        OriginViewportAction2.create = create;
-      })(OriginViewportAction || (exports.OriginViewportAction = OriginViewportAction = {}));
-      var OriginViewportCommand = class OriginViewportCommand extends sprotty_1.BoundsAwareViewportCommand {
-        constructor(action) {
-          super(action.animate);
-          this.action = action;
-        }
-        getElementIds() {
-          return [];
-        }
-        initialize(model) {
-          if (!(0, sprotty_1.isViewport)(model)) {
-            return;
-          }
-          this.oldViewport = { scroll: model.scroll, zoom: model.zoom };
-          const newViewport = this.getNewViewport(sprotty_1.Bounds.EMPTY, model);
-          if (newViewport) {
-            const { zoomLimits, horizontalScrollLimits, verticalScrollLimits } = this.viewerOptions;
-            this.newViewport = (0, sprotty_1.limitViewport)(newViewport, model.canvasBounds, horizontalScrollLimits, verticalScrollLimits, zoomLimits);
-          }
-        }
-        getNewViewport(_bounds, _model) {
-          return { zoom: 1, scroll: { x: 0, y: 0 } };
-        }
-      };
-      exports.OriginViewportCommand = OriginViewportCommand;
-      OriginViewportCommand.KIND = OriginViewportAction.KIND;
-      exports.OriginViewportCommand = OriginViewportCommand = __decorate([
-        (0, inversify_1.injectable)(),
-        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.Action)),
-        __metadata("design:paramtypes", [Object])
-      ], OriginViewportCommand);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/tool-palette/tool-palette.js
-  var require_tool_palette3 = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/tool-palette/tool-palette.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var ToolPalette_1;
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.changeCodiconClass = exports.changeCSSClass = exports.createToolGroup = exports.createIcon = exports.compare = exports.ToolPalette = exports.EnableToolPaletteAction = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var editor_context_service_1 = require_editor_context_service();
-      var focus_tracker_1 = require_focus_tracker();
-      var tool_1 = require_tool();
-      var ui_extension_1 = require_ui_extension2();
-      var delete_tool_1 = require_delete_tool();
-      var marquee_mouse_tool_1 = require_marquee_mouse_tool();
-      var origin_viewport_1 = require_origin_viewport();
-      var CLICKED_CSS_CLASS = "clicked";
-      var SEARCH_ICON_ID = "search";
-      var PALETTE_ICON_ID = "tools";
-      var CHEVRON_DOWN_ICON_ID = "chevron-right";
-      var PALETTE_HEIGHT = "500px";
-      var EnableToolPaletteAction;
-      (function(EnableToolPaletteAction2) {
-        EnableToolPaletteAction2.KIND = "enableToolPalette";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, EnableToolPaletteAction2.KIND);
-        }
-        EnableToolPaletteAction2.is = is;
-        function create() {
-          return { kind: EnableToolPaletteAction2.KIND };
-        }
-        EnableToolPaletteAction2.create = create;
-      })(EnableToolPaletteAction || (exports.EnableToolPaletteAction = EnableToolPaletteAction = {}));
-      var ToolPalette = ToolPalette_1 = class ToolPalette extends ui_extension_1.GLSPAbstractUIExtension {
-        constructor() {
-          super(...arguments);
-          this.paletteItemsCopy = [];
-          this.dynamic = false;
-        }
-        id() {
-          return ToolPalette_1.ID;
-        }
-        containerClass() {
-          return ToolPalette_1.ID;
-        }
-        postConstruct() {
-          this.editorContext.onEditModeChanged((change) => this.editModeChanged(change.newValue, change.oldValue));
-        }
-        initialize() {
-          if (!this.paletteItems) {
-            return false;
-          }
-          return super.initialize();
-        }
-        initializeContents(containerElement) {
-          this.createHeader();
-          this.createBody();
-          this.lastActiveButton = this.defaultToolsButton;
-          containerElement.setAttribute("aria-label", "Tool-Palette");
-        }
-        onBeforeShow(_containerElement, root) {
-          this.modelRootId = root.id;
-          this.containerElement.style.maxHeight = PALETTE_HEIGHT;
-        }
-        addMinimizePaletteButton() {
-          const baseDiv = document.getElementById(this.options.baseDiv);
-          const minPaletteDiv = document.createElement("div");
-          minPaletteDiv.classList.add("minimize-palette-button");
-          this.containerElement.classList.add("collapsible-palette");
-          if (baseDiv) {
-            const insertedDiv = baseDiv.insertBefore(minPaletteDiv, baseDiv.firstChild);
-            const minimizeIcon = createIcon(CHEVRON_DOWN_ICON_ID);
-            this.updateMinimizePaletteButtonTooltip(minPaletteDiv);
-            minimizeIcon.onclick = (_event) => {
-              if (this.isPaletteMaximized()) {
-                this.containerElement.style.maxHeight = "0px";
-              } else {
-                this.containerElement.style.maxHeight = PALETTE_HEIGHT;
-              }
-              this.updateMinimizePaletteButtonTooltip(minPaletteDiv);
-              changeCodiconClass(minimizeIcon, PALETTE_ICON_ID);
-              changeCodiconClass(minimizeIcon, CHEVRON_DOWN_ICON_ID);
-            };
-            insertedDiv.appendChild(minimizeIcon);
-          }
-        }
-        updateMinimizePaletteButtonTooltip(button) {
-          if (this.isPaletteMaximized()) {
-            button.title = "Minimize palette";
-          } else {
-            button.title = "Maximize palette";
-          }
-        }
-        isPaletteMaximized() {
-          return this.containerElement && this.containerElement.style.maxHeight !== "0px";
-        }
-        createBody() {
-          const bodyDiv = document.createElement("div");
-          bodyDiv.classList.add("palette-body");
-          let tabIndex = 0;
-          this.paletteItems.sort(compare).forEach((item) => {
-            if (item.children) {
-              const group = createToolGroup(item);
-              item.children.sort(compare).forEach((child) => group.appendChild(this.createToolButton(child, tabIndex++)));
-              bodyDiv.appendChild(group);
-            } else {
-              bodyDiv.appendChild(this.createToolButton(item, tabIndex++));
-            }
-          });
-          if (this.paletteItems.length === 0) {
-            const noResultsDiv = document.createElement("div");
-            noResultsDiv.innerText = "No results found.";
-            noResultsDiv.classList.add("tool-button");
-            bodyDiv.appendChild(noResultsDiv);
-          }
-          if (this.bodyDiv) {
-            this.containerElement.removeChild(this.bodyDiv);
-          }
-          this.containerElement.appendChild(bodyDiv);
-          this.bodyDiv = bodyDiv;
-        }
-        createHeader() {
-          this.addMinimizePaletteButton();
-          const headerCompartment = document.createElement("div");
-          headerCompartment.classList.add("palette-header");
-          headerCompartment.append(this.createHeaderTitle());
-          headerCompartment.appendChild(this.createHeaderTools());
-          headerCompartment.appendChild(this.searchField = this.createHeaderSearchField());
-          this.containerElement.appendChild(headerCompartment);
-        }
-        createHeaderTools() {
-          const headerTools = document.createElement("div");
-          headerTools.classList.add("header-tools");
-          this.defaultToolsButton = this.createDefaultToolButton();
-          headerTools.appendChild(this.defaultToolsButton);
-          const deleteToolButton = this.createMouseDeleteToolButton();
-          headerTools.appendChild(deleteToolButton);
-          const marqueeToolButton = this.createMarqueeToolButton();
-          headerTools.appendChild(marqueeToolButton);
-          const validateActionButton = this.createValidateButton();
-          headerTools.appendChild(validateActionButton);
-          const resetViewportButton = this.createResetViewportButton();
-          headerTools.appendChild(resetViewportButton);
-          if (this.gridManager) {
-            const toggleGridButton = this.createToggleGridButton();
-            headerTools.appendChild(toggleGridButton);
-          }
-          if (this.debugManager) {
-            const toggleDebugButton = this.createToggleDebugButton();
-            headerTools.appendChild(toggleDebugButton);
-          }
-          const searchIcon = this.createSearchButton();
-          headerTools.appendChild(searchIcon);
-          return headerTools;
-        }
-        createDefaultToolButton() {
-          const button = createIcon("inspect");
-          button.id = "btn_default_tools";
-          button.title = "Enable selection tool";
-          button.onclick = this.onClickStaticToolButton(button);
-          button.ariaLabel = button.title;
-          button.tabIndex = 1;
-          return button;
-        }
-        createMouseDeleteToolButton() {
-          const deleteToolButton = createIcon("chrome-close");
-          deleteToolButton.title = "Enable deletion tool";
-          deleteToolButton.onclick = this.onClickStaticToolButton(deleteToolButton, delete_tool_1.MouseDeleteTool.ID);
-          deleteToolButton.ariaLabel = deleteToolButton.title;
-          deleteToolButton.tabIndex = 1;
-          return deleteToolButton;
-        }
-        createMarqueeToolButton() {
-          const marqueeToolButton = createIcon("screen-full");
-          marqueeToolButton.title = "Enable marquee tool";
-          marqueeToolButton.onclick = this.onClickStaticToolButton(marqueeToolButton, marquee_mouse_tool_1.MarqueeMouseTool.ID);
-          marqueeToolButton.ariaLabel = marqueeToolButton.title;
-          marqueeToolButton.tabIndex = 1;
-          return marqueeToolButton;
-        }
-        createValidateButton() {
-          const validateActionButton = createIcon("pass");
-          validateActionButton.title = "Validate model";
-          validateActionButton.onclick = (_event) => {
-            const modelIds = [this.modelRootId];
-            this.actionDispatcher.dispatch(sprotty_1.RequestMarkersAction.create(modelIds, { reason: sprotty_1.MarkersReason.BATCH }));
-            validateActionButton.focus();
-          };
-          validateActionButton.ariaLabel = validateActionButton.title;
-          validateActionButton.tabIndex = 1;
-          return validateActionButton;
-        }
-        createResetViewportButton() {
-          const resetViewportButton = createIcon("screen-normal");
-          resetViewportButton.title = "Reset Viewport";
-          resetViewportButton.onclick = (_event) => {
-            this.actionDispatcher.dispatch(origin_viewport_1.OriginViewportAction.create());
-            resetViewportButton.focus();
-          };
-          resetViewportButton.ariaLabel = resetViewportButton.title;
-          resetViewportButton.tabIndex = 1;
-          return resetViewportButton;
-        }
-        createToggleGridButton() {
-          var _a4;
-          const toggleGridButton = createIcon("symbol-numeric");
-          toggleGridButton.title = "Toggle Grid";
-          toggleGridButton.onclick = () => {
-            var _a5, _b2, _c;
-            if ((_a5 = this.gridManager) === null || _a5 === void 0 ? void 0 : _a5.isGridVisible) {
-              toggleGridButton.classList.remove(CLICKED_CSS_CLASS);
-              (_b2 = this.gridManager) === null || _b2 === void 0 ? void 0 : _b2.setGridVisible(false);
-            } else {
-              toggleGridButton.classList.add(CLICKED_CSS_CLASS);
-              (_c = this.gridManager) === null || _c === void 0 ? void 0 : _c.setGridVisible(true);
-            }
-          };
-          if ((_a4 = this.gridManager) === null || _a4 === void 0 ? void 0 : _a4.isGridVisible) {
-            toggleGridButton.classList.add(CLICKED_CSS_CLASS);
-          }
-          toggleGridButton.ariaLabel = toggleGridButton.title;
-          toggleGridButton.tabIndex = 1;
-          return toggleGridButton;
-        }
-        createToggleDebugButton() {
-          var _a4;
-          const toggleDebugButton = createIcon("debug");
-          toggleDebugButton.title = "Debug Mode";
-          toggleDebugButton.onclick = () => {
-            var _a5, _b2, _c;
-            if ((_a5 = this.debugManager) === null || _a5 === void 0 ? void 0 : _a5.isDebugEnabled) {
-              toggleDebugButton.classList.remove(CLICKED_CSS_CLASS);
-              (_b2 = this.debugManager) === null || _b2 === void 0 ? void 0 : _b2.setDebugEnabled(false);
-            } else {
-              toggleDebugButton.classList.add(CLICKED_CSS_CLASS);
-              (_c = this.debugManager) === null || _c === void 0 ? void 0 : _c.setDebugEnabled(true);
-            }
-          };
-          if ((_a4 = this.debugManager) === null || _a4 === void 0 ? void 0 : _a4.isDebugEnabled) {
-            toggleDebugButton.classList.add(CLICKED_CSS_CLASS);
-          }
-          toggleDebugButton.ariaLabel = toggleDebugButton.title;
-          toggleDebugButton.tabIndex = 1;
-          return toggleDebugButton;
-        }
-        createSearchButton() {
-          const searchIcon = createIcon(SEARCH_ICON_ID);
-          searchIcon.onclick = (_ev) => {
-            const searchField = document.getElementById(this.containerElement.id + "_search_field");
-            if (searchField) {
-              if (searchField.style.display === "none") {
-                searchField.style.display = "";
-                searchField.focus();
-              } else {
-                searchField.style.display = "none";
-              }
-            }
-          };
-          searchIcon.classList.add("search-icon");
-          searchIcon.title = "Filter palette entries";
-          searchIcon.ariaLabel = searchIcon.title;
-          searchIcon.tabIndex = 1;
-          return searchIcon;
-        }
-        createHeaderSearchField() {
-          const searchField = document.createElement("input");
-          searchField.classList.add("search-input");
-          searchField.id = this.containerElement.id + "_search_field";
-          searchField.type = "text";
-          searchField.placeholder = "Search...";
-          searchField.style.display = "none";
-          searchField.onkeyup = () => this.requestFilterUpdate(this.searchField.value);
-          searchField.onkeydown = (ev) => this.clearOnEscape(ev);
-          return searchField;
-        }
-        createHeaderTitle() {
-          const header = document.createElement("div");
-          header.classList.add("header-icon");
-          header.appendChild(createIcon(PALETTE_ICON_ID));
-          header.insertAdjacentText("beforeend", "Palette");
-          return header;
-        }
-        createToolButton(item, index) {
-          const button = document.createElement("div");
-          button.tabIndex = index;
-          button.classList.add("tool-button");
-          if (item.icon) {
-            button.appendChild(createIcon(item.icon));
-          }
-          button.insertAdjacentText("beforeend", item.label);
-          button.onclick = this.onClickCreateToolButton(button, item);
-          button.onkeydown = (ev) => this.clearToolOnEscape(ev);
-          return button;
-        }
-        onClickCreateToolButton(button, item) {
-          return (_ev) => {
-            if (!this.editorContext.isReadonly) {
-              this.actionDispatcher.dispatchAll(item.actions);
-              this.changeActiveButton(button);
-              button.focus();
-            }
-          };
-        }
-        onClickStaticToolButton(button, toolId) {
-          return (_ev) => {
-            if (!this.editorContext.isReadonly) {
-              const action = toolId ? tool_1.EnableToolsAction.create([toolId]) : tool_1.EnableDefaultToolsAction.create();
-              this.actionDispatcher.dispatch(action);
-              this.changeActiveButton(button);
-              button.focus();
-            }
-          };
-        }
-        changeActiveButton(button) {
-          if (this.lastActiveButton) {
-            this.lastActiveButton.classList.remove(CLICKED_CSS_CLASS);
-          }
-          if (button) {
-            button.classList.add(CLICKED_CSS_CLASS);
-            this.lastActiveButton = button;
-          } else if (this.defaultToolsButton) {
-            this.defaultToolsButton.classList.add(CLICKED_CSS_CLASS);
-            this.lastActiveButton = this.defaultToolsButton;
-          }
-        }
-        handle(action) {
-          var _a4;
-          this.changeActiveButton();
-          if (sprotty_1.UpdateModelAction.is(action) || sprotty_1.SetModelAction.is(action)) {
-            this.reloadPaletteBody();
-          } else if (tool_1.EnableDefaultToolsAction.is(action)) {
-            if (this.focusTracker.hasFocus) {
-              (_a4 = this.focusTracker.diagramElement) === null || _a4 === void 0 ? void 0 : _a4.focus();
-            }
-          }
-        }
-        editModeChanged(_newValue, _oldValue) {
-          this.actionDispatcher.dispatch(sprotty_1.SetUIExtensionVisibilityAction.create({ extensionId: ToolPalette_1.ID, visible: !this.editorContext.isReadonly }));
-        }
-        clearOnEscape(event) {
-          if ((0, sprotty_1.matchesKeystroke)(event, "Escape")) {
-            this.searchField.value = "";
-            this.requestFilterUpdate("");
-          }
-        }
-        clearToolOnEscape(event) {
-          if ((0, sprotty_1.matchesKeystroke)(event, "Escape")) {
-            this.actionDispatcher.dispatch(tool_1.EnableDefaultToolsAction.create());
-          }
-        }
-        requestFilterUpdate(filter) {
-          if (this.paletteItemsCopy.length === 0) {
-            this.paletteItemsCopy = JSON.parse(JSON.stringify(this.paletteItems));
-          }
-          this.paletteItems = JSON.parse(JSON.stringify(this.paletteItemsCopy));
-          const filteredPaletteItems = [];
-          for (const itemGroup of this.paletteItems) {
-            if (itemGroup.children) {
-              const matchingChildren = itemGroup.children.filter((child) => child.label.toLowerCase().includes(filter.toLowerCase()));
-              if (matchingChildren.length > 0) {
-                itemGroup.children.splice(0, itemGroup.children.length);
-                matchingChildren.forEach((child) => itemGroup.children.push(child));
-                filteredPaletteItems.push(itemGroup);
-              }
-            }
-          }
-          this.paletteItems = filteredPaletteItems;
-          this.createBody();
-        }
-        /**
-         *  @deprecated This hook is no longer used by the ToolPalette.
-         *              It is kept for compatibility reasons and will be removed in the future.
-         *              Move initialization logic to the `postRequestModel` method.
-         *              This ensures that tool palette initialization does not block the diagram loading process.
-         */
-        async preRequestModel() {
-        }
-        async postRequestModel() {
-          await this.setPaletteItems();
-          if (!this.editorContext.isReadonly) {
-            this.show(this.editorContext.modelRoot);
-          }
-        }
-        async setPaletteItems() {
-          const requestAction = sprotty_1.RequestContextActions.create({
-            contextId: ToolPalette_1.ID,
-            editorContext: {
-              selectedElementIds: []
-            }
-          });
-          const response = await this.actionDispatcher.request(requestAction);
-          this.paletteItems = response.actions.map((action) => action);
-          this.dynamic = this.paletteItems.some((item) => this.hasDynamicAction(item));
-        }
-        hasDynamicAction(item) {
-          var _a4;
-          const dynamic = !!item.actions.find((action) => {
-            var _a5;
-            return sprotty_1.TriggerNodeCreationAction.is(action) && ((_a5 = action.ghostElement) === null || _a5 === void 0 ? void 0 : _a5.dynamic);
-          });
-          if (dynamic) {
-            return dynamic;
-          }
-          return ((_a4 = item.children) === null || _a4 === void 0 ? void 0 : _a4.some((child) => this.hasDynamicAction(child))) || false;
-        }
-        async reloadPaletteBody() {
-          if (!this.editorContext.isReadonly && this.dynamic) {
-            await this.setPaletteItems();
-            this.paletteItemsCopy = [];
-            this.requestFilterUpdate(this.searchField.value);
-          }
-        }
-      };
-      exports.ToolPalette = ToolPalette;
-      ToolPalette.ID = "tool-palette";
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], ToolPalette.prototype, "actionDispatcher", void 0);
-      __decorate([
-        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
-        __metadata("design:type", editor_context_service_1.EditorContextService)
-      ], ToolPalette.prototype, "editorContext", void 0);
-      __decorate([
-        (0, inversify_1.inject)(focus_tracker_1.FocusTracker),
-        __metadata("design:type", focus_tracker_1.FocusTracker)
-      ], ToolPalette.prototype, "focusTracker", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IGridManager),
-        (0, inversify_1.optional)(),
-        __metadata("design:type", Object)
-      ], ToolPalette.prototype, "gridManager", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IDebugManager),
-        (0, inversify_1.optional)(),
-        __metadata("design:type", Object)
-      ], ToolPalette.prototype, "debugManager", void 0);
-      __decorate([
-        (0, inversify_1.postConstruct)(),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", []),
-        __metadata("design:returntype", void 0)
-      ], ToolPalette.prototype, "postConstruct", null);
-      exports.ToolPalette = ToolPalette = ToolPalette_1 = __decorate([
-        (0, inversify_1.injectable)()
-      ], ToolPalette);
-      function compare(a3, b3) {
-        const sortStringBased = a3.sortString.localeCompare(b3.sortString);
-        if (sortStringBased !== 0) {
-          return sortStringBased;
-        }
-        return a3.label.localeCompare(b3.label);
-      }
-      exports.compare = compare;
-      function createIcon(codiconId) {
-        const icon = document.createElement("i");
-        icon.classList.add(...(0, sprotty_1.codiconCSSClasses)(codiconId));
-        return icon;
-      }
-      exports.createIcon = createIcon;
-      function createToolGroup(item) {
-        const group = document.createElement("div");
-        group.classList.add("tool-group");
-        group.id = item.id;
-        const header = document.createElement("div");
-        header.classList.add("group-header");
-        if (item.icon) {
-          header.appendChild(createIcon(item.icon));
-        }
-        header.insertAdjacentText("beforeend", item.label);
-        header.ondblclick = (_ev) => {
-          const css = "collapsed";
-          changeCSSClass(group, css);
-          Array.from(group.children).forEach((child) => changeCSSClass(child, css));
-          window.getSelection().removeAllRanges();
-        };
-        group.appendChild(header);
-        return group;
-      }
-      exports.createToolGroup = createToolGroup;
-      function changeCSSClass(element, css) {
-        element.classList.contains(css) ? element.classList.remove(css) : element.classList.add(css);
-      }
-      exports.changeCSSClass = changeCSSClass;
-      function changeCodiconClass(element, codiconId) {
-        element.classList.contains((0, sprotty_1.codiconCSSClasses)(codiconId)[1]) ? element.classList.remove((0, sprotty_1.codiconCSSClasses)(codiconId)[1]) : element.classList.add((0, sprotty_1.codiconCSSClasses)(codiconId)[1]);
-      }
-      exports.changeCodiconClass = changeCodiconClass;
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/tool-palette/tool-palette-module.js
-  var require_tool_palette_module = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/tool-palette/tool-palette-module.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.toolPaletteModule = void 0;
-      var sprotty_1 = require_lib4();
-      require_tool_palette2();
-      var tool_1 = require_tool();
-      var tool_palette_1 = require_tool_palette3();
-      exports.toolPaletteModule = new sprotty_1.FeatureModule((bind, _unbind, isBound, _rebind) => {
-        (0, sprotty_1.bindAsService)(bind, sprotty_1.TYPES.IUIExtension, tool_palette_1.ToolPalette);
-        bind(sprotty_1.TYPES.IDiagramStartup).toService(tool_palette_1.ToolPalette);
-        (0, sprotty_1.configureActionHandler)({ bind, isBound }, tool_1.EnableDefaultToolsAction.KIND, tool_palette_1.ToolPalette);
-        (0, sprotty_1.configureActionHandler)({ bind, isBound }, sprotty_1.UpdateModelAction.KIND, tool_palette_1.ToolPalette);
-        (0, sprotty_1.configureActionHandler)({ bind, isBound }, sprotty_1.SetModelAction.KIND, tool_palette_1.ToolPalette);
-      }, { featureId: Symbol("toolPalette") });
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/css/change-bounds.css
-  var require_change_bounds = __commonJS({
-    "node_modules/@eclipse-glsp/client/css/change-bounds.css"(exports, module) {
-      module.exports = {};
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/change-bounds/movement-restrictor.js
-  var require_movement_restrictor = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/change-bounds/movement-restrictor.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.movementRestrictionFeedback = exports.removeMovementRestrictionFeedback = exports.createMovementRestrictionFeedback = exports.NoOverlapMovementRestrictor = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var css_feedback_1 = require_css_feedback();
-      var viewpoint_util_1 = require_viewpoint_util();
-      var model_1 = require_model19();
-      var NoOverlapMovementRestrictor = class NoOverlapMovementRestrictor {
-        constructor() {
-          this.cssClasses = ["movement-not-allowed"];
-        }
-        validate(element, newLocation) {
-          if (!(0, sprotty_1.isMoveable)(element) || !newLocation) {
-            return false;
-          }
-          const dimensions = (0, sprotty_1.isBoundsAware)(element) ? element.bounds : { width: 1, height: 1 };
-          const ghostElement = Object.create(element);
-          ghostElement.bounds = { ...dimensions, ...newLocation };
-          ghostElement.type = "Ghost";
-          ghostElement.id = element.id;
-          return !Array.from(element.root.index.all().filter((node) => node.id !== ghostElement.id && node !== ghostElement.root && node instanceof sprotty_1.GNode).map((node) => node)).some((e2) => this.areOverlapping(e2, ghostElement));
-        }
-        isBoundsRelevant(element, ghostElement) {
-          return element.id !== ghostElement.id && element !== ghostElement.root && element instanceof sprotty_1.GNode && (0, sprotty_1.isBoundsAware)(element);
-        }
-        areOverlapping(element1, element2) {
-          return sprotty_1.Bounds.overlap((0, viewpoint_util_1.toAbsoluteBounds)(element1), (0, viewpoint_util_1.toAbsoluteBounds)(element2));
-        }
-      };
-      exports.NoOverlapMovementRestrictor = NoOverlapMovementRestrictor;
-      exports.NoOverlapMovementRestrictor = NoOverlapMovementRestrictor = __decorate([
-        (0, inversify_1.injectable)()
-      ], NoOverlapMovementRestrictor);
-      function createMovementRestrictionFeedback(element, movementRestrictor) {
-        const elements = [element];
-        if (element instanceof sprotty_1.GParentElement) {
-          element.children.filter((child) => child instanceof model_1.GResizeHandle).forEach((e2) => elements.push(e2));
-        }
-        return css_feedback_1.ModifyCSSFeedbackAction.create({ elements, add: movementRestrictor.cssClasses });
-      }
-      exports.createMovementRestrictionFeedback = createMovementRestrictionFeedback;
-      function removeMovementRestrictionFeedback(element, movementRestrictor) {
-        const elements = [element];
-        if (element instanceof sprotty_1.GParentElement) {
-          element.children.filter((child) => child instanceof model_1.GResizeHandle).forEach((e2) => elements.push(e2));
-        }
-        return css_feedback_1.ModifyCSSFeedbackAction.create({ elements, remove: movementRestrictor.cssClasses });
-      }
-      exports.removeMovementRestrictionFeedback = removeMovementRestrictionFeedback;
-      function movementRestrictionFeedback(element, movementRestrictor, valid) {
-        return valid ? removeMovementRestrictionFeedback(element, movementRestrictor) : createMovementRestrictionFeedback(element, movementRestrictor);
-      }
-      exports.movementRestrictionFeedback = movementRestrictionFeedback;
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/tools/node-creation/insert-indicator.js
-  var require_insert_indicator = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/tools/node-creation/insert-indicator.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.InsertIndicator = exports.ARG_LENGTH = void 0;
-      var sprotty_1 = require_lib4();
-      var uuid_1 = require_commonjs_browser();
-      var args_feature_1 = require_args_feature();
-      exports.ARG_LENGTH = "length";
-      var InsertIndicator = class _InsertIndicator extends sprotty_1.GNode {
-        constructor(length) {
-          super();
-          this.id = (0, uuid_1.v4)();
-          this.type = _InsertIndicator.TYPE;
-          this.features = (0, sprotty_1.createFeatureSet)(_InsertIndicator.DEFAULT_FEATURES);
-          this.cssClasses = ["insert-indicator", "sprotty-node"];
-          this.size = sprotty_1.Dimension.ZERO;
-          this.args = {};
-          if (length) {
-            this.args = { [exports.ARG_LENGTH]: length };
-          }
-        }
-      };
-      exports.InsertIndicator = InsertIndicator;
-      InsertIndicator.DEFAULT_FEATURES = [sprotty_1.boundsFeature, sprotty_1.moveFeature, args_feature_1.argsFeature];
-      InsertIndicator.TYPE = "node:insert-indicator";
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/change-bounds/tracker.js
-  var require_tracker = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/change-bounds/tracker.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.DiagramMovementCalculator = exports.MovementCalculator = void 0;
-      var sprotty_1 = require_lib4();
-      var MovementCalculator = class {
-        setPosition(position) {
-          this.position = { ...position };
-        }
-        updatePosition(param) {
-          var _a4;
-          const vector = sprotty_1.Vector.is(param) ? param : param.vector;
-          this.setPosition(sprotty_1.Point.add((_a4 = this.position) !== null && _a4 !== void 0 ? _a4 : sprotty_1.Point.ORIGIN, vector));
-        }
-        get hasPosition() {
-          return this.position !== void 0;
-        }
-        calculateMoveTo(targetPosition) {
-          return !this.position ? sprotty_1.Movement.ZERO : sprotty_1.Point.move(this.position, targetPosition);
-        }
-        dispose() {
-          this.position = void 0;
-        }
-      };
-      exports.MovementCalculator = MovementCalculator;
-      var DiagramMovementCalculator = class extends MovementCalculator {
-        constructor(positionTracker) {
-          super();
-          this.positionTracker = positionTracker;
-        }
-        init() {
-          const position = this.positionTracker.lastPositionOnDiagram;
-          if (position) {
-            this.setPosition(position);
-          }
-        }
-        calculateMoveToCurrent() {
-          const targetPosition = this.positionTracker.lastPositionOnDiagram;
-          return targetPosition ? this.calculateMoveTo(targetPosition) : sprotty_1.Movement.ZERO;
-        }
-        reset() {
-          this.dispose();
-        }
-      };
-      exports.DiagramMovementCalculator = DiagramMovementCalculator;
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/tools/change-bounds/change-bounds-tracker.js
-  var require_change_bounds_tracker = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/tools/change-bounds/change-bounds-tracker.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.MoveableRoutingHandle = exports.MoveableResizeHandle = exports.ChangeBoundsTracker = exports.TrackedElementResize = exports.DEFAULT_RESIZE_OPTIONS = exports.TrackedMove = exports.TrackedElementMove = exports.DEFAULT_MOVE_OPTIONS = void 0;
-      var sprotty_1 = require_lib4();
-      var gmodel_util_1 = require_gmodel_util();
-      var model_1 = require_model19();
-      var tracker_1 = require_tracker();
-      exports.DEFAULT_MOVE_OPTIONS = {
-        snap: true,
-        restrict: true,
-        validate: true,
-        skipStatic: true,
-        skipInvalid: false
-      };
-      var TrackedElementMove;
-      (function(TrackedElementMove2) {
-        function is(obj) {
-          return (0, sprotty_1.hasObjectProp)(obj, "element") && (0, sprotty_1.hasObjectProp)(obj, "fromPosition") && (0, sprotty_1.hasObjectProp)(obj, "toPosition") && (0, sprotty_1.hasBooleanProp)(obj, "valid");
-        }
-        TrackedElementMove2.is = is;
-      })(TrackedElementMove || (exports.TrackedElementMove = TrackedElementMove = {}));
-      var TrackedMove;
-      (function(TrackedMove2) {
-        function is(obj) {
-          return sprotty_1.Movement.is(obj) && (0, sprotty_1.hasBooleanProp)(obj, "valid");
-        }
-        TrackedMove2.is = is;
-      })(TrackedMove || (exports.TrackedMove = TrackedMove = {}));
-      exports.DEFAULT_RESIZE_OPTIONS = {
-        snap: true,
-        restrict: true,
-        validate: true,
-        symmetric: true,
-        constrainResize: true,
-        skipStatic: true,
-        skipInvalidSize: false,
-        skipInvalidMove: false
-      };
-      var TrackedElementResize;
-      (function(TrackedElementResize2) {
-        function is(obj) {
-          return (0, sprotty_1.isBoundsAware)(obj.element) && (0, sprotty_1.hasObjectProp)(obj, "fromBounds") && (0, sprotty_1.hasObjectProp)(obj, "toBounds") && (0, sprotty_1.hasObjectProp)(obj, "valid");
-        }
-        TrackedElementResize2.is = is;
-      })(TrackedElementResize || (exports.TrackedElementResize = TrackedElementResize = {}));
-      var ChangeBoundsTracker = class {
-        constructor(manager) {
-          this.manager = manager;
-          this.diagramMovement = new tracker_1.DiagramMovementCalculator(manager.positionTracker);
-        }
-        startTracking() {
-          this.diagramMovement.init();
-          return this;
-        }
-        updateTrackingPosition(param) {
-          const update = TrackedMove.is(param) ? sprotty_1.Vector.max(...param.elementMoves.map((move) => move.moveVector)) : param;
-          this.diagramMovement.updatePosition(update);
-        }
-        isTracking() {
-          return this.diagramMovement.hasPosition;
-        }
-        stopTracking() {
-          this.diagramMovement.dispose();
-          return this;
-        }
-        //
-        // MOVE
-        //
-        moveElements(elements, opts) {
-          const options = this.resolveMoveOptions(opts);
-          const update = this.calculateDiagramMovement();
-          const move = { ...update, elementMoves: [], valid: true, options };
-          if (sprotty_1.Vector.isZero(update.vector) && options.skipStatic) {
-            return move;
-          }
-          const elementsToMove = this.getMoveableElements(elements, options);
-          for (const element of elementsToMove) {
-            const elementMove = this.calculateElementMove(element, update.vector, options);
-            if (!this.skipElementMove(elementMove, options)) {
-              move.elementMoves.push(elementMove);
-              move.valid && (move.valid = elementMove.valid);
-            }
-          }
-          return move;
-        }
-        resolveMoveOptions(opts) {
-          var _a4, _b2;
-          return {
-            ...exports.DEFAULT_MOVE_OPTIONS,
-            ...opts,
-            snap: this.manager.usePositionSnap((_a4 = opts === null || opts === void 0 ? void 0 : opts.snap) !== null && _a4 !== void 0 ? _a4 : exports.DEFAULT_MOVE_OPTIONS.snap),
-            restrict: this.manager.useMovementRestriction((_b2 = opts === null || opts === void 0 ? void 0 : opts.restrict) !== null && _b2 !== void 0 ? _b2 : exports.DEFAULT_MOVE_OPTIONS.restrict)
-          };
-        }
-        calculateDiagramMovement() {
-          return this.diagramMovement.calculateMoveToCurrent();
-        }
-        getMoveableElements(elements, options) {
-          var _a4;
-          return Array.isArray(elements) ? elements : (0, gmodel_util_1.getElements)(elements.ctx.index, elements.elementIDs, (_a4 = elements.guard) !== null && _a4 !== void 0 ? _a4 : sprotty_1.isMoveable);
-        }
-        skipElementMove(elementMove, options) {
-          return options.skipInvalid && !elementMove.valid || options.skipStatic && sprotty_1.Vector.isZero(elementMove.moveVector);
-        }
-        calculateElementMove(element, vector, options) {
-          const fromPosition = element.position;
-          const toPosition = sprotty_1.Point.add(fromPosition, vector);
-          const move = { element, fromPosition, toPosition, valid: true, moveVector: vector, sourceVector: vector };
-          if (options.snap) {
-            move.toPosition = this.snapPosition(move, options);
-          }
-          if (options.restrict) {
-            move.toPosition = this.restrictMovement(move, options);
-          }
-          if (options.validate) {
-            move.valid = this.validateElementMove(move, options);
-          }
-          move.moveVector = sprotty_1.Point.vector(move.fromPosition, move.toPosition);
-          return move;
-        }
-        snapPosition(elementMove, opts) {
-          return this.manager.snapPosition(elementMove.element, elementMove.toPosition);
-        }
-        restrictMovement(elementMove, opts) {
-          const movement = sprotty_1.Point.move(elementMove.fromPosition, elementMove.toPosition);
-          return this.manager.restrictMovement(elementMove.element, movement).to;
-        }
-        validateElementMove(elementMove, opts) {
-          return this.manager.hasValidPosition(elementMove.element, elementMove.toPosition);
-        }
-        //
-        // RESIZE
-        //
-        resizeElements(handle, opts) {
-          const options = this.resolveResizeOptions(opts);
-          const update = this.calculateDiagramMovement();
-          const handleMove = this.calculateHandleMove(new MoveableResizeHandle(handle), update.vector, options);
-          const resize = { ...update, valid: { move: true, size: true }, options, handleMove, elementResizes: [] };
-          if (sprotty_1.Vector.isZero(handleMove.moveVector) && options.skipStatic) {
-            return resize;
-          }
-          const elementsToResize = this.getResizableElements(handle, options);
-          for (const element of elementsToResize) {
-            const elementResize = this.calculateElementResize(element, handleMove, options);
-            if (!this.skipElementResize(elementResize, options)) {
-              resize.elementResizes.push(elementResize);
-              resize.valid.move = resize.valid.move && elementResize.valid.move;
-              resize.valid.size = resize.valid.size && elementResize.valid.size;
-            }
-          }
-          return resize;
-        }
-        resolveResizeOptions(opts) {
-          var _a4, _b2, _c;
-          return {
-            ...exports.DEFAULT_RESIZE_OPTIONS,
-            ...opts,
-            snap: this.manager.usePositionSnap((_a4 = opts === null || opts === void 0 ? void 0 : opts.snap) !== null && _a4 !== void 0 ? _a4 : exports.DEFAULT_RESIZE_OPTIONS.snap),
-            restrict: this.manager.useMovementRestriction((_b2 = opts === null || opts === void 0 ? void 0 : opts.restrict) !== null && _b2 !== void 0 ? _b2 : exports.DEFAULT_RESIZE_OPTIONS.restrict),
-            symmetric: this.manager.useSymmetricResize((_c = opts === null || opts === void 0 ? void 0 : opts.symmetric) !== null && _c !== void 0 ? _c : exports.DEFAULT_RESIZE_OPTIONS.symmetric)
-          };
-        }
-        calculateHandleMove(handle, diagramMovement, opts) {
-          const moveOptions = this.resolveMoveOptions({ ...opts, validate: false });
-          return this.calculateElementMove(handle, diagramMovement, moveOptions);
-        }
-        getResizableElements(handle, options) {
-          return [handle.parent];
-        }
-        skipElementResize(elementResize, options) {
-          return options.skipInvalidMove && !elementResize.valid.move || options.skipInvalidSize && !elementResize.valid.size || options.skipStatic && sprotty_1.Dimension.equals(elementResize.fromBounds, elementResize.toBounds);
-        }
-        calculateElementResize(element, handleMove, options) {
-          const fromBounds = element.bounds;
-          const toBounds = this.calculateElementBounds(element, handleMove, options);
-          const resize = { element, fromBounds, toBounds, valid: { size: true, move: true } };
-          if (options.validate) {
-            resize.valid.size = this.manager.hasValidSize(resize.element, resize.toBounds);
-            resize.valid.move = handleMove.valid && this.manager.hasValidPosition(resize.element, resize.toBounds);
-          }
-          return resize;
-        }
-        calculateElementBounds(element, handleMove, options) {
-          let toBounds = this.calculateBounds(element.bounds, handleMove);
-          if (options.symmetric) {
-            const symmetricHandleMove = this.calculateSymmetricHandleMove(handleMove, options);
-            toBounds = this.calculateBounds(toBounds, symmetricHandleMove);
-          }
-          if (!options.constrainResize || this.manager.hasValidSize(element, toBounds)) {
-            return toBounds;
-          }
-          const minimum = this.manager.getMinimumSize(element);
-          handleMove.moveVector = this.constrainResizeVector(element.bounds, handleMove, minimum);
-          if (options.symmetric) {
-            handleMove.moveVector.x = element.bounds.width > minimum.width ? handleMove.moveVector.x / 2 : handleMove.moveVector.x;
-            handleMove.moveVector.y = element.bounds.height > minimum.height ? handleMove.moveVector.y / 2 : handleMove.moveVector.y;
-          }
-          toBounds = this.calculateBounds(element.bounds, handleMove);
-          if (options.symmetric) {
-            const symmetricHandleMove = this.calculateSymmetricHandleMove(handleMove, { ...options, snap: false });
-            toBounds = this.calculateBounds(toBounds, symmetricHandleMove);
-          }
-          return toBounds;
-        }
-        calculateSymmetricHandleMove(handleMove, options) {
-          const moveOptions = this.resolveMoveOptions({ ...options, validate: false, restrict: false });
-          return this.calculateElementMove(handleMove.element.opposite(), sprotty_1.Vector.reverse(handleMove.moveVector), moveOptions);
-        }
-        calculateBounds(src, handleMove) {
-          if (!handleMove || sprotty_1.Vector.isZero(handleMove.moveVector)) {
-            return src;
-          }
-          return this.doCalculateBounds(src, handleMove.moveVector, handleMove.element.location);
-        }
-        doCalculateBounds(src, vector, location2) {
-          switch (location2) {
-            case model_1.ResizeHandleLocation.TopLeft:
-              return { x: src.x + vector.x, y: src.y + vector.y, width: src.width - vector.x, height: src.height - vector.y };
-            case model_1.ResizeHandleLocation.Top:
-              return { ...src, y: src.y + vector.y, height: src.height - vector.y };
-            case model_1.ResizeHandleLocation.TopRight:
-              return { ...src, y: src.y + vector.y, width: src.width + vector.x, height: src.height - vector.y };
-            case model_1.ResizeHandleLocation.Right:
-              return { ...src, width: src.width + vector.x };
-            case model_1.ResizeHandleLocation.BottomRight:
-              return { ...src, width: src.width + vector.x, height: src.height + vector.y };
-            case model_1.ResizeHandleLocation.Bottom:
-              return { ...src, height: src.height + vector.y };
-            case model_1.ResizeHandleLocation.BottomLeft:
-              return { ...src, x: src.x + vector.x, width: src.width - vector.x, height: src.height + vector.y };
-            case model_1.ResizeHandleLocation.Left:
-              return { ...src, x: src.x + vector.x, width: src.width - vector.x };
-          }
-        }
-        constrainResizeVector(src, handleMove, minimum) {
-          const vector = handleMove.moveVector;
-          switch (handleMove.element.location) {
-            case model_1.ResizeHandleLocation.TopLeft:
-              vector.x = src.width - vector.x < minimum.width ? src.width - minimum.width : vector.x;
-              vector.y = src.height - vector.y < minimum.height ? src.height - minimum.height : vector.y;
-              break;
-            case model_1.ResizeHandleLocation.Top:
-              vector.y = src.height - vector.y < minimum.height ? src.height - minimum.height : vector.y;
-              break;
-            case model_1.ResizeHandleLocation.TopRight:
-              vector.x = src.width + vector.x < minimum.width ? minimum.width - src.width : vector.x;
-              vector.y = src.height - vector.y < minimum.height ? src.height - minimum.height : vector.y;
-              break;
-            case model_1.ResizeHandleLocation.Right:
-              vector.x = src.width + vector.x < minimum.width ? minimum.width - src.width : vector.x;
-              break;
-            case model_1.ResizeHandleLocation.BottomRight:
-              vector.x = src.width + vector.x < minimum.width ? minimum.width - src.width : vector.x;
-              vector.y = src.height + vector.y < minimum.height ? minimum.height - src.height : vector.y;
-              break;
-            case model_1.ResizeHandleLocation.Bottom:
-              vector.y = src.height + vector.y < minimum.height ? minimum.height - src.height : vector.y;
-              break;
-            case model_1.ResizeHandleLocation.BottomLeft:
-              vector.x = src.width - vector.x < minimum.width ? src.width - minimum.width : vector.x;
-              vector.y = src.height + vector.y < minimum.height ? minimum.height - src.height : vector.y;
-              break;
-            case model_1.ResizeHandleLocation.Left:
-              vector.x = src.width - vector.x < minimum.width ? src.width - minimum.width : vector.x;
-              break;
-          }
-          return vector;
-        }
-        dispose() {
-          this.stopTracking();
-        }
-      };
-      exports.ChangeBoundsTracker = ChangeBoundsTracker;
-      var MoveableResizeHandle = class _MoveableResizeHandle extends model_1.GResizeHandle {
-        constructor(handle, location2 = handle.location, position = model_1.GResizeHandle.getHandlePosition(handle.parent, location2)) {
-          super(location2, handle.type, handle.hoverFeedback);
-          this.handle = handle;
-          this.location = location2;
-          this.position = position;
-          this.id = handle.id;
-          this.parent = handle.parent;
-        }
-        opposite() {
-          return new _MoveableResizeHandle(this.handle, model_1.ResizeHandleLocation.opposite(this.location));
-        }
-      };
-      exports.MoveableResizeHandle = MoveableResizeHandle;
-      var MoveableRoutingHandle = class extends sprotty_1.GRoutingHandle {
-        constructor(handle, position) {
-          super();
-          this.handle = handle;
-          this.position = position;
-          this.id = handle.id;
-          this.parent = handle.parent;
-        }
-      };
-      exports.MoveableRoutingHandle = MoveableRoutingHandle;
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/tools/change-bounds/change-bounds-manager.js
-  var require_change_bounds_manager = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/tools/change-bounds/change-bounds-manager.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var __param = exports && exports.__param || function(paramIndex, decorator) {
-        return function(target, key) {
-          decorator(target, key, paramIndex);
-        };
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.ChangeBoundsManager = exports.CSS_ACTIVE_HANDLE = exports.CSS_RESTRICTED_RESIZE = exports.CSS_RESIZE_MODE = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var css_feedback_1 = require_css_feedback();
-      var layout_utils_1 = require_layout_utils();
-      var layout_data_1 = require_layout_data();
-      var model_1 = require_model19();
-      var movement_restrictor_1 = require_movement_restrictor();
-      var insert_indicator_1 = require_insert_indicator();
-      var change_bounds_tracker_1 = require_change_bounds_tracker();
-      exports.CSS_RESIZE_MODE = "resize-mode";
-      exports.CSS_RESTRICTED_RESIZE = "resize-not-allowed";
-      exports.CSS_ACTIVE_HANDLE = "active";
-      var ChangeBoundsManager = class ChangeBoundsManager {
-        constructor(positionTracker, movementRestrictor, snapper, helperLineManager, gridManager) {
-          this.positionTracker = positionTracker;
-          this.movementRestrictor = movementRestrictor;
-          this.snapper = snapper;
-          this.helperLineManager = helperLineManager;
-          this.gridManager = gridManager;
-        }
-        unsnapModifier() {
-          return "shift";
-        }
-        usePositionSnap(arg) {
-          return typeof arg === "boolean" ? arg : !arg.shiftKey;
-        }
-        snapPosition(element, position) {
-          var _a4, _b2;
-          return (_b2 = (_a4 = this.snapper) === null || _a4 === void 0 ? void 0 : _a4.snap(position, element)) !== null && _b2 !== void 0 ? _b2 : position;
-        }
-        isValid(element) {
-          return this.hasValidPosition(element) && this.hasValidSize(element);
-        }
-        hasValidPosition(element, position) {
-          return !(0, sprotty_1.isLocateable)(element) || (0, layout_utils_1.isValidMove)(element, position !== null && position !== void 0 ? position : element.position, this.movementRestrictor);
-        }
-        hasValidSize(element, size) {
-          if (!(0, sprotty_1.isBoundsAware)(element)) {
-            return true;
-          }
-          const dimension = size !== null && size !== void 0 ? size : element.bounds;
-          const minimum = this.getMinimumSize(element);
-          if (dimension.width < minimum.width || dimension.height < minimum.height) {
-            return false;
-          }
-          return true;
-        }
-        getMinimumSize(element) {
-          if (!(0, sprotty_1.isBoundsAware)(element)) {
-            return sprotty_1.Dimension.EMPTY;
-          }
-          const definedMinimum = (0, layout_utils_1.minDimensions)(element);
-          const computedMinimum = layout_data_1.LayoutAware.getComputedDimensions(element);
-          return computedMinimum ? {
-            width: Math.max(definedMinimum.width, computedMinimum.width),
-            height: Math.max(definedMinimum.height, computedMinimum.height)
-          } : definedMinimum;
-        }
-        useMovementRestriction(arg) {
-          return this.usePositionSnap(arg);
-        }
-        restrictMovement(element, movement) {
-          const minimumMovement = this.getMinimumMovement(element, movement);
-          if (!minimumMovement) {
-            return movement;
-          }
-          const absVector = sprotty_1.Vector.abs(movement.vector);
-          const targetPosition = {
-            x: absVector.x < minimumMovement.x ? movement.from.x : movement.to.x,
-            y: absVector.y < minimumMovement.y ? movement.from.y : movement.to.y
-          };
-          return sprotty_1.Point.move(movement.from, targetPosition);
-        }
-        getMinimumMovement(element, movement) {
-          var _a4;
-          return element instanceof insert_indicator_1.InsertIndicator && this.gridManager ? this.gridManager.grid : (_a4 = this.helperLineManager) === null || _a4 === void 0 ? void 0 : _a4.getMinimumMoveVector(element, true, movement.direction);
-        }
-        addMoveFeedback(feedback, trackedMove, ctx, event) {
-          feedback.add((0, css_feedback_1.cursorFeedbackAction)(css_feedback_1.CursorCSS.MOVE), (0, css_feedback_1.cursorFeedbackAction)(css_feedback_1.CursorCSS.DEFAULT));
-          trackedMove.elementMoves.forEach((move) => this.addMoveRestrictionFeedback(feedback, move, ctx, event));
-          return feedback;
-        }
-        addResizeFeedback(feedback, resize, ctx, event) {
-          feedback.add(css_feedback_1.ModifyCSSFeedbackAction.create({ add: [exports.CSS_RESIZE_MODE] }), css_feedback_1.ModifyCSSFeedbackAction.create({ remove: [exports.CSS_RESIZE_MODE] }));
-          const cursorClass = model_1.GResizeHandle.getCursorCss(resize.handleMove.element);
-          feedback.add((0, css_feedback_1.cursorFeedbackAction)(cursorClass), (0, css_feedback_1.cursorFeedbackAction)(css_feedback_1.CursorCSS.DEFAULT));
-          const handle = resize.handleMove.element;
-          feedback.add((0, css_feedback_1.applyCssClasses)(handle, exports.CSS_ACTIVE_HANDLE), (0, css_feedback_1.deleteCssClasses)(handle, exports.CSS_ACTIVE_HANDLE));
-          feedback.add((0, css_feedback_1.toggleCssClasses)(handle, !resize.valid.size, exports.CSS_RESTRICTED_RESIZE), (0, css_feedback_1.deleteCssClasses)(handle, exports.CSS_RESTRICTED_RESIZE));
-          resize.elementResizes.forEach((elementResize) => {
-            this.addMoveRestrictionFeedback(feedback, elementResize, ctx, event);
-            feedback.add((0, css_feedback_1.toggleCssClasses)(elementResize.element, !elementResize.valid.size, exports.CSS_RESTRICTED_RESIZE), (0, css_feedback_1.deleteCssClasses)(elementResize.element, exports.CSS_RESTRICTED_RESIZE));
-          });
-          return feedback;
-        }
-        addMoveRestrictionFeedback(feedback, change, ctx, event) {
-          if (this.movementRestrictor) {
-            const valid = change_bounds_tracker_1.TrackedElementMove.is(change) ? change.valid : change.valid.move;
-            feedback.add((0, movement_restrictor_1.movementRestrictionFeedback)(change.element, this.movementRestrictor, valid), (0, movement_restrictor_1.removeMovementRestrictionFeedback)(change.element, this.movementRestrictor));
-          }
-          return feedback;
-        }
-        defaultResizeLocations() {
-          return model_1.ResizeHandleLocation.CORNERS;
-        }
-        useSymmetricResize(arg) {
-          return typeof arg === "boolean" ? arg : arg.ctrlKey;
-        }
-        createTracker() {
-          return new change_bounds_tracker_1.ChangeBoundsTracker(this);
-        }
-      };
-      exports.ChangeBoundsManager = ChangeBoundsManager;
-      exports.ChangeBoundsManager = ChangeBoundsManager = __decorate([
-        (0, inversify_1.injectable)(),
-        __param(0, (0, inversify_1.inject)(sprotty_1.MousePositionTracker)),
-        __param(1, (0, inversify_1.optional)()),
-        __param(1, (0, inversify_1.inject)(sprotty_1.TYPES.IMovementRestrictor)),
-        __param(2, (0, inversify_1.optional)()),
-        __param(2, (0, inversify_1.inject)(sprotty_1.TYPES.ISnapper)),
-        __param(3, (0, inversify_1.optional)()),
-        __param(3, (0, inversify_1.inject)(sprotty_1.TYPES.IHelperLineManager)),
-        __param(4, (0, inversify_1.optional)()),
-        __param(4, (0, inversify_1.inject)(sprotty_1.TYPES.IGridManager)),
-        __metadata("design:paramtypes", [sprotty_1.MousePositionTracker, Object, Object, Object, Object])
-      ], ChangeBoundsManager);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/tools/change-bounds/change-bounds-tool-feedback.js
-  var require_change_bounds_tool_feedback = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/tools/change-bounds/change-bounds-tool-feedback.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.MoveFinishedEventAction = exports.MoveInitializedEventAction = exports.HideChangeBoundsToolResizeFeedbackCommand = exports.ShowChangeBoundsToolResizeFeedbackCommand = exports.HideChangeBoundsToolResizeFeedbackAction = exports.ShowChangeBoundsToolResizeFeedbackAction = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var feedback_command_1 = require_feedback_command();
-      var glsp_model_source_1 = require_glsp_model_source();
-      var gmodel_util_1 = require_gmodel_util();
-      var model_1 = require_model19();
-      var ShowChangeBoundsToolResizeFeedbackAction;
-      (function(ShowChangeBoundsToolResizeFeedbackAction2) {
-        ShowChangeBoundsToolResizeFeedbackAction2.KIND = "showChangeBoundsToolResizeFeedback";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, ShowChangeBoundsToolResizeFeedbackAction2.KIND) && (0, sprotty_1.hasStringProp)(object, "elementId");
-        }
-        ShowChangeBoundsToolResizeFeedbackAction2.is = is;
-        function create(options) {
-          const opts = typeof options === "string" ? { elementId: options } : options;
-          return {
-            kind: ShowChangeBoundsToolResizeFeedbackAction2.KIND,
-            ...opts
-          };
-        }
-        ShowChangeBoundsToolResizeFeedbackAction2.create = create;
-      })(ShowChangeBoundsToolResizeFeedbackAction || (exports.ShowChangeBoundsToolResizeFeedbackAction = ShowChangeBoundsToolResizeFeedbackAction = {}));
-      var HideChangeBoundsToolResizeFeedbackAction;
-      (function(HideChangeBoundsToolResizeFeedbackAction2) {
-        HideChangeBoundsToolResizeFeedbackAction2.KIND = "hideChangeBoundsToolResizeFeedback";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, HideChangeBoundsToolResizeFeedbackAction2.KIND);
-        }
-        HideChangeBoundsToolResizeFeedbackAction2.is = is;
-        function create() {
-          return { kind: HideChangeBoundsToolResizeFeedbackAction2.KIND };
-        }
-        HideChangeBoundsToolResizeFeedbackAction2.create = create;
-      })(HideChangeBoundsToolResizeFeedbackAction || (exports.HideChangeBoundsToolResizeFeedbackAction = HideChangeBoundsToolResizeFeedbackAction = {}));
-      var ShowChangeBoundsToolResizeFeedbackCommand = class ShowChangeBoundsToolResizeFeedbackCommand extends feedback_command_1.FeedbackCommand {
-        execute(context) {
-          var _a4, _b2;
-          const index = context.root.index;
-          (0, gmodel_util_1.forEachElement)(index, model_1.isResizable, (element) => element.id !== this.action.elementId && (0, model_1.removeResizeHandles)(element));
-          if (this.action.elementId) {
-            const resizeElement = index.getById(this.action.elementId);
-            if (resizeElement && (0, model_1.isResizable)(resizeElement)) {
-              (0, model_1.addResizeHandles)(resizeElement, (_b2 = (_a4 = this.action.resizeLocations) !== null && _a4 !== void 0 ? _a4 : resizeElement.resizeLocations) !== null && _b2 !== void 0 ? _b2 : this.changeBoundsManager.defaultResizeLocations());
-            }
-          }
-          return context.root;
-        }
-      };
-      exports.ShowChangeBoundsToolResizeFeedbackCommand = ShowChangeBoundsToolResizeFeedbackCommand;
-      ShowChangeBoundsToolResizeFeedbackCommand.KIND = ShowChangeBoundsToolResizeFeedbackAction.KIND;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.Action),
-        __metadata("design:type", Object)
-      ], ShowChangeBoundsToolResizeFeedbackCommand.prototype, "action", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IChangeBoundsManager),
-        __metadata("design:type", Object)
-      ], ShowChangeBoundsToolResizeFeedbackCommand.prototype, "changeBoundsManager", void 0);
-      exports.ShowChangeBoundsToolResizeFeedbackCommand = ShowChangeBoundsToolResizeFeedbackCommand = __decorate([
-        (0, inversify_1.injectable)()
-      ], ShowChangeBoundsToolResizeFeedbackCommand);
-      var HideChangeBoundsToolResizeFeedbackCommand = class HideChangeBoundsToolResizeFeedbackCommand extends feedback_command_1.FeedbackCommand {
-        execute(context) {
-          const index = context.root.index;
-          (0, gmodel_util_1.forEachElement)(index, model_1.isResizable, model_1.removeResizeHandles);
-          return context.root;
-        }
-      };
-      exports.HideChangeBoundsToolResizeFeedbackCommand = HideChangeBoundsToolResizeFeedbackCommand;
-      HideChangeBoundsToolResizeFeedbackCommand.KIND = HideChangeBoundsToolResizeFeedbackAction.KIND;
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.Action),
-        __metadata("design:type", Object)
-      ], HideChangeBoundsToolResizeFeedbackCommand.prototype, "action", void 0);
-      exports.HideChangeBoundsToolResizeFeedbackCommand = HideChangeBoundsToolResizeFeedbackCommand = __decorate([
-        (0, inversify_1.injectable)()
-      ], HideChangeBoundsToolResizeFeedbackCommand);
-      var MoveInitializedEventAction;
-      (function(MoveInitializedEventAction2) {
-        MoveInitializedEventAction2.KIND = "move-initialized-event";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, MoveInitializedEventAction2.KIND);
-        }
-        MoveInitializedEventAction2.is = is;
-        function create() {
-          return glsp_model_source_1.OptionalAction.mark({ kind: MoveInitializedEventAction2.KIND });
-        }
-        MoveInitializedEventAction2.create = create;
-      })(MoveInitializedEventAction || (exports.MoveInitializedEventAction = MoveInitializedEventAction = {}));
-      var MoveFinishedEventAction;
-      (function(MoveFinishedEventAction2) {
-        MoveFinishedEventAction2.KIND = "move-finished-event";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, MoveFinishedEventAction2.KIND);
-        }
-        MoveFinishedEventAction2.is = is;
-        function create() {
-          return glsp_model_source_1.OptionalAction.mark({ kind: MoveFinishedEventAction2.KIND });
-        }
-        MoveFinishedEventAction2.create = create;
-      })(MoveFinishedEventAction || (exports.MoveFinishedEventAction = MoveFinishedEventAction = {}));
     }
   });
 
@@ -46960,6 +40581,7480 @@ ${JSON.stringify(message, null, 4)}`);
     }
   });
 
+  // node_modules/@eclipse-glsp/client/lib/base/shortcuts/available-shortcuts-extension.js
+  var require_available_shortcuts_extension = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/base/shortcuts/available-shortcuts-extension.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var AvailableShortcutsUIExtension_1;
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.AvailableShortcutsUIExtension = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var lodash_1 = require_lodash();
+      var ui_extension_1 = require_ui_extension2();
+      var messages_1 = require_messages3();
+      var AvailableShortcutsUIExtension = AvailableShortcutsUIExtension_1 = class AvailableShortcutsUIExtension extends ui_extension_1.GLSPAbstractUIExtension {
+        id() {
+          return AvailableShortcutsUIExtension_1.ID;
+        }
+        containerClass() {
+          return AvailableShortcutsUIExtension_1.ID;
+        }
+        show(root, ...contextElementIds) {
+          super.show(root, ...contextElementIds);
+          this.shortcutsContainer.focus();
+          this.toDisposeOnHide.push(this.shortcutManager.onDidChange(() => this.refreshUI()));
+        }
+        refreshUI() {
+          this.shortcutsContainer.innerHTML = "";
+          const registrations = this.shortcutManager.getRegistrations();
+          registrations.sort((a3, b3) => {
+            if (a3.group < b3.group) {
+              return -1;
+            }
+            if (a3.group > b3.group) {
+              return 1;
+            }
+            return a3.position - b3.position;
+          });
+          const grouped = (0, lodash_1.groupBy)(registrations, (k3) => k3.group);
+          const groupTable = document.createElement("table");
+          groupTable.classList.add("shortcut-table");
+          const tableHead = document.createElement("thead");
+          const tableBody = document.createElement("tbody");
+          const headerRow = document.createElement("tr");
+          const commandCell = document.createElement("th");
+          const keybindingCell = document.createElement("th");
+          commandCell.classList.add("column-title");
+          commandCell.innerText = messages_1.messages.shortcut.header_command;
+          keybindingCell.innerText = messages_1.messages.shortcut.header_shortcut;
+          headerRow.appendChild(commandCell);
+          headerRow.appendChild(keybindingCell);
+          tableHead.appendChild(headerRow);
+          for (const [group, shortcuts] of Object.entries(grouped)) {
+            tableBody.appendChild(this.createGroupHeader(group));
+            shortcuts.forEach((s3) => {
+              tableBody.appendChild(this.createEntry(s3));
+            });
+          }
+          groupTable.appendChild(tableHead);
+          groupTable.appendChild(tableBody);
+          this.shortcutsContainer.append(groupTable);
+        }
+        createGroupHeader(group) {
+          const entryRow = document.createElement("tr");
+          const groupElement = document.createElement("td");
+          const text = document.createElement("strong");
+          const emptyElement = document.createElement("td");
+          text.innerText = group;
+          groupElement.appendChild(text);
+          entryRow.appendChild(groupElement);
+          entryRow.appendChild(emptyElement);
+          return entryRow;
+        }
+        getShortcutHTML(shortcuts) {
+          const shortcutKeys = document.createElement("span");
+          shortcutKeys.innerHTML = shortcuts.map((key) => `<kbd>${key}</kbd>`).join(" + ");
+          return shortcutKeys;
+        }
+        createEntry(registration) {
+          const entryRow = document.createElement("tr");
+          const shortcutElement = document.createElement("td");
+          const descElement = document.createElement("td");
+          const shortcut = this.getShortcutHTML(registration.shortcuts);
+          descElement.innerText = registration.description;
+          shortcutElement.appendChild(shortcut);
+          entryRow.appendChild(descElement);
+          entryRow.appendChild(shortcutElement);
+          return entryRow;
+        }
+        initializeContents(containerElement) {
+          this.container = document.createElement("div");
+          this.container.classList.add("keyboard-shortcuts-menu");
+          const menuTitle = document.createElement("h3");
+          menuTitle.classList.add("menu-header");
+          menuTitle.innerText = messages_1.messages.shortcut.title;
+          this.container.appendChild(menuTitle);
+          const closeBtn = document.createElement("button");
+          closeBtn.id = "key-shortcut-close-btn";
+          closeBtn.textContent = "x";
+          closeBtn.addEventListener("click", () => {
+            this.hide();
+          });
+          this.container.appendChild(closeBtn);
+          this.shortcutsContainer = document.createElement("div");
+          this.shortcutsContainer.classList.add("keyboard-shortcuts-container");
+          this.shortcutsContainer.tabIndex = 30;
+          this.shortcutsContainer.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" || (0, sprotty_1.matchesKeystroke)(event, "KeyH", "alt")) {
+              this.hide();
+            }
+          });
+          this.container.appendChild(this.shortcutsContainer);
+          containerElement.appendChild(this.container);
+          containerElement.ariaLabel = messages_1.messages.shortcut.menu_title;
+          this.refreshUI();
+        }
+      };
+      exports.AvailableShortcutsUIExtension = AvailableShortcutsUIExtension;
+      AvailableShortcutsUIExtension.ID = "key-shortcut";
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IShortcutManager),
+        __metadata("design:type", Object)
+      ], AvailableShortcutsUIExtension.prototype, "shortcutManager", void 0);
+      exports.AvailableShortcutsUIExtension = AvailableShortcutsUIExtension = AvailableShortcutsUIExtension_1 = __decorate([
+        (0, inversify_1.injectable)()
+      ], AvailableShortcutsUIExtension);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/tools/base-tools.js
+  var require_base_tools = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/tools/base-tools.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.BaseCreationTool = exports.BaseEditTool = exports.BaseTool = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var editor_context_service_1 = require_editor_context_service();
+      var tool_1 = require_tool();
+      var key_tool_1 = require_key_tool2();
+      var mouse_tool_1 = require_mouse_tool2();
+      var BaseTool = class BaseTool {
+        constructor() {
+          this.toDisposeOnDisable = new sprotty_1.DisposableCollection();
+        }
+        disable() {
+          this.toDisposeOnDisable.dispose();
+        }
+        dispatchActions(actions) {
+          return this.actionDispatcher.dispatchAll(actions);
+        }
+        createFeedbackEmitter() {
+          return this.feedbackDispatcher.createEmitter();
+        }
+        registerFeedback(feedbackActions, feedbackEmitter = this, cleanupActions) {
+          return this.feedbackDispatcher.registerFeedback(feedbackEmitter, feedbackActions, cleanupActions);
+        }
+        deregisterFeedback(feedbackEmitter = this, cleanupActions) {
+          this.feedbackDispatcher.deregisterFeedback(feedbackEmitter, cleanupActions);
+        }
+      };
+      exports.BaseTool = BaseTool;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IFeedbackActionDispatcher),
+        __metadata("design:type", Object)
+      ], BaseTool.prototype, "feedbackDispatcher", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        __metadata("design:type", Object)
+      ], BaseTool.prototype, "actionDispatcher", void 0);
+      __decorate([
+        (0, inversify_1.inject)(mouse_tool_1.GLSPMouseTool),
+        __metadata("design:type", mouse_tool_1.GLSPMouseTool)
+      ], BaseTool.prototype, "mouseTool", void 0);
+      __decorate([
+        (0, inversify_1.inject)(key_tool_1.GLSPKeyTool),
+        __metadata("design:type", key_tool_1.GLSPKeyTool)
+      ], BaseTool.prototype, "keyTool", void 0);
+      __decorate([
+        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
+        __metadata("design:type", editor_context_service_1.EditorContextService)
+      ], BaseTool.prototype, "editorContext", void 0);
+      exports.BaseTool = BaseTool = __decorate([
+        (0, inversify_1.injectable)()
+      ], BaseTool);
+      var BaseEditTool = class BaseEditTool extends BaseTool {
+        get isEditTool() {
+          return true;
+        }
+      };
+      exports.BaseEditTool = BaseEditTool;
+      exports.BaseEditTool = BaseEditTool = __decorate([
+        (0, inversify_1.injectable)()
+      ], BaseEditTool);
+      var BaseCreationTool = class BaseCreationTool extends BaseEditTool {
+        handle(action) {
+          if (this.isTriggerAction(action)) {
+            this.triggerAction = action;
+            return tool_1.EnableToolsAction.create([this.id]);
+          }
+        }
+        enable() {
+          if (this.triggerAction === void 0) {
+            throw new TypeError(`Could not enable tool ${this.id}. The triggerAction cannot be undefined.`);
+          }
+          this.doEnable();
+        }
+      };
+      exports.BaseCreationTool = BaseCreationTool;
+      exports.BaseCreationTool = BaseCreationTool = __decorate([
+        (0, inversify_1.injectable)()
+      ], BaseCreationTool);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/base/shortcuts/available-shortcuts-tool.js
+  var require_available_shortcuts_tool = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/base/shortcuts/available-shortcuts-tool.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var AvailableShortcutsTool_1;
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.AccessibleShortcutKeyListener = exports.AvailableShortcutsTool = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var base_tools_1 = require_base_tools();
+      var available_shortcuts_extension_1 = require_available_shortcuts_extension();
+      var AvailableShortcutsTool = AvailableShortcutsTool_1 = class AvailableShortcutsTool extends base_tools_1.BaseTool {
+        constructor() {
+          super(...arguments);
+          this.shortcutKeyListener = new AccessibleShortcutKeyListener();
+        }
+        get id() {
+          return AvailableShortcutsTool_1.ID;
+        }
+        enable() {
+          this.toDisposeOnDisable.push(this.keyTool.registerListener(this.shortcutKeyListener));
+        }
+      };
+      exports.AvailableShortcutsTool = AvailableShortcutsTool;
+      AvailableShortcutsTool.ID = "available-shortcuts-tool";
+      exports.AvailableShortcutsTool = AvailableShortcutsTool = AvailableShortcutsTool_1 = __decorate([
+        (0, inversify_1.injectable)()
+      ], AvailableShortcutsTool);
+      var AccessibleShortcutKeyListener = class _AccessibleShortcutKeyListener extends sprotty_1.KeyListener {
+        constructor() {
+          super(...arguments);
+          this.token = Symbol(_AccessibleShortcutKeyListener.name);
+        }
+        keyDown(element, event) {
+          if (this.matchesActivateShortcutHelpKeystroke(event)) {
+            return [sprotty_1.SetUIExtensionVisibilityAction.create({ extensionId: available_shortcuts_extension_1.AvailableShortcutsUIExtension.ID, visible: true })];
+          }
+          return [];
+        }
+        matchesActivateShortcutHelpKeystroke(event) {
+          return (0, sprotty_1.matchesKeystroke)(event, "KeyH", "alt");
+        }
+      };
+      exports.AccessibleShortcutKeyListener = AccessibleShortcutKeyListener;
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/css/key-shortcut.css
+  var require_key_shortcut = __commonJS({
+    "node_modules/@eclipse-glsp/client/css/key-shortcut.css"(exports, module) {
+      module.exports = {};
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/base/shortcuts/shortcuts-module.js
+  var require_shortcuts_module = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/base/shortcuts/shortcuts-module.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.standaloneShortcutsModule = void 0;
+      var sprotty_1 = require_lib4();
+      require_key_shortcut();
+      var available_shortcuts_extension_1 = require_available_shortcuts_extension();
+      var available_shortcuts_tool_1 = require_available_shortcuts_tool();
+      exports.standaloneShortcutsModule = new sprotty_1.FeatureModule((bind, unbind, isBound, rebind) => {
+        const context = { bind, unbind, isBound, rebind };
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IDefaultTool, available_shortcuts_tool_1.AvailableShortcutsTool);
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IUIExtension, available_shortcuts_extension_1.AvailableShortcutsUIExtension);
+      }, { featureId: Symbol("standaloneShortcuts") });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/change-bounds/move-element-action.js
+  var require_move_element_action = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/change-bounds/move-element-action.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.MoveElementRelativeAction = void 0;
+      var sprotty_1 = require_lib4();
+      var MoveElementRelativeAction;
+      (function(MoveElementRelativeAction2) {
+        MoveElementRelativeAction2.KIND = "moveElementRelative";
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, MoveElementRelativeAction2.KIND);
+        }
+        MoveElementRelativeAction2.is = is;
+        function create(options) {
+          return { kind: MoveElementRelativeAction2.KIND, snap: true, ...options };
+        }
+        MoveElementRelativeAction2.create = create;
+      })(MoveElementRelativeAction || (exports.MoveElementRelativeAction = MoveElementRelativeAction = {}));
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/utils/layout-utils.js
+  var require_layout_utils = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/utils/layout-utils.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.toValidElementAndBounds = exports.toValidElementMove = exports.isValidMove = exports.isValidSize = exports.getLayoutOptions = exports.minDimensions = exports.minHeight = exports.minWidth = void 0;
+      function minWidth(element) {
+        const layoutOptions = getLayoutOptions(element);
+        if (layoutOptions !== void 0 && typeof layoutOptions.minWidth === "number") {
+          return layoutOptions.minWidth;
+        }
+        return 1;
+      }
+      exports.minWidth = minWidth;
+      function minHeight(element) {
+        const layoutOptions = getLayoutOptions(element);
+        if (layoutOptions !== void 0 && typeof layoutOptions.minHeight === "number") {
+          return layoutOptions.minHeight;
+        }
+        return 1;
+      }
+      exports.minHeight = minHeight;
+      function minDimensions(element) {
+        return { width: minWidth(element), height: minHeight(element) };
+      }
+      exports.minDimensions = minDimensions;
+      function getLayoutOptions(element) {
+        const layoutOptions = element.layoutOptions;
+        if (layoutOptions !== void 0) {
+          return layoutOptions;
+        }
+        return void 0;
+      }
+      exports.getLayoutOptions = getLayoutOptions;
+      function isValidSize(element, size) {
+        return size.width >= minWidth(element) && size.height >= minHeight(element);
+      }
+      exports.isValidSize = isValidSize;
+      function isValidMove(element, newPosition, movementRestrictor) {
+        var _a4;
+        return (_a4 = movementRestrictor === null || movementRestrictor === void 0 ? void 0 : movementRestrictor.validate(element, newPosition)) !== null && _a4 !== void 0 ? _a4 : true;
+      }
+      exports.isValidMove = isValidMove;
+      function toValidElementMove(element, move, movementRestrictor) {
+        if (!isValidMove(element, move.toPosition, movementRestrictor)) {
+          return;
+        }
+        return move;
+      }
+      exports.toValidElementMove = toValidElementMove;
+      function toValidElementAndBounds(element, bounds, movementRestrictor) {
+        if (!isValidMove(element, bounds.newPosition, movementRestrictor)) {
+          return;
+        }
+        const elementMinWidth = minWidth(element);
+        if (bounds.newSize.width < elementMinWidth) {
+          bounds.newSize.width = elementMinWidth;
+        }
+        const elementMinHeight = minHeight(element);
+        if (bounds.newSize.height < elementMinHeight) {
+          bounds.newSize.height = elementMinHeight;
+        }
+        return bounds;
+      }
+      exports.toValidElementAndBounds = toValidElementAndBounds;
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/utils/viewpoint-util.js
+  var require_viewpoint_util = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/utils/viewpoint-util.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.outsideOfViewport = exports.absoluteToLocal = exports.absoluteToParent = exports.toAbsoluteSize = exports.toAbsolutePosition = exports.toAbsoluteBounds = exports.getViewportBounds = exports.getAbsolutePositionByPoint = exports.getAbsolutePosition = void 0;
+      var sprotty_1 = require_lib4();
+      function getAbsolutePosition(target, mouseEvent) {
+        return getAbsolutePositionByPoint(target, { x: mouseEvent.pageX, y: mouseEvent.pageY });
+      }
+      exports.getAbsolutePosition = getAbsolutePosition;
+      function getAbsolutePositionByPoint(target, point) {
+        let position = sprotty_1.Point.subtract(point, target.root.canvasBounds);
+        const viewport = (0, sprotty_1.findParentByFeature)(target, sprotty_1.isViewport);
+        if (viewport) {
+          const zoom = viewport.zoom;
+          const zoomedScroll = sprotty_1.Point.multiplyScalar(viewport.scroll, zoom);
+          position = sprotty_1.Point.add(position, zoomedScroll);
+          position = sprotty_1.Point.divideScalar(position, zoom);
+        }
+        return position;
+      }
+      exports.getAbsolutePositionByPoint = getAbsolutePositionByPoint;
+      function getViewportBounds(target, bounds) {
+        const topLeft = getAbsolutePositionByPoint(target, sprotty_1.Bounds.topLeft(bounds));
+        const bottomRight = getAbsolutePositionByPoint(target, sprotty_1.Bounds.bottomRight(bounds));
+        return sprotty_1.Bounds.from(topLeft, bottomRight);
+      }
+      exports.getViewportBounds = getViewportBounds;
+      function toAbsoluteBounds(element) {
+        const location2 = (0, sprotty_1.isAlignable)(element) ? element.alignment : sprotty_1.Point.ORIGIN;
+        const x3 = location2.x;
+        const y3 = location2.y;
+        const width = element.bounds.width;
+        const height = element.bounds.height;
+        return (0, sprotty_1.translateBounds)({ x: x3, y: y3, width, height }, element, element.root);
+      }
+      exports.toAbsoluteBounds = toAbsoluteBounds;
+      function toAbsolutePosition(target) {
+        return toAbsoluteBounds(target);
+      }
+      exports.toAbsolutePosition = toAbsolutePosition;
+      function toAbsoluteSize(target) {
+        return toAbsoluteBounds(target);
+      }
+      exports.toAbsoluteSize = toAbsoluteSize;
+      function absoluteToParent(element, absolutePoint) {
+        if ((0, sprotty_1.isBoundsAware)(element.parent)) {
+          return absoluteToLocal(element.parent, absolutePoint);
+        }
+        return absoluteToLocal(element, absolutePoint);
+      }
+      exports.absoluteToParent = absoluteToParent;
+      function absoluteToLocal(element, absolutePoint) {
+        const absoluteElementBounds = toAbsoluteBounds(element);
+        return sprotty_1.Point.subtract(absolutePoint, absoluteElementBounds);
+      }
+      exports.absoluteToLocal = absoluteToLocal;
+      function outsideOfViewport(point, viewport) {
+        return point.x < viewport.scroll.x || point.x > viewport.scroll.x + viewport.canvasBounds.width / viewport.zoom || point.y < viewport.scroll.y || point.y > viewport.scroll.y + viewport.canvasBounds.height / viewport.zoom;
+      }
+      exports.outsideOfViewport = outsideOfViewport;
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/change-bounds/move-element-handler.js
+  var require_move_element_handler = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/change-bounds/move-element-handler.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.MoveElementHandler = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var lodash_1 = require_lodash();
+      var editor_context_service_1 = require_editor_context_service();
+      var gmodel_util_1 = require_gmodel_util();
+      var layout_utils_1 = require_layout_utils();
+      var viewpoint_util_1 = require_viewpoint_util();
+      var move_element_action_1 = require_move_element_action();
+      var MoveElementHandler = class MoveElementHandler {
+        init() {
+          this.moveFeedback = this.feedbackDispatcher.createEmitter();
+        }
+        handle(action) {
+          if (move_element_action_1.MoveElementRelativeAction.is(action)) {
+            this.handleMoveElement(action);
+          }
+        }
+        handleMoveElement(action) {
+          const modelRoot = this.editorContextService.modelRoot;
+          const viewport = (0, sprotty_1.findParentByFeature)(modelRoot, sprotty_1.isViewport);
+          if (!viewport) {
+            return;
+          }
+          const viewportActions = [];
+          const elementMoves = [];
+          const elements = (0, gmodel_util_1.getElements)(modelRoot.index, action.elementIds, gmodel_util_1.isSelectableAndBoundsAware);
+          for (const element of elements) {
+            const newPosition = this.getTargetBounds(element, action);
+            elementMoves.push({
+              elementId: element.id,
+              fromPosition: {
+                x: element.bounds.x,
+                y: element.bounds.y
+              },
+              toPosition: newPosition
+            });
+            const topLeftCorner = newPosition;
+            const bottomRightCorner = sprotty_1.Point.add(newPosition, { x: element.bounds.width, y: element.bounds.height });
+            if ((0, viewpoint_util_1.outsideOfViewport)(topLeftCorner, viewport) || (0, viewpoint_util_1.outsideOfViewport)(bottomRightCorner, viewport)) {
+              viewportActions.push(sprotty_1.MoveViewportAction.create({ moveX: action.moveX, moveY: action.moveY }));
+            }
+          }
+          this.dispatcher.dispatchAll(viewportActions);
+          const moveAction = sprotty_1.MoveAction.create(elementMoves, { animate: false });
+          this.moveFeedback.add(moveAction).submit();
+          this.scheduleChangeBounds(this.toElementAndBounds(elementMoves));
+        }
+        getTargetBounds(element, action) {
+          let position = sprotty_1.Point.add(element.bounds, { x: action.moveX, y: action.moveY });
+          if (this.snapper && action.snap) {
+            position = this.snapper.snap(position, element);
+          }
+          if (!(0, layout_utils_1.isValidMove)(element, position, this.movementRestrictor)) {
+            position = { x: element.bounds.x, y: element.bounds.y };
+          }
+          return position;
+        }
+        scheduleChangeBounds(elementAndBounds) {
+          var _a4;
+          (_a4 = this.debouncedChangeBounds) === null || _a4 === void 0 ? void 0 : _a4.cancel();
+          this.debouncedChangeBounds = (0, lodash_1.debounce)(() => {
+            this.moveFeedback.dispose();
+            this.dispatcher.dispatchAll([sprotty_1.ChangeBoundsOperation.create(elementAndBounds)]);
+            this.debouncedChangeBounds = void 0;
+          }, 300);
+          this.debouncedChangeBounds();
+        }
+        toElementAndBounds(elementMoves) {
+          const elementBounds = [];
+          for (const elementMove of elementMoves) {
+            const element = this.editorContextService.modelRoot.index.getById(elementMove.elementId);
+            if (element && (0, sprotty_1.isBoundsAware)(element)) {
+              elementBounds.push({
+                elementId: elementMove.elementId,
+                newSize: {
+                  height: element.bounds.height,
+                  width: element.bounds.width
+                },
+                newPosition: {
+                  x: elementMove.toPosition.x,
+                  y: elementMove.toPosition.y
+                }
+              });
+            }
+          }
+          return elementBounds;
+        }
+      };
+      exports.MoveElementHandler = MoveElementHandler;
+      __decorate([
+        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
+        __metadata("design:type", editor_context_service_1.EditorContextService)
+      ], MoveElementHandler.prototype, "editorContextService", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        __metadata("design:type", Object)
+      ], MoveElementHandler.prototype, "dispatcher", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IFeedbackActionDispatcher),
+        __metadata("design:type", Object)
+      ], MoveElementHandler.prototype, "feedbackDispatcher", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.ISnapper),
+        (0, inversify_1.optional)(),
+        __metadata("design:type", Object)
+      ], MoveElementHandler.prototype, "snapper", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IMovementRestrictor),
+        (0, inversify_1.optional)(),
+        __metadata("design:type", Object)
+      ], MoveElementHandler.prototype, "movementRestrictor", void 0);
+      __decorate([
+        (0, inversify_1.postConstruct)(),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", []),
+        __metadata("design:returntype", void 0)
+      ], MoveElementHandler.prototype, "init", null);
+      exports.MoveElementHandler = MoveElementHandler = __decorate([
+        (0, inversify_1.injectable)()
+      ], MoveElementHandler);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/change-bounds/model.js
+  var require_model19 = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/change-bounds/model.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.SResizeHandle = exports.removeResizeHandles = exports.addResizeHandles = exports.GResizeHandle = exports.isBoundsAwareMoveable = exports.ResizeHandleLocation = exports.isResizable = exports.resizeFeature = void 0;
+      var sprotty_1 = require_lib4();
+      var css_feedback_1 = require_css_feedback();
+      exports.resizeFeature = Symbol("resizeFeature");
+      function isResizable(element) {
+        return (0, sprotty_1.isBoundsAware)(element) && (0, sprotty_1.isSelectable)(element) && element instanceof sprotty_1.GParentElement && element.hasFeature(exports.resizeFeature);
+      }
+      exports.isResizable = isResizable;
+      var ResizeHandleLocation;
+      (function(ResizeHandleLocation2) {
+        ResizeHandleLocation2["TopLeft"] = "top-left";
+        ResizeHandleLocation2["Top"] = "top";
+        ResizeHandleLocation2["TopRight"] = "top-right";
+        ResizeHandleLocation2["Right"] = "right";
+        ResizeHandleLocation2["BottomRight"] = "bottom-right";
+        ResizeHandleLocation2["Bottom"] = "bottom";
+        ResizeHandleLocation2["BottomLeft"] = "bottom-left";
+        ResizeHandleLocation2["Left"] = "left";
+      })(ResizeHandleLocation || (exports.ResizeHandleLocation = ResizeHandleLocation = {}));
+      (function(ResizeHandleLocation2) {
+        ResizeHandleLocation2.CORNERS = [
+          ResizeHandleLocation2.TopLeft,
+          ResizeHandleLocation2.TopRight,
+          ResizeHandleLocation2.BottomRight,
+          ResizeHandleLocation2.BottomLeft
+        ];
+        ResizeHandleLocation2.CROSS = [
+          ResizeHandleLocation2.Top,
+          ResizeHandleLocation2.Right,
+          ResizeHandleLocation2.Bottom,
+          ResizeHandleLocation2.Left
+        ];
+        ResizeHandleLocation2.ALL = [...ResizeHandleLocation2.CORNERS, ...ResizeHandleLocation2.CROSS];
+        function opposite(location2) {
+          switch (location2) {
+            case ResizeHandleLocation2.TopLeft:
+              return ResizeHandleLocation2.BottomRight;
+            case ResizeHandleLocation2.Top:
+              return ResizeHandleLocation2.Bottom;
+            case ResizeHandleLocation2.TopRight:
+              return ResizeHandleLocation2.BottomLeft;
+            case ResizeHandleLocation2.Right:
+              return ResizeHandleLocation2.Left;
+            case ResizeHandleLocation2.BottomRight:
+              return ResizeHandleLocation2.TopLeft;
+            case ResizeHandleLocation2.Bottom:
+              return ResizeHandleLocation2.Top;
+            case ResizeHandleLocation2.BottomLeft:
+              return ResizeHandleLocation2.TopRight;
+            case ResizeHandleLocation2.Left:
+              return ResizeHandleLocation2.Right;
+          }
+        }
+        ResizeHandleLocation2.opposite = opposite;
+        function direction(location2) {
+          switch (location2) {
+            case ResizeHandleLocation2.TopLeft:
+              return [sprotty_1.Direction.Up, sprotty_1.Direction.Left];
+            case ResizeHandleLocation2.Top:
+              return [sprotty_1.Direction.Up];
+            case ResizeHandleLocation2.TopRight:
+              return [sprotty_1.Direction.Up, sprotty_1.Direction.Right];
+            case ResizeHandleLocation2.Right:
+              return [sprotty_1.Direction.Right];
+            case ResizeHandleLocation2.BottomRight:
+              return [sprotty_1.Direction.Down, sprotty_1.Direction.Right];
+            case ResizeHandleLocation2.Bottom:
+              return [sprotty_1.Direction.Down];
+            case ResizeHandleLocation2.BottomLeft:
+              return [sprotty_1.Direction.Down, sprotty_1.Direction.Left];
+            case ResizeHandleLocation2.Left:
+              return [sprotty_1.Direction.Left];
+          }
+        }
+        ResizeHandleLocation2.direction = direction;
+      })(ResizeHandleLocation || (exports.ResizeHandleLocation = ResizeHandleLocation = {}));
+      function isBoundsAwareMoveable(element) {
+        return (0, sprotty_1.isMoveable)(element) && (0, sprotty_1.isBoundsAware)(element);
+      }
+      exports.isBoundsAwareMoveable = isBoundsAwareMoveable;
+      var GResizeHandle = class _GResizeHandle extends sprotty_1.GChildElement {
+        constructor(location2, type = _GResizeHandle.TYPE, hoverFeedback = false) {
+          super();
+          this.location = location2;
+          this.type = type;
+          this.hoverFeedback = hoverFeedback;
+        }
+        hasFeature(feature) {
+          return feature === sprotty_1.hoverFeedbackFeature;
+        }
+        isNwResize() {
+          return this.location === ResizeHandleLocation.TopLeft;
+        }
+        isNResize() {
+          return this.location === ResizeHandleLocation.Top;
+        }
+        isNeResize() {
+          return this.location === ResizeHandleLocation.TopRight;
+        }
+        isEResize() {
+          return this.location === ResizeHandleLocation.Right;
+        }
+        isSeResize() {
+          return this.location === ResizeHandleLocation.BottomRight;
+        }
+        isSResize() {
+          return this.location === ResizeHandleLocation.Bottom;
+        }
+        isSwResize() {
+          return this.location === ResizeHandleLocation.BottomLeft;
+        }
+        isWResize() {
+          return this.location === ResizeHandleLocation.Left;
+        }
+        isNwSeResize() {
+          return this.isNwResize() || this.isSeResize();
+        }
+        isNeSwResize() {
+          return this.isNeResize() || this.isSwResize();
+        }
+        static getHandlePosition(first, second) {
+          const bounds = _GResizeHandle.is(first) ? first.parent.bounds : first instanceof sprotty_1.GModelElement ? first.bounds : first;
+          const location2 = _GResizeHandle.is(first) ? first.location : second;
+          switch (location2) {
+            case ResizeHandleLocation.TopLeft:
+              return sprotty_1.Bounds.topLeft(bounds);
+            case ResizeHandleLocation.Top:
+              return sprotty_1.Bounds.topCenter(bounds);
+            case ResizeHandleLocation.TopRight:
+              return sprotty_1.Bounds.topRight(bounds);
+            case ResizeHandleLocation.Right:
+              return sprotty_1.Bounds.middleRight(bounds);
+            case ResizeHandleLocation.BottomRight:
+              return sprotty_1.Bounds.bottomRight(bounds);
+            case ResizeHandleLocation.Bottom:
+              return sprotty_1.Bounds.bottomCenter(bounds);
+            case ResizeHandleLocation.BottomLeft:
+              return sprotty_1.Bounds.bottomLeft(bounds);
+            case ResizeHandleLocation.Left:
+              return sprotty_1.Bounds.middleLeft(bounds);
+          }
+        }
+        static getCursorCss(handle) {
+          switch (handle.location) {
+            case ResizeHandleLocation.TopLeft:
+              return css_feedback_1.CursorCSS.RESIZE_NW;
+            case ResizeHandleLocation.Top:
+              return css_feedback_1.CursorCSS.RESIZE_N;
+            case ResizeHandleLocation.TopRight:
+              return css_feedback_1.CursorCSS.RESIZE_NE;
+            case ResizeHandleLocation.Right:
+              return css_feedback_1.CursorCSS.RESIZE_E;
+            case ResizeHandleLocation.BottomRight:
+              return css_feedback_1.CursorCSS.RESIZE_SE;
+            case ResizeHandleLocation.Bottom:
+              return css_feedback_1.CursorCSS.RESIZE_S;
+            case ResizeHandleLocation.BottomLeft:
+              return css_feedback_1.CursorCSS.RESIZE_SW;
+            case ResizeHandleLocation.Left:
+              return css_feedback_1.CursorCSS.RESIZE_W;
+          }
+        }
+        static is(handle) {
+          return typeof handle === "object" && !!handle && "type" in handle && handle.type === _GResizeHandle.TYPE;
+        }
+      };
+      exports.GResizeHandle = GResizeHandle;
+      exports.SResizeHandle = GResizeHandle;
+      GResizeHandle.TYPE = "resize-handle";
+      function addResizeHandles(element, locations = ResizeHandleLocation.CORNERS) {
+        for (const location2 of ResizeHandleLocation.ALL) {
+          const existing = element.children.find((child) => child instanceof GResizeHandle && child.location === location2);
+          if (locations.includes(location2) && !existing) {
+            element.add(new GResizeHandle(location2));
+          } else if (!locations.includes(location2) && existing) {
+            element.remove(existing);
+          }
+        }
+      }
+      exports.addResizeHandles = addResizeHandles;
+      function removeResizeHandles(element) {
+        element.removeAll((child) => child instanceof GResizeHandle);
+      }
+      exports.removeResizeHandles = removeResizeHandles;
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/helper-lines/model.js
+  var require_model20 = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/helper-lines/model.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.Direction = exports.getDirectionFrom = exports.getDirectionOf = exports.isSelectionBounds = exports.SelectionBounds = exports.SELECTION_BOUNDS = exports.isHelperLine = exports.HelperLine = exports.HELPER_LINE = exports.HelperLineType = void 0;
+      var sprotty_1 = require_lib4();
+      var uuid_1 = require_commonjs_browser();
+      var model_1 = require_model19();
+      exports.HelperLineType = {
+        Left: "left",
+        Right: "right",
+        Center: "center",
+        Top: "top",
+        Bottom: "bottom",
+        Middle: "middle",
+        LeftRight: "left-right",
+        RightLeft: "right-left",
+        BottomTop: "bottom-top",
+        TopBottom: "top-bottom"
+      };
+      exports.HELPER_LINE = "helper-line";
+      var HelperLine = class extends sprotty_1.GChildElement {
+        constructor(startPoint = sprotty_1.Point.ORIGIN, endPoint = sprotty_1.Point.ORIGIN, lineType = exports.HelperLineType.Left) {
+          super();
+          this.startPoint = startPoint;
+          this.endPoint = endPoint;
+          this.lineType = lineType;
+          this.id = (0, uuid_1.v4)();
+          this.type = exports.HELPER_LINE;
+        }
+        get isLeft() {
+          return this.lineType === exports.HelperLineType.Left || this.lineType === exports.HelperLineType.LeftRight;
+        }
+        get isRight() {
+          return this.lineType === exports.HelperLineType.Right || this.lineType === exports.HelperLineType.RightLeft;
+        }
+        get isTop() {
+          return this.lineType === exports.HelperLineType.Top || this.lineType === exports.HelperLineType.TopBottom;
+        }
+        get isBottom() {
+          return this.lineType === exports.HelperLineType.Bottom || this.lineType === exports.HelperLineType.BottomTop;
+        }
+        get isMiddle() {
+          return this.lineType === exports.HelperLineType.Middle;
+        }
+        get isCenter() {
+          return this.lineType === exports.HelperLineType.Center;
+        }
+      };
+      exports.HelperLine = HelperLine;
+      function isHelperLine(element) {
+        return element.type === exports.HELPER_LINE;
+      }
+      exports.isHelperLine = isHelperLine;
+      exports.SELECTION_BOUNDS = "selection-bounds";
+      var SelectionBounds = class extends sprotty_1.GShapeElement {
+        constructor(bounds) {
+          super();
+          this.id = (0, uuid_1.v4)();
+          this.type = exports.SELECTION_BOUNDS;
+          if (bounds) {
+            this.bounds = bounds;
+          }
+        }
+      };
+      exports.SelectionBounds = SelectionBounds;
+      function isSelectionBounds(element) {
+        return element.type === exports.SELECTION_BOUNDS;
+      }
+      exports.isSelectionBounds = isSelectionBounds;
+      exports.getDirectionOf = sprotty_1.Vector.direction;
+      function getDirectionFrom(resize) {
+        if (resize === model_1.ResizeHandleLocation.TopLeft) {
+          return [sprotty_1.Direction.Up, sprotty_1.Direction.Left];
+        }
+        if (resize === model_1.ResizeHandleLocation.TopRight) {
+          return [sprotty_1.Direction.Up, sprotty_1.Direction.Right];
+        }
+        if (resize === model_1.ResizeHandleLocation.BottomLeft) {
+          return [sprotty_1.Direction.Down, sprotty_1.Direction.Left];
+        }
+        if (resize === model_1.ResizeHandleLocation.BottomRight) {
+          return [sprotty_1.Direction.Down, sprotty_1.Direction.Right];
+        }
+        return [];
+      }
+      exports.getDirectionFrom = getDirectionFrom;
+      var sprotty_2 = require_lib4();
+      Object.defineProperty(exports, "Direction", { enumerable: true, get: function() {
+        return sprotty_2.Direction;
+      } });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/change-bounds/position-snapper.js
+  var require_position_snapper = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/change-bounds/position-snapper.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var __param = exports && exports.__param || function(paramIndex, decorator) {
+        return function(target, key) {
+          decorator(target, key, paramIndex);
+        };
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.PositionSnapper = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var model_1 = require_model20();
+      var PositionSnapper = class PositionSnapper {
+        constructor(snapper, helperLineManager) {
+          this.snapper = snapper;
+          this.helperLineManager = helperLineManager;
+        }
+        snapPosition(position, element, isSnap = true) {
+          return isSnap && this.snapper ? this.snapper.snap(position, element) : { x: position.x, y: position.y };
+        }
+        snapDelta(positionDelta, element, isSnap, directions) {
+          const delta = this.snapPosition(positionDelta, element, isSnap);
+          const minimumDelta = this.getMinimumDelta(element, isSnap, directions);
+          if (!minimumDelta) {
+            return delta;
+          }
+          delta.x = Math.abs(delta.x) >= minimumDelta.x ? delta.x : 0;
+          delta.y = Math.abs(delta.y) >= minimumDelta.y ? delta.y : 0;
+          return delta;
+        }
+        getMinimumDelta(target, isSnap, directions) {
+          return this.getHelperLineMinimum(target, isSnap, directions);
+        }
+        getHelperLineMinimum(target, isSnap, directions) {
+          if (!this.helperLineManager) {
+            return void 0;
+          }
+          const helperLines = target.root.children.filter((child) => (0, model_1.isHelperLine)(child));
+          if (helperLines.length === 0) {
+            return void 0;
+          }
+          const minimum = { x: 0, y: 0 };
+          if (directions.includes(model_1.Direction.Left) && helperLines.some((line) => line.isLeft || line.isCenter)) {
+            minimum.x = this.helperLineManager.getMinimumMoveDelta(target, isSnap, model_1.Direction.Left);
+          } else if (directions.includes(model_1.Direction.Right) && helperLines.some((line) => line.isRight || line.isCenter)) {
+            minimum.x = this.helperLineManager.getMinimumMoveDelta(target, isSnap, model_1.Direction.Right);
+          }
+          if (directions.includes(model_1.Direction.Up) && helperLines.some((line) => line.isTop || line.isMiddle)) {
+            minimum.y = this.helperLineManager.getMinimumMoveDelta(target, isSnap, model_1.Direction.Up);
+          } else if (directions.includes(model_1.Direction.Down) && helperLines.some((line) => line.isBottom || line.isMiddle)) {
+            minimum.y = this.helperLineManager.getMinimumMoveDelta(target, isSnap, model_1.Direction.Down);
+          }
+          return minimum;
+        }
+      };
+      exports.PositionSnapper = PositionSnapper;
+      exports.PositionSnapper = PositionSnapper = __decorate([
+        (0, inversify_1.injectable)(),
+        __param(0, (0, inversify_1.optional)()),
+        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.ISnapper)),
+        __param(1, (0, inversify_1.optional)()),
+        __param(1, (0, inversify_1.inject)(sprotty_1.TYPES.IHelperLineManager)),
+        __metadata("design:paramtypes", [Object, Object])
+      ], PositionSnapper);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/bounds/layout-data.js
+  var require_layout_data = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/bounds/layout-data.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.LayoutAware = void 0;
+      var LayoutAware;
+      (function(LayoutAware2) {
+        function is(element) {
+          return "layoutData" in element;
+        }
+        LayoutAware2.is = is;
+        function getLayoutData(element) {
+          return is(element) ? element.layoutData : void 0;
+        }
+        LayoutAware2.getLayoutData = getLayoutData;
+        function setLayoutData(element, data) {
+          element.layoutData = data;
+        }
+        LayoutAware2.setLayoutData = setLayoutData;
+        function setComputedDimensions(element, computedDimensions) {
+          ensureLayoutAware(element).layoutData.computedDimensions = computedDimensions;
+        }
+        LayoutAware2.setComputedDimensions = setComputedDimensions;
+        function getComputedDimensions(element) {
+          var _a4;
+          return (_a4 = getLayoutData(element)) === null || _a4 === void 0 ? void 0 : _a4.computedDimensions;
+        }
+        LayoutAware2.getComputedDimensions = getComputedDimensions;
+        function ensureLayoutAware(element) {
+          var _a4;
+          element.layoutData = (_a4 = element.layoutData) !== null && _a4 !== void 0 ? _a4 : {};
+          return element;
+        }
+      })(LayoutAware || (exports.LayoutAware = LayoutAware = {}));
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/bounds/freeform-layout.js
+  var require_freeform_layout = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/bounds/freeform-layout.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.FreeFormLayouter = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var layout_data_1 = require_layout_data();
+      var FreeFormLayouter = class FreeFormLayouter extends sprotty_1.AbstractLayout {
+        layout(container, layouter) {
+          const boundsData = layouter.getBoundsData(container);
+          const options = this.getLayoutOptions(container);
+          const childrenSize = this.getChildrenSize(container, options, layouter);
+          const maxWidth = childrenSize.width > 0 ? childrenSize.width + options.paddingLeft + options.paddingRight : 0;
+          const maxHeight = childrenSize.height > 0 ? childrenSize.height + options.paddingTop + options.paddingBottom : 0;
+          if (childrenSize.width > 0 && childrenSize.height > 0) {
+            const offset = this.layoutChildren(container, layouter, options, maxWidth, maxHeight);
+            const computed = this.getComputedContainerDimensions(options, childrenSize.width, childrenSize.height);
+            layout_data_1.LayoutAware.setComputedDimensions(boundsData, computed);
+            boundsData.bounds = this.getFinalContainerBounds(container, offset, options, computed.width, computed.height);
+            boundsData.boundsChanged = true;
+          } else {
+            boundsData.bounds = { x: boundsData.bounds.x, y: boundsData.bounds.y, width: 0, height: 0 };
+            boundsData.boundsChanged = true;
+          }
+        }
+        getChildrenSize(container, containerOptions, layouter) {
+          let maxX = 0;
+          let maxY = 0;
+          container.children.forEach((child) => {
+            const bounds = layouter.getBoundsData(child).bounds;
+            if (bounds !== void 0 && sprotty_1.Dimension.isValid(bounds)) {
+              const childMaxX = bounds.x + bounds.width;
+              const childMaxY = bounds.y + bounds.height;
+              maxX = Math.max(maxX, childMaxX);
+              maxY = Math.max(maxY, childMaxY);
+            }
+          });
+          return {
+            width: maxX,
+            height: maxY
+          };
+        }
+        layoutChild(child, boundsData, bounds, childOptions, containerOptions, currentOffset, maxWidth, maxHeight) {
+          boundsData.bounds = {
+            x: child.bounds.x,
+            y: child.bounds.y,
+            width: bounds.width,
+            height: bounds.height
+          };
+          boundsData.boundsChanged = true;
+          return currentOffset;
+        }
+        getComputedContainerDimensions(options, maxWidth, maxHeight) {
+          return {
+            width: maxWidth + options.paddingLeft + options.paddingRight,
+            height: maxHeight + options.paddingTop + options.paddingBottom
+          };
+        }
+        getFinalContainerBounds(container, lastOffset, options, maxWidth, maxHeight) {
+          const result = {
+            x: container.bounds.x,
+            y: container.bounds.y,
+            width: Math.max(options.minWidth, maxWidth),
+            height: Math.max(options.minHeight, maxHeight)
+          };
+          return result;
+        }
+        getDefaultLayoutOptions() {
+          return {
+            resizeContainer: true,
+            paddingTop: 0,
+            paddingBottom: 0,
+            paddingLeft: 0,
+            paddingRight: 0,
+            paddingFactor: 1,
+            minWidth: 0,
+            minHeight: 0
+          };
+        }
+        spread(a3, b3) {
+          return { ...a3, ...b3 };
+        }
+      };
+      exports.FreeFormLayouter = FreeFormLayouter;
+      FreeFormLayouter.KIND = "freeform";
+      exports.FreeFormLayouter = FreeFormLayouter = __decorate([
+        (0, inversify_1.injectable)()
+      ], FreeFormLayouter);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/bounds/local-bounds.js
+  var require_local_bounds = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/bounds/local-bounds.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var __param = exports && exports.__param || function(paramIndex, decorator) {
+        return function(target, key) {
+          decorator(target, key, paramIndex);
+        };
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.LocalComputedBoundsCommand = exports.LocalComputedBoundsAction = exports.LocalRequestBoundsAction = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var glsp_model_source_1 = require_glsp_model_source();
+      var layout_data_1 = require_layout_data();
+      var LocalRequestBoundsAction;
+      (function(LocalRequestBoundsAction2) {
+        function is(object) {
+          return sprotty_1.RequestBoundsAction.is(object) && !glsp_model_source_1.ServerAction.is(object) && (0, sprotty_1.hasArrayProp)(object, "elementIDs", true);
+        }
+        LocalRequestBoundsAction2.is = is;
+        function create(newRoot, elementIDs) {
+          return {
+            ...sprotty_1.RequestBoundsAction.create(newRoot),
+            elementIDs
+          };
+        }
+        LocalRequestBoundsAction2.create = create;
+        function fromCommand({ root }, actionDispatcher, cause, elementIDs) {
+          actionDispatcher.dispatch(LocalRequestBoundsAction2.create(root, elementIDs));
+          return {
+            model: root,
+            modelChanged: false,
+            cause
+          };
+        }
+        LocalRequestBoundsAction2.fromCommand = fromCommand;
+      })(LocalRequestBoundsAction || (exports.LocalRequestBoundsAction = LocalRequestBoundsAction = {}));
+      var LocalComputedBoundsAction;
+      (function(LocalComputedBoundsAction2) {
+        function is(object) {
+          return sprotty_1.ComputedBoundsAction.is(object) && glsp_model_source_1.ServerAction.is(object);
+        }
+        LocalComputedBoundsAction2.is = is;
+        function mark(action) {
+          glsp_model_source_1.ServerAction.mark(action);
+          return action;
+        }
+        LocalComputedBoundsAction2.mark = mark;
+      })(LocalComputedBoundsAction || (exports.LocalComputedBoundsAction = LocalComputedBoundsAction = {}));
+      var LocalComputedBoundsCommand = class LocalComputedBoundsCommand extends sprotty_1.Command {
+        constructor(action) {
+          super();
+          this.action = action;
+        }
+        execute(context) {
+          var _a4, _b2;
+          if (LocalComputedBoundsAction.is(this.action)) {
+            if (!this.viewerOptions.needsClientLayout) {
+              return context.root;
+            }
+            this.computedBoundsApplicator.apply(context.root, this.action);
+            (_a4 = this.action.layoutData) === null || _a4 === void 0 ? void 0 : _a4.forEach(({ elementId, layoutData }) => {
+              const element = context.root.index.getById(elementId);
+              if (element !== void 0) {
+                layout_data_1.LayoutAware.setLayoutData(element, layoutData);
+              }
+            });
+            return context.root;
+          }
+          (_b2 = this.action.layoutData) === null || _b2 === void 0 ? void 0 : _b2.forEach(({ elementId, layoutData }) => {
+            const element = context.root.index.getById(elementId);
+            if (element !== void 0) {
+              layout_data_1.LayoutAware.setLayoutData(element, layoutData);
+            }
+          });
+          return {
+            model: context.root,
+            modelChanged: false
+          };
+        }
+        undo(context) {
+          return context.root;
+        }
+        redo(context) {
+          return context.root;
+        }
+      };
+      exports.LocalComputedBoundsCommand = LocalComputedBoundsCommand;
+      LocalComputedBoundsCommand.KIND = sprotty_1.ComputedBoundsAction.KIND;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.ComputedBoundsApplicator),
+        __metadata("design:type", sprotty_1.ComputedBoundsApplicator)
+      ], LocalComputedBoundsCommand.prototype, "computedBoundsApplicator", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.ViewerOptions),
+        __metadata("design:type", Object)
+      ], LocalComputedBoundsCommand.prototype, "viewerOptions", void 0);
+      exports.LocalComputedBoundsCommand = LocalComputedBoundsCommand = __decorate([
+        (0, inversify_1.injectable)(),
+        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.Action)),
+        __metadata("design:paramtypes", [Object])
+      ], LocalComputedBoundsCommand);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/bounds/glsp-hidden-bounds-updater.js
+  var require_glsp_hidden_bounds_updater = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/bounds/glsp-hidden-bounds-updater.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.GLSPHiddenBoundsUpdater = exports.BoundsDataExt = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var gmodel_util_1 = require_gmodel_util();
+      var layout_data_1 = require_layout_data();
+      var local_bounds_1 = require_local_bounds();
+      var BoundsDataExt = class extends sprotty_1.BoundsData {
+      };
+      exports.BoundsDataExt = BoundsDataExt;
+      var GLSPHiddenBoundsUpdater = class GLSPHiddenBoundsUpdater extends sprotty_1.HiddenBoundsUpdater {
+        constructor() {
+          super(...arguments);
+          this.element2route = [];
+        }
+        getElement2BoundsData() {
+          return this["element2boundsData"];
+        }
+        decorate(vnode, element) {
+          super.decorate(vnode, element);
+          if ((0, gmodel_util_1.isRoutable)(element)) {
+            this.element2route.push((0, gmodel_util_1.calcElementAndRoute)(element, this.edgeRouterRegistry));
+          }
+          return vnode;
+        }
+        postUpdate(cause) {
+          if (local_bounds_1.LocalRequestBoundsAction.is(cause) && cause.elementIDs) {
+            this.focusOnElements(cause.elementIDs);
+          }
+          this.getBoundsFromDOM();
+          this.layouter.layout(this.getElement2BoundsData());
+          const resizes = [];
+          const alignments = [];
+          const layoutData = [];
+          this.getElement2BoundsData().forEach((boundsData, element) => {
+            if (boundsData.boundsChanged && boundsData.bounds !== void 0) {
+              const resize = {
+                elementId: element.id,
+                newSize: {
+                  width: boundsData.bounds.width,
+                  height: boundsData.bounds.height
+                }
+              };
+              if (element instanceof sprotty_1.GChildElement && (0, sprotty_1.isLayoutContainer)(element.parent)) {
+                resize.newPosition = {
+                  x: boundsData.bounds.x,
+                  y: boundsData.bounds.y
+                };
+              }
+              resizes.push(resize);
+            }
+            if (boundsData.alignmentChanged && boundsData.alignment !== void 0) {
+              alignments.push({
+                elementId: element.id,
+                newAlignment: boundsData.alignment
+              });
+            }
+            if (layout_data_1.LayoutAware.is(boundsData)) {
+              layoutData.push({ elementId: element.id, layoutData: boundsData.layoutData });
+            }
+          });
+          const routes = this.element2route.length === 0 ? void 0 : this.element2route;
+          const responseId = cause.requestId;
+          const revision = this.root !== void 0 ? this.root.revision : void 0;
+          const computedBoundsAction = sprotty_1.ComputedBoundsAction.create(resizes, { revision, alignments, layoutData, routes, responseId });
+          if (local_bounds_1.LocalRequestBoundsAction.is(cause)) {
+            local_bounds_1.LocalComputedBoundsAction.mark(computedBoundsAction);
+          }
+          this.actionDispatcher.dispatch(computedBoundsAction);
+          this.getElement2BoundsData().clear();
+          this.element2route = [];
+        }
+        focusOnElements(elementIDs) {
+          const data = this.getElement2BoundsData();
+          if (data.size > 0) {
+            const index = [...data.keys()][0].index;
+            const relevantIds = new Set(elementIDs.flatMap((elementId) => this.expandElementId(elementId, index, elementIDs)));
+            data.forEach((_bounds, element) => !relevantIds.has(element.id) && data.delete(element));
+          }
+        }
+        expandElementId(id, index, elementIDs) {
+          return (0, gmodel_util_1.getDescendantIds)(index.getById(id));
+        }
+      };
+      exports.GLSPHiddenBoundsUpdater = GLSPHiddenBoundsUpdater;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.EdgeRouterRegistry),
+        (0, inversify_1.optional)(),
+        __metadata("design:type", sprotty_1.EdgeRouterRegistry)
+      ], GLSPHiddenBoundsUpdater.prototype, "edgeRouterRegistry", void 0);
+      exports.GLSPHiddenBoundsUpdater = GLSPHiddenBoundsUpdater = __decorate([
+        (0, inversify_1.injectable)()
+      ], GLSPHiddenBoundsUpdater);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/bounds/hbox-layout.js
+  var require_hbox_layout2 = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/bounds/hbox-layout.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.HBoxLayouterExt = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var layout_data_1 = require_layout_data();
+      var HBoxLayouterExt = class HBoxLayouterExt extends sprotty_1.HBoxLayouter {
+        layout(container, layouter) {
+          var _a4, _b2;
+          const boundsData = layouter.getBoundsData(container);
+          const options = this.getLayoutOptions(container);
+          const childrenSize = this.getChildrenSize(container, options, layouter);
+          const fixedSize = this.getFixedContainerBounds(container, options, layouter);
+          const currentWidth = boundsData.bounds ? ((_a4 = boundsData.bounds) === null || _a4 === void 0 ? void 0 : _a4.width) - options.paddingLeft - options.paddingRight : 0;
+          const currentHeight = boundsData.bounds ? ((_b2 = boundsData.bounds) === null || _b2 === void 0 ? void 0 : _b2.height) - options.paddingTop - options.paddingBottom : 0;
+          const maxWidth = options.paddingFactor * (options.resizeContainer ? Math.max(fixedSize.width - options.paddingLeft - options.paddingRight, childrenSize.width) : Math.max(0, fixedSize.width - options.paddingLeft - options.paddingRight));
+          const maxHeight = options.paddingFactor * (options.resizeContainer ? Math.max(fixedSize.height - options.paddingTop - options.paddingBottom, childrenSize.height) : Math.max(0, fixedSize.height - options.paddingTop - options.paddingBottom));
+          const width = Math.max(currentWidth, maxWidth);
+          const height = Math.max(currentHeight, maxHeight);
+          const grabWidth = width - childrenSize.width;
+          const grabbingChildren = container.children.map((child) => this.getChildLayoutOptions(child, options)).filter((opt) => opt.hGrab).length;
+          if (width > 0 && height > 0) {
+            const offset = this.layoutChildren(container, layouter, options, width, height, grabWidth, grabbingChildren);
+            const computed = this.getComputedContainerDimensions(options, childrenSize.width, childrenSize.height);
+            layout_data_1.LayoutAware.setComputedDimensions(boundsData, computed);
+            boundsData.bounds = this.getFinalContainerBounds(container, offset, options, computed.width, computed.height);
+            boundsData.boundsChanged = true;
+          }
+        }
+        getChildrenSize(container, containerOptions, layouter) {
+          let maxWidth = 0;
+          let maxHeight = -1;
+          let isFirst = true;
+          container.children.forEach((child) => {
+            if ((0, sprotty_1.isLayoutableChild)(child)) {
+              const bounds = layouter.getBoundsData(child).bounds;
+              if (bounds !== void 0 && sprotty_1.Dimension.isValid(bounds)) {
+                maxWidth += bounds.width;
+                if (isFirst) {
+                  isFirst = false;
+                } else {
+                  maxWidth += containerOptions.hGap;
+                }
+                maxHeight = Math.max(maxHeight, bounds.height);
+              }
+            }
+          });
+          const result = {
+            width: maxWidth,
+            height: maxHeight
+          };
+          return result;
+        }
+        layoutChildren(container, layouter, containerOptions, maxWidth, maxHeight, grabWidth, grabbingChildren) {
+          let currentOffset = {
+            x: containerOptions.paddingLeft + 0.5 * (maxWidth - maxWidth / containerOptions.paddingFactor),
+            y: containerOptions.paddingTop + 0.5 * (maxHeight - maxHeight / containerOptions.paddingFactor)
+          };
+          container.children.forEach((child) => {
+            if ((0, sprotty_1.isLayoutableChild)(child)) {
+              const boundsData = layouter.getBoundsData(child);
+              const bounds = boundsData.bounds;
+              const childOptions = this.getChildLayoutOptions(child, containerOptions);
+              if (bounds !== void 0 && sprotty_1.Dimension.isValid(bounds)) {
+                currentOffset = this.layoutChild(child, boundsData, bounds, childOptions, containerOptions, currentOffset, maxWidth, maxHeight, grabWidth, grabbingChildren);
+              }
+            }
+          });
+          return currentOffset;
+        }
+        layoutChild(child, boundsData, bounds, childOptions, containerOptions, currentOffset, maxWidth, maxHeight, grabWidth, grabbingChildren) {
+          const vAlign = childOptions.vGrab ? "top" : childOptions.vAlign;
+          const dy = this.getDy(vAlign, bounds, maxHeight);
+          let offset = super.layoutChild(child, boundsData, bounds, childOptions, containerOptions, currentOffset, maxWidth, maxHeight);
+          boundsData.bounds = {
+            ...boundsData.bounds,
+            x: currentOffset.x,
+            y: currentOffset.y + dy
+          };
+          if (childOptions.vGrab) {
+            boundsData.bounds = {
+              x: boundsData.bounds.x,
+              y: boundsData.bounds.y,
+              width: boundsData.bounds.width,
+              height: maxHeight
+            };
+            boundsData.boundsChanged = true;
+          }
+          if (childOptions.hGrab && grabWidth && grabbingChildren) {
+            const width = boundsData.bounds.width + grabWidth / grabbingChildren;
+            boundsData.bounds = {
+              x: boundsData.bounds.x,
+              y: boundsData.bounds.y,
+              width,
+              height: boundsData.bounds.height
+            };
+            boundsData.boundsChanged = true;
+            offset = { x: currentOffset.x + width, y: currentOffset.y };
+          }
+          return offset;
+        }
+        getFixedContainerBounds(container, layoutOptions, layouter) {
+          var _a4, _b2;
+          const currentContainer = container;
+          if ((0, sprotty_1.isBoundsAware)(currentContainer)) {
+            const bounds = currentContainer.bounds;
+            const elementOptions = this.getElementLayoutOptions(currentContainer);
+            const width = (_a4 = elementOptions === null || elementOptions === void 0 ? void 0 : elementOptions.prefWidth) !== null && _a4 !== void 0 ? _a4 : 0;
+            const height = (_b2 = elementOptions === null || elementOptions === void 0 ? void 0 : elementOptions.prefHeight) !== null && _b2 !== void 0 ? _b2 : 0;
+            return { ...bounds, width, height };
+          }
+          return sprotty_1.Bounds.EMPTY;
+        }
+        getChildLayoutOptions(child, containerOptions) {
+          return super.getChildLayoutOptions(child, this.filterContainerOptions(containerOptions));
+        }
+        getLayoutOptions(element) {
+          return super.getLayoutOptions(element);
+        }
+        getElementLayoutOptions(element) {
+          return element.layoutOptions;
+        }
+        getComputedContainerDimensions(options, maxWidth, maxHeight) {
+          return {
+            width: maxWidth + options.paddingLeft + options.paddingRight,
+            height: maxHeight + options.paddingTop + options.paddingBottom
+          };
+        }
+        getFinalContainerBounds(container, lastOffset, options, computedWidth, computedHeight) {
+          var _a4, _b2;
+          const elementOptions = this.getElementLayoutOptions(container);
+          const width = (_a4 = elementOptions === null || elementOptions === void 0 ? void 0 : elementOptions.prefWidth) !== null && _a4 !== void 0 ? _a4 : options.minWidth;
+          const height = (_b2 = elementOptions === null || elementOptions === void 0 ? void 0 : elementOptions.prefHeight) !== null && _b2 !== void 0 ? _b2 : options.minHeight;
+          const result = {
+            x: container.bounds.x,
+            y: container.bounds.y,
+            width: Math.max(width, computedWidth),
+            height: Math.max(height, computedHeight)
+          };
+          return result;
+        }
+        getDefaultLayoutOptions() {
+          return {
+            resizeContainer: true,
+            paddingTop: 5,
+            paddingBottom: 5,
+            paddingLeft: 5,
+            paddingRight: 5,
+            paddingFactor: 1,
+            hGap: 1,
+            vAlign: "center",
+            minWidth: 0,
+            minHeight: 0,
+            hGrab: false,
+            vGrab: false,
+            // eslint-disable-next-line no-null/no-null
+            prefHeight: null,
+            // eslint-disable-next-line no-null/no-null
+            prefWidth: null
+          };
+        }
+        filterContainerOptions(containerOptions) {
+          const localOptions = { vGrab: false, hGrab: false, prefHeight: null, prefWidth: null };
+          return { ...containerOptions, ...localOptions };
+        }
+      };
+      exports.HBoxLayouterExt = HBoxLayouterExt;
+      HBoxLayouterExt.KIND = sprotty_1.HBoxLayouter.KIND;
+      exports.HBoxLayouterExt = HBoxLayouterExt = __decorate([
+        (0, inversify_1.injectable)()
+      ], HBoxLayouterExt);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/bounds/layouter.js
+  var require_layouter = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/bounds/layouter.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.StatefulLayouterExt = exports.LayouterExt = void 0;
+      var inversify_1 = require_cjs4();
+      var sprotty_1 = require_lib4();
+      var LayouterExt = class LayouterExt extends sprotty_1.Layouter {
+        layout(element2boundsData) {
+          new StatefulLayouterExt(element2boundsData, this.layoutRegistry, this.logger).layout();
+        }
+      };
+      exports.LayouterExt = LayouterExt;
+      exports.LayouterExt = LayouterExt = __decorate([
+        (0, inversify_1.injectable)()
+      ], LayouterExt);
+      var StatefulLayouterExt = class extends sprotty_1.StatefulLayouter {
+        /**
+         *
+         * @param elementToBoundsData The map of element to bounds data. Bounds Data are computed from the hidden
+         * SVG rendering pass.
+         * @param layoutRegistry2 The registry of available layouts.
+         * @param log The log.
+         */
+        constructor(elementToBoundsData, layoutRegistry2, log) {
+          super(elementToBoundsData, layoutRegistry2, log);
+          this.elementToBoundsData = elementToBoundsData;
+          this.layoutRegistry2 = layoutRegistry2;
+          this.toBeLayouted2 = [];
+          elementToBoundsData.forEach((data, element) => {
+            if ((0, sprotty_1.isLayoutContainer)(element)) {
+              this.toBeLayouted2.push(element);
+            }
+          });
+          for (const element of this.toBeLayouted2) {
+            elementToBoundsData.delete(element);
+          }
+        }
+        getBoundsData(element) {
+          let boundsData = this.elementToBoundsData.get(element);
+          let bounds = element.bounds;
+          if ((0, sprotty_1.isLayoutContainer)(element) && this.toBeLayouted2.indexOf(element) >= 0) {
+            bounds = this.doLayout(element);
+          } else if ((0, sprotty_1.isLayoutContainer)(element)) {
+            bounds = {
+              x: 0,
+              y: 0,
+              width: -1,
+              height: -1
+            };
+          }
+          if (!boundsData) {
+            boundsData = {
+              bounds,
+              boundsChanged: false,
+              alignmentChanged: false
+            };
+            this.elementToBoundsData.set(element, boundsData);
+          }
+          return boundsData;
+        }
+        layout() {
+          while (this.toBeLayouted2.length > 0) {
+            const element = this.toBeLayouted2[0];
+            this.doLayout(element);
+          }
+          this.toBeLayouted2 = [];
+          this.elementToBoundsData.forEach((data, element) => {
+            if ((0, sprotty_1.isLayoutContainer)(element)) {
+              this.toBeLayouted2.push(element);
+            }
+          });
+          while (this.toBeLayouted2.length > 0) {
+            const element = this.toBeLayouted2[0];
+            this.doLayout(element);
+          }
+        }
+        doLayout(element) {
+          const index = this.toBeLayouted2.indexOf(element);
+          if (index >= 0) {
+            this.toBeLayouted2.splice(index, 1);
+          }
+          const layout = this.layoutRegistry2.get(element.layout);
+          if (layout) {
+            layout.layout(element, this);
+          }
+          const boundsData = this.elementToBoundsData.get(element);
+          if (boundsData !== void 0 && boundsData.bounds !== void 0) {
+            return boundsData.bounds;
+          } else {
+            this.log.error(element, "Layout failed");
+            return sprotty_1.Bounds.EMPTY;
+          }
+        }
+      };
+      exports.StatefulLayouterExt = StatefulLayouterExt;
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/bounds/set-bounds-feedback-command.js
+  var require_set_bounds_feedback_command = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/bounds/set-bounds-feedback-command.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.SetBoundsFeedbackCommand = exports.SetBoundsFeedbackAction = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var ranked_1 = require_ranked();
+      var local_bounds_1 = require_local_bounds();
+      var SetBoundsFeedbackAction;
+      (function(SetBoundsFeedbackAction2) {
+        SetBoundsFeedbackAction2.KIND = "setBoundsFeedback";
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, SetBoundsFeedbackAction2.KIND);
+        }
+        SetBoundsFeedbackAction2.is = is;
+        function create(bounds) {
+          return { kind: SetBoundsFeedbackAction2.KIND, bounds };
+        }
+        SetBoundsFeedbackAction2.create = create;
+      })(SetBoundsFeedbackAction || (exports.SetBoundsFeedbackAction = SetBoundsFeedbackAction = {}));
+      var SetBoundsFeedbackCommand = class SetBoundsFeedbackCommand extends sprotty_1.SetBoundsCommand {
+        constructor() {
+          super(...arguments);
+          this.rank = ranked_1.Ranked.DEFAULT_RANK;
+        }
+        execute(context) {
+          super.execute(context);
+          this.action.bounds.forEach((bounds) => {
+            var _a4;
+            const element = context.root.index.getById(bounds.elementId);
+            if (element && (0, sprotty_1.isLayoutContainer)(element)) {
+              const options = (_a4 = element.layoutOptions) !== null && _a4 !== void 0 ? _a4 : {};
+              options.prefHeight = bounds.newSize.height;
+              options.prefWidth = bounds.newSize.width;
+              element.layoutOptions = options;
+            }
+          });
+          const elementIDs = this.action.bounds.map((bounds) => bounds.elementId);
+          return local_bounds_1.LocalRequestBoundsAction.fromCommand(context, this.actionDispatcher, this.action, elementIDs);
+        }
+      };
+      exports.SetBoundsFeedbackCommand = SetBoundsFeedbackCommand;
+      SetBoundsFeedbackCommand.KIND = SetBoundsFeedbackAction.KIND;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        __metadata("design:type", Object)
+      ], SetBoundsFeedbackCommand.prototype, "actionDispatcher", void 0);
+      exports.SetBoundsFeedbackCommand = SetBoundsFeedbackCommand = __decorate([
+        (0, inversify_1.injectable)()
+      ], SetBoundsFeedbackCommand);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/bounds/vbox-layout.js
+  var require_vbox_layout2 = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/bounds/vbox-layout.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.VBoxLayouterExt = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var layout_data_1 = require_layout_data();
+      var VBoxLayouterExt = class VBoxLayouterExt extends sprotty_1.VBoxLayouter {
+        layout(container, layouter) {
+          var _a4, _b2;
+          const boundsData = layouter.getBoundsData(container);
+          const options = this.getLayoutOptions(container);
+          const childrenSize = this.getChildrenSize(container, options, layouter);
+          const fixedSize = this.getFixedContainerBounds(container, options, layouter);
+          const currentWidth = (((_a4 = boundsData.bounds) === null || _a4 === void 0 ? void 0 : _a4.width) || 0) - options.paddingLeft - options.paddingRight;
+          const currentHeight = (((_b2 = boundsData.bounds) === null || _b2 === void 0 ? void 0 : _b2.height) || 0) - options.paddingTop - options.paddingBottom;
+          const maxWidth = options.paddingFactor * (options.resizeContainer ? Math.max(fixedSize.width - options.paddingLeft - options.paddingRight, childrenSize.width) : Math.max(0, fixedSize.width - options.paddingLeft - options.paddingRight));
+          const maxHeight = options.paddingFactor * (options.resizeContainer ? Math.max(fixedSize.height - options.paddingTop - options.paddingBottom, childrenSize.height) : Math.max(0, fixedSize.height - options.paddingTop - options.paddingBottom));
+          const width = Math.max(currentWidth, maxWidth);
+          const height = Math.max(currentHeight, maxHeight);
+          const grabHeight = height - childrenSize.height;
+          const grabbingChildren = container.children.map((child) => this.getChildLayoutOptions(child, options)).filter((opt) => opt.vGrab).length;
+          if (maxWidth > 0 && maxHeight > 0) {
+            const offset = this.layoutChildren(container, layouter, options, width, height, grabHeight, grabbingChildren);
+            const computed = this.getComputedContainerDimensions(options, childrenSize.width, childrenSize.height);
+            layout_data_1.LayoutAware.setComputedDimensions(boundsData, computed);
+            boundsData.bounds = this.getFinalContainerBounds(container, offset, options, computed.width, computed.height);
+            boundsData.boundsChanged = true;
+          }
+        }
+        getChildrenSize(container, containerOptions, layouter) {
+          let maxWidth = -1;
+          let maxHeight = 0;
+          let isFirst = true;
+          container.children.forEach((child) => {
+            if ((0, sprotty_1.isLayoutableChild)(child)) {
+              const bounds = layouter.getBoundsData(child).bounds;
+              if (bounds !== void 0 && sprotty_1.Dimension.isValid(bounds)) {
+                maxHeight += bounds.height;
+                if (isFirst) {
+                  isFirst = false;
+                } else {
+                  maxHeight += containerOptions.vGap;
+                }
+                maxWidth = Math.max(maxWidth, bounds.width);
+              }
+            }
+          });
+          const result = {
+            width: maxWidth,
+            height: maxHeight
+          };
+          return result;
+        }
+        layoutChildren(container, layouter, containerOptions, maxWidth, maxHeight, grabHeight, grabbingChildren) {
+          let currentOffset = {
+            x: containerOptions.paddingLeft + 0.5 * (maxWidth - maxWidth / containerOptions.paddingFactor),
+            y: containerOptions.paddingTop + 0.5 * (maxHeight - maxHeight / containerOptions.paddingFactor)
+          };
+          container.children.forEach((child) => {
+            if ((0, sprotty_1.isLayoutableChild)(child)) {
+              const boundsData = layouter.getBoundsData(child);
+              const bounds = boundsData.bounds;
+              const childOptions = this.getChildLayoutOptions(child, containerOptions);
+              if (bounds !== void 0 && sprotty_1.Dimension.isValid(bounds)) {
+                currentOffset = this.layoutChild(child, boundsData, bounds, childOptions, containerOptions, currentOffset, maxWidth, maxHeight, grabHeight, grabbingChildren);
+              }
+            }
+          });
+          return currentOffset;
+        }
+        layoutChild(child, boundsData, bounds, childOptions, containerOptions, currentOffset, maxWidth, maxHeight, grabHeight, grabbingChildren) {
+          const hAlign = childOptions.hGrab ? "left" : childOptions.hAlign;
+          const dx = this.getDx(hAlign, bounds, maxWidth);
+          let offset = super.layoutChild(child, boundsData, bounds, childOptions, containerOptions, currentOffset, maxWidth, maxHeight);
+          boundsData.bounds = {
+            ...boundsData.bounds,
+            x: currentOffset.x + dx,
+            y: currentOffset.y
+          };
+          if (childOptions.hGrab) {
+            boundsData.bounds = {
+              x: boundsData.bounds.x,
+              y: boundsData.bounds.y,
+              width: maxWidth,
+              height: boundsData.bounds.height
+            };
+            boundsData.boundsChanged = true;
+          }
+          if (childOptions.vGrab && grabHeight && grabbingChildren) {
+            const height = boundsData.bounds.height + grabHeight / grabbingChildren;
+            boundsData.bounds = {
+              x: boundsData.bounds.x,
+              y: boundsData.bounds.y,
+              width: boundsData.bounds.width,
+              height
+            };
+            boundsData.boundsChanged = true;
+            offset = { x: currentOffset.x, y: currentOffset.y + height };
+          }
+          return offset;
+        }
+        getFixedContainerBounds(container, layoutOptions, layouter) {
+          var _a4, _b2;
+          const currentContainer = container;
+          if ((0, sprotty_1.isBoundsAware)(currentContainer)) {
+            const bounds = currentContainer.bounds;
+            const elementOptions = this.getElementLayoutOptions(currentContainer);
+            const width = (_a4 = elementOptions === null || elementOptions === void 0 ? void 0 : elementOptions.prefWidth) !== null && _a4 !== void 0 ? _a4 : 0;
+            const height = (_b2 = elementOptions === null || elementOptions === void 0 ? void 0 : elementOptions.prefHeight) !== null && _b2 !== void 0 ? _b2 : 0;
+            return { ...bounds, width, height };
+          }
+          return sprotty_1.Bounds.EMPTY;
+        }
+        getChildLayoutOptions(child, containerOptions) {
+          return super.getChildLayoutOptions(child, this.filterContainerOptions(containerOptions));
+        }
+        getLayoutOptions(element) {
+          return super.getLayoutOptions(element);
+        }
+        getElementLayoutOptions(element) {
+          return element.layoutOptions;
+        }
+        getComputedContainerDimensions(options, maxWidth, maxHeight) {
+          return {
+            width: maxWidth + options.paddingLeft + options.paddingRight,
+            height: maxHeight + options.paddingTop + options.paddingBottom
+          };
+        }
+        getFinalContainerBounds(container, lastOffset, options, computedWidth, computedHeight) {
+          var _a4, _b2;
+          const elementOptions = this.getElementLayoutOptions(container);
+          const width = (_a4 = elementOptions === null || elementOptions === void 0 ? void 0 : elementOptions.prefWidth) !== null && _a4 !== void 0 ? _a4 : options.minWidth;
+          const height = (_b2 = elementOptions === null || elementOptions === void 0 ? void 0 : elementOptions.prefHeight) !== null && _b2 !== void 0 ? _b2 : options.minHeight;
+          const result = {
+            x: container.bounds.x,
+            y: container.bounds.y,
+            width: Math.max(width, computedWidth),
+            height: Math.max(height, computedHeight)
+          };
+          return result;
+        }
+        getDefaultLayoutOptions() {
+          return {
+            resizeContainer: true,
+            paddingTop: 5,
+            paddingBottom: 5,
+            paddingLeft: 5,
+            paddingRight: 5,
+            paddingFactor: 1,
+            vGap: 1,
+            hAlign: "center",
+            minWidth: 0,
+            minHeight: 0,
+            hGrab: false,
+            vGrab: false,
+            // eslint-disable-next-line no-null/no-null
+            prefHeight: null,
+            // eslint-disable-next-line no-null/no-null
+            prefWidth: null
+          };
+        }
+        filterContainerOptions(containerOptions) {
+          const localOptions = { vGrab: false, hGrab: false, prefHeight: null, prefWidth: null };
+          return { ...containerOptions, ...localOptions };
+        }
+      };
+      exports.VBoxLayouterExt = VBoxLayouterExt;
+      VBoxLayouterExt.KIND = sprotty_1.VBoxLayouter.KIND;
+      exports.VBoxLayouterExt = VBoxLayouterExt = __decorate([
+        (0, inversify_1.injectable)()
+      ], VBoxLayouterExt);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/bounds/bounds-module.js
+  var require_bounds_module = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/bounds/bounds-module.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.boundsModule = void 0;
+      var sprotty_1 = require_lib4();
+      var move_element_action_1 = require_move_element_action();
+      var move_element_handler_1 = require_move_element_handler();
+      var position_snapper_1 = require_position_snapper();
+      var freeform_layout_1 = require_freeform_layout();
+      var glsp_hidden_bounds_updater_1 = require_glsp_hidden_bounds_updater();
+      var hbox_layout_1 = require_hbox_layout2();
+      var layouter_1 = require_layouter();
+      var local_bounds_1 = require_local_bounds();
+      var set_bounds_feedback_command_1 = require_set_bounds_feedback_command();
+      var vbox_layout_1 = require_vbox_layout2();
+      exports.boundsModule = new sprotty_1.FeatureModule((bind, _unbind, isBound, _rebind) => {
+        const context = { bind, isBound };
+        (0, sprotty_1.configureCommand)(context, sprotty_1.SetBoundsCommand);
+        (0, sprotty_1.configureCommand)(context, sprotty_1.RequestBoundsCommand);
+        bind(sprotty_1.HiddenBoundsUpdater).toSelf().inSingletonScope();
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.HiddenVNodePostprocessor, glsp_hidden_bounds_updater_1.GLSPHiddenBoundsUpdater);
+        (0, sprotty_1.configureCommand)(context, local_bounds_1.LocalComputedBoundsCommand);
+        (0, sprotty_1.configureCommand)(context, set_bounds_feedback_command_1.SetBoundsFeedbackCommand);
+        bind(sprotty_1.TYPES.Layouter).to(layouter_1.LayouterExt).inSingletonScope();
+        bind(sprotty_1.TYPES.LayoutRegistry).to(sprotty_1.LayoutRegistry).inSingletonScope();
+        (0, sprotty_1.configureLayout)(context, sprotty_1.VBoxLayouter.KIND, vbox_layout_1.VBoxLayouterExt);
+        (0, sprotty_1.configureLayout)(context, sprotty_1.HBoxLayouter.KIND, hbox_layout_1.HBoxLayouterExt);
+        (0, sprotty_1.configureLayout)(context, freeform_layout_1.FreeFormLayouter.KIND, freeform_layout_1.FreeFormLayouter);
+        bind(move_element_handler_1.MoveElementHandler).toSelf().inSingletonScope();
+        (0, sprotty_1.configureActionHandler)(context, move_element_action_1.MoveElementRelativeAction.KIND, move_element_handler_1.MoveElementHandler);
+        bind(position_snapper_1.PositionSnapper).toSelf();
+      }, { featureId: Symbol("bounds") });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/accessibility/toast/toast-handler.js
+  var require_toast_handler = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/accessibility/toast/toast-handler.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.ShowToastMessageAction = exports.HideToastAction = void 0;
+      var sprotty_1 = require_lib4();
+      var HideToastAction;
+      (function(HideToastAction2) {
+        HideToastAction2.KIND = "hideToastMessageAction";
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, HideToastAction2.KIND);
+        }
+        HideToastAction2.is = is;
+        function create(options) {
+          return { kind: HideToastAction2.KIND, options };
+        }
+        HideToastAction2.create = create;
+      })(HideToastAction || (exports.HideToastAction = HideToastAction = {}));
+      var ShowToastMessageAction;
+      (function(ShowToastMessageAction2) {
+        ShowToastMessageAction2.KIND = "showToastMessageAction";
+        ShowToastMessageAction2.TIMEOUT = 2e3;
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, ShowToastMessageAction2.KIND);
+        }
+        ShowToastMessageAction2.is = is;
+        function create(options) {
+          var _a4, _b2;
+          return { kind: ShowToastMessageAction2.KIND, options: { ...options, position: (_a4 = options.position) !== null && _a4 !== void 0 ? _a4 : "center", id: (_b2 = options.id) !== null && _b2 !== void 0 ? _b2 : Symbol("toast id") } };
+        }
+        ShowToastMessageAction2.create = create;
+        function createWithTimeout(options) {
+          var _a4, _b2;
+          return {
+            kind: ShowToastMessageAction2.KIND,
+            options: { timeout: ShowToastMessageAction2.TIMEOUT, ...options, position: (_a4 = options.position) !== null && _a4 !== void 0 ? _a4 : "center", id: (_b2 = options.id) !== null && _b2 !== void 0 ? _b2 : Symbol("toast id") }
+          };
+        }
+        ShowToastMessageAction2.createWithTimeout = createWithTimeout;
+      })(ShowToastMessageAction || (exports.ShowToastMessageAction = ShowToastMessageAction = {}));
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/grid/grid.js
+  var require_grid = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/grid/grid.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.Grid = void 0;
+      var Grid;
+      (function(Grid2) {
+        Grid2.DEFAULT = { x: 10, y: 10 };
+      })(Grid || (exports.Grid = Grid = {}));
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/change-bounds/resize/resize-handler.js
+  var require_resize_handler = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/change-bounds/resize/resize-handler.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.ResizeElementHandler = exports.ResizeElementAction = exports.ResizeType = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var lodash_1 = require_lodash();
+      var editor_context_service_1 = require_editor_context_service();
+      var gmodel_util_1 = require_gmodel_util();
+      var layout_utils_1 = require_layout_utils();
+      var grid_1 = require_grid();
+      var ResizeType;
+      (function(ResizeType2) {
+        ResizeType2[ResizeType2["Increase"] = 0] = "Increase";
+        ResizeType2[ResizeType2["Decrease"] = 1] = "Decrease";
+        ResizeType2[ResizeType2["MinSize"] = 2] = "MinSize";
+      })(ResizeType || (exports.ResizeType = ResizeType = {}));
+      var ResizeElementAction;
+      (function(ResizeElementAction2) {
+        ResizeElementAction2.KIND = "resizeElementAction";
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, ResizeElementAction2.KIND);
+        }
+        ResizeElementAction2.is = is;
+        function create(elementIds, resizeType) {
+          return { kind: ResizeElementAction2.KIND, elementIds, resizeType };
+        }
+        ResizeElementAction2.create = create;
+      })(ResizeElementAction || (exports.ResizeElementAction = ResizeElementAction = {}));
+      var ResizeElementHandler = class ResizeElementHandler {
+        constructor() {
+          this.grid = grid_1.Grid.DEFAULT;
+        }
+        init() {
+          this.resizeFeedback = this.feedbackDispatcher.createEmitter();
+        }
+        handle(action) {
+          if (ResizeElementAction.is(action)) {
+            this.handleResizeElement(action);
+          }
+        }
+        handleResizeElement(action) {
+          var _a4;
+          const elements = (0, gmodel_util_1.getElements)(this.editorContextService.modelRoot.index, action.elementIds, gmodel_util_1.isSelectableAndBoundsAware);
+          const elementAndBounds = this.computeElementAndBounds(elements, action);
+          this.resizeFeedback.add(sprotty_1.SetBoundsAction.create(elementAndBounds)).submit();
+          (_a4 = this.debouncedChangeBounds) === null || _a4 === void 0 ? void 0 : _a4.cancel();
+          this.debouncedChangeBounds = (0, lodash_1.debounce)(() => {
+            this.resizeFeedback.dispose();
+            this.dispatcher.dispatchAll([sprotty_1.ChangeBoundsOperation.create(elementAndBounds)]);
+            this.debouncedChangeBounds = void 0;
+          }, 300);
+          this.debouncedChangeBounds();
+        }
+        computeElementAndBounds(elements, action) {
+          const elementAndBounds = [];
+          elements.forEach((element) => {
+            const { x: x3, y: y3, width: oldWidth, height: oldHeight } = element.bounds;
+            let width = 0;
+            let height = 0;
+            if (action.resizeType === ResizeType.Decrease) {
+              width = oldWidth - this.grid.x;
+              height = oldHeight - this.grid.y;
+            } else if (action.resizeType === ResizeType.Increase) {
+              width = oldWidth + this.grid.x;
+              height = oldHeight + this.grid.y;
+            } else if (action.resizeType === ResizeType.MinSize) {
+              width = (0, layout_utils_1.minWidth)(element);
+              height = (0, layout_utils_1.minHeight)(element);
+            }
+            if (this.isValidBoundChange(element, { x: x3, y: y3 }, { width, height })) {
+              const resizeElement = { id: element.id, bounds: { x: x3, y: y3, width, height } };
+              elementAndBounds.push((0, gmodel_util_1.toElementAndBounds)(resizeElement));
+            }
+          });
+          return elementAndBounds;
+        }
+        isValidBoundChange(element, newPosition, newSize) {
+          return (0, layout_utils_1.isValidSize)(element, newSize) && (0, layout_utils_1.isValidMove)(element, newPosition);
+        }
+      };
+      exports.ResizeElementHandler = ResizeElementHandler;
+      __decorate([
+        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
+        __metadata("design:type", editor_context_service_1.EditorContextService)
+      ], ResizeElementHandler.prototype, "editorContextService", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        __metadata("design:type", Object)
+      ], ResizeElementHandler.prototype, "dispatcher", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IFeedbackActionDispatcher),
+        __metadata("design:type", Object)
+      ], ResizeElementHandler.prototype, "feedbackDispatcher", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.Grid),
+        (0, inversify_1.optional)(),
+        __metadata("design:type", Object)
+      ], ResizeElementHandler.prototype, "grid", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.ISnapper),
+        (0, inversify_1.optional)(),
+        __metadata("design:type", Object)
+      ], ResizeElementHandler.prototype, "snapper", void 0);
+      __decorate([
+        (0, inversify_1.postConstruct)(),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", []),
+        __metadata("design:returntype", void 0)
+      ], ResizeElementHandler.prototype, "init", null);
+      exports.ResizeElementHandler = ResizeElementHandler = __decorate([
+        (0, inversify_1.injectable)()
+      ], ResizeElementHandler);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/change-bounds/resize/resize-tool.js
+  var require_resize_tool = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/change-bounds/resize/resize-tool.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var ResizeKeyTool_1;
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.ResizeKeyTool = exports.ResizeKeyListener = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var vscode_jsonrpc_1 = require_main();
+      var messages_1 = require_messages3();
+      var selection_service_1 = require_selection_service();
+      var toast_handler_1 = require_toast_handler();
+      var base_tools_1 = require_base_tools();
+      var model_1 = require_model19();
+      var resize_handler_1 = require_resize_handler();
+      var ResizeKeyListener = class ResizeKeyListener extends sprotty_1.KeyListener {
+        keyDown(element, event) {
+          const actions = [];
+          const selectedElementsIds = this.selectionService.getSelectedElements().filter(model_1.isResizable).map((e2) => e2.id);
+          if (selectedElementsIds.length > 0) {
+            if (this.matchesIncreaseSizeKeystroke(event)) {
+              actions.push(resize_handler_1.ResizeElementAction.create(selectedElementsIds, resize_handler_1.ResizeType.Increase));
+            } else if (this.matchesDecreaseSizeKeystroke(event)) {
+              actions.push(resize_handler_1.ResizeElementAction.create(selectedElementsIds, resize_handler_1.ResizeType.Decrease));
+            } else if (this.matchesMinSizeKeystroke(event)) {
+              actions.push(resize_handler_1.ResizeElementAction.create(selectedElementsIds, resize_handler_1.ResizeType.MinSize));
+            }
+          }
+          return actions;
+        }
+        enable() {
+          return [
+            toast_handler_1.ShowToastMessageAction.create({
+              id: ResizeKeyTool.TOKEN,
+              message: messages_1.messages.resize.resize_mode_activated
+            })
+          ];
+        }
+        disable() {
+          return [
+            toast_handler_1.ShowToastMessageAction.createWithTimeout({
+              id: ResizeKeyTool.TOKEN,
+              message: messages_1.messages.resize.resize_mode_deactivated
+            })
+          ];
+        }
+        matchesIncreaseSizeKeystroke(event) {
+          return event.key === "+" || (0, sprotty_1.matchesKeystroke)(event, "NumpadAdd");
+        }
+        matchesMinSizeKeystroke(event) {
+          return (0, sprotty_1.matchesKeystroke)(event, "Digit0", "ctrl") || (0, sprotty_1.matchesKeystroke)(event, "Numpad0", "ctrl");
+        }
+        matchesDecreaseSizeKeystroke(event) {
+          return (0, sprotty_1.matchesKeystroke)(event, "Minus") || (0, sprotty_1.matchesKeystroke)(event, "NumpadSubtract");
+        }
+      };
+      exports.ResizeKeyListener = ResizeKeyListener;
+      __decorate([
+        (0, inversify_1.inject)(selection_service_1.SelectionService),
+        __metadata("design:type", selection_service_1.SelectionService)
+      ], ResizeKeyListener.prototype, "selectionService", void 0);
+      exports.ResizeKeyListener = ResizeKeyListener = __decorate([
+        (0, inversify_1.injectable)()
+      ], ResizeKeyListener);
+      var ResizeKeyTool = ResizeKeyTool_1 = class ResizeKeyTool extends base_tools_1.BaseEditTool {
+        get id() {
+          return ResizeKeyTool_1.ID;
+        }
+        enable() {
+          this.dispatchActions(this.keyListener.enable());
+          this.toDisposeOnDisable.push(this.keyTool.registerListener(this.keyListener), (0, messages_1.repeatOnMessagesUpdated)(() => this.shortcutManager.register(ResizeKeyTool_1.TOKEN, [
+            {
+              shortcuts: ["Escape"],
+              description: messages_1.messages.resize.shortcut_deactivate,
+              group: messages_1.messages.shortcut.group_resize,
+              position: 0
+            },
+            {
+              shortcuts: ["+"],
+              description: messages_1.messages.resize.shortcut_increase,
+              group: messages_1.messages.shortcut.group_resize,
+              position: 1
+            },
+            {
+              shortcuts: ["-"],
+              description: messages_1.messages.resize.shortcut_decrease,
+              group: messages_1.messages.shortcut.group_resize,
+              position: 2
+            },
+            {
+              shortcuts: ["CTRL", "0"],
+              description: messages_1.messages.resize.shortcut_reset,
+              group: messages_1.messages.shortcut.group_resize,
+              position: 3
+            }
+          ])), vscode_jsonrpc_1.Disposable.create(() => {
+            this.dispatchActions(this.keyListener.disable());
+          }));
+        }
+      };
+      exports.ResizeKeyTool = ResizeKeyTool;
+      ResizeKeyTool.ID = "glsp.resize-key-tool";
+      ResizeKeyTool.TOKEN = Symbol.for(ResizeKeyTool_1.name);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IShortcutManager),
+        __metadata("design:type", Function)
+      ], ResizeKeyTool.prototype, "shortcutManager", void 0);
+      __decorate([
+        (0, inversify_1.inject)(ResizeKeyListener),
+        __metadata("design:type", ResizeKeyListener)
+      ], ResizeKeyTool.prototype, "keyListener", void 0);
+      exports.ResizeKeyTool = ResizeKeyTool = ResizeKeyTool_1 = __decorate([
+        (0, inversify_1.injectable)()
+      ], ResizeKeyTool);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/change-bounds/resize/resize-default-tool.js
+  var require_resize_default_tool = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/change-bounds/resize/resize-default-tool.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var DefaultResizeKeyTool_1;
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.DefaultResizeKeyTool = exports.DefaultResizeKeyListener = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var messages_1 = require_messages3();
+      var selection_service_1 = require_selection_service();
+      var tool_1 = require_tool();
+      var base_tools_1 = require_base_tools();
+      var model_1 = require_model19();
+      var resize_tool_1 = require_resize_tool();
+      var DefaultResizeKeyListener = class DefaultResizeKeyListener extends sprotty_1.KeyListener {
+        keyDown(element, event) {
+          const selectedElementsIds = this.selectionService.getSelectedElements().filter(model_1.isResizable).map((e2) => e2.id);
+          if (selectedElementsIds.length > 0) {
+            if (this.matchesActivateResizeModeKeystroke(event)) {
+              return [tool_1.EnableToolsAction.create([resize_tool_1.ResizeKeyTool.ID])];
+            }
+          }
+          return [];
+        }
+        matchesActivateResizeModeKeystroke(event) {
+          return (0, sprotty_1.matchesKeystroke)(event, "KeyA", "alt");
+        }
+      };
+      exports.DefaultResizeKeyListener = DefaultResizeKeyListener;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        __metadata("design:type", Object)
+      ], DefaultResizeKeyListener.prototype, "actionDispatcher", void 0);
+      __decorate([
+        (0, inversify_1.inject)(selection_service_1.SelectionService),
+        __metadata("design:type", selection_service_1.SelectionService)
+      ], DefaultResizeKeyListener.prototype, "selectionService", void 0);
+      exports.DefaultResizeKeyListener = DefaultResizeKeyListener = __decorate([
+        (0, inversify_1.injectable)()
+      ], DefaultResizeKeyListener);
+      var DefaultResizeKeyTool = DefaultResizeKeyTool_1 = class DefaultResizeKeyTool extends base_tools_1.BaseEditTool {
+        get id() {
+          return DefaultResizeKeyTool_1.ID;
+        }
+        enable() {
+          this.toDisposeOnDisable.push(this.keyTool.registerListener(this.keyListener), (0, messages_1.repeatOnMessagesUpdated)(() => this.shortcutManager.register(DefaultResizeKeyTool_1.TOKEN, [
+            {
+              shortcuts: ["ALT", "A"],
+              description: messages_1.messages.resize.shortcut_activate,
+              group: messages_1.messages.shortcut.group_resize,
+              position: 0
+            }
+          ])));
+        }
+      };
+      exports.DefaultResizeKeyTool = DefaultResizeKeyTool;
+      DefaultResizeKeyTool.ID = "glsp.default-resize-key-tool";
+      DefaultResizeKeyTool.TOKEN = Symbol.for(DefaultResizeKeyTool_1.name);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IShortcutManager),
+        __metadata("design:type", Function)
+      ], DefaultResizeKeyTool.prototype, "shortcutManager", void 0);
+      __decorate([
+        (0, inversify_1.inject)(DefaultResizeKeyListener),
+        __metadata("design:type", DefaultResizeKeyListener)
+      ], DefaultResizeKeyTool.prototype, "keyListener", void 0);
+      exports.DefaultResizeKeyTool = DefaultResizeKeyTool = DefaultResizeKeyTool_1 = __decorate([
+        (0, inversify_1.injectable)()
+      ], DefaultResizeKeyTool);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/change-bounds/resize/resize-module.js
+  var require_resize_module = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/change-bounds/resize/resize-module.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.standaloneResizeModule = exports.resizeModule = void 0;
+      var sprotty_1 = require_lib4();
+      var resize_default_tool_1 = require_resize_default_tool();
+      var resize_handler_1 = require_resize_handler();
+      var resize_tool_1 = require_resize_tool();
+      exports.resizeModule = new sprotty_1.FeatureModule((bind, unbind, isBound, rebind) => {
+        const context = { bind, unbind, isBound, rebind };
+        (0, sprotty_1.configureActionHandler)(context, resize_handler_1.ResizeElementAction.KIND, resize_handler_1.ResizeElementHandler);
+      }, { featureId: Symbol("resize") });
+      exports.standaloneResizeModule = new sprotty_1.FeatureModule((bind, unbind, isBound, rebind) => {
+        const context = { bind, unbind, isBound, rebind };
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IDefaultTool, resize_default_tool_1.DefaultResizeKeyTool);
+        context.bind(resize_default_tool_1.DefaultResizeKeyListener).toSelf();
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.ITool, resize_tool_1.ResizeKeyTool);
+        context.bind(resize_tool_1.ResizeKeyListener).toSelf();
+      }, { featureId: Symbol("standaloneResize"), requires: exports.resizeModule });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/css/command-palette.css
+  var require_command_palette2 = __commonJS({
+    "node_modules/@eclipse-glsp/client/css/command-palette.css"(exports, module) {
+      module.exports = {};
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/command-palette/command-palette.js
+  var require_command_palette3 = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/command-palette/command-palette.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.GlspCommandPalette = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var ui_extension_1 = require_ui_extension2();
+      var GlspCommandPalette = class GlspCommandPalette extends sprotty_1.CommandPalette {
+        initializeContents(containerElement) {
+          super.initializeContents(containerElement);
+          containerElement.classList.add(ui_extension_1.CSS_UI_EXTENSION_CLASS);
+        }
+        setContainerVisible(visible) {
+          var _a4, _b2;
+          if (visible) {
+            (_a4 = this.containerElement) === null || _a4 === void 0 ? void 0 : _a4.classList.remove(ui_extension_1.CSS_HIDDEN_EXTENSION_CLASS);
+          } else {
+            (_b2 = this.containerElement) === null || _b2 === void 0 ? void 0 : _b2.classList.add(ui_extension_1.CSS_HIDDEN_EXTENSION_CLASS);
+          }
+        }
+      };
+      exports.GlspCommandPalette = GlspCommandPalette;
+      exports.GlspCommandPalette = GlspCommandPalette = __decorate([
+        (0, inversify_1.injectable)()
+      ], GlspCommandPalette);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/command-palette/command-palette-tool.js
+  var require_command_palette_tool = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/command-palette/command-palette-tool.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var CommandPaletteTool_1;
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.CommandPaletteTool = void 0;
+      var inversify_1 = require_cjs4();
+      var sprotty_1 = require_lib4();
+      var CommandPaletteTool = CommandPaletteTool_1 = class CommandPaletteTool {
+        postConstruct() {
+          this.commandPaletteKeyListener = this.createCommandPaletteKeyListener();
+        }
+        get id() {
+          return CommandPaletteTool_1.ID;
+        }
+        enable() {
+          this.keyTool.register(this.commandPaletteKeyListener);
+        }
+        disable() {
+          this.keyTool.deregister(this.commandPaletteKeyListener);
+        }
+        createCommandPaletteKeyListener() {
+          return new sprotty_1.CommandPaletteKeyListener();
+        }
+      };
+      exports.CommandPaletteTool = CommandPaletteTool;
+      CommandPaletteTool.ID = "glsp.command-palette-tool";
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.KeyTool),
+        __metadata("design:type", sprotty_1.KeyTool)
+      ], CommandPaletteTool.prototype, "keyTool", void 0);
+      __decorate([
+        (0, inversify_1.postConstruct)(),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", []),
+        __metadata("design:returntype", void 0)
+      ], CommandPaletteTool.prototype, "postConstruct", null);
+      exports.CommandPaletteTool = CommandPaletteTool = CommandPaletteTool_1 = __decorate([
+        (0, inversify_1.injectable)()
+      ], CommandPaletteTool);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/command-palette/server-command-palette-provider.js
+  var require_server_command_palette_provider = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/command-palette/server-command-palette-provider.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.ServerCommandPaletteActionProvider = exports.ServerCommandPalette = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var editor_context_service_1 = require_editor_context_service();
+      var ServerCommandPalette;
+      (function(ServerCommandPalette2) {
+        ServerCommandPalette2.CONTEXT_ID = "command-palette";
+        ServerCommandPalette2.TEXT = "text";
+        ServerCommandPalette2.INDEX = "index";
+      })(ServerCommandPalette || (exports.ServerCommandPalette = ServerCommandPalette = {}));
+      var ServerCommandPaletteActionProvider = class ServerCommandPaletteActionProvider {
+        async getActions(_root, text, _lastMousePosition, index) {
+          const requestAction = sprotty_1.RequestContextActions.create({
+            contextId: ServerCommandPalette.CONTEXT_ID,
+            editorContext: this.editorContext.get({
+              [ServerCommandPalette.TEXT]: text,
+              [ServerCommandPalette.INDEX]: index ? index : 0
+            })
+          });
+          const response = await this.actionDispatcher.requestUntil(requestAction);
+          return response ? this.getPaletteActionsFromResponse(response) : [];
+        }
+        getPaletteActionsFromResponse(action) {
+          if (sprotty_1.SetContextActions.is(action)) {
+            return action.actions;
+          }
+          return [];
+        }
+      };
+      exports.ServerCommandPaletteActionProvider = ServerCommandPaletteActionProvider;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        __metadata("design:type", Object)
+      ], ServerCommandPaletteActionProvider.prototype, "actionDispatcher", void 0);
+      __decorate([
+        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
+        __metadata("design:type", editor_context_service_1.EditorContextService)
+      ], ServerCommandPaletteActionProvider.prototype, "editorContext", void 0);
+      exports.ServerCommandPaletteActionProvider = ServerCommandPaletteActionProvider = __decorate([
+        (0, inversify_1.injectable)()
+      ], ServerCommandPaletteActionProvider);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/command-palette/command-palette-module.js
+  var require_command_palette_module = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/command-palette/command-palette-module.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.commandPaletteModule = void 0;
+      var sprotty_1 = require_lib4();
+      require_command_palette2();
+      var command_palette_1 = require_command_palette3();
+      var command_palette_tool_1 = require_command_palette_tool();
+      var server_command_palette_provider_1 = require_server_command_palette_provider();
+      exports.commandPaletteModule = new sprotty_1.FeatureModule((bind) => {
+        (0, sprotty_1.bindAsService)(bind, sprotty_1.TYPES.IUIExtension, command_palette_1.GlspCommandPalette);
+        bind(sprotty_1.TYPES.ICommandPaletteActionProviderRegistry).to(sprotty_1.CommandPaletteActionProviderRegistry).inSingletonScope();
+        (0, sprotty_1.bindAsService)(bind, sprotty_1.TYPES.ICommandPaletteActionProvider, server_command_palette_provider_1.ServerCommandPaletteActionProvider);
+        (0, sprotty_1.bindAsService)(bind, sprotty_1.TYPES.IDefaultTool, command_palette_tool_1.CommandPaletteTool);
+      }, { featureId: Symbol("commandPalette") });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/context-menu/glsp-context-menu-mouse-listener.js
+  var require_glsp_context_menu_mouse_listener = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/context-menu/glsp-context-menu-mouse-listener.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.GLSPContextMenuMouseListener = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var focus_state_change_action_1 = require_focus_state_change_action();
+      var GLSPContextMenuMouseListener = class GLSPContextMenuMouseListener extends sprotty_1.MouseListener {
+        initialize() {
+          var _a4;
+          (_a4 = this.contextMenuServiceProvider) === null || _a4 === void 0 ? void 0 : _a4.call(this).then((menuService) => this.menuService = menuService);
+        }
+        /**
+         * Opens the context menu.
+         */
+        contextMenu(target, event) {
+          return this.openContextMenu(target, event);
+        }
+        /**
+         * Opens the context menu.
+         *
+         *   - update selection state (if context menu target is selectable)
+         *   - query the context menu service and the context menu elements
+         *   - show the context menu
+         *   - send a focus state change to indicate that the diagram becomes inactive, once the context menu is shown
+         *
+         * When the context menu is closed, we focus the diagram element again.
+         */
+        openContextMenu(target, event) {
+          if (!this.menuService || !this.menuProvider) {
+            return [];
+          }
+          return [this.showContextMenuItems(target, event)];
+        }
+        async showContextMenuItems(target, event) {
+          await this.handleContextElementSelection(target, event);
+          const mousePosition = { x: event.x, y: event.y };
+          const menuItems = await this.menuProvider.getItems(target.root, mousePosition);
+          this.menuService.show(menuItems, mousePosition, () => this.focusEventTarget(event));
+          return focus_state_change_action_1.FocusStateChangedAction.create(false);
+        }
+        // Clear selection if the context menu target is not selectable
+        // Otherwise either maintain current selection if target is already selected or single select the current target.
+        async handleContextElementSelection(target, event) {
+          const selectableTarget = (0, sprotty_1.findParentByFeature)(target, sprotty_1.isSelectable);
+          if (!selectableTarget) {
+            return this.actionDispatcher.dispatch(sprotty_1.SelectAction.setSelection([]));
+          }
+          if (!selectableTarget.selected) {
+            return this.actionDispatcher.dispatch(sprotty_1.SelectAction.setSelection([selectableTarget.id]));
+          }
+          return;
+        }
+        focusEventTarget(event) {
+          const targetElement = event.target instanceof SVGElement ? event.target : void 0;
+          const svgParentElement = targetElement === null || targetElement === void 0 ? void 0 : targetElement.closest("svg");
+          if (svgParentElement) {
+            svgParentElement.focus();
+          }
+        }
+      };
+      exports.GLSPContextMenuMouseListener = GLSPContextMenuMouseListener;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IContextMenuServiceProvider),
+        (0, inversify_1.optional)(),
+        __metadata("design:type", Function)
+      ], GLSPContextMenuMouseListener.prototype, "contextMenuServiceProvider", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IContextMenuProviderRegistry),
+        (0, inversify_1.optional)(),
+        __metadata("design:type", sprotty_1.ContextMenuProviderRegistry)
+      ], GLSPContextMenuMouseListener.prototype, "menuProvider", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        __metadata("design:type", Object)
+      ], GLSPContextMenuMouseListener.prototype, "actionDispatcher", void 0);
+      __decorate([
+        (0, inversify_1.postConstruct)(),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", []),
+        __metadata("design:returntype", void 0)
+      ], GLSPContextMenuMouseListener.prototype, "initialize", null);
+      exports.GLSPContextMenuMouseListener = GLSPContextMenuMouseListener = __decorate([
+        (0, inversify_1.injectable)()
+      ], GLSPContextMenuMouseListener);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/context-menu/server-context-menu-provider.js
+  var require_server_context_menu_provider = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/context-menu/server-context-menu-provider.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.ServerContextMenuItemProvider = exports.ServerContextMenu = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var editor_context_service_1 = require_editor_context_service();
+      var ServerContextMenu;
+      (function(ServerContextMenu2) {
+        ServerContextMenu2.CONTEXT_ID = "context-menu";
+      })(ServerContextMenu || (exports.ServerContextMenu = ServerContextMenu = {}));
+      var ServerContextMenuItemProvider = class ServerContextMenuItemProvider {
+        async getItems(root, _lastMousePosition) {
+          const selectedElementIds = Array.from(root.index.all().filter(sprotty_1.isSelected).map((e2) => e2.id));
+          const editorContext = this.editorContext.getWithSelection(selectedElementIds);
+          const requestAction = sprotty_1.RequestContextActions.create({ contextId: ServerContextMenu.CONTEXT_ID, editorContext });
+          const response = await this.actionDispatcher.requestUntil(requestAction);
+          return response ? this.getContextActionsFromResponse(response) : [];
+        }
+        getContextActionsFromResponse(action) {
+          if (sprotty_1.SetContextActions.is(action)) {
+            return action.actions;
+          }
+          return [];
+        }
+      };
+      exports.ServerContextMenuItemProvider = ServerContextMenuItemProvider;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        __metadata("design:type", Object)
+      ], ServerContextMenuItemProvider.prototype, "actionDispatcher", void 0);
+      __decorate([
+        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
+        __metadata("design:type", editor_context_service_1.EditorContextService)
+      ], ServerContextMenuItemProvider.prototype, "editorContext", void 0);
+      exports.ServerContextMenuItemProvider = ServerContextMenuItemProvider = __decorate([
+        (0, inversify_1.injectable)()
+      ], ServerContextMenuItemProvider);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/context-menu/context-menu-module.js
+  var require_context_menu_module = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/context-menu/context-menu-module.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.contextMenuModule = void 0;
+      var sprotty_1 = require_lib4();
+      var glsp_context_menu_mouse_listener_1 = require_glsp_context_menu_mouse_listener();
+      var server_context_menu_provider_1 = require_server_context_menu_provider();
+      exports.contextMenuModule = new sprotty_1.FeatureModule((bind) => {
+        bind(sprotty_1.TYPES.IContextMenuServiceProvider).toProvider((ctx) => async () => {
+          if (ctx.container.isBound(sprotty_1.TYPES.IContextMenuService)) {
+            return ctx.container.get(sprotty_1.TYPES.IContextMenuService);
+          }
+          console.warn("'TYPES.IContextMenuService' is not bound. Use no-op implementation instead");
+          return { show: () => {
+          } };
+        });
+        (0, sprotty_1.bindAsService)(bind, sprotty_1.TYPES.MouseListener, glsp_context_menu_mouse_listener_1.GLSPContextMenuMouseListener);
+        bind(sprotty_1.TYPES.IContextMenuProviderRegistry).to(sprotty_1.ContextMenuProviderRegistry);
+        (0, sprotty_1.bindAsService)(bind, sprotty_1.TYPES.IContextMenuItemProvider, server_context_menu_provider_1.ServerContextMenuItemProvider);
+      }, { featureId: Symbol("contextMenu") });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/copy-paste/copy-paste-handler.js
+  var require_copy_paste_handler = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/copy-paste/copy-paste-handler.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.ServerCopyPasteHandler = exports.LocalClipboardService = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var uuid_1 = require_commonjs_browser();
+      var editor_context_service_1 = require_editor_context_service();
+      var LocalClipboardService = class LocalClipboardService {
+        clear() {
+          this.currentId = void 0;
+          this.data = void 0;
+        }
+        put(data, id) {
+          this.currentId = id;
+          this.data = data;
+        }
+        get(id) {
+          if (id !== this.currentId) {
+            return void 0;
+          }
+          return this.data;
+        }
+      };
+      exports.LocalClipboardService = LocalClipboardService;
+      exports.LocalClipboardService = LocalClipboardService = __decorate([
+        (0, inversify_1.injectable)()
+      ], LocalClipboardService);
+      function toClipboardId(clipboardId) {
+        return JSON.stringify({ clipboardId });
+      }
+      function isClipboardId(jsonData) {
+        return jsonData !== void 0 && "clipboardId" in jsonData;
+      }
+      function getClipboardIdFromDataTransfer(dataTransfer) {
+        const jsonString = dataTransfer.getData(CLIPBOARD_DATA_FORMAT);
+        const jsonObject = jsonString ? JSON.parse(jsonString) : void 0;
+        return isClipboardId(jsonObject) ? jsonObject.clipboardId : void 0;
+      }
+      var CLIPBOARD_DATA_FORMAT = "text/plain";
+      var ServerCopyPasteHandler = class ServerCopyPasteHandler {
+        handleCopy(event) {
+          if (event.clipboardData && this.shouldCopy(event)) {
+            const clipboardId = (0, uuid_1.v4)();
+            event.clipboardData.setData(CLIPBOARD_DATA_FORMAT, toClipboardId(clipboardId));
+            this.actionDispatcher.request(sprotty_1.RequestClipboardDataAction.create(this.editorContext.get())).then((action) => this.clipboardService.put(action.clipboardData, clipboardId));
+            event.preventDefault();
+          } else {
+            if (event.clipboardData) {
+              event.clipboardData.clearData();
+            }
+            this.clipboardService.clear();
+          }
+        }
+        handleCut(event) {
+          if (event.clipboardData && this.shouldCopy(event)) {
+            this.handleCopy(event);
+            this.actionDispatcher.dispatch(sprotty_1.CutOperation.create(this.editorContext.get()));
+            event.preventDefault();
+          }
+        }
+        handlePaste(event) {
+          if (event.clipboardData && this.shouldPaste(event)) {
+            const clipboardId = getClipboardIdFromDataTransfer(event.clipboardData);
+            const clipboardData = this.clipboardService.get(clipboardId);
+            if (clipboardData) {
+              this.actionDispatcher.dispatch(sprotty_1.PasteOperation.create({ clipboardData, editorContext: this.editorContext.get() }));
+            }
+            event.preventDefault();
+          }
+        }
+        shouldCopy(_event) {
+          return this.editorContext.get().selectedElementIds.length > 0 && this.isDiagramActive();
+        }
+        shouldPaste(_event) {
+          return this.isDiagramActive();
+        }
+        isDiagramActive() {
+          var _a4, _b2;
+          return ((_b2 = (_a4 = document.activeElement) === null || _a4 === void 0 ? void 0 : _a4.parentElement) === null || _b2 === void 0 ? void 0 : _b2.id) === this.viewerOptions.baseDiv;
+        }
+      };
+      exports.ServerCopyPasteHandler = ServerCopyPasteHandler;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        __metadata("design:type", Object)
+      ], ServerCopyPasteHandler.prototype, "actionDispatcher", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.ViewerOptions),
+        __metadata("design:type", Object)
+      ], ServerCopyPasteHandler.prototype, "viewerOptions", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IAsyncClipboardService),
+        __metadata("design:type", Object)
+      ], ServerCopyPasteHandler.prototype, "clipboardService", void 0);
+      __decorate([
+        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
+        __metadata("design:type", editor_context_service_1.EditorContextService)
+      ], ServerCopyPasteHandler.prototype, "editorContext", void 0);
+      exports.ServerCopyPasteHandler = ServerCopyPasteHandler = __decorate([
+        (0, inversify_1.injectable)()
+      ], ServerCopyPasteHandler);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/copy-paste/copy-paste-standalone.js
+  var require_copy_paste_standalone = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/copy-paste/copy-paste-standalone.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.CopyPasteStartup = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var CopyPasteStartup = class CopyPasteStartup {
+        constructor() {
+          this.toDispose = new sprotty_1.DisposableCollection();
+        }
+        modelRootChanged(root) {
+          if (root.id !== sprotty_1.EMPTY_ROOT.id) {
+            this.graphElementId = this.domHelper.createUniqueDOMElementId(root);
+          }
+        }
+        postModelInitialization() {
+          if (!this.copyPasteHandler) {
+            return;
+          }
+          const copyListener = (e2) => {
+            var _a4, _b2;
+            if (this.graphElementId && ((_a4 = document.activeElement) === null || _a4 === void 0 ? void 0 : _a4.id) === this.graphElementId) {
+              (_b2 = this.copyPasteHandler) === null || _b2 === void 0 ? void 0 : _b2.handleCopy(e2);
+            }
+          };
+          const cutListener = (e2) => {
+            var _a4, _b2;
+            if (this.graphElementId && ((_a4 = document.activeElement) === null || _a4 === void 0 ? void 0 : _a4.id) === this.graphElementId) {
+              (_b2 = this.copyPasteHandler) === null || _b2 === void 0 ? void 0 : _b2.handleCut(e2);
+            }
+          };
+          const pasteListener = (e2) => {
+            var _a4, _b2;
+            if (this.graphElementId && ((_a4 = document.activeElement) === null || _a4 === void 0 ? void 0 : _a4.id) === this.graphElementId) {
+              (_b2 = this.copyPasteHandler) === null || _b2 === void 0 ? void 0 : _b2.handlePaste(e2);
+            }
+          };
+          window.addEventListener("copy", copyListener);
+          window.addEventListener("cut", cutListener);
+          window.addEventListener("paste", pasteListener);
+          this.toDispose.push(sprotty_1.Disposable.create(() => {
+            window.removeEventListener("copy", copyListener);
+            window.removeEventListener("cut", cutListener);
+            window.removeEventListener("paste", pasteListener);
+          }));
+        }
+        dispose() {
+          this.toDispose.dispose();
+        }
+      };
+      exports.CopyPasteStartup = CopyPasteStartup;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.ICopyPasteHandler),
+        (0, inversify_1.optional)(),
+        __metadata("design:type", Object)
+      ], CopyPasteStartup.prototype, "copyPasteHandler", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.DOMHelper),
+        __metadata("design:type", sprotty_1.DOMHelper)
+      ], CopyPasteStartup.prototype, "domHelper", void 0);
+      __decorate([
+        (0, inversify_1.preDestroy)(),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", []),
+        __metadata("design:returntype", void 0)
+      ], CopyPasteStartup.prototype, "dispose", null);
+      exports.CopyPasteStartup = CopyPasteStartup = __decorate([
+        (0, inversify_1.injectable)()
+      ], CopyPasteStartup);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/copy-paste/copy-paste-modules.js
+  var require_copy_paste_modules = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/copy-paste/copy-paste-modules.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.standaloneCopyPasteModule = exports.copyPasteModule = void 0;
+      var sprotty_1 = require_lib4();
+      var copy_paste_handler_1 = require_copy_paste_handler();
+      var copy_paste_standalone_1 = require_copy_paste_standalone();
+      exports.copyPasteModule = new sprotty_1.FeatureModule((bind, _unbind, isBound) => {
+        bind(sprotty_1.TYPES.ICopyPasteHandler).to(copy_paste_handler_1.ServerCopyPasteHandler);
+        bind(sprotty_1.TYPES.IAsyncClipboardService).to(copy_paste_handler_1.LocalClipboardService).inSingletonScope();
+      }, { featureId: Symbol("copyPaste") });
+      exports.standaloneCopyPasteModule = new sprotty_1.FeatureModule((bind, _unbind, isBound) => {
+        (0, sprotty_1.bindAsService)(bind, sprotty_1.TYPES.IDiagramStartup, copy_paste_standalone_1.CopyPasteStartup);
+        bind(sprotty_1.TYPES.IGModelRootListener).toService(copy_paste_standalone_1.CopyPasteStartup);
+      }, {
+        featureId: Symbol("standaloneCopyPaste"),
+        requires: exports.copyPasteModule
+      });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/css/decoration.css
+  var require_decoration = __commonJS({
+    "node_modules/@eclipse-glsp/client/css/decoration.css"(exports, module) {
+      module.exports = {};
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/decoration/decoration-placer.js
+  var require_decoration_placer2 = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/decoration/decoration-placer.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var GlspDecorationPlacer_1;
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.GlspDecorationPlacer = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var GlspDecorationPlacer = GlspDecorationPlacer_1 = class GlspDecorationPlacer extends sprotty_1.DecorationPlacer {
+        getPosition(element) {
+          if (element instanceof sprotty_1.GChildElement && element.parent instanceof sprotty_1.GRoutableElement) {
+            return super.getPosition(element);
+          }
+          if ((0, sprotty_1.isSizeable)(element)) {
+            return {
+              x: -GlspDecorationPlacer_1.DECORATION_OFFSET.x,
+              y: -GlspDecorationPlacer_1.DECORATION_OFFSET.y
+            };
+          }
+          return sprotty_1.Point.ORIGIN;
+        }
+      };
+      exports.GlspDecorationPlacer = GlspDecorationPlacer;
+      GlspDecorationPlacer.DECORATION_OFFSET = { x: 12, y: 10 };
+      exports.GlspDecorationPlacer = GlspDecorationPlacer = GlspDecorationPlacer_1 = __decorate([
+        (0, inversify_1.injectable)()
+      ], GlspDecorationPlacer);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/decoration/decoration-module.js
+  var require_decoration_module = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/decoration/decoration-module.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.decorationModule = void 0;
+      var sprotty_1 = require_lib4();
+      require_decoration();
+      var decoration_placer_1 = require_decoration_placer2();
+      exports.decorationModule = new sprotty_1.FeatureModule((bind) => {
+        (0, sprotty_1.bindAsService)(bind, sprotty_1.TYPES.IVNodePostprocessor, decoration_placer_1.GlspDecorationPlacer);
+      }, { featureId: Symbol("decoration") });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/element-template/add-template-element.js
+  var require_add_template_element = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/element-template/add-template-element.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var __param = exports && exports.__param || function(paramIndex, decorator) {
+        return function(target, key) {
+          decorator(target, key, paramIndex);
+        };
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.templateToSchema = exports.AddTemplateElementsFeedbackCommand = exports.getTemplateElementId = exports.AddTemplateElementsAction = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var feedback_command_1 = require_feedback_command();
+      var gmodel_util_1 = require_gmodel_util();
+      var local_bounds_1 = require_local_bounds();
+      var AddTemplateElementsAction;
+      (function(AddTemplateElementsAction2) {
+        AddTemplateElementsAction2.KIND = "addTemplateElements";
+        function create(options) {
+          return {
+            kind: AddTemplateElementsAction2.KIND,
+            ...options
+          };
+        }
+        AddTemplateElementsAction2.create = create;
+      })(AddTemplateElementsAction || (exports.AddTemplateElementsAction = AddTemplateElementsAction = {}));
+      function getTemplateElementId(template) {
+        return typeof template === "string" ? `${template}_feedback` : template.id;
+      }
+      exports.getTemplateElementId = getTemplateElementId;
+      var AddTemplateElementsFeedbackCommand = class AddTemplateElementsFeedbackCommand extends feedback_command_1.FeedbackCommand {
+        constructor(action) {
+          super();
+          this.action = action;
+        }
+        execute(context) {
+          const templateElements = this.action.templates.map((template) => templateToSchema(template, context)).filter(gmodel_util_1.isNotUndefined).map((schema) => context.modelFactory.createElement(schema)).map((element) => this.applyRootCssClasses(element, this.action.addClasses, this.action.removeClasses));
+          templateElements.forEach((templateElement) => context.root.add(templateElement));
+          const templateElementIDs = templateElements.map((element) => element.id);
+          return local_bounds_1.LocalRequestBoundsAction.fromCommand(context, this.actionDispatcher, this.action, templateElementIDs);
+        }
+        applyRootCssClasses(element, addClasses, removeClasses) {
+          element.cssClasses = modifyCssClasses(element.cssClasses, addClasses, removeClasses);
+          return element;
+        }
+      };
+      exports.AddTemplateElementsFeedbackCommand = AddTemplateElementsFeedbackCommand;
+      AddTemplateElementsFeedbackCommand.KIND = AddTemplateElementsAction.KIND;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        __metadata("design:type", Object)
+      ], AddTemplateElementsFeedbackCommand.prototype, "actionDispatcher", void 0);
+      exports.AddTemplateElementsFeedbackCommand = AddTemplateElementsFeedbackCommand = __decorate([
+        (0, inversify_1.injectable)(),
+        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.Action)),
+        __metadata("design:paramtypes", [Object])
+      ], AddTemplateElementsFeedbackCommand);
+      function templateToSchema(template, context) {
+        if (typeof template === "string") {
+          const element = context.root.index.getById(template);
+          const schema = element ? context.modelFactory.createSchema(element) : void 0;
+          if (schema) {
+            adaptSchemaIds(schema);
+          }
+          return schema;
+        }
+        return template;
+      }
+      exports.templateToSchema = templateToSchema;
+      function adaptSchemaIds(schema) {
+        var _a4;
+        schema.id = getTemplateElementId(schema.id);
+        (_a4 = schema.children) === null || _a4 === void 0 ? void 0 : _a4.forEach((child) => adaptSchemaIds(child));
+        return schema;
+      }
+      function modifyCssClasses(source, toAdd, toRemove) {
+        const classes = source !== null && source !== void 0 ? source : [];
+        if (toAdd) {
+          (0, sprotty_1.distinctAdd)(classes, ...toAdd);
+        }
+        if (toRemove) {
+          (0, sprotty_1.remove)(classes, ...toRemove);
+        }
+        return classes;
+      }
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/element-template/remove-template-element.js
+  var require_remove_template_element = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/element-template/remove-template-element.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var __param = exports && exports.__param || function(paramIndex, decorator) {
+        return function(target, key) {
+          decorator(target, key, paramIndex);
+        };
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.RemoveTemplateElementsFeedbackCommand = exports.RemoveTemplateElementsAction = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var feedback_command_1 = require_feedback_command();
+      var add_template_element_1 = require_add_template_element();
+      var RemoveTemplateElementsAction;
+      (function(RemoveTemplateElementsAction2) {
+        RemoveTemplateElementsAction2.KIND = "removeTemplateElements";
+        function create(options) {
+          return {
+            kind: RemoveTemplateElementsAction2.KIND,
+            ...options
+          };
+        }
+        RemoveTemplateElementsAction2.create = create;
+      })(RemoveTemplateElementsAction || (exports.RemoveTemplateElementsAction = RemoveTemplateElementsAction = {}));
+      var RemoveTemplateElementsFeedbackCommand = class RemoveTemplateElementsFeedbackCommand extends feedback_command_1.FeedbackCommand {
+        constructor(action) {
+          super();
+          this.action = action;
+        }
+        execute(context) {
+          const index = context.root.index;
+          for (const template of this.action.templates) {
+            const element = index.getById((0, add_template_element_1.getTemplateElementId)(template));
+            if (element && element instanceof sprotty_1.GChildElement) {
+              element.parent.remove(element);
+            }
+          }
+          return context.root;
+        }
+      };
+      exports.RemoveTemplateElementsFeedbackCommand = RemoveTemplateElementsFeedbackCommand;
+      RemoveTemplateElementsFeedbackCommand.KIND = RemoveTemplateElementsAction.KIND;
+      exports.RemoveTemplateElementsFeedbackCommand = RemoveTemplateElementsFeedbackCommand = __decorate([
+        (0, inversify_1.injectable)(),
+        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.Action)),
+        __metadata("design:paramtypes", [Object])
+      ], RemoveTemplateElementsFeedbackCommand);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/element-template/element-template-module.js
+  var require_element_template_module = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/element-template/element-template-module.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.elementTemplateModule = void 0;
+      var sprotty_1 = require_lib4();
+      var add_template_element_1 = require_add_template_element();
+      var remove_template_element_1 = require_remove_template_element();
+      exports.elementTemplateModule = new sprotty_1.FeatureModule((bind, unbind, isBound, rebind) => {
+        const context = { bind, unbind, isBound, rebind };
+        (0, sprotty_1.configureCommand)(context, add_template_element_1.AddTemplateElementsFeedbackCommand);
+        (0, sprotty_1.configureCommand)(context, remove_template_element_1.RemoveTemplateElementsFeedbackCommand);
+      }, { featureId: Symbol("elementTemplate") });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/export/export-svg-action-handler.js
+  var require_export_svg_action_handler = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/export/export-svg-action-handler.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.ExportSvgActionHandler = void 0;
+      var file_saver_1 = require_FileSaver_min();
+      var inversify_1 = require_cjs4();
+      var ExportSvgActionHandler = class ExportSvgActionHandler {
+        handle(action) {
+          const blob = new Blob([action.svg], { type: "text/plain;charset=utf-8" });
+          (0, file_saver_1.saveAs)(blob, "diagram.svg");
+        }
+      };
+      exports.ExportSvgActionHandler = ExportSvgActionHandler;
+      exports.ExportSvgActionHandler = ExportSvgActionHandler = __decorate([
+        (0, inversify_1.injectable)()
+      ], ExportSvgActionHandler);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/export/glsp-svg-exporter.js
+  var require_glsp_svg_exporter = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/export/glsp-svg-exporter.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.GLSPSvgExporter = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var uuid_1 = require_commonjs_browser();
+      var GLSPSvgExporter = class GLSPSvgExporter extends sprotty_1.SvgExporter {
+        export(root, request) {
+          var _a4;
+          if (typeof document !== "undefined") {
+            let svgElement = this.findSvgElement();
+            if (svgElement) {
+              svgElement = this.prepareSvgElement(svgElement, root, request);
+              const serializedSvg = this.createSvg(svgElement, root, (_a4 = request === null || request === void 0 ? void 0 : request.options) !== null && _a4 !== void 0 ? _a4 : {}, request);
+              const svgExport = this.getSvgExport(serializedSvg, svgElement, root, request);
+              this.actionDispatcher.dispatch(sprotty_1.ExportSvgAction.create(svgExport, { responseId: request === null || request === void 0 ? void 0 : request.requestId, options: request === null || request === void 0 ? void 0 : request.options }));
+            }
+          }
+        }
+        createSvg(svgElement, root, options, cause) {
+          const originalId = svgElement.id;
+          try {
+            svgElement.id = originalId || (0, uuid_1.v4)();
+            return super.createSvg(svgElement, root, options, cause);
+          } finally {
+            svgElement.id = originalId;
+          }
+        }
+        findSvgElement() {
+          const div = document.getElementById(this.options.hiddenDiv);
+          return div && div.querySelector("svg");
+        }
+        prepareSvgElement(svgElement, root, request) {
+          return svgElement;
+        }
+        copyStyles(source, target, skippedProperties) {
+          this.copyStyle(source, target, skippedProperties);
+          for (let i2 = 0; i2 < source.childNodes.length; ++i2) {
+            const sourceChild = source.childNodes[i2];
+            const targetChild = target.childNodes[i2];
+            if (sourceChild instanceof Element) {
+              this.copyStyles(sourceChild, targetChild, []);
+            }
+          }
+        }
+        copyStyle(source, target, skippedProperties) {
+          const sourceStyle = getComputedStyle(source);
+          const targetStyle = getComputedStyle(target);
+          let style = "";
+          for (let i2 = 0; i2 < sourceStyle.length; i2++) {
+            const propertyName = sourceStyle[i2];
+            if (!skippedProperties.includes(propertyName)) {
+              const propertyValue = sourceStyle.getPropertyValue(propertyName);
+              const propertyPriority = sourceStyle.getPropertyPriority(propertyName);
+              if (targetStyle.getPropertyValue(propertyName) !== propertyValue) {
+                if (this.shouldUpdateStyle(target)) {
+                  target.style.setProperty(propertyName, propertyValue);
+                } else {
+                  style += `${propertyName}: ${propertyValue}${propertyPriority ? " !" + propertyPriority : ""}; `;
+                }
+              }
+            }
+          }
+          if (style !== "") {
+            target.setAttribute("style", style.trim());
+          }
+        }
+        shouldUpdateStyle(element) {
+          return "tagName" in element && "style" in element;
+        }
+        getSvgExport(serializedSvgElement, svgElement, root, request) {
+          const svgExportStyle = this.getSvgExportStyle(svgElement, root, request);
+          return svgExportStyle ? serializedSvgElement.replace('style="', `style="${svgExportStyle}`) : serializedSvgElement;
+        }
+        getSvgExportStyle(svgElement, root, request) {
+          const bounds = this.getBounds(root, document);
+          return `width: ${bounds.width}px !important;height: ${bounds.height}px !important;border: none !important;cursor: default !important;`;
+        }
+      };
+      exports.GLSPSvgExporter = GLSPSvgExporter;
+      exports.GLSPSvgExporter = GLSPSvgExporter = __decorate([
+        (0, inversify_1.injectable)()
+      ], GLSPSvgExporter);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/export/export-modules.js
+  var require_export_modules = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/export/export-modules.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.standaloneExportModule = exports.exportModule = void 0;
+      var sprotty_1 = require_lib4();
+      var export_svg_action_handler_1 = require_export_svg_action_handler();
+      var glsp_svg_exporter_1 = require_glsp_svg_exporter();
+      exports.exportModule = new sprotty_1.FeatureModule((bind, _unbind, isBound) => {
+        const context = { bind, isBound };
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.HiddenVNodePostprocessor, sprotty_1.ExportSvgPostprocessor);
+        (0, sprotty_1.configureCommand)(context, sprotty_1.ExportSvgCommand);
+        bind(sprotty_1.TYPES.SvgExporter).to(glsp_svg_exporter_1.GLSPSvgExporter).inSingletonScope();
+      }, { featureId: Symbol("export") });
+      exports.standaloneExportModule = new sprotty_1.FeatureModule((bind, _unbind, isBound) => {
+        const context = { bind, isBound };
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.KeyListener, sprotty_1.ExportSvgKeyListener);
+        bind(export_svg_action_handler_1.ExportSvgActionHandler).toSelf().inSingletonScope();
+        (0, sprotty_1.configureActionHandler)(context, sprotty_1.ExportSvgAction.KIND, export_svg_action_handler_1.ExportSvgActionHandler);
+      }, { featureId: Symbol("standaloneExport"), requires: exports.exportModule });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/hints/model.js
+  var require_model21 = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/hints/model.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.isReparentable = exports.reparentFeature = exports.isContainable = exports.containerFeature = void 0;
+      exports.containerFeature = Symbol("containable");
+      function isContainable(element) {
+        return element.hasFeature(exports.containerFeature);
+      }
+      exports.isContainable = isContainable;
+      exports.reparentFeature = Symbol("reparentFeature");
+      function isReparentable(element) {
+        return element.hasFeature(exports.reparentFeature);
+      }
+      exports.isReparentable = isReparentable;
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/model.js
+  var require_model22 = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/model.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.GEdge = exports.GGraph = void 0;
+      var sprotty_1 = require_lib4();
+      var args_feature_1 = require_args_feature();
+      var model_1 = require_model21();
+      var GGraph = class extends sprotty_1.SGraphImpl {
+        isContainableElement(_input) {
+          return true;
+        }
+      };
+      exports.GGraph = GGraph;
+      GGraph.DEFAULT_FEATURES = [...sprotty_1.SGraphImpl.DEFAULT_FEATURES, model_1.containerFeature, args_feature_1.argsFeature];
+      var GEdge2 = class extends sprotty_1.SEdgeImpl {
+        localToParent(point) {
+          const bounds = (0, sprotty_1.getRouteBounds)(this.routingPoints);
+          const result = {
+            x: point.x + bounds.x,
+            y: point.y + bounds.y,
+            width: -1,
+            height: -1
+          };
+          if ((0, sprotty_1.isBounds)(point)) {
+            result.width = point.width;
+            result.height = point.height;
+          }
+          return result;
+        }
+        parentToLocal(point) {
+          const bounds = (0, sprotty_1.getRouteBounds)(this.routingPoints);
+          const result = {
+            x: point.x - bounds.x,
+            y: point.y - bounds.y,
+            width: -1,
+            height: -1
+          };
+          if ((0, sprotty_1.isBounds)(point)) {
+            result.width = point.width;
+            result.height = point.height;
+          }
+          return result;
+        }
+      };
+      exports.GEdge = GEdge2;
+      GEdge2.DEFAULT_FEATURES = [...sprotty_1.SEdgeImpl.DEFAULT_FEATURES, args_feature_1.argsFeature];
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/reconnect/model.js
+  var require_model23 = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/reconnect/model.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.GReconnectHandle = exports.createReconnectHandle = exports.isTargetRoutingHandle = exports.isSourceRoutingHandle = exports.removeReconnectHandles = exports.addReconnectHandles = exports.isReconnectHandle = exports.isReconnectable = exports.reconnectFeature = void 0;
+      var sprotty_1 = require_lib4();
+      exports.reconnectFeature = Symbol("reconnectFeature");
+      function isReconnectable(element) {
+        return element instanceof sprotty_1.GRoutableElement && element.hasFeature(exports.reconnectFeature);
+      }
+      exports.isReconnectable = isReconnectable;
+      var ROUTING_HANDLE_SOURCE_INDEX = -2;
+      function isReconnectHandle(element) {
+        return element !== void 0 && element instanceof GReconnectHandle;
+      }
+      exports.isReconnectHandle = isReconnectHandle;
+      function addReconnectHandles(element) {
+        removeReconnectHandles(element);
+        createReconnectHandle(element, "source", ROUTING_HANDLE_SOURCE_INDEX);
+        createReconnectHandle(element, "target", element.routingPoints.length);
+      }
+      exports.addReconnectHandles = addReconnectHandles;
+      function removeReconnectHandles(element) {
+        element.removeAll((child) => child instanceof GReconnectHandle);
+      }
+      exports.removeReconnectHandles = removeReconnectHandles;
+      function isSourceRoutingHandle(edge, routingHandle) {
+        return routingHandle.pointIndex === ROUTING_HANDLE_SOURCE_INDEX;
+      }
+      exports.isSourceRoutingHandle = isSourceRoutingHandle;
+      function isTargetRoutingHandle(edge, routingHandle) {
+        return routingHandle.pointIndex === edge.routingPoints.length;
+      }
+      exports.isTargetRoutingHandle = isTargetRoutingHandle;
+      function createReconnectHandle(edge, kind, routingPointIndex) {
+        const handle = new GReconnectHandle();
+        handle.kind = kind;
+        handle.pointIndex = routingPointIndex;
+        handle.type = "routing-point";
+        if (kind === "target" && edge.id === sprotty_1.edgeInProgressID) {
+          handle.id = sprotty_1.edgeInProgressTargetHandleID;
+        }
+        edge.add(handle);
+        return handle;
+      }
+      exports.createReconnectHandle = createReconnectHandle;
+      var GReconnectHandle = class extends sprotty_1.GRoutingHandle {
+        hasFeature(feature) {
+          return feature !== sprotty_1.selectFeature && super.hasFeature(feature);
+        }
+      };
+      exports.GReconnectHandle = GReconnectHandle;
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/hints/type-hint-provider.js
+  var require_type_hint_provider = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/hints/type-hint-provider.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var __param = exports && exports.__param || function(paramIndex, decorator) {
+        return function(target, key) {
+          decorator(target, key, paramIndex);
+        };
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.TypeHintProvider = exports.ApplyTypeHintsCommand = exports.ApplyTypeHintsAction = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var feedback_command_1 = require_feedback_command();
+      var model_1 = require_model22();
+      var gmodel_util_1 = require_gmodel_util();
+      var model_2 = require_model19();
+      var model_3 = require_model23();
+      var model_4 = require_model21();
+      var ApplyTypeHintsAction;
+      (function(ApplyTypeHintsAction2) {
+        ApplyTypeHintsAction2.KIND = "applyTypeHints";
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, ApplyTypeHintsAction2.KIND);
+        }
+        ApplyTypeHintsAction2.is = is;
+        function create() {
+          return { kind: ApplyTypeHintsAction2.KIND };
+        }
+        ApplyTypeHintsAction2.create = create;
+      })(ApplyTypeHintsAction || (exports.ApplyTypeHintsAction = ApplyTypeHintsAction = {}));
+      var ApplyTypeHintsCommand = class ApplyTypeHintsCommand extends feedback_command_1.FeedbackCommand {
+        constructor(action) {
+          super();
+          this.action = action;
+          this.rank = -10;
+        }
+        execute(context) {
+          context.root.index.all().forEach((element) => {
+            if (element instanceof sprotty_1.GShapeElement || element instanceof sprotty_1.GModelRoot) {
+              return this.applyShapeTypeHint(element);
+            }
+            if (element instanceof model_1.GEdge) {
+              this.applyEdgeTypeHint(element);
+            }
+          });
+          return context.root;
+        }
+        applyEdgeTypeHint(element) {
+          const hint = this.typeHintProvider.getEdgeTypeHint(element);
+          if (hint && element.features instanceof Set) {
+            addOrRemove(element.features, sprotty_1.deletableFeature, hint.deletable);
+            addOrRemove(element.features, sprotty_1.editFeature, hint.routable);
+            addOrRemove(element.features, model_3.reconnectFeature, hint.repositionable);
+          }
+        }
+        applyShapeTypeHint(element) {
+          const hint = this.typeHintProvider.getShapeTypeHint(element);
+          if (hint && element.features instanceof Set) {
+            addOrRemove(element.features, sprotty_1.deletableFeature, hint.deletable);
+            addOrRemove(element.features, sprotty_1.moveFeature, hint.repositionable);
+            addOrRemove(element.features, model_2.resizeFeature, hint.resizable);
+            addOrRemove(element.features, model_4.reparentFeature, hint.reparentable);
+            addOrRemove(element.features, model_4.containerFeature, true);
+            if ((0, model_4.isContainable)(element)) {
+              element.isContainableElement = (input) => this.isContainableElement(input, hint);
+            }
+            const fallbackCanConnect = (0, sprotty_1.isConnectable)(element) ? element.canConnect.bind(element) : void 0;
+            addOrRemove(element.features, sprotty_1.connectableFeature, true);
+            if ((0, sprotty_1.isConnectable)(element)) {
+              element.canConnect = (routable, role) => this.canConnect(routable, role, element, fallbackCanConnect);
+            }
+          }
+        }
+        /**
+         * Type hints aware wrapper function for  `Connectable.canConnect`. After type hints have been applied
+         * the `canConnect` implementation of `connectable` model elements  (with a matching hint) will forward to this method.
+         */
+        canConnect(routable, role, element, fallbackCanConnect) {
+          var _a4;
+          const edgeHint = this.typeHintProvider.getEdgeTypeHint(routable.type);
+          if (!edgeHint) {
+            return (_a4 = fallbackCanConnect === null || fallbackCanConnect === void 0 ? void 0 : fallbackCanConnect(routable, role)) !== null && _a4 !== void 0 ? _a4 : false;
+          }
+          const validElementIds = role === "source" ? edgeHint.sourceElementTypeIds : edgeHint.targetElementTypeIds;
+          if (!validElementIds) {
+            return true;
+          }
+          const elementType = element.type + ":";
+          return validElementIds.some((type) => elementType.startsWith(type));
+        }
+        /**
+         * Type hints aware wrapper function for  `Containable.isContainableElement`. After type hints have been applied
+         * the `isContainableElement` implementation of `containable` model elements (with a matching hint) will forward to this method.
+         */
+        isContainableElement(input, hint) {
+          var _a4, _b2;
+          const elemenType = (0, gmodel_util_1.getElementTypeId)(input) + ":";
+          return (_b2 = (_a4 = hint.containableElementTypeIds) === null || _a4 === void 0 ? void 0 : _a4.some((type) => elemenType.startsWith(type))) !== null && _b2 !== void 0 ? _b2 : false;
+        }
+      };
+      exports.ApplyTypeHintsCommand = ApplyTypeHintsCommand;
+      ApplyTypeHintsCommand.KIND = ApplyTypeHintsAction.KIND;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.ITypeHintProvider),
+        __metadata("design:type", Object)
+      ], ApplyTypeHintsCommand.prototype, "typeHintProvider", void 0);
+      exports.ApplyTypeHintsCommand = ApplyTypeHintsCommand = __decorate([
+        (0, inversify_1.injectable)(),
+        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.Action)),
+        __metadata("design:paramtypes", [Object])
+      ], ApplyTypeHintsCommand);
+      function addOrRemove(features, feature, add) {
+        if (add && !features.has(feature)) {
+          features.add(feature);
+        } else if (!add && features.has(feature)) {
+          features.delete(feature);
+        }
+      }
+      var TypeHintProvider = class TypeHintProvider {
+        constructor() {
+          this.shapeHints = /* @__PURE__ */ new Map();
+          this.edgeHints = /* @__PURE__ */ new Map();
+        }
+        init() {
+          this.typeHintsFeedback = this.feedbackActionDispatcher.createEmitter();
+        }
+        handle(action) {
+          this.shapeHints.clear();
+          this.edgeHints.clear();
+          action.shapeHints.forEach((hint) => this.shapeHints.set(hint.elementTypeId, hint));
+          action.edgeHints.forEach((hint) => this.edgeHints.set(hint.elementTypeId, hint));
+          this.typeHintsFeedback.add(ApplyTypeHintsAction.create()).submit();
+        }
+        getShapeTypeHint(input) {
+          return this.getTypeHint(input, this.shapeHints);
+        }
+        getEdgeTypeHint(input) {
+          return this.getTypeHint(input, this.edgeHints);
+        }
+        getTypeHint(input, hints) {
+          const type = (0, gmodel_util_1.getElementTypeId)(input);
+          let hint = hints.get(type);
+          if (hint === void 0) {
+            const subtypes = type.split(":");
+            while (hint === void 0 && subtypes.length > 0) {
+              subtypes.pop();
+              hint = hints.get(subtypes.join(":"));
+              if (hint) {
+                hints.set(type, hint);
+                break;
+              }
+            }
+          }
+          return hint;
+        }
+        async postRequestModel() {
+          const setTypeHintsAction = await this.actionDispatcher.request(sprotty_1.RequestTypeHintsAction.create());
+          this.handle(setTypeHintsAction);
+        }
+      };
+      exports.TypeHintProvider = TypeHintProvider;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IFeedbackActionDispatcher),
+        __metadata("design:type", Object)
+      ], TypeHintProvider.prototype, "feedbackActionDispatcher", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        __metadata("design:type", Object)
+      ], TypeHintProvider.prototype, "actionDispatcher", void 0);
+      __decorate([
+        (0, inversify_1.postConstruct)(),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", []),
+        __metadata("design:returntype", void 0)
+      ], TypeHintProvider.prototype, "init", null);
+      exports.TypeHintProvider = TypeHintProvider = __decorate([
+        (0, inversify_1.injectable)()
+      ], TypeHintProvider);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/hints/type-hints-module.js
+  var require_type_hints_module = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/hints/type-hints-module.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.typeHintsModule = void 0;
+      var sprotty_1 = require_lib4();
+      var type_hint_provider_1 = require_type_hint_provider();
+      exports.typeHintsModule = new sprotty_1.FeatureModule((bind, unbind, isBound) => {
+        const context = { bind, unbind, isBound };
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.ITypeHintProvider, type_hint_provider_1.TypeHintProvider);
+        bind(sprotty_1.TYPES.IDiagramStartup).toService(type_hint_provider_1.TypeHintProvider);
+        (0, sprotty_1.configureActionHandler)(context, sprotty_1.SetTypeHintsAction.KIND, type_hint_provider_1.TypeHintProvider);
+        (0, sprotty_1.configureCommand)(context, type_hint_provider_1.ApplyTypeHintsCommand);
+      }, { featureId: Symbol("typeHints") });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/tools/edge-creation/view.js
+  var require_view2 = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/tools/edge-creation/view.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.FeedbackEdgeEndView = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var FeedbackEdgeEndView = class FeedbackEdgeEndView {
+        render(model, context) {
+          var _a4;
+          const position = (_a4 = model.position) !== null && _a4 !== void 0 ? _a4 : sprotty_1.Point.ORIGIN;
+          return (0, sprotty_1.svg)("g", { x: position.x, y: position.y });
+        }
+      };
+      exports.FeedbackEdgeEndView = FeedbackEdgeEndView;
+      exports.FeedbackEdgeEndView = FeedbackEdgeEndView = __decorate([
+        (0, inversify_1.injectable)()
+      ], FeedbackEdgeEndView);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/tools/edge-creation/dangling-edge-feedback.js
+  var require_dangling_edge_feedback = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/tools/edge-creation/dangling-edge-feedback.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var __param = exports && exports.__param || function(paramIndex, decorator) {
+        return function(target, key) {
+          decorator(target, key, paramIndex);
+        };
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.configureDanglingFeedbackEdge = exports.removeDanglingFeedbackEdge = exports.drawFeedbackEdge = exports.defaultFeedbackEdgeSchema = exports.feedbackEdgeEndId = exports.feedbackEdgeId = exports.FeedbackEdgeEnd = exports.RemoveFeedbackEdgeCommand = exports.RemoveFeedbackEdgeAction = exports.DrawFeedbackEdgeCommand = exports.DrawFeedbackEdgeAction = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var feedback_action_dispatcher_1 = require_feedback_action_dispatcher();
+      var feedback_command_1 = require_feedback_command();
+      var gmodel_util_1 = require_gmodel_util();
+      var viewpoint_util_1 = require_viewpoint_util();
+      var view_1 = require_view2();
+      var DrawFeedbackEdgeAction;
+      (function(DrawFeedbackEdgeAction2) {
+        DrawFeedbackEdgeAction2.KIND = "drawFeedbackEdge";
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, DrawFeedbackEdgeAction2.KIND);
+        }
+        DrawFeedbackEdgeAction2.is = is;
+        function create(options) {
+          return {
+            kind: DrawFeedbackEdgeAction2.KIND,
+            ...options
+          };
+        }
+        DrawFeedbackEdgeAction2.create = create;
+      })(DrawFeedbackEdgeAction || (exports.DrawFeedbackEdgeAction = DrawFeedbackEdgeAction = {}));
+      var DrawFeedbackEdgeCommand = class DrawFeedbackEdgeCommand extends feedback_command_1.FeedbackCommand {
+        constructor(action) {
+          super();
+          this.action = action;
+        }
+        execute(context) {
+          drawFeedbackEdge(context, this.action.sourceId, this.action.elementTypeId, this.action.edgeSchema);
+          return context.root;
+        }
+      };
+      exports.DrawFeedbackEdgeCommand = DrawFeedbackEdgeCommand;
+      DrawFeedbackEdgeCommand.KIND = DrawFeedbackEdgeAction.KIND;
+      exports.DrawFeedbackEdgeCommand = DrawFeedbackEdgeCommand = __decorate([
+        (0, inversify_1.injectable)(),
+        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.Action)),
+        __metadata("design:paramtypes", [Object])
+      ], DrawFeedbackEdgeCommand);
+      var RemoveFeedbackEdgeAction;
+      (function(RemoveFeedbackEdgeAction2) {
+        RemoveFeedbackEdgeAction2.KIND = "removeFeedbackEdgeCommand";
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, RemoveFeedbackEdgeAction2.KIND);
+        }
+        RemoveFeedbackEdgeAction2.is = is;
+        function create() {
+          return { kind: RemoveFeedbackEdgeAction2.KIND };
+        }
+        RemoveFeedbackEdgeAction2.create = create;
+      })(RemoveFeedbackEdgeAction || (exports.RemoveFeedbackEdgeAction = RemoveFeedbackEdgeAction = {}));
+      var RemoveFeedbackEdgeCommand = class RemoveFeedbackEdgeCommand extends feedback_command_1.FeedbackCommand {
+        execute(context) {
+          removeDanglingFeedbackEdge(context.root);
+          return context.root;
+        }
+      };
+      exports.RemoveFeedbackEdgeCommand = RemoveFeedbackEdgeCommand;
+      RemoveFeedbackEdgeCommand.KIND = RemoveFeedbackEdgeAction.KIND;
+      exports.RemoveFeedbackEdgeCommand = RemoveFeedbackEdgeCommand = __decorate([
+        (0, inversify_1.injectable)()
+      ], RemoveFeedbackEdgeCommand);
+      var FeedbackEdgeEnd = class _FeedbackEdgeEnd extends sprotty_1.GDanglingAnchor {
+        constructor(sourceId, elementTypeId, feedbackEdge = void 0, type = _FeedbackEdgeEnd.TYPE) {
+          super();
+          this.sourceId = sourceId;
+          this.elementTypeId = elementTypeId;
+          this.feedbackEdge = feedbackEdge;
+          this.type = type;
+        }
+      };
+      exports.FeedbackEdgeEnd = FeedbackEdgeEnd;
+      FeedbackEdgeEnd.DEFAULT_FEATURES = [sprotty_1.deletableFeature, feedback_action_dispatcher_1.feedbackFeature];
+      FeedbackEdgeEnd.TYPE = "feedback-edge-end";
+      function feedbackEdgeId(root) {
+        return root.id + "_feedback_edge";
+      }
+      exports.feedbackEdgeId = feedbackEdgeId;
+      function feedbackEdgeEndId(root) {
+        return root.id + "_feedback_anchor";
+      }
+      exports.feedbackEdgeEndId = feedbackEdgeEndId;
+      exports.defaultFeedbackEdgeSchema = {
+        cssClasses: ["feedback-edge"],
+        opacity: 0.3
+      };
+      function drawFeedbackEdge(context, sourceId, elementTypeId, edgeTemplate) {
+        const root = context.root;
+        const sourceChild = root.index.getById(sourceId);
+        if (!sourceChild) {
+          return;
+        }
+        const source = (0, sprotty_1.findParentByFeature)(sourceChild, sprotty_1.isConnectable);
+        if (!source || !(0, sprotty_1.isBoundsAware)(source)) {
+          return;
+        }
+        const edgeEnd = new FeedbackEdgeEnd(source.id, elementTypeId);
+        edgeEnd.id = feedbackEdgeEndId(root);
+        edgeEnd.position = (0, viewpoint_util_1.toAbsolutePosition)(source);
+        const edgeSchema = {
+          id: feedbackEdgeId(root),
+          type: elementTypeId,
+          sourceId: source.id,
+          targetId: edgeEnd.id,
+          ...exports.defaultFeedbackEdgeSchema,
+          ...edgeTemplate
+        };
+        const feedbackEdge = context.modelFactory.createElement(edgeSchema);
+        if ((0, gmodel_util_1.isRoutable)(feedbackEdge)) {
+          edgeEnd.feedbackEdge = feedbackEdge;
+          root.add(edgeEnd);
+          root.add(feedbackEdge);
+        }
+      }
+      exports.drawFeedbackEdge = drawFeedbackEdge;
+      function removeDanglingFeedbackEdge(root) {
+        const feedbackEdge = root.index.getById(feedbackEdgeId(root));
+        const feedbackEdgeEnd = root.index.getById(feedbackEdgeEndId(root));
+        if (feedbackEdge instanceof sprotty_1.GChildElement) {
+          root.remove(feedbackEdge);
+        }
+        if (feedbackEdgeEnd instanceof sprotty_1.GChildElement) {
+          root.remove(feedbackEdgeEnd);
+        }
+      }
+      exports.removeDanglingFeedbackEdge = removeDanglingFeedbackEdge;
+      function configureDanglingFeedbackEdge(context) {
+        if (!context.isBound(DrawFeedbackEdgeCommand) && !context.isBound(RemoveFeedbackEdgeCommand) && !context.isBound(view_1.FeedbackEdgeEndView)) {
+          (0, sprotty_1.configureCommand)(context, DrawFeedbackEdgeCommand);
+          (0, sprotty_1.configureCommand)(context, RemoveFeedbackEdgeCommand);
+          (0, sprotty_1.configureView)(context, FeedbackEdgeEnd.TYPE, view_1.FeedbackEdgeEndView);
+        }
+      }
+      exports.configureDanglingFeedbackEdge = configureDanglingFeedbackEdge;
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/tools/edge-creation/edge-creation-tool-feedback.js
+  var require_edge_creation_tool_feedback = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/tools/edge-creation/edge-creation-tool-feedback.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.FeedbackEdgeEndMovingMouseListener = void 0;
+      var sprotty_1 = require_lib4();
+      var viewpoint_util_1 = require_viewpoint_util();
+      var dangling_edge_feedback_1 = require_dangling_edge_feedback();
+      var FeedbackEdgeEndMovingMouseListener = class extends sprotty_1.MouseListener {
+        constructor(anchorRegistry, feedbackDispatcher) {
+          super();
+          this.anchorRegistry = anchorRegistry;
+          this.feedbackDispatcher = feedbackDispatcher;
+          this.feedback = feedbackDispatcher.createEmitter();
+        }
+        mouseMove(target, event) {
+          const root = target.root;
+          const edgeEnd = root.index.getById((0, dangling_edge_feedback_1.feedbackEdgeEndId)(root));
+          if (!(edgeEnd instanceof dangling_edge_feedback_1.FeedbackEdgeEnd) || !edgeEnd.feedbackEdge) {
+            return [];
+          }
+          const edge = edgeEnd.feedbackEdge;
+          const position = (0, viewpoint_util_1.getAbsolutePosition)(edgeEnd, event);
+          const endAtMousePosition = (0, sprotty_1.findChildrenAtPosition)(target.root, position).reverse().find((element) => (0, sprotty_1.isConnectable)(element) && element.canConnect(edge, "target"));
+          if (endAtMousePosition instanceof sprotty_1.GConnectableElement && edge.source && (0, sprotty_1.isBoundsAware)(edge.source)) {
+            const anchor = this.computeAbsoluteAnchor(endAtMousePosition, sprotty_1.Bounds.center((0, viewpoint_util_1.toAbsoluteBounds)(edge.source)));
+            if (sprotty_1.Point.euclideanDistance(anchor, edgeEnd.position) > 1) {
+              this.feedback.add(sprotty_1.MoveAction.create([{ elementId: edgeEnd.id, toPosition: anchor }], { animate: false })).submit();
+            }
+          } else {
+            this.feedback.add(sprotty_1.MoveAction.create([{ elementId: edgeEnd.id, toPosition: position }], { animate: false })).submit();
+          }
+          return [];
+        }
+        computeAbsoluteAnchor(element, absoluteReferencePoint, offset) {
+          const referencePointInParent = (0, viewpoint_util_1.absoluteToParent)(element, absoluteReferencePoint);
+          const anchorComputer = this.anchorRegistry.get(sprotty_1.PolylineEdgeRouter.KIND, element.anchorKind);
+          let anchor = anchorComputer.getAnchor(element, referencePointInParent, offset);
+          if (element.parent !== element.root) {
+            const parent = (0, sprotty_1.findParentByFeature)(element.parent, sprotty_1.isBoundsAware);
+            if (parent) {
+              const absoluteParentPosition = (0, viewpoint_util_1.toAbsoluteBounds)(parent);
+              anchor = sprotty_1.Point.add(absoluteParentPosition, anchor);
+            }
+          }
+          return anchor;
+        }
+        dispose() {
+          this.feedback.dispose();
+        }
+      };
+      exports.FeedbackEdgeEndMovingMouseListener = FeedbackEdgeEndMovingMouseListener;
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/tools/edge-creation/edge-creation-tool.js
+  var require_edge_creation_tool = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/tools/edge-creation/edge-creation-tool.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var EdgeCreationTool_1;
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.EdgeCreationToolMouseListener = exports.EdgeCreationTool = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var drag_aware_mouse_listener_1 = require_drag_aware_mouse_listener();
+      var css_feedback_1 = require_css_feedback();
+      var tool_1 = require_tool();
+      var model_1 = require_model22();
+      var grid_1 = require_grid();
+      var base_tools_1 = require_base_tools();
+      var dangling_edge_feedback_1 = require_dangling_edge_feedback();
+      var edge_creation_tool_feedback_1 = require_edge_creation_tool_feedback();
+      var EdgeCreationTool = EdgeCreationTool_1 = class EdgeCreationTool extends base_tools_1.BaseCreationTool {
+        constructor() {
+          super(...arguments);
+          this.isTriggerAction = sprotty_1.TriggerEdgeCreationAction.is;
+        }
+        get id() {
+          return EdgeCreationTool_1.ID;
+        }
+        doEnable() {
+          this.toolFeedback();
+          this.creationListener();
+          this.trackFeedbackEdge();
+        }
+        toolFeedback() {
+          const toolFeedback = this.createFeedbackEmitter().add((0, css_feedback_1.cursorFeedbackAction)(css_feedback_1.CursorCSS.OPERATION_NOT_ALLOWED), (0, css_feedback_1.cursorFeedbackAction)()).submit();
+          this.toDisposeOnDisable.push(toolFeedback);
+        }
+        creationListener() {
+          const creationListener = new EdgeCreationToolMouseListener(this.triggerAction, this.actionDispatcher, this.typeHintProvider, this, this.grid ? this.grid.x / 2 : void 0);
+          this.toDisposeOnDisable.push(creationListener, this.mouseTool.registerListener(creationListener));
+        }
+        trackFeedbackEdge() {
+          const mouseMovingFeedback = new edge_creation_tool_feedback_1.FeedbackEdgeEndMovingMouseListener(this.anchorRegistry, this.feedbackDispatcher);
+          this.toDisposeOnDisable.push(mouseMovingFeedback, this.mouseTool.registerListener(mouseMovingFeedback));
+        }
+      };
+      exports.EdgeCreationTool = EdgeCreationTool;
+      EdgeCreationTool.ID = "tool_create_edge";
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.AnchorComputerRegistry),
+        __metadata("design:type", sprotty_1.AnchorComputerRegistry)
+      ], EdgeCreationTool.prototype, "anchorRegistry", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.ITypeHintProvider),
+        __metadata("design:type", Object)
+      ], EdgeCreationTool.prototype, "typeHintProvider", void 0);
+      __decorate([
+        (0, inversify_1.optional)(),
+        (0, inversify_1.inject)(sprotty_1.TYPES.Grid),
+        __metadata("design:type", Object)
+      ], EdgeCreationTool.prototype, "grid", void 0);
+      exports.EdgeCreationTool = EdgeCreationTool = EdgeCreationTool_1 = __decorate([
+        (0, inversify_1.injectable)()
+      ], EdgeCreationTool);
+      var EdgeCreationToolMouseListener = class extends drag_aware_mouse_listener_1.DragAwareMouseListener {
+        constructor(triggerAction, actionDispatcher, typeHintProvider, tool, dragSensitivity) {
+          super(dragSensitivity);
+          this.triggerAction = triggerAction;
+          this.actionDispatcher = actionDispatcher;
+          this.typeHintProvider = typeHintProvider;
+          this.tool = tool;
+          this.dragSensitivity = dragSensitivity;
+          this.allowedTarget = false;
+          this.pendingDynamicCheck = false;
+          this.proxyEdge = new model_1.GEdge();
+          this.proxyEdge.type = triggerAction.elementTypeId;
+          this.cursorFeedback = tool.createFeedbackEmitter();
+          this.feedbackEdgeFeedback = tool.createFeedbackEmitter();
+        }
+        nonDraggingMouseUp(element, event) {
+          const result = [];
+          if (event.button === 0) {
+            if (!this.isSourceSelected()) {
+              if (this.currentTarget && this.allowedTarget) {
+                this.source = this.currentTarget.id;
+                this.feedbackEdgeFeedback.add(dangling_edge_feedback_1.DrawFeedbackEdgeAction.create({ elementTypeId: this.triggerAction.elementTypeId, sourceId: this.source }), dangling_edge_feedback_1.RemoveFeedbackEdgeAction.create()).submit();
+              }
+            } else if (this.currentTarget && this.allowedTarget) {
+              this.target = this.currentTarget.id;
+            }
+            if (this.source && this.target) {
+              result.push(this.getCreateOperation(element, event, this.source, this.target));
+              if (!this.isContinuousMode(element, event)) {
+                result.push(tool_1.EnableDefaultToolsAction.create());
+              } else {
+                this.dispose();
+              }
+            }
+          } else if (event.button === 2) {
+            this.dispose();
+            result.push(tool_1.EnableDefaultToolsAction.create());
+          }
+          return result;
+        }
+        /**
+         * Determines wether the tool should run in continuous mode (also called stamp mode) or not.
+         * If continuous mode is enabled, the tool will stay after a successful creation.
+         * The user can then create more elements of the same type without having to re-trigger the tool.
+         * By default, continuous mode is enabled if the user holds the CTRL key.
+         * @param element the current model element
+         * @param event
+         */
+        isContinuousMode(element, event) {
+          return (0, sprotty_1.isCtrlOrCmd)(event);
+        }
+        getCreateOperation(element, event, sourceElementId, targetElementId) {
+          return sprotty_1.CreateEdgeOperation.create({
+            elementTypeId: this.triggerAction.elementTypeId,
+            sourceElementId,
+            targetElementId,
+            args: this.getCreateEdgeOperationArgs(element, event)
+          });
+        }
+        getCreateEdgeOperationArgs(ctx, event) {
+          return { ...this.triggerAction.args };
+        }
+        isSourceSelected() {
+          return this.source !== void 0;
+        }
+        isTargetSelected() {
+          return this.target !== void 0;
+        }
+        mouseOver(target, event) {
+          const newCurrentTarget = (0, sprotty_1.findParentByFeature)(target, sprotty_1.isConnectable);
+          if (newCurrentTarget !== this.currentTarget) {
+            this.pendingDynamicCheck = false;
+            this.currentTarget = newCurrentTarget;
+            if (this.currentTarget) {
+              if (!this.isSourceSelected()) {
+                this.allowedTarget = this.canConnect(newCurrentTarget, "source");
+              } else if (!this.isTargetSelected()) {
+                this.allowedTarget = this.canConnect(newCurrentTarget, "target");
+              }
+              if (this.pendingDynamicCheck) {
+                return [(0, css_feedback_1.cursorFeedbackAction)(css_feedback_1.CursorCSS.EDGE_CHECK_PENDING)];
+              }
+            } else {
+              this.allowedTarget = false;
+            }
+            return [this.updateEdgeFeedback()];
+          }
+          return [];
+        }
+        updateEdgeFeedback() {
+          if (this.allowedTarget) {
+            const action = !this.isSourceSelected() ? (0, css_feedback_1.cursorFeedbackAction)(css_feedback_1.CursorCSS.EDGE_CREATION_SOURCE) : (0, css_feedback_1.cursorFeedbackAction)(css_feedback_1.CursorCSS.EDGE_CREATION_TARGET);
+            return action;
+          }
+          return (0, css_feedback_1.cursorFeedbackAction)(css_feedback_1.CursorCSS.OPERATION_NOT_ALLOWED);
+        }
+        canConnect(element, role) {
+          var _a4;
+          if (!element || !(0, sprotty_1.isConnectable)(element) || !element.canConnect(this.proxyEdge, role)) {
+            return false;
+          }
+          if (!this.isDynamic(this.proxyEdge.type)) {
+            return true;
+          }
+          const sourceElement = (_a4 = this.source) !== null && _a4 !== void 0 ? _a4 : element;
+          const targetElement = this.source ? element : void 0;
+          this.pendingDynamicCheck = true;
+          this.actionDispatcher.request(sprotty_1.RequestCheckEdgeAction.create({ sourceElement, targetElement, edgeType: this.proxyEdge.type })).then((result) => {
+            if (this.pendingDynamicCheck) {
+              this.allowedTarget = result.isValid;
+              this.actionDispatcher.dispatch(this.updateEdgeFeedback());
+              this.pendingDynamicCheck = false;
+            }
+          }).catch((err) => console.error("Dynamic edge check failed with: ", err));
+          return false;
+        }
+        isDynamic(edgeTypeId) {
+          var _a4;
+          const typeHint = this.typeHintProvider.getEdgeTypeHint(edgeTypeId);
+          return (_a4 = typeHint === null || typeHint === void 0 ? void 0 : typeHint.dynamic) !== null && _a4 !== void 0 ? _a4 : false;
+        }
+        dispose() {
+          this.source = void 0;
+          this.target = void 0;
+          this.currentTarget = void 0;
+          this.allowedTarget = false;
+          this.feedbackEdgeFeedback.dispose();
+          this.cursorFeedback.dispose();
+          super.dispose();
+        }
+      };
+      exports.EdgeCreationToolMouseListener = EdgeCreationToolMouseListener;
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/validation/issue-marker.js
+  var require_issue_marker = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/validation/issue-marker.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.getSeverity = exports.createGIssue = exports.getGIssueMarker = exports.getOrCreateGIssueMarker = exports.GIssueMarker = void 0;
+      var sprotty_1 = require_lib4();
+      var GIssueMarker = class extends sprotty_1.SIssueMarkerImpl {
+        constructor() {
+          super();
+          this.issues = [];
+          this.type = "marker";
+          this.features = new Set(sprotty_1.GDecoration.DEFAULT_FEATURES);
+        }
+        computeProjectionCssClasses() {
+          const severityCss = getSeverity(this);
+          this.projectionCssClasses = ["sprotty-issue", "sprotty-" + severityCss];
+        }
+      };
+      exports.GIssueMarker = GIssueMarker;
+      function getOrCreateGIssueMarker(modelElement) {
+        let issueMarker;
+        issueMarker = getGIssueMarker(modelElement);
+        if (issueMarker === void 0) {
+          issueMarker = new GIssueMarker();
+          if ((0, sprotty_1.isBoundsAware)(modelElement)) {
+            issueMarker.projectedBounds = modelElement.parentToLocal(modelElement.bounds);
+          }
+          modelElement.add(issueMarker);
+        }
+        return issueMarker;
+      }
+      exports.getOrCreateGIssueMarker = getOrCreateGIssueMarker;
+      function getGIssueMarker(modelElement) {
+        let issueMarker;
+        for (const child of modelElement.children) {
+          if (child instanceof GIssueMarker) {
+            issueMarker = child;
+          }
+        }
+        return issueMarker;
+      }
+      exports.getGIssueMarker = getGIssueMarker;
+      function createGIssue(marker, parent) {
+        const issue = {
+          message: marker.description,
+          severity: "info"
+        };
+        switch (marker.kind) {
+          case sprotty_1.MarkerKind.ERROR: {
+            issue.severity = "error";
+            break;
+          }
+          case sprotty_1.MarkerKind.INFO: {
+            issue.severity = "info";
+            break;
+          }
+          case sprotty_1.MarkerKind.WARNING: {
+            issue.severity = "warning";
+            break;
+          }
+        }
+        return issue;
+      }
+      exports.createGIssue = createGIssue;
+      function getSeverity(marker) {
+        let currentSeverity = "info";
+        for (const severity of marker.issues.map((s3) => s3.severity)) {
+          if (severity === "error") {
+            return severity;
+          }
+          if (severity === "warning" && currentSeverity === "info") {
+            currentSeverity = severity;
+          }
+        }
+        return currentSeverity;
+      }
+      exports.getSeverity = getSeverity;
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/hover/hover.js
+  var require_hover2 = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/hover/hover.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.GlspHoverMouseListener = void 0;
+      var inversify_1 = require_cjs4();
+      var sprotty_1 = require_lib4();
+      var focus_state_change_action_1 = require_focus_state_change_action();
+      var tool_1 = require_tool();
+      var edge_creation_tool_1 = require_edge_creation_tool();
+      var issue_marker_1 = require_issue_marker();
+      var GlspHoverMouseListener = class GlspHoverMouseListener extends sprotty_1.HoverMouseListener {
+        constructor() {
+          super(...arguments);
+          this.enableHover = true;
+        }
+        /**
+         * Stops mouse over timer and remove hover feedback, if focus is lost.
+         *
+         * This fixes strange effects that appear if the mouse left the element via e.g. a context menu,
+         * which explicitly removes the focus of the diagram.
+         * @see SelectionServiceAwareContextMenuMouseListener
+         * @param action should be a `FocusStateChangedAction`
+         * @returns a `HoverFeedbackAction` resetting the state, if the specified action indicates lost focus
+         */
+        handle(action) {
+          if (focus_state_change_action_1.FocusStateChangedAction.is(action) && !action.hasFocus) {
+            this.stopMouseOverTimer();
+            if (this.lastHoverFeedbackElementId) {
+              const previousTargetId = this.lastHoverFeedbackElementId;
+              this.lastHoverFeedbackElementId = void 0;
+              return sprotty_1.HoverFeedbackAction.create({ mouseoverElement: previousTargetId, mouseIsOver: false });
+            }
+          } else if (tool_1.EnableToolsAction.is(action)) {
+            this.enableHover = !action.toolIds.includes(edge_creation_tool_1.EdgeCreationTool.ID);
+          } else if (tool_1.EnableDefaultToolsAction.is(action)) {
+            this.enableHover = true;
+          }
+        }
+        mouseOver(target, event) {
+          if (this.enableHover) {
+            return super.mouseOver(target, event);
+          }
+          return [];
+        }
+        startMouseOverTimer(target, event) {
+          this.stopMouseOverTimer();
+          return new Promise((resolve) => {
+            this.state.mouseOverTimer = window.setTimeout(() => {
+              const popupBounds = this.computePopupBounds(target, { x: event.pageX, y: event.pageY });
+              if (target instanceof issue_marker_1.GIssueMarker) {
+                resolve(sprotty_1.SetPopupModelAction.create(this.createPopupModel(target, popupBounds)));
+              } else {
+                resolve(sprotty_1.RequestPopupModelAction.create({ elementId: target.id, bounds: popupBounds }));
+              }
+              this.state.popupOpen = true;
+              this.state.previousPopupElement = target;
+            }, this.options.popupOpenDelay);
+          });
+        }
+        createPopupModel(marker, bounds) {
+          if (marker.issues !== void 0 && marker.issues.length > 0) {
+            return {
+              type: "html",
+              id: "sprotty-popup",
+              children: [this.createMarkerIssuePopup(marker)],
+              canvasBounds: this.modifyBounds(bounds)
+            };
+          }
+          return { type: sprotty_1.EMPTY_ROOT.type, id: sprotty_1.EMPTY_ROOT.id };
+        }
+        createMarkerIssuePopup(marker) {
+          const message = this.createIssueMessage(marker);
+          return {
+            type: "pre-rendered",
+            id: "popup-title",
+            code: `<div class="${(0, issue_marker_1.getSeverity)(marker)}"><div class="sprotty-popup-title">${message}</div></div>`
+          };
+        }
+        createIssueMessage(marker) {
+          return "<ul>" + marker.issues.map((i2) => "<li>" + i2.severity.toUpperCase() + ": " + i2.message + "</li>").join("") + "</ul>";
+        }
+        modifyBounds(bounds) {
+          return bounds;
+        }
+      };
+      exports.GlspHoverMouseListener = GlspHoverMouseListener;
+      exports.GlspHoverMouseListener = GlspHoverMouseListener = __decorate([
+        (0, inversify_1.injectable)()
+      ], GlspHoverMouseListener);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/hover/hover-module.js
+  var require_hover_module = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/hover/hover-module.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.hoverModule = void 0;
+      var sprotty_1 = require_lib4();
+      var focus_state_change_action_1 = require_focus_state_change_action();
+      var tool_1 = require_tool();
+      var hover_1 = require_hover2();
+      exports.hoverModule = new sprotty_1.FeatureModule((bind, _unbind, isBound) => {
+        const context = { bind, isBound };
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.PopupVNodePostprocessor, sprotty_1.PopupPositionUpdater);
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.MouseListener, hover_1.GlspHoverMouseListener);
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.PopupMouseListener, sprotty_1.PopupHoverMouseListener);
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.KeyListener, sprotty_1.HoverKeyListener);
+        bind(sprotty_1.TYPES.HoverState).toConstantValue({
+          mouseOverTimer: void 0,
+          mouseOutTimer: void 0,
+          popupOpen: false,
+          previousPopupElement: void 0
+        });
+        bind(sprotty_1.ClosePopupActionHandler).toSelf().inSingletonScope();
+        (0, sprotty_1.configureCommand)(context, sprotty_1.HoverFeedbackCommand);
+        (0, sprotty_1.configureCommand)(context, sprotty_1.SetPopupModelCommand);
+        (0, sprotty_1.configureActionHandler)(context, sprotty_1.SetPopupModelCommand.KIND, sprotty_1.ClosePopupActionHandler);
+        (0, sprotty_1.configureActionHandler)(context, sprotty_1.FitToScreenCommand.KIND, sprotty_1.ClosePopupActionHandler);
+        (0, sprotty_1.configureActionHandler)(context, sprotty_1.CenterCommand.KIND, sprotty_1.ClosePopupActionHandler);
+        (0, sprotty_1.configureActionHandler)(context, sprotty_1.SetViewportCommand.KIND, sprotty_1.ClosePopupActionHandler);
+        (0, sprotty_1.configureActionHandler)(context, sprotty_1.MoveCommand.KIND, sprotty_1.ClosePopupActionHandler);
+        (0, sprotty_1.configureActionHandler)(context, focus_state_change_action_1.FocusStateChangedAction.KIND, sprotty_1.ClosePopupActionHandler);
+        (0, sprotty_1.configureActionHandler)(context, tool_1.EnableToolsAction.KIND, hover_1.GlspHoverMouseListener);
+        (0, sprotty_1.configureActionHandler)(context, tool_1.EnableDefaultToolsAction.KIND, hover_1.GlspHoverMouseListener);
+        (0, sprotty_1.configureActionHandler)(context, focus_state_change_action_1.FocusStateChangedAction.KIND, hover_1.GlspHoverMouseListener);
+      }, { featureId: Symbol("hover") });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/label-edit-ui/label-edit-ui.js
+  var require_label_edit_ui = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/label-edit-ui/label-edit-ui.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.GlspEditLabelUI = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var ui_extension_1 = require_ui_extension2();
+      var GlspEditLabelUI = class GlspEditLabelUI extends sprotty_1.EditLabelUI {
+        initializeContents(containerElement) {
+          super.initializeContents(containerElement);
+          containerElement.classList.add(ui_extension_1.CSS_UI_EXTENSION_CLASS);
+        }
+        setContainerVisible(visible) {
+          var _a4, _b2;
+          if (visible) {
+            (_a4 = this.containerElement) === null || _a4 === void 0 ? void 0 : _a4.classList.remove(ui_extension_1.CSS_HIDDEN_EXTENSION_CLASS);
+            this.editControl.focus();
+          } else {
+            (_b2 = this.containerElement) === null || _b2 === void 0 ? void 0 : _b2.classList.add(ui_extension_1.CSS_HIDDEN_EXTENSION_CLASS);
+          }
+        }
+      };
+      exports.GlspEditLabelUI = GlspEditLabelUI;
+      exports.GlspEditLabelUI = GlspEditLabelUI = __decorate([
+        (0, inversify_1.injectable)()
+      ], GlspEditLabelUI);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/label-edit-ui/label-edit-ui-module.js
+  var require_label_edit_ui_module = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/label-edit-ui/label-edit-ui-module.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.labelEditUiModule = void 0;
+      var sprotty_1 = require_lib4();
+      var label_edit_ui_1 = require_label_edit_ui();
+      exports.labelEditUiModule = new sprotty_1.FeatureModule((bind, unbind, isBound, rebind, ...rest) => {
+        const context = { bind, unbind, isBound, rebind };
+        (0, sprotty_1.configureActionHandler)(context, sprotty_1.EditLabelAction.KIND, sprotty_1.EditLabelActionHandler);
+        bind(label_edit_ui_1.GlspEditLabelUI).toSelf().inSingletonScope();
+        bind(sprotty_1.TYPES.IUIExtension).toService(label_edit_ui_1.GlspEditLabelUI);
+      }, { featureId: Symbol("labelEditUi") });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/label-edit/edit-label-tool.js
+  var require_edit_label_tool = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/label-edit/edit-label-tool.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var DirectLabelEditTool_1;
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.DirectLabelEditTool = void 0;
+      var inversify_1 = require_cjs4();
+      var sprotty_1 = require_lib4();
+      var base_tools_1 = require_base_tools();
+      var DirectLabelEditTool = DirectLabelEditTool_1 = class DirectLabelEditTool extends base_tools_1.BaseEditTool {
+        get id() {
+          return DirectLabelEditTool_1.ID;
+        }
+        createEditLabelMouseListener() {
+          return new sprotty_1.EditLabelMouseListener();
+        }
+        createEditLabelKeyListener() {
+          return new sprotty_1.EditLabelKeyListener();
+        }
+        enable() {
+          this.toDisposeOnDisable.push(this.mouseTool.registerListener(this.createEditLabelMouseListener()), this.keyTool.registerListener(this.createEditLabelKeyListener()));
+        }
+      };
+      exports.DirectLabelEditTool = DirectLabelEditTool;
+      DirectLabelEditTool.ID = "glsp.direct-label-edit-tool";
+      exports.DirectLabelEditTool = DirectLabelEditTool = DirectLabelEditTool_1 = __decorate([
+        (0, inversify_1.injectable)()
+      ], DirectLabelEditTool);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/label-edit/edit-label-validator.js
+  var require_edit_label_validator = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/label-edit/edit-label-validator.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.BalloonLabelValidationDecorator = exports.ServerEditLabelValidator = exports.LabelEditValidation = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var LabelEditValidation;
+      (function(LabelEditValidation2) {
+        LabelEditValidation2.CONTEXT_ID = "label-edit";
+        function toEditLabelValidationResult(status) {
+          const message = status.message;
+          let severity = "ok";
+          if (sprotty_1.ValidationStatus.isError(status)) {
+            severity = "error";
+          } else if (sprotty_1.ValidationStatus.isWarning(status)) {
+            severity = "warning";
+          }
+          return { message, severity };
+        }
+        LabelEditValidation2.toEditLabelValidationResult = toEditLabelValidationResult;
+        function createValidationRequestAction(value, labelId) {
+          return sprotty_1.RequestEditValidationAction.create({ contextId: LabelEditValidation2.CONTEXT_ID, modelElementId: labelId, text: value });
+        }
+        LabelEditValidation2.createValidationRequestAction = createValidationRequestAction;
+      })(LabelEditValidation || (exports.LabelEditValidation = LabelEditValidation = {}));
+      var ServerEditLabelValidator = class ServerEditLabelValidator {
+        async validate(value, label) {
+          const action = LabelEditValidation.createValidationRequestAction(value, label.id);
+          const response = await this.actionDispatcher.requestUntil(action);
+          return response ? this.getValidationResultFromResponse(response) : { severity: "ok" };
+        }
+        getValidationResultFromResponse(action) {
+          if (sprotty_1.SetEditValidationResultAction.is(action)) {
+            return LabelEditValidation.toEditLabelValidationResult(action.status);
+          }
+          return { severity: "ok" };
+        }
+      };
+      exports.ServerEditLabelValidator = ServerEditLabelValidator;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        __metadata("design:type", Object)
+      ], ServerEditLabelValidator.prototype, "actionDispatcher", void 0);
+      exports.ServerEditLabelValidator = ServerEditLabelValidator = __decorate([
+        (0, inversify_1.injectable)()
+      ], ServerEditLabelValidator);
+      var BalloonLabelValidationDecorator = class BalloonLabelValidationDecorator {
+        decorate(input, result) {
+          const containerElement = input.parentElement;
+          if (!containerElement) {
+            return;
+          }
+          if (result.message) {
+            containerElement.setAttribute("data-balloon", result.message);
+            containerElement.setAttribute("data-balloon-pos", "up-left");
+            containerElement.setAttribute("data-balloon-visible", "true");
+          }
+          switch (result.severity) {
+            case "ok":
+              containerElement.classList.add("validation-ok");
+              break;
+            case "warning":
+              containerElement.classList.add("validation-warning");
+              break;
+            case "error":
+              containerElement.classList.add("validation-error");
+              break;
+          }
+        }
+        dispose(input) {
+          const containerElement = input.parentElement;
+          if (containerElement) {
+            containerElement.removeAttribute("data-balloon");
+            containerElement.removeAttribute("data-balloon-pos");
+            containerElement.removeAttribute("data-balloon-visible");
+            containerElement.classList.remove("validation-ok", "validation-warning", "validation-error");
+          }
+        }
+      };
+      exports.BalloonLabelValidationDecorator = BalloonLabelValidationDecorator;
+      exports.BalloonLabelValidationDecorator = BalloonLabelValidationDecorator = __decorate([
+        (0, inversify_1.injectable)()
+      ], BalloonLabelValidationDecorator);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/label-edit/label-edit-module.js
+  var require_label_edit_module = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/label-edit/label-edit-module.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.labelEditModule = void 0;
+      var sprotty_1 = require_lib4();
+      var edit_label_tool_1 = require_edit_label_tool();
+      var edit_label_validator_1 = require_edit_label_validator();
+      exports.labelEditModule = new sprotty_1.FeatureModule((bind, _unbind, isBound, _rebind) => {
+        bind(sprotty_1.TYPES.IEditLabelValidator).to(edit_label_validator_1.ServerEditLabelValidator);
+        bind(sprotty_1.TYPES.IEditLabelValidationDecorator).to(edit_label_validator_1.BalloonLabelValidationDecorator);
+        (0, sprotty_1.bindAsService)(bind, sprotty_1.TYPES.IDefaultTool, edit_label_tool_1.DirectLabelEditTool);
+        (0, sprotty_1.configureCommand)({ bind, isBound }, sprotty_1.ApplyLabelEditCommand);
+      }, { featureId: Symbol("labelEdit") });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/layout/layout-elements-action.js
+  var require_layout_elements_action = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/layout/layout-elements-action.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.AlignElementsActionHandler = exports.AlignElementsAction = exports.SelectFunction = exports.Alignment = exports.ResizeElementsActionHandler = exports.LayoutElementsActionHandler = exports.ResizeElementsAction = exports.ReduceFunction = exports.ResizeDimension = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var selection_service_1 = require_selection_service();
+      var gmodel_util_1 = require_gmodel_util();
+      var layout_utils_1 = require_layout_utils();
+      var model_1 = require_model19();
+      var ResizeDimension;
+      (function(ResizeDimension2) {
+        ResizeDimension2[ResizeDimension2["Width"] = 0] = "Width";
+        ResizeDimension2[ResizeDimension2["Height"] = 1] = "Height";
+        ResizeDimension2[ResizeDimension2["Width_And_Height"] = 2] = "Width_And_Height";
+      })(ResizeDimension || (exports.ResizeDimension = ResizeDimension = {}));
+      var ReduceFunction;
+      (function(ReduceFunction2) {
+        function min(...values) {
+          return Math.min(...values);
+        }
+        ReduceFunction2.min = min;
+        function max(...values) {
+          return Math.max(...values);
+        }
+        ReduceFunction2.max = max;
+        function avg(...values) {
+          return values.reduce((a3, b3) => a3 + b3, 0) / values.length;
+        }
+        ReduceFunction2.avg = avg;
+        function first(...values) {
+          return values[0];
+        }
+        ReduceFunction2.first = first;
+        function last(...values) {
+          return values[values.length - 1];
+        }
+        ReduceFunction2.last = last;
+        function get(type) {
+          return ReduceFunction2[type];
+        }
+        ReduceFunction2.get = get;
+      })(ReduceFunction || (exports.ReduceFunction = ReduceFunction = {}));
+      var ResizeElementsAction;
+      (function(ResizeElementsAction2) {
+        ResizeElementsAction2.KIND = "resizeElementAction";
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, ResizeElementsAction2.KIND) && (0, sprotty_1.hasArrayProp)(object, "elementIds") && (0, sprotty_1.hasNumberProp)(object, "dimension") && (0, sprotty_1.hasStringProp)(object, "reduceFunction");
+        }
+        ResizeElementsAction2.is = is;
+        function create(options) {
+          return {
+            kind: ResizeElementsAction2.KIND,
+            dimension: ResizeDimension.Width,
+            elementIds: [],
+            ...options
+          };
+        }
+        ResizeElementsAction2.create = create;
+      })(ResizeElementsAction || (exports.ResizeElementsAction = ResizeElementsAction = {}));
+      var LayoutElementsActionHandler = class LayoutElementsActionHandler {
+        getSelectedElements(selection) {
+          const index = this.selectionService.getModelRoot().index;
+          const selectedElements = selection.elementIds.length > 0 ? selection.elementIds : this.selectionService.getSelectedElementIDs();
+          return (0, gmodel_util_1.getElements)(index, selectedElements, this.isActionElement);
+        }
+        dispatchAction(action) {
+          this.actionDispatcher.dispatch(action);
+        }
+        dispatchActions(actions) {
+          this.actionDispatcher.dispatchAll(actions);
+        }
+      };
+      exports.LayoutElementsActionHandler = LayoutElementsActionHandler;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        __metadata("design:type", Object)
+      ], LayoutElementsActionHandler.prototype, "actionDispatcher", void 0);
+      __decorate([
+        (0, inversify_1.inject)(selection_service_1.SelectionService),
+        __metadata("design:type", selection_service_1.SelectionService)
+      ], LayoutElementsActionHandler.prototype, "selectionService", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IMovementRestrictor),
+        (0, inversify_1.optional)(),
+        __metadata("design:type", Object)
+      ], LayoutElementsActionHandler.prototype, "movementRestrictor", void 0);
+      exports.LayoutElementsActionHandler = LayoutElementsActionHandler = __decorate([
+        (0, inversify_1.injectable)()
+      ], LayoutElementsActionHandler);
+      var ResizeElementsActionHandler = class ResizeElementsActionHandler extends LayoutElementsActionHandler {
+        handle(action) {
+          const elements = this.getSelectedElements(action);
+          if (elements.length > 1) {
+            const reduceFn = ReduceFunction.get(action.reduceFunction);
+            switch (action.dimension) {
+              case ResizeDimension.Width:
+                return this.resizeWidth(elements, reduceFn);
+              case ResizeDimension.Height:
+                return this.resizeHeight(elements, reduceFn);
+              case ResizeDimension.Width_And_Height:
+                return this.resizeWidthAndHeight(elements, reduceFn);
+            }
+          }
+        }
+        resizeWidth(elements, reduceFn) {
+          const targetWidth = reduceFn(...elements.map((element) => element.bounds.width));
+          this.dispatchResizeActions(elements, (element, bounds) => {
+            const halfDiffWidth = 0.5 * (targetWidth - element.bounds.width);
+            bounds.newPosition.x = element.bounds.x - halfDiffWidth;
+            bounds.newSize.width = targetWidth;
+          });
+        }
+        resizeHeight(elements, reduceFn) {
+          const targetHeight = reduceFn(...elements.map((element) => element.bounds.height));
+          this.dispatchResizeActions(elements, (element, bounds) => {
+            const halfDiffHeight = 0.5 * (targetHeight - element.bounds.height);
+            bounds.newPosition.y = element.bounds.y - halfDiffHeight;
+            bounds.newSize.height = targetHeight;
+          });
+        }
+        resizeWidthAndHeight(elements, reduceFn) {
+          const targetWidth = reduceFn(...elements.map((element) => element.bounds.width));
+          const targetHeight = reduceFn(...elements.map((element) => element.bounds.height));
+          const targetDimension = { width: targetWidth, height: targetHeight };
+          this.dispatchResizeActions(elements, (element, bounds) => {
+            const difference = sprotty_1.Dimension.subtract(targetDimension, element.bounds);
+            const center = sprotty_1.Dimension.center(difference);
+            bounds.newPosition = sprotty_1.Point.subtract(element.bounds, center);
+            bounds.newSize = targetDimension;
+          });
+        }
+        dispatchResizeActions(elements, change) {
+          const elementAndBounds = [];
+          elements.forEach((element) => {
+            const elementChange = this.createElementAndBounds(element, change);
+            if (elementChange) {
+              elementAndBounds.push(elementChange);
+            }
+          });
+          this.dispatchActions([sprotty_1.SetBoundsAction.create(elementAndBounds), sprotty_1.ChangeBoundsOperation.create(elementAndBounds)]);
+        }
+        createElementAndBounds(element, change) {
+          const bounds = {
+            elementId: element.id,
+            newPosition: {
+              x: element.bounds.x,
+              y: element.bounds.y
+            },
+            newSize: {
+              width: element.bounds.width,
+              height: element.bounds.height
+            }
+          };
+          change(element, bounds);
+          return (0, layout_utils_1.toValidElementAndBounds)(element, bounds, this.movementRestrictor);
+        }
+        isActionElement(element) {
+          return (0, model_1.isResizable)(element);
+        }
+      };
+      exports.ResizeElementsActionHandler = ResizeElementsActionHandler;
+      exports.ResizeElementsActionHandler = ResizeElementsActionHandler = __decorate([
+        (0, inversify_1.injectable)()
+      ], ResizeElementsActionHandler);
+      var Alignment;
+      (function(Alignment2) {
+        Alignment2[Alignment2["Left"] = 0] = "Left";
+        Alignment2[Alignment2["Center"] = 1] = "Center";
+        Alignment2[Alignment2["Right"] = 2] = "Right";
+        Alignment2[Alignment2["Top"] = 3] = "Top";
+        Alignment2[Alignment2["Middle"] = 4] = "Middle";
+        Alignment2[Alignment2["Bottom"] = 5] = "Bottom";
+      })(Alignment || (exports.Alignment = Alignment = {}));
+      var SelectFunction;
+      (function(SelectFunction2) {
+        function all(elements) {
+          return elements;
+        }
+        SelectFunction2.all = all;
+        function first(elements) {
+          return [elements[0]];
+        }
+        SelectFunction2.first = first;
+        function last(elements) {
+          return [elements[elements.length - 1]];
+        }
+        SelectFunction2.last = last;
+        function get(kind) {
+          return SelectFunction2[kind];
+        }
+        SelectFunction2.get = get;
+      })(SelectFunction || (exports.SelectFunction = SelectFunction = {}));
+      var AlignElementsAction;
+      (function(AlignElementsAction2) {
+        AlignElementsAction2.KIND = "alignElements";
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, AlignElementsAction2.KIND) && (0, sprotty_1.hasArrayProp)(object, "elementIds") && (0, sprotty_1.hasNumberProp)(object, "alignment") && (0, sprotty_1.hasStringProp)(object, "selectFunction");
+        }
+        AlignElementsAction2.is = is;
+        function create(options = {}) {
+          return {
+            kind: AlignElementsAction2.KIND,
+            elementIds: [],
+            alignment: Alignment.Left,
+            selectFunction: "all",
+            ...options
+          };
+        }
+        AlignElementsAction2.create = create;
+      })(AlignElementsAction || (exports.AlignElementsAction = AlignElementsAction = {}));
+      var AlignElementsActionHandler = class AlignElementsActionHandler extends LayoutElementsActionHandler {
+        handle(action) {
+          const elements = this.getSelectedElements(action);
+          const selectFn = SelectFunction.get(action.selectFunction);
+          const calculatedElements = selectFn(elements);
+          if (elements.length > 1) {
+            switch (action.alignment) {
+              case Alignment.Left:
+                return this.alignLeft(calculatedElements);
+              case Alignment.Center:
+                return this.alignCenter(calculatedElements);
+              case Alignment.Right:
+                return this.alignRight(calculatedElements);
+              case Alignment.Top:
+                return this.alignTop(calculatedElements);
+              case Alignment.Middle:
+                return this.alignMiddle(calculatedElements);
+              case Alignment.Bottom:
+                return this.alignBottom(calculatedElements);
+            }
+          }
+        }
+        alignLeft(elements) {
+          const minX = elements.map((element) => element.bounds.x).reduce((a3, b3) => Math.min(a3, b3));
+          this.dispatchAlignActions(elements, (_3, move) => move.toPosition.x = minX);
+        }
+        alignCenter(elements) {
+          const minX = elements.map((element) => element.bounds.x).reduce((a3, b3) => Math.min(a3, b3));
+          const maxX = elements.map((element) => element.bounds.x + element.bounds.width).reduce((a3, b3) => Math.max(a3, b3));
+          const diffX = maxX - minX;
+          const centerX = minX + 0.5 * diffX;
+          this.dispatchAlignActions(elements, (element, move) => move.toPosition.x = centerX - 0.5 * element.bounds.width);
+        }
+        alignRight(elements) {
+          const maxX = elements.map((element) => element.bounds.x + element.bounds.width).reduce((a3, b3) => Math.max(a3, b3));
+          this.dispatchAlignActions(elements, (element, move) => move.toPosition.x = maxX - element.bounds.width);
+        }
+        alignTop(elements) {
+          const minY = elements.map((element) => element.bounds.y).reduce((a3, b3) => Math.min(a3, b3));
+          this.dispatchAlignActions(elements, (_3, move) => move.toPosition.y = minY);
+        }
+        alignMiddle(elements) {
+          const minY = elements.map((element) => element.bounds.y).reduce((a3, b3) => Math.min(a3, b3));
+          const maxY = elements.map((element) => element.bounds.y + element.bounds.height).reduce((a3, b3) => Math.max(a3, b3));
+          const diffY = maxY - minY;
+          const middleY = minY + 0.5 * diffY;
+          this.dispatchAlignActions(elements, (element, move) => move.toPosition.y = middleY - 0.5 * element.bounds.height);
+        }
+        alignBottom(elements) {
+          const maxY = elements.map((element) => element.bounds.y + element.bounds.height).reduce((a3, b3) => Math.max(a3, b3));
+          this.dispatchAlignActions(elements, (element, move) => move.toPosition.y = maxY - element.bounds.height);
+        }
+        dispatchAlignActions(elements, change) {
+          const moves = [];
+          const elementAndBounds = [];
+          elements.forEach((element) => {
+            const move = this.createElementMove(element, change);
+            if (move) {
+              moves.push(move);
+              const elementAndBound = this.createElementAndBounds(element, move);
+              elementAndBounds.push(elementAndBound);
+            }
+          });
+          this.dispatchActions([sprotty_1.MoveAction.create(moves), sprotty_1.ChangeBoundsOperation.create(elementAndBounds)]);
+        }
+        createElementMove(element, change) {
+          const move = {
+            elementId: element.id,
+            fromPosition: {
+              x: element.bounds.x,
+              y: element.bounds.y
+            },
+            toPosition: {
+              x: element.bounds.x,
+              y: element.bounds.y
+            }
+          };
+          change(element, move);
+          return (0, layout_utils_1.toValidElementMove)(element, move, this.movementRestrictor);
+        }
+        createElementAndBounds(element, move) {
+          return {
+            elementId: element.id,
+            newPosition: {
+              x: move.toPosition.x,
+              y: move.toPosition.y
+            },
+            newSize: {
+              width: element.bounds.width,
+              height: element.bounds.height
+            }
+          };
+        }
+        isActionElement(element) {
+          return (0, model_1.isBoundsAwareMoveable)(element);
+        }
+      };
+      exports.AlignElementsActionHandler = AlignElementsActionHandler;
+      exports.AlignElementsActionHandler = AlignElementsActionHandler = __decorate([
+        (0, inversify_1.injectable)()
+      ], AlignElementsActionHandler);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/layout/layout-module.js
+  var require_layout_module = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/layout/layout-module.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.layoutModule = void 0;
+      var sprotty_1 = require_lib4();
+      var layout_elements_action_1 = require_layout_elements_action();
+      exports.layoutModule = new sprotty_1.FeatureModule((bind, _unbind, isBound) => {
+        const context = { bind, isBound };
+        (0, sprotty_1.configureActionHandler)(context, layout_elements_action_1.ResizeElementsAction.KIND, layout_elements_action_1.ResizeElementsActionHandler);
+        (0, sprotty_1.configureActionHandler)(context, layout_elements_action_1.AlignElementsAction.KIND, layout_elements_action_1.AlignElementsActionHandler);
+      }, { featureId: Symbol("layout") });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/navigation/navigation-target-resolver.js
+  var require_navigation_target_resolver = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/navigation/navigation-target-resolver.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.NavigationTargetResolver = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var NavigationTargetResolver = class NavigationTargetResolver {
+        async resolve(navigationTarget) {
+          return this.resolveWithSourceUri(this.diagramOptions.sourceUri, navigationTarget);
+        }
+        async resolveWithSourceUri(sourceUri, target) {
+          const targetUri = decodeURIComponent(target.uri);
+          const normalizedSourceUri = sourceUri === null || sourceUri === void 0 ? void 0 : sourceUri.replace(/^file:\/\//, "");
+          const normalizedTargetUri = targetUri.replace(/^file:\/\//, "");
+          if (normalizedSourceUri && normalizedSourceUri !== normalizedTargetUri) {
+            this.logger.info("Source and Target URI are different. Can't resolve locally.", normalizedSourceUri, normalizedTargetUri);
+            return void 0;
+          }
+          if (sprotty_1.NavigationTarget.getElementIds(target).length > 0) {
+            return sprotty_1.SetResolvedNavigationTargetAction.create(sprotty_1.NavigationTarget.getElementIds(target));
+          }
+          const response = await this.requestResolution(target);
+          if (sprotty_1.SetResolvedNavigationTargetAction.is(response)) {
+            return response;
+          }
+          return void 0;
+        }
+        requestResolution(target) {
+          return this.dispatcher.request(sprotty_1.ResolveNavigationTargetAction.create(target));
+        }
+      };
+      exports.NavigationTargetResolver = NavigationTargetResolver;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        __metadata("design:type", Object)
+      ], NavigationTargetResolver.prototype, "dispatcher", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.ILogger),
+        __metadata("design:type", Object)
+      ], NavigationTargetResolver.prototype, "logger", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IDiagramOptions),
+        __metadata("design:type", Object)
+      ], NavigationTargetResolver.prototype, "diagramOptions", void 0);
+      exports.NavigationTargetResolver = NavigationTargetResolver = __decorate([
+        (0, inversify_1.injectable)()
+      ], NavigationTargetResolver);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/navigation/navigation-action-handler.js
+  var require_navigation_action_handler = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/navigation/navigation-action-handler.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.NavigationActionHandler = exports.ProcessNavigationArgumentsAction = exports.NavigateAction = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var editor_context_service_1 = require_editor_context_service();
+      var navigation_target_resolver_1 = require_navigation_target_resolver();
+      var NavigateAction;
+      (function(NavigateAction2) {
+        NavigateAction2.KIND = "navigate";
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, NavigateAction2.KIND) && (0, sprotty_1.hasStringProp)(object, "targetTypeId");
+        }
+        NavigateAction2.is = is;
+        function create(targetTypeId, options = {}) {
+          return {
+            kind: NavigateAction2.KIND,
+            targetTypeId,
+            ...options
+          };
+        }
+        NavigateAction2.create = create;
+      })(NavigateAction || (exports.NavigateAction = NavigateAction = {}));
+      var ProcessNavigationArgumentsAction;
+      (function(ProcessNavigationArgumentsAction2) {
+        ProcessNavigationArgumentsAction2.KIND = "processNavigationArguments";
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, ProcessNavigationArgumentsAction2.KIND) && (0, sprotty_1.hasObjectProp)(object, "args");
+        }
+        ProcessNavigationArgumentsAction2.is = is;
+        function create(args) {
+          return {
+            kind: ProcessNavigationArgumentsAction2.KIND,
+            args
+          };
+        }
+        ProcessNavigationArgumentsAction2.create = create;
+      })(ProcessNavigationArgumentsAction || (exports.ProcessNavigationArgumentsAction = ProcessNavigationArgumentsAction = {}));
+      var NavigationActionHandler = class NavigationActionHandler {
+        constructor() {
+          this.notificationTimeout = 5e3;
+        }
+        handle(action) {
+          if (NavigateAction.is(action)) {
+            this.handleNavigateAction(action);
+          } else if (sprotty_1.NavigateToTargetAction.is(action)) {
+            this.handleNavigateToTarget(action);
+          } else if (ProcessNavigationArgumentsAction.is(action)) {
+            this.processNavigationArguments(action.args);
+          } else if (sprotty_1.NavigateToExternalTargetAction.is(action)) {
+            this.handleNavigateToExternalTarget(action);
+          }
+        }
+        async handleNavigateAction(action) {
+          try {
+            const editorContext = this.editorContext.get(action.args);
+            const response = await this.dispatcher.request(sprotty_1.RequestNavigationTargetsAction.create({ targetTypeId: action.targetTypeId, editorContext }));
+            if (sprotty_1.SetNavigationTargetsAction.is(response) && response.targets && response.targets.length === 1) {
+              if (response.targets.length > 1) {
+                this.logger.warn(this, "Processing of multiple targets is not supported yet. Only the first is being processed.", response.targets);
+              }
+              return this.dispatcher.dispatch(sprotty_1.NavigateToTargetAction.create(response.targets[0]));
+            }
+            this.warnAboutFailedNavigation("No valid navigation target found");
+          } catch (reason) {
+            this.logger.error(this, "Failed to obtain navigation target", reason, action);
+          }
+        }
+        async handleNavigateToTarget(action) {
+          try {
+            const resolvedElements = await this.resolveElements(action);
+            if (this.containsElementIdsOrArguments(resolvedElements)) {
+              this.navigateTo(resolvedElements);
+              this.handleResolutionArguments(resolvedElements);
+              return;
+            } else {
+              this.navigateToExternal(action.target);
+              return;
+            }
+          } catch (reason) {
+            this.logger.error(this, "Failed to navigate", reason, action);
+          }
+        }
+        resolveElements(action) {
+          return this.resolver.resolve(action.target);
+        }
+        containsElementIdsOrArguments(target) {
+          return target !== void 0 && (this.containsElementIds(target.elementIds) || this.containsArguments(target.args));
+        }
+        containsElementIds(elementIds) {
+          return elementIds !== void 0 && elementIds.length > 0;
+        }
+        containsArguments(args) {
+          return args !== void 0 && args !== void 0 && Object.keys(args).length > 0;
+        }
+        navigateTo(target) {
+          const elementIds = target.elementIds;
+          if (!this.containsElementIds(elementIds)) {
+            return;
+          }
+          this.dispatcher.dispatchAll([
+            sprotty_1.SelectAllAction.create(false),
+            sprotty_1.SelectAction.create({ selectedElementsIDs: elementIds }),
+            sprotty_1.CenterAction.create(elementIds)
+          ]);
+        }
+        handleResolutionArguments(target) {
+          const args = target.args;
+          if (!this.containsArguments(args)) {
+            return;
+          }
+          this.dispatcher.dispatch(ProcessNavigationArgumentsAction.create(args));
+        }
+        navigateToExternal(target) {
+          return this.dispatcher.dispatch(sprotty_1.NavigateToExternalTargetAction.create(target));
+        }
+        processNavigationArguments(args) {
+          if (args.info && args.info.toString().length > 0) {
+            this.notify("INFO", args.info.toString());
+          }
+          if (args.warning && args.warning.toString().length > 0) {
+            this.notify("WARNING", args.warning.toString());
+          }
+          if (args.error && args.error.toString().length > 0) {
+            this.notify("ERROR", args.error.toString());
+          }
+        }
+        async handleNavigateToExternalTarget(action) {
+          const handlers = this.actionHandlerRegistry.get(sprotty_1.NavigateToExternalTargetAction.KIND);
+          if (handlers.length === 1) {
+            this.warnAboutFailedNavigation("Could not resolve or navigate to target", action.target);
+          }
+        }
+        warnAboutFailedNavigation(msg, target) {
+          const message = `${msg}` + (target ? `: '${target.uri}' (arguments: ${JSON.stringify(target.args)})` : "");
+          this.logger.warn(this, msg, target);
+          this.notify("WARNING", message);
+        }
+        notify(severity, message) {
+          const timeout = this.notificationTimeout;
+          this.dispatcher.dispatchAll([sprotty_1.StatusAction.create(message, { severity, timeout }), sprotty_1.MessageAction.create(message, { severity })]);
+        }
+      };
+      exports.NavigationActionHandler = NavigationActionHandler;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.ILogger),
+        __metadata("design:type", Object)
+      ], NavigationActionHandler.prototype, "logger", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        __metadata("design:type", Object)
+      ], NavigationActionHandler.prototype, "dispatcher", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.ActionHandlerRegistryProvider),
+        __metadata("design:type", Function)
+      ], NavigationActionHandler.prototype, "actionHandlerRegistryProvider", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IEditorContextServiceProvider),
+        __metadata("design:type", Function)
+      ], NavigationActionHandler.prototype, "editorContextService", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.ActionHandlerRegistry),
+        __metadata("design:type", sprotty_1.ActionHandlerRegistry)
+      ], NavigationActionHandler.prototype, "actionHandlerRegistry", void 0);
+      __decorate([
+        (0, inversify_1.inject)(navigation_target_resolver_1.NavigationTargetResolver),
+        __metadata("design:type", navigation_target_resolver_1.NavigationTargetResolver)
+      ], NavigationActionHandler.prototype, "resolver", void 0);
+      __decorate([
+        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
+        __metadata("design:type", editor_context_service_1.EditorContextService)
+      ], NavigationActionHandler.prototype, "editorContext", void 0);
+      exports.NavigationActionHandler = NavigationActionHandler = __decorate([
+        (0, inversify_1.injectable)()
+      ], NavigationActionHandler);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/navigation/navigation-module.js
+  var require_navigation_module = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/navigation/navigation-module.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.navigationModule = void 0;
+      var sprotty_1 = require_lib4();
+      var navigation_action_handler_1 = require_navigation_action_handler();
+      var navigation_target_resolver_1 = require_navigation_target_resolver();
+      exports.navigationModule = new sprotty_1.FeatureModule((bind, _unbind, isBound) => {
+        bind(navigation_target_resolver_1.NavigationTargetResolver).toSelf().inSingletonScope();
+        bind(navigation_action_handler_1.NavigationActionHandler).toSelf().inSingletonScope();
+        (0, sprotty_1.configureActionHandler)({ bind, isBound }, navigation_action_handler_1.NavigateAction.KIND, navigation_action_handler_1.NavigationActionHandler);
+        (0, sprotty_1.configureActionHandler)({ bind, isBound }, sprotty_1.NavigateToTargetAction.KIND, navigation_action_handler_1.NavigationActionHandler);
+        (0, sprotty_1.configureActionHandler)({ bind, isBound }, navigation_action_handler_1.ProcessNavigationArgumentsAction.KIND, navigation_action_handler_1.NavigationActionHandler);
+        (0, sprotty_1.configureActionHandler)({ bind, isBound }, sprotty_1.NavigateToExternalTargetAction.KIND, navigation_action_handler_1.NavigationActionHandler);
+      }, { featureId: Symbol("navigation") });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/routing/edge-router.js
+  var require_edge_router = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/routing/edge-router.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.GLSPBezierEdgeRouter = exports.GLSPManhattanEdgeRouter = exports.GLSPPolylineEdgeRouter = exports.GLSPAbstractEdgeRouter = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var GLSPAbstractEdgeRouter = class GLSPAbstractEdgeRouter extends sprotty_1.AbstractEdgeRouter {
+        getTranslatedAnchor(connectable, refPoint, refContainer, edge, anchorCorrection) {
+          const anchor = super.getTranslatedAnchor(connectable, refPoint, refContainer, edge, anchorCorrection);
+          return sprotty_1.Point.isValid(anchor) ? anchor : refPoint;
+        }
+        cleanupRoutingPoints(edge, routingPoints, updateHandles, addRoutingPoints) {
+          if (ensureBounds(edge.source) && ensureBounds(edge.target)) {
+            super.cleanupRoutingPoints(edge, routingPoints, updateHandles, addRoutingPoints);
+          }
+        }
+      };
+      exports.GLSPAbstractEdgeRouter = GLSPAbstractEdgeRouter;
+      exports.GLSPAbstractEdgeRouter = GLSPAbstractEdgeRouter = __decorate([
+        (0, inversify_1.injectable)()
+      ], GLSPAbstractEdgeRouter);
+      var GLSPPolylineEdgeRouter = class GLSPPolylineEdgeRouter extends sprotty_1.PolylineEdgeRouter {
+        getTranslatedAnchor(connectable, refPoint, refContainer, edge, anchorCorrection) {
+          const anchor = super.getTranslatedAnchor(connectable, refPoint, refContainer, edge, anchorCorrection);
+          return sprotty_1.Point.isValid(anchor) ? anchor : refPoint;
+        }
+        cleanupRoutingPoints(edge, routingPoints, updateHandles, addRoutingPoints) {
+          if (ensureBounds(edge.source) && ensureBounds(edge.target)) {
+            super.cleanupRoutingPoints(edge, routingPoints, updateHandles, addRoutingPoints);
+          }
+        }
+      };
+      exports.GLSPPolylineEdgeRouter = GLSPPolylineEdgeRouter;
+      exports.GLSPPolylineEdgeRouter = GLSPPolylineEdgeRouter = __decorate([
+        (0, inversify_1.injectable)()
+      ], GLSPPolylineEdgeRouter);
+      var GLSPManhattanEdgeRouter = class GLSPManhattanEdgeRouter extends sprotty_1.ManhattanEdgeRouter {
+        getTranslatedAnchor(connectable, refPoint, refContainer, edge, anchorCorrection) {
+          const anchor = super.getTranslatedAnchor(connectable, refPoint, refContainer, edge, anchorCorrection);
+          return sprotty_1.Point.isValid(anchor) ? anchor : refPoint;
+        }
+        cleanupRoutingPoints(edge, routingPoints, updateHandles, addRoutingPoints) {
+          if (ensureBounds(edge.source) && ensureBounds(edge.target)) {
+            super.cleanupRoutingPoints(edge, routingPoints, updateHandles, addRoutingPoints);
+          }
+        }
+      };
+      exports.GLSPManhattanEdgeRouter = GLSPManhattanEdgeRouter;
+      exports.GLSPManhattanEdgeRouter = GLSPManhattanEdgeRouter = __decorate([
+        (0, inversify_1.injectable)()
+      ], GLSPManhattanEdgeRouter);
+      var GLSPBezierEdgeRouter = class GLSPBezierEdgeRouter extends sprotty_1.BezierEdgeRouter {
+        getTranslatedAnchor(connectable, refPoint, refContainer, edge, anchorCorrection) {
+          const anchor = super.getTranslatedAnchor(connectable, refPoint, refContainer, edge, anchorCorrection);
+          return sprotty_1.Point.isValid(anchor) ? anchor : refPoint;
+        }
+        cleanupRoutingPoints(edge, routingPoints, updateHandles, addRoutingPoints) {
+          if (ensureBounds(edge.source) && ensureBounds(edge.target)) {
+            super.cleanupRoutingPoints(edge, routingPoints, updateHandles, addRoutingPoints);
+          }
+        }
+      };
+      exports.GLSPBezierEdgeRouter = GLSPBezierEdgeRouter;
+      exports.GLSPBezierEdgeRouter = GLSPBezierEdgeRouter = __decorate([
+        (0, inversify_1.injectable)()
+      ], GLSPBezierEdgeRouter);
+      function ensureBounds(element) {
+        if (!element) {
+          return false;
+        }
+        if (element.bounds) {
+          return true;
+        }
+        if (element.position && element.size) {
+          element.bounds = { ...element.position, ...element.size };
+          return true;
+        }
+        return false;
+      }
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/routing/routing-module.js
+  var require_routing_module = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/routing/routing-module.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.routingModule = void 0;
+      var sprotty_1 = require_lib4();
+      var edge_router_1 = require_edge_router();
+      exports.routingModule = new sprotty_1.FeatureModule((bind, unbind, isBound, rebind) => {
+        const context = { bind, unbind, isBound, rebind };
+        bind(sprotty_1.EdgeRouterRegistry).toSelf().inSingletonScope();
+        bind(sprotty_1.AnchorComputerRegistry).toSelf().inSingletonScope();
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IEdgeRouter, edge_router_1.GLSPManhattanEdgeRouter);
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IAnchorComputer, sprotty_1.ManhattanEllipticAnchor);
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IAnchorComputer, sprotty_1.ManhattanRectangularAnchor);
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IAnchorComputer, sprotty_1.ManhattanDiamondAnchor);
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IEdgeRouter, edge_router_1.GLSPPolylineEdgeRouter);
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IAnchorComputer, sprotty_1.EllipseAnchor);
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IAnchorComputer, sprotty_1.RectangleAnchor);
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IAnchorComputer, sprotty_1.DiamondAnchor);
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IEdgeRouter, edge_router_1.GLSPBezierEdgeRouter);
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IAnchorComputer, sprotty_1.BezierEllipseAnchor);
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IAnchorComputer, sprotty_1.BezierRectangleAnchor);
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IAnchorComputer, sprotty_1.BezierDiamondAnchor);
+        (0, sprotty_1.configureCommand)({ bind, isBound }, sprotty_1.AddRemoveBezierSegmentCommand);
+      }, { featureId: Symbol("routing") });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/select/select-feedback-command.js
+  var require_select_feedback_command = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/select/select-feedback-command.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var __param = exports && exports.__param || function(paramIndex, decorator) {
+        return function(target, key) {
+          decorator(target, key, paramIndex);
+        };
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.SelectFeedbackCommand = void 0;
+      var inversify_1 = require_cjs4();
+      var sprotty_1 = require_lib4();
+      var selection_service_1 = require_selection_service();
+      var SelectFeedbackCommand = class SelectFeedbackCommand extends sprotty_1.Command {
+        constructor(action) {
+          super();
+          this.action = action;
+          this.sprottySelectCommand = new sprotty_1.SprottySelectCommand({ ...action, kind: sprotty_1.SelectAction.KIND });
+        }
+        execute(context) {
+          return this.sprottySelectCommand.execute(context);
+        }
+        undo(context) {
+          return this.sprottySelectCommand.undo(context);
+        }
+        redo(context) {
+          return this.sprottySelectCommand.redo(context);
+        }
+      };
+      exports.SelectFeedbackCommand = SelectFeedbackCommand;
+      SelectFeedbackCommand.KIND = selection_service_1.SelectFeedbackAction.KIND;
+      exports.SelectFeedbackCommand = SelectFeedbackCommand = __decorate([
+        (0, inversify_1.injectable)(),
+        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.Action)),
+        __metadata("design:paramtypes", [Object])
+      ], SelectFeedbackCommand);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/select/select-mouse-listener.js
+  var require_select_mouse_listener = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/select/select-mouse-listener.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.RankedSelectMouseListener = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var ranked_1 = require_ranked();
+      var model_1 = require_model19();
+      var RankedSelectMouseListener = class RankedSelectMouseListener extends sprotty_1.SelectMouseListener {
+        constructor() {
+          super(...arguments);
+          this.rank = ranked_1.Ranked.DEFAULT_RANK - 100;
+        }
+        handleSelectTarget(selectableTarget, deselectedElements, event) {
+          const result = [];
+          result.push(sprotty_1.SelectAction.create({
+            selectedElementsIDs: [selectableTarget.id],
+            deselectedElementsIDs: deselectedElements.map((e2) => e2.id)
+          }));
+          result.push(sprotty_1.BringToFrontAction.create([selectableTarget.id]));
+          return result;
+        }
+        handleDeselectTarget(selectableTarget, event) {
+          const result = [];
+          result.push(sprotty_1.SelectAction.create({ selectedElementsIDs: [], deselectedElementsIDs: [selectableTarget.id] }));
+          return result;
+        }
+        handleDeselectAll(deselectedElements, event) {
+          const result = [];
+          result.push(sprotty_1.SelectAction.create({ selectedElementsIDs: [], deselectedElementsIDs: deselectedElements.map((e2) => e2.id) }));
+          return result;
+        }
+        handleButton(target, event) {
+          var _a4;
+          if (target instanceof model_1.GResizeHandle && ((_a4 = this.changeBoundsManager) === null || _a4 === void 0 ? void 0 : _a4.useSymmetricResize(event))) {
+            return [];
+          }
+          return super.handleButton(target, event);
+        }
+      };
+      exports.RankedSelectMouseListener = RankedSelectMouseListener;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IChangeBoundsManager),
+        (0, inversify_1.optional)(),
+        __metadata("design:type", Object)
+      ], RankedSelectMouseListener.prototype, "changeBoundsManager", void 0);
+      exports.RankedSelectMouseListener = RankedSelectMouseListener = __decorate([
+        (0, inversify_1.injectable)()
+      ], RankedSelectMouseListener);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/select/select-module.js
+  var require_select_module = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/select/select-module.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.standaloneSelectModule = exports.selectModule = void 0;
+      var sprotty_1 = require_lib4();
+      var selection_service_1 = require_selection_service();
+      var select_feedback_command_1 = require_select_feedback_command();
+      var select_mouse_listener_1 = require_select_mouse_listener();
+      exports.selectModule = new sprotty_1.FeatureModule((bind, _unbind, isBound) => {
+        const context = { bind, isBound };
+        (0, sprotty_1.configureCommand)(context, selection_service_1.SelectCommand);
+        (0, sprotty_1.configureCommand)(context, selection_service_1.SelectAllCommand);
+        (0, sprotty_1.configureCommand)(context, select_feedback_command_1.SelectFeedbackCommand);
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.MouseListener, select_mouse_listener_1.RankedSelectMouseListener);
+      }, { featureId: Symbol("select") });
+      exports.standaloneSelectModule = new sprotty_1.FeatureModule((bind) => {
+        (0, sprotty_1.bindAsService)(bind, sprotty_1.TYPES.KeyListener, sprotty_1.SelectKeyboardListener);
+      }, { featureId: Symbol("standaloneSelect"), requires: exports.selectModule });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/source-model-watcher/source-model-changed-action-handler.js
+  var require_source_model_changed_action_handler = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/source-model-watcher/source-model-changed-action-handler.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.SourceModelChangedActionHandler = exports.ExternalSourceModelChangedHandler = void 0;
+      var inversify_1 = require_cjs4();
+      var sprotty_1 = require_lib4();
+      var ExternalSourceModelChangedHandler = class ExternalSourceModelChangedHandler {
+      };
+      exports.ExternalSourceModelChangedHandler = ExternalSourceModelChangedHandler;
+      exports.ExternalSourceModelChangedHandler = ExternalSourceModelChangedHandler = __decorate([
+        (0, inversify_1.injectable)()
+      ], ExternalSourceModelChangedHandler);
+      var SourceModelChangedActionHandler = class SourceModelChangedActionHandler {
+        handle(action) {
+          if (sprotty_1.SourceModelChangedAction.is(action)) {
+            if (this.externalModelSourceChangedHandler) {
+              this.externalModelSourceChangedHandler.notifySourceModelChange(action.sourceModelName, this.options).then((actions) => this.dispatcher.dispatchAll(actions));
+              return;
+            }
+            this.showSimpleNotification(action);
+          }
+        }
+        showSimpleNotification(action) {
+          const message = `The source model ${action.sourceModelName} has changed. You might want to consider reloading.`;
+          const timeout = 0;
+          const severity = "WARNING";
+          this.dispatcher.dispatchAll([sprotty_1.StatusAction.create(message, { severity, timeout }), sprotty_1.MessageAction.create(message, { severity })]);
+        }
+      };
+      exports.SourceModelChangedActionHandler = SourceModelChangedActionHandler;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        __metadata("design:type", Object)
+      ], SourceModelChangedActionHandler.prototype, "dispatcher", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.ViewerOptions),
+        __metadata("design:type", Object)
+      ], SourceModelChangedActionHandler.prototype, "options", void 0);
+      __decorate([
+        (0, inversify_1.inject)(ExternalSourceModelChangedHandler),
+        (0, inversify_1.optional)(),
+        __metadata("design:type", ExternalSourceModelChangedHandler)
+      ], SourceModelChangedActionHandler.prototype, "externalModelSourceChangedHandler", void 0);
+      exports.SourceModelChangedActionHandler = SourceModelChangedActionHandler = __decorate([
+        (0, inversify_1.injectable)()
+      ], SourceModelChangedActionHandler);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/source-model-watcher/source-model-watcher-module.js
+  var require_source_model_watcher_module = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/source-model-watcher/source-model-watcher-module.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.sourceModelWatcherModule = void 0;
+      var sprotty_1 = require_lib4();
+      var source_model_changed_action_handler_1 = require_source_model_changed_action_handler();
+      exports.sourceModelWatcherModule = new sprotty_1.FeatureModule((bind, _unbind, isBound) => {
+        (0, sprotty_1.configureActionHandler)({ bind, isBound }, sprotty_1.SourceModelChangedAction.KIND, source_model_changed_action_handler_1.SourceModelChangedActionHandler);
+      }, { featureId: Symbol("sourceModelWatcher") });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/css/status-overlay.css
+  var require_status_overlay = __commonJS({
+    "node_modules/@eclipse-glsp/client/css/status-overlay.css"(exports, module) {
+      module.exports = {};
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/status/status-overlay.js
+  var require_status_overlay2 = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/status/status-overlay.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var StatusOverlay_1;
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.StatusOverlay = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var ui_extension_1 = require_ui_extension2();
+      var StatusOverlay = StatusOverlay_1 = class StatusOverlay extends ui_extension_1.GLSPAbstractUIExtension {
+        id() {
+          return StatusOverlay_1.ID;
+        }
+        containerClass() {
+          return "sprotty-status";
+        }
+        initializeContents(containerElement) {
+          this.statusIconDiv = document.createElement("div");
+          containerElement.appendChild(this.statusIconDiv);
+          this.statusMessageDiv = document.createElement("div");
+          this.statusMessageDiv.classList.add("sprotty-status-message");
+          containerElement.appendChild(this.statusMessageDiv);
+        }
+        setStatus(status) {
+          if (this.statusMessageDiv) {
+            this.statusMessageDiv.textContent = status.message;
+            this.removeClasses(this.statusMessageDiv, 1);
+            this.statusMessageDiv.classList.add(status.severity.toLowerCase());
+          }
+          if (this.statusIconDiv) {
+            this.removeClasses(this.statusIconDiv, 0);
+            const classes = this.statusIconDiv.classList;
+            classes.add(status.severity.toLowerCase());
+            switch (status.severity) {
+              case "FATAL":
+                classes.add(...(0, sprotty_1.codiconCSSClasses)("error"));
+                break;
+              case "ERROR":
+                classes.add(...(0, sprotty_1.codiconCSSClasses)("warning"));
+                break;
+              case "WARNING":
+                classes.add(...(0, sprotty_1.codiconCSSClasses)("warning"));
+                break;
+              case "INFO":
+                classes.add(...(0, sprotty_1.codiconCSSClasses)("info"));
+                break;
+            }
+          }
+        }
+        clearStatus() {
+          this.setStatus(sprotty_1.StatusAction.create("", { severity: "NONE" }));
+        }
+        clearTimeout() {
+          if (this.pendingTimeout) {
+            window.clearTimeout(this.pendingTimeout);
+            this.pendingTimeout = void 0;
+          }
+        }
+        removeClasses(element, keep) {
+          const classes = element.classList;
+          while (classes.length > keep) {
+            const item = classes.item(classes.length - 1);
+            if (item) {
+              classes.remove(item);
+            }
+          }
+        }
+        handle(action) {
+          var _a4;
+          this.clearTimeout();
+          if (action.severity === "NONE") {
+            this.clearStatus();
+            return;
+          }
+          this.setStatus(action);
+          const statusTimeout = (_a4 = action.timeout) !== null && _a4 !== void 0 ? _a4 : -1;
+          if (statusTimeout > 0) {
+            this.pendingTimeout = window.setTimeout(() => this.clearStatus(), statusTimeout);
+          }
+        }
+        preInitialize() {
+          return this.actionDispatcher.dispatch(sprotty_1.SetUIExtensionVisibilityAction.create({ extensionId: this.id(), visible: true }));
+        }
+      };
+      exports.StatusOverlay = StatusOverlay;
+      StatusOverlay.ID = "glsp.server.status.overlay";
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        __metadata("design:type", Object)
+      ], StatusOverlay.prototype, "actionDispatcher", void 0);
+      exports.StatusOverlay = StatusOverlay = StatusOverlay_1 = __decorate([
+        (0, inversify_1.injectable)()
+      ], StatusOverlay);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/status/status-module.js
+  var require_status_module = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/status/status-module.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.statusModule = void 0;
+      var sprotty_1 = require_lib4();
+      require_status_overlay();
+      var status_overlay_1 = require_status_overlay2();
+      exports.statusModule = new sprotty_1.FeatureModule((bind, unbind, isBound, rebind) => {
+        const context = { bind, unbind, isBound, rebind };
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IUIExtension, status_overlay_1.StatusOverlay);
+        bind(sprotty_1.TYPES.IDiagramStartup).toService(status_overlay_1.StatusOverlay);
+        (0, sprotty_1.configureActionHandler)(context, sprotty_1.StatusAction.KIND, status_overlay_1.StatusOverlay);
+      }, { featureId: Symbol("status") });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/svg-metadata/metadata-placer.js
+  var require_metadata_placer = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/svg-metadata/metadata-placer.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.MetadataPlacer = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var model_1 = require_model22();
+      var MetadataPlacer = class MetadataPlacer {
+        decorate(vnode, element) {
+          if (element instanceof sprotty_1.GModelRoot) {
+            (0, sprotty_1.setAttr)(vnode, "data-svg-metadata-api", true);
+          }
+          (0, sprotty_1.setAttr)(vnode, "data-svg-metadata-type", element.type);
+          if (element instanceof sprotty_1.GChildElement) {
+            (0, sprotty_1.setAttr)(vnode, "data-svg-metadata-parent-id", this.domHelper.createUniqueDOMElementId(element.parent));
+          }
+          if (element instanceof model_1.GEdge) {
+            if (element.source !== void 0) {
+              (0, sprotty_1.setAttr)(vnode, "data-svg-metadata-edge-source-id", this.domHelper.createUniqueDOMElementId(element.source));
+            }
+            if (element.target !== void 0) {
+              (0, sprotty_1.setAttr)(vnode, "data-svg-metadata-edge-target-id", this.domHelper.createUniqueDOMElementId(element.target));
+            }
+          }
+          return vnode;
+        }
+        postUpdate() {
+        }
+      };
+      exports.MetadataPlacer = MetadataPlacer;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.DOMHelper),
+        __metadata("design:type", sprotty_1.DOMHelper)
+      ], MetadataPlacer.prototype, "domHelper", void 0);
+      exports.MetadataPlacer = MetadataPlacer = __decorate([
+        (0, inversify_1.injectable)()
+      ], MetadataPlacer);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/svg-metadata/svg-metadata-module.js
+  var require_svg_metadata_module = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/svg-metadata/svg-metadata-module.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.svgMetadataModule = void 0;
+      var sprotty_1 = require_lib4();
+      var metadata_placer_1 = require_metadata_placer();
+      exports.svgMetadataModule = new sprotty_1.FeatureModule((bind) => {
+        bind(metadata_placer_1.MetadataPlacer).toSelf().inSingletonScope();
+        bind(sprotty_1.TYPES.IVNodePostprocessor).toService(metadata_placer_1.MetadataPlacer);
+      }, { featureId: Symbol("svgMetadata") });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/css/tool-palette.css
+  var require_tool_palette2 = __commonJS({
+    "node_modules/@eclipse-glsp/client/css/tool-palette.css"(exports, module) {
+      module.exports = {};
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/tools/deletion/delete-tool.js
+  var require_delete_tool = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/tools/deletion/delete-tool.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var DelKeyDeleteTool_1;
+      var MouseDeleteTool_1;
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.DeleteToolMouseListener = exports.MouseDeleteTool = exports.DeleteKeyListener = exports.DelKeyDeleteTool = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var css_feedback_1 = require_css_feedback();
+      var tool_1 = require_tool();
+      var base_tools_1 = require_base_tools();
+      var DelKeyDeleteTool = DelKeyDeleteTool_1 = class DelKeyDeleteTool {
+        constructor() {
+          this.isEditTool = true;
+          this.deleteKeyListener = new DeleteKeyListener();
+        }
+        get id() {
+          return DelKeyDeleteTool_1.ID;
+        }
+        enable() {
+          this.keytool.register(this.deleteKeyListener);
+        }
+        disable() {
+          this.keytool.deregister(this.deleteKeyListener);
+        }
+      };
+      exports.DelKeyDeleteTool = DelKeyDeleteTool;
+      DelKeyDeleteTool.ID = "glsp.delete-keyboard";
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.KeyTool),
+        __metadata("design:type", sprotty_1.KeyTool)
+      ], DelKeyDeleteTool.prototype, "keytool", void 0);
+      exports.DelKeyDeleteTool = DelKeyDeleteTool = DelKeyDeleteTool_1 = __decorate([
+        (0, inversify_1.injectable)()
+      ], DelKeyDeleteTool);
+      var DeleteKeyListener = class DeleteKeyListener extends sprotty_1.KeyListener {
+        keyDown(element, event) {
+          if ((0, sprotty_1.matchesKeystroke)(event, "Delete")) {
+            const deleteElementIds = Array.from(element.root.index.all().filter((e2) => (0, sprotty_1.isDeletable)(e2) && (0, sprotty_1.isSelectable)(e2) && e2.selected).filter((e2) => e2.id !== e2.root.id).map((e2) => e2.id));
+            if (deleteElementIds.length > 0) {
+              return [sprotty_1.DeleteElementOperation.create(deleteElementIds)];
+            }
+          }
+          return [];
+        }
+      };
+      exports.DeleteKeyListener = DeleteKeyListener;
+      exports.DeleteKeyListener = DeleteKeyListener = __decorate([
+        (0, inversify_1.injectable)()
+      ], DeleteKeyListener);
+      var MouseDeleteTool = MouseDeleteTool_1 = class MouseDeleteTool extends base_tools_1.BaseEditTool {
+        constructor() {
+          super(...arguments);
+          this.deleteToolMouseListener = new DeleteToolMouseListener();
+        }
+        get id() {
+          return MouseDeleteTool_1.ID;
+        }
+        enable() {
+          const cursorFeedback = this.createFeedbackEmitter().add((0, css_feedback_1.cursorFeedbackAction)(css_feedback_1.CursorCSS.ELEMENT_DELETION), (0, css_feedback_1.cursorFeedbackAction)()).submit();
+          this.toDisposeOnDisable.push(this.mouseTool.registerListener(this.deleteToolMouseListener), cursorFeedback);
+        }
+      };
+      exports.MouseDeleteTool = MouseDeleteTool;
+      MouseDeleteTool.ID = "glsp.delete-mouse";
+      exports.MouseDeleteTool = MouseDeleteTool = MouseDeleteTool_1 = __decorate([
+        (0, inversify_1.injectable)()
+      ], MouseDeleteTool);
+      var DeleteToolMouseListener = class DeleteToolMouseListener extends sprotty_1.MouseListener {
+        mouseUp(target, event) {
+          const deletableParent = (0, sprotty_1.findParentByFeature)(target, sprotty_1.isDeletable);
+          if (deletableParent === void 0) {
+            return [];
+          }
+          const result = [];
+          result.push(sprotty_1.DeleteElementOperation.create([deletableParent.id]));
+          if (!(0, sprotty_1.isCtrlOrCmd)(event)) {
+            result.push(tool_1.EnableDefaultToolsAction.create());
+          }
+          return result;
+        }
+      };
+      exports.DeleteToolMouseListener = DeleteToolMouseListener;
+      exports.DeleteToolMouseListener = DeleteToolMouseListener = __decorate([
+        (0, inversify_1.injectable)()
+      ], DeleteToolMouseListener);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/tools/marquee-selection/marquee-tool-feedback.js
+  var require_marquee_tool_feedback = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/tools/marquee-selection/marquee-tool-feedback.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var __param = exports && exports.__param || function(paramIndex, decorator) {
+        return function(target, key) {
+          decorator(target, key, paramIndex);
+        };
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.removeMarquee = exports.drawMarquee = exports.MARQUEE = exports.marqueeId = exports.MarqueeEndMovingMouseListener = exports.RemoveMarqueeCommand = exports.RemoveMarqueeAction = exports.DrawMarqueeCommand = exports.DrawMarqueeAction = void 0;
+      var inversify_1 = require_cjs4();
+      var sprotty_1 = require_lib4();
+      var feedback_command_1 = require_feedback_command();
+      var DrawMarqueeAction;
+      (function(DrawMarqueeAction2) {
+        DrawMarqueeAction2.KIND = "drawMarquee";
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, DrawMarqueeAction2.KIND) && (0, sprotty_1.hasObjectProp)(object, "startPoint") && (0, sprotty_1.hasObjectProp)(object, "endPoint");
+        }
+        DrawMarqueeAction2.is = is;
+        function create(options) {
+          return {
+            kind: DrawMarqueeAction2.KIND,
+            ...options
+          };
+        }
+        DrawMarqueeAction2.create = create;
+      })(DrawMarqueeAction || (exports.DrawMarqueeAction = DrawMarqueeAction = {}));
+      var DrawMarqueeCommand = class DrawMarqueeCommand extends feedback_command_1.FeedbackCommand {
+        constructor(action) {
+          super();
+          this.action = action;
+        }
+        execute(context) {
+          drawMarquee(context, this.action.startPoint, this.action.endPoint);
+          return context.root;
+        }
+      };
+      exports.DrawMarqueeCommand = DrawMarqueeCommand;
+      DrawMarqueeCommand.KIND = DrawMarqueeAction.KIND;
+      exports.DrawMarqueeCommand = DrawMarqueeCommand = __decorate([
+        (0, inversify_1.injectable)(),
+        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.Action)),
+        __metadata("design:paramtypes", [Object])
+      ], DrawMarqueeCommand);
+      var RemoveMarqueeAction;
+      (function(RemoveMarqueeAction2) {
+        RemoveMarqueeAction2.KIND = "removeMarquee";
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, RemoveMarqueeAction2.KIND);
+        }
+        RemoveMarqueeAction2.is = is;
+        function create() {
+          return { kind: RemoveMarqueeAction2.KIND };
+        }
+        RemoveMarqueeAction2.create = create;
+      })(RemoveMarqueeAction || (exports.RemoveMarqueeAction = RemoveMarqueeAction = {}));
+      var RemoveMarqueeCommand = class RemoveMarqueeCommand extends feedback_command_1.FeedbackCommand {
+        execute(context) {
+          removeMarquee(context.root);
+          return context.root;
+        }
+      };
+      exports.RemoveMarqueeCommand = RemoveMarqueeCommand;
+      RemoveMarqueeCommand.KIND = RemoveMarqueeAction.KIND;
+      exports.RemoveMarqueeCommand = RemoveMarqueeCommand = __decorate([
+        (0, inversify_1.injectable)()
+      ], RemoveMarqueeCommand);
+      var MarqueeEndMovingMouseListener = class extends sprotty_1.MouseListener {
+        constructor(anchorRegistry) {
+          super();
+          this.anchorRegistry = anchorRegistry;
+        }
+        mouseMove(target, event) {
+          return [];
+        }
+      };
+      exports.MarqueeEndMovingMouseListener = MarqueeEndMovingMouseListener;
+      function marqueeId(root) {
+        return root.id + "_" + exports.MARQUEE;
+      }
+      exports.marqueeId = marqueeId;
+      exports.MARQUEE = "marquee";
+      function drawMarquee(context, startPoint, endPoint) {
+        const root = context.root;
+        removeMarquee(root);
+        const marqueeSchema = {
+          type: exports.MARQUEE,
+          id: marqueeId(root),
+          startPoint,
+          endPoint
+        };
+        const marquee = context.modelFactory.createElement(marqueeSchema);
+        root.add(marquee);
+      }
+      exports.drawMarquee = drawMarquee;
+      function removeMarquee(root) {
+        const marquee = root.index.getById(marqueeId(root));
+        if (marquee instanceof sprotty_1.GChildElement) {
+          root.remove(marquee);
+        }
+      }
+      exports.removeMarquee = removeMarquee;
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/tools/marquee-selection/marquee-behavior.js
+  var require_marquee_behavior = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/tools/marquee-selection/marquee-behavior.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var __param = exports && exports.__param || function(paramIndex, decorator) {
+        return function(target, key) {
+          decorator(target, key, paramIndex);
+        };
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.MarqueeUtil = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var model_1 = require_model22();
+      var gmodel_util_1 = require_gmodel_util();
+      var viewpoint_util_1 = require_viewpoint_util();
+      var marquee_tool_feedback_1 = require_marquee_tool_feedback();
+      var MarqueeUtil = class MarqueeUtil {
+        constructor(marqueeBehavior = { entireElement: false, entireEdge: false }, domHelper) {
+          this.marqueeBehavior = marqueeBehavior;
+          this.domHelper = domHelper;
+        }
+        isContinuousMode(element, event) {
+          return event.shiftKey;
+        }
+        getMarkableNodes(root) {
+          return (0, gmodel_util_1.getMatchingElements)(root.index, this.isMarkableNode());
+        }
+        isMarkableNode() {
+          return (0, sprotty_1.typeGuard)((0, sprotty_1.toTypeGuard)(sprotty_1.GNode), gmodel_util_1.isSelectableAndBoundsAware);
+        }
+        getMarkableEdges(root) {
+          return (0, gmodel_util_1.getMatchingElements)(root.index, this.isMarkableEdge());
+        }
+        isMarkableEdge() {
+          return (0, sprotty_1.typeGuard)((0, sprotty_1.toTypeGuard)(model_1.GEdge), sprotty_1.isSelectable);
+        }
+        updateStartPoint(position) {
+          this.startPoint = position;
+        }
+        updateCurrentPoint(position) {
+          this.currentPoint = position;
+        }
+        isMarked(element) {
+          return element instanceof model_1.GEdge ? this.isMarkedEdge(element) : this.isMarkedNode(element);
+        }
+        drawMarqueeAction() {
+          return marquee_tool_feedback_1.DrawMarqueeAction.create({ startPoint: this.startPoint, endPoint: this.currentPoint });
+        }
+        isMarkedEdge(edge) {
+          const domId = this.domHelper.createUniqueDOMElementId(edge);
+          const domEdge = document.getElementById(domId);
+          if (!domEdge || domEdge.getAttribute("transform") || !domEdge.children[0]) {
+            return false;
+          }
+          const path = domEdge.children[0].getAttribute("d");
+          return this.isEdgePathMarked(path);
+        }
+        isMarkedNode(node) {
+          return this.isNodeMarked(this.getNodeBounds(node));
+        }
+        getNodeBounds(node) {
+          return (0, viewpoint_util_1.toAbsoluteBounds)(node);
+        }
+        isEdgePathMarked(path) {
+          if (!path) {
+            return false;
+          }
+          const points = path.split(/M|L/).filter((p3) => p3).map((p3) => {
+            const coord = p3.split(",");
+            return { x: parseInt(coord[0], 10), y: parseInt(coord[1], 10) };
+          });
+          return this.isEdgeMarked(points);
+        }
+        isEdgeMarked(points) {
+          return this.marqueeBehavior.entireEdge ? this.isEntireEdgeMarked(points) : this.isPartOfEdgeMarked(points);
+        }
+        isNodeMarked(elementBounds) {
+          const horizontallyIn = this.startPoint.x < this.currentPoint.x ? this.isElementBetweenXAxis(elementBounds, this.startPoint.x, this.currentPoint.x) : this.isElementBetweenXAxis(elementBounds, this.currentPoint.x, this.startPoint.x);
+          const verticallyIn = this.startPoint.y < this.currentPoint.y ? this.isElementBetweenYAxis(elementBounds, this.startPoint.y, this.currentPoint.y) : this.isElementBetweenYAxis(elementBounds, this.currentPoint.y, this.startPoint.y);
+          return horizontallyIn && verticallyIn;
+        }
+        isEntireEdgeMarked(points) {
+          for (let i2 = 0; i2 < points.length; i2++) {
+            if (!this.pointInRect(points[i2])) {
+              return false;
+            }
+          }
+          return true;
+        }
+        isPartOfEdgeMarked(points) {
+          for (let i2 = 0; i2 < points.length - 1; i2++) {
+            if (this.isLineMarked(points[i2], points[i2 + 1])) {
+              return true;
+            }
+          }
+          return false;
+        }
+        isLineMarked(point1, point2) {
+          const line = new sprotty_1.PointToPointLine(point1, point2);
+          return this.pointInRect(point1) || this.pointInRect(point2) || this.lineIntersect(line, this.startPoint, { x: this.startPoint.x, y: this.currentPoint.y }) || this.lineIntersect(line, this.startPoint, { x: this.currentPoint.x, y: this.startPoint.y }) || this.lineIntersect(line, { x: this.currentPoint.x, y: this.startPoint.y }, this.currentPoint) || this.lineIntersect(line, { x: this.startPoint.x, y: this.currentPoint.y }, this.currentPoint);
+        }
+        lineIntersect(line, p1, p22) {
+          return line.intersection(new sprotty_1.PointToPointLine(p1, p22)) !== void 0;
+        }
+        pointInRect(point) {
+          const boolX = this.startPoint.x <= this.currentPoint.x ? this.isBetween(point.x, this.startPoint.x, this.currentPoint.x) : this.isBetween(point.x, this.currentPoint.x, this.startPoint.x);
+          const boolY = this.startPoint.y <= this.currentPoint.y ? this.isBetween(point.y, this.startPoint.y, this.currentPoint.y) : this.isBetween(point.y, this.currentPoint.y, this.startPoint.y);
+          return boolX && boolY;
+        }
+        isElementBetweenXAxis(elementBounds, marqueeLeft, marqueeRight) {
+          const leftEdge = this.isBetween(elementBounds.x, marqueeLeft, marqueeRight);
+          const rightEdge = this.isBetween(elementBounds.x + elementBounds.width, marqueeLeft, marqueeRight);
+          if (this.marqueeBehavior.entireElement) {
+            return leftEdge && rightEdge;
+          }
+          return leftEdge || rightEdge || this.isBetween(marqueeLeft, elementBounds.x, elementBounds.x + elementBounds.width) || this.isBetween(marqueeRight, elementBounds.x, elementBounds.x + elementBounds.width);
+        }
+        isElementBetweenYAxis(elementBounds, marqueeTop, marqueeBottom) {
+          const topEdge = this.isBetween(elementBounds.y, marqueeTop, marqueeBottom);
+          const bottomEdge = this.isBetween(elementBounds.y + elementBounds.height, marqueeTop, marqueeBottom);
+          if (this.marqueeBehavior.entireElement) {
+            return topEdge && bottomEdge;
+          }
+          return topEdge || bottomEdge || this.isBetween(marqueeTop, elementBounds.y, elementBounds.y + elementBounds.height) || this.isBetween(marqueeBottom, elementBounds.y, elementBounds.y + elementBounds.height);
+        }
+        isBetween(x3, lower, upper) {
+          return lower <= x3 && x3 <= upper;
+        }
+      };
+      exports.MarqueeUtil = MarqueeUtil;
+      exports.MarqueeUtil = MarqueeUtil = __decorate([
+        (0, inversify_1.injectable)(),
+        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.IMarqueeBehavior)),
+        __param(0, (0, inversify_1.optional)()),
+        __param(1, (0, inversify_1.inject)(sprotty_1.TYPES.DOMHelper)),
+        __metadata("design:paramtypes", [Object, sprotty_1.DOMHelper])
+      ], MarqueeUtil);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/tools/marquee-selection/marquee-mouse-tool.js
+  var require_marquee_mouse_tool = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/tools/marquee-selection/marquee-mouse-tool.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var MarqueeMouseTool_1;
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.ShiftKeyListener = exports.MarqueeMouseListener = exports.MarqueeMouseTool = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var drag_aware_mouse_listener_1 = require_drag_aware_mouse_listener();
+      var css_feedback_1 = require_css_feedback();
+      var tool_1 = require_tool();
+      var gmodel_util_1 = require_gmodel_util();
+      var viewpoint_util_1 = require_viewpoint_util();
+      var base_tools_1 = require_base_tools();
+      var marquee_behavior_1 = require_marquee_behavior();
+      var marquee_tool_feedback_1 = require_marquee_tool_feedback();
+      var MarqueeMouseTool = MarqueeMouseTool_1 = class MarqueeMouseTool extends base_tools_1.BaseEditTool {
+        constructor() {
+          super(...arguments);
+          this.shiftKeyListener = new ShiftKeyListener();
+        }
+        get id() {
+          return MarqueeMouseTool_1.ID;
+        }
+        enable() {
+          this.toDisposeOnDisable.push(this.mouseTool.registerListener(new MarqueeMouseListener(this.editorContext.modelRoot, this.marqueeUtil)), this.keyTool.registerListener(this.shiftKeyListener), this.createFeedbackEmitter().add((0, css_feedback_1.cursorFeedbackAction)(css_feedback_1.CursorCSS.MARQUEE), (0, css_feedback_1.cursorFeedbackAction)()).submit());
+        }
+        get isEditTool() {
+          return false;
+        }
+      };
+      exports.MarqueeMouseTool = MarqueeMouseTool;
+      MarqueeMouseTool.ID = "glsp.marquee-mouse-tool";
+      __decorate([
+        (0, inversify_1.inject)(marquee_behavior_1.MarqueeUtil),
+        __metadata("design:type", marquee_behavior_1.MarqueeUtil)
+      ], MarqueeMouseTool.prototype, "marqueeUtil", void 0);
+      exports.MarqueeMouseTool = MarqueeMouseTool = MarqueeMouseTool_1 = __decorate([
+        (0, inversify_1.injectable)()
+      ], MarqueeMouseTool);
+      var MarqueeMouseListener = class extends drag_aware_mouse_listener_1.DragAwareMouseListener {
+        constructor(root, marqueeUtil) {
+          super();
+          this.marqueeUtil = marqueeUtil;
+          this.isActive = false;
+          this.nodes = this.marqueeUtil.getMarkableNodes(root);
+          this.edges = this.marqueeUtil.getMarkableEdges(root);
+        }
+        mouseDown(target, event) {
+          this.isActive = true;
+          this.marqueeUtil.updateStartPoint((0, viewpoint_util_1.getAbsolutePosition)(target, event));
+          if (event.ctrlKey) {
+            this.previouslySelected = (0, gmodel_util_1.getMatchingElements)(target.index, (0, sprotty_1.typeGuard)(gmodel_util_1.isSelectableAndBoundsAware, sprotty_1.isSelected)).map((e2) => e2.id);
+          }
+          return [];
+        }
+        mouseMove(target, event) {
+          this.marqueeUtil.updateCurrentPoint((0, viewpoint_util_1.getAbsolutePosition)(target, event));
+          if (this.isActive) {
+            const nodeIdsSelected = this.nodes.filter((e2) => this.marqueeUtil.isMarked(e2)).map((e2) => e2.id);
+            const edgeIdsSelected = this.edges.filter((e2) => this.marqueeUtil.isMarked(e2)).map((e2) => e2.id);
+            const currentSelected = nodeIdsSelected.concat(edgeIdsSelected);
+            const selection = currentSelected.concat(this.previouslySelected);
+            return [sprotty_1.SelectAction.setSelection(selection), this.marqueeUtil.drawMarqueeAction()];
+          }
+          return [];
+        }
+        mouseUp(target, event) {
+          this.isActive = false;
+          return this.marqueeUtil.isContinuousMode(target, event) ? [marquee_tool_feedback_1.RemoveMarqueeAction.create()] : [marquee_tool_feedback_1.RemoveMarqueeAction.create(), tool_1.EnableDefaultToolsAction.create()];
+        }
+      };
+      exports.MarqueeMouseListener = MarqueeMouseListener;
+      var ShiftKeyListener = class ShiftKeyListener extends sprotty_1.KeyListener {
+        keyUp(element, event) {
+          if (event.shiftKey) {
+            return [];
+          }
+          return [marquee_tool_feedback_1.RemoveMarqueeAction.create(), tool_1.EnableDefaultToolsAction.create()];
+        }
+      };
+      exports.ShiftKeyListener = ShiftKeyListener;
+      exports.ShiftKeyListener = ShiftKeyListener = __decorate([
+        (0, inversify_1.injectable)()
+      ], ShiftKeyListener);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/viewport/origin-viewport.js
+  var require_origin_viewport = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/viewport/origin-viewport.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var __param = exports && exports.__param || function(paramIndex, decorator) {
+        return function(target, key) {
+          decorator(target, key, paramIndex);
+        };
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.OriginViewportCommand = exports.OriginViewportAction = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var OriginViewportAction;
+      (function(OriginViewportAction2) {
+        OriginViewportAction2.KIND = "originViewport";
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, OriginViewportAction2.KIND);
+        }
+        OriginViewportAction2.is = is;
+        function create(options = {}) {
+          return {
+            kind: OriginViewportAction2.KIND,
+            animate: true,
+            ...options
+          };
+        }
+        OriginViewportAction2.create = create;
+      })(OriginViewportAction || (exports.OriginViewportAction = OriginViewportAction = {}));
+      var OriginViewportCommand = class OriginViewportCommand extends sprotty_1.BoundsAwareViewportCommand {
+        constructor(action) {
+          super(action.animate);
+          this.action = action;
+        }
+        getElementIds() {
+          return [];
+        }
+        initialize(model) {
+          if (!(0, sprotty_1.isViewport)(model)) {
+            return;
+          }
+          this.oldViewport = { scroll: model.scroll, zoom: model.zoom };
+          const newViewport = this.getNewViewport(sprotty_1.Bounds.EMPTY, model);
+          if (newViewport) {
+            const { zoomLimits, horizontalScrollLimits, verticalScrollLimits } = this.viewerOptions;
+            this.newViewport = (0, sprotty_1.limitViewport)(newViewport, model.canvasBounds, horizontalScrollLimits, verticalScrollLimits, zoomLimits);
+          }
+        }
+        getNewViewport(_bounds, _model) {
+          return { zoom: 1, scroll: { x: 0, y: 0 } };
+        }
+      };
+      exports.OriginViewportCommand = OriginViewportCommand;
+      OriginViewportCommand.KIND = OriginViewportAction.KIND;
+      exports.OriginViewportCommand = OriginViewportCommand = __decorate([
+        (0, inversify_1.injectable)(),
+        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.Action)),
+        __metadata("design:paramtypes", [Object])
+      ], OriginViewportCommand);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/tool-palette/tool-palette.js
+  var require_tool_palette3 = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/tool-palette/tool-palette.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var ToolPalette_1;
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.changeCodiconClass = exports.changeCSSClass = exports.createToolGroup = exports.createIcon = exports.compare = exports.ToolPalette = exports.EnableToolPaletteAction = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var editor_context_service_1 = require_editor_context_service();
+      var focus_tracker_1 = require_focus_tracker();
+      var messages_1 = require_messages3();
+      var tool_1 = require_tool();
+      var ui_extension_1 = require_ui_extension2();
+      var delete_tool_1 = require_delete_tool();
+      var marquee_mouse_tool_1 = require_marquee_mouse_tool();
+      var origin_viewport_1 = require_origin_viewport();
+      var CLICKED_CSS_CLASS = "clicked";
+      var SEARCH_ICON_ID = "search";
+      var PALETTE_ICON_ID = "tools";
+      var CHEVRON_DOWN_ICON_ID = "chevron-right";
+      var PALETTE_HEIGHT = "500px";
+      var EnableToolPaletteAction;
+      (function(EnableToolPaletteAction2) {
+        EnableToolPaletteAction2.KIND = "enableToolPalette";
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, EnableToolPaletteAction2.KIND);
+        }
+        EnableToolPaletteAction2.is = is;
+        function create() {
+          return { kind: EnableToolPaletteAction2.KIND };
+        }
+        EnableToolPaletteAction2.create = create;
+      })(EnableToolPaletteAction || (exports.EnableToolPaletteAction = EnableToolPaletteAction = {}));
+      var ToolPalette = ToolPalette_1 = class ToolPalette extends ui_extension_1.GLSPAbstractUIExtension {
+        constructor() {
+          super(...arguments);
+          this.paletteItemsCopy = [];
+          this.dynamic = false;
+        }
+        id() {
+          return ToolPalette_1.ID;
+        }
+        containerClass() {
+          return ToolPalette_1.ID;
+        }
+        postConstruct() {
+          this.editorContext.onEditModeChanged((change) => this.editModeChanged(change.newValue, change.oldValue));
+          (0, messages_1.repeatOnMessagesUpdated)(() => {
+            this.createHeader();
+            this.addMinimizePaletteButton();
+          }, { initial: false });
+        }
+        initialize() {
+          if (!this.paletteItems) {
+            return false;
+          }
+          return super.initialize();
+        }
+        initializeContents(containerElement) {
+          this.addMinimizePaletteButton();
+          this.createHeader();
+          this.createBody();
+          this.lastActiveButton = this.defaultToolsButton;
+          containerElement.setAttribute("aria-label", messages_1.messages.tool_palette.label);
+        }
+        onBeforeShow(_containerElement, root) {
+          this.modelRootId = root.id;
+          this.containerElement.style.maxHeight = PALETTE_HEIGHT;
+        }
+        addMinimizePaletteButton() {
+          const baseDiv = document.getElementById(this.options.baseDiv);
+          if (!baseDiv) {
+            return;
+          }
+          const toggleButton = document.createElement("div");
+          toggleButton.classList.add("minimize-palette-button");
+          this.containerElement.classList.add("collapsible-palette");
+          const minimizeIcon = createIcon(CHEVRON_DOWN_ICON_ID);
+          this.updateMinimizePaletteButtonTooltip(toggleButton);
+          minimizeIcon.onclick = (_event) => {
+            if (this.isPaletteMaximized()) {
+              this.containerElement.style.maxHeight = "0px";
+            } else {
+              this.containerElement.style.maxHeight = PALETTE_HEIGHT;
+            }
+            this.updateMinimizePaletteButtonTooltip(toggleButton);
+            changeCodiconClass(minimizeIcon, PALETTE_ICON_ID);
+            changeCodiconClass(minimizeIcon, CHEVRON_DOWN_ICON_ID);
+          };
+          toggleButton.appendChild(minimizeIcon);
+          if (this.toggleButton) {
+            this.toggleButton.replaceWith(toggleButton);
+          } else {
+            baseDiv.insertBefore(toggleButton, baseDiv.firstChild);
+          }
+          this.toggleButton = toggleButton;
+        }
+        updateMinimizePaletteButtonTooltip(button) {
+          if (this.isPaletteMaximized()) {
+            button.title = messages_1.messages.tool_palette.minimize;
+          } else {
+            button.title = messages_1.messages.tool_palette.maximize;
+          }
+        }
+        isPaletteMaximized() {
+          return this.containerElement && this.containerElement.style.maxHeight !== "0px";
+        }
+        createBody() {
+          const bodyDiv = document.createElement("div");
+          bodyDiv.classList.add("palette-body");
+          let tabIndex = 0;
+          this.paletteItems.sort(compare).forEach((item) => {
+            if (item.children) {
+              const group = createToolGroup(item);
+              item.children.sort(compare).forEach((child) => group.appendChild(this.createToolButton(child, tabIndex++)));
+              bodyDiv.appendChild(group);
+            } else {
+              bodyDiv.appendChild(this.createToolButton(item, tabIndex++));
+            }
+          });
+          if (this.paletteItems.length === 0) {
+            const noResultsDiv = document.createElement("div");
+            noResultsDiv.innerText = messages_1.messages.tool_palette.no_items;
+            noResultsDiv.classList.add("tool-button");
+            bodyDiv.appendChild(noResultsDiv);
+          }
+          if (this.bodyDiv) {
+            this.bodyDiv.replaceWith(bodyDiv);
+          } else {
+            this.containerElement.appendChild(bodyDiv);
+          }
+          this.bodyDiv = bodyDiv;
+        }
+        createHeader() {
+          const headerCompartment = document.createElement("div");
+          headerCompartment.classList.add("palette-header");
+          headerCompartment.append(this.createHeaderTitle());
+          headerCompartment.appendChild(this.createHeaderTools());
+          headerCompartment.appendChild(this.searchField = this.createHeaderSearchField());
+          if (this.headerDiv) {
+            this.headerDiv.replaceWith(headerCompartment);
+          } else {
+            this.containerElement.appendChild(headerCompartment);
+          }
+          this.headerDiv = headerCompartment;
+        }
+        createHeaderTools() {
+          const headerTools = document.createElement("div");
+          headerTools.classList.add("header-tools");
+          this.defaultToolsButton = this.createDefaultToolButton();
+          headerTools.appendChild(this.defaultToolsButton);
+          const deleteToolButton = this.createMouseDeleteToolButton();
+          headerTools.appendChild(deleteToolButton);
+          const marqueeToolButton = this.createMarqueeToolButton();
+          headerTools.appendChild(marqueeToolButton);
+          const validateActionButton = this.createValidateButton();
+          headerTools.appendChild(validateActionButton);
+          const resetViewportButton = this.createResetViewportButton();
+          headerTools.appendChild(resetViewportButton);
+          if (this.gridManager) {
+            const toggleGridButton = this.createToggleGridButton();
+            headerTools.appendChild(toggleGridButton);
+          }
+          if (this.debugManager) {
+            const toggleDebugButton = this.createToggleDebugButton();
+            headerTools.appendChild(toggleDebugButton);
+          }
+          const searchIcon = this.createSearchButton();
+          headerTools.appendChild(searchIcon);
+          return headerTools;
+        }
+        createDefaultToolButton() {
+          const button = createIcon("inspect");
+          button.id = "btn_default_tools";
+          button.title = messages_1.messages.tool_palette.selection_button;
+          button.onclick = this.onClickStaticToolButton(button);
+          button.ariaLabel = button.title;
+          button.tabIndex = 1;
+          return button;
+        }
+        createMouseDeleteToolButton() {
+          const deleteToolButton = createIcon("chrome-close");
+          deleteToolButton.title = messages_1.messages.tool_palette.delete_button;
+          deleteToolButton.onclick = this.onClickStaticToolButton(deleteToolButton, delete_tool_1.MouseDeleteTool.ID);
+          deleteToolButton.ariaLabel = deleteToolButton.title;
+          deleteToolButton.tabIndex = 1;
+          return deleteToolButton;
+        }
+        createMarqueeToolButton() {
+          const marqueeToolButton = createIcon("screen-full");
+          marqueeToolButton.title = messages_1.messages.tool_palette.marquee_button;
+          marqueeToolButton.onclick = this.onClickStaticToolButton(marqueeToolButton, marquee_mouse_tool_1.MarqueeMouseTool.ID);
+          marqueeToolButton.ariaLabel = marqueeToolButton.title;
+          marqueeToolButton.tabIndex = 1;
+          return marqueeToolButton;
+        }
+        createValidateButton() {
+          const validateActionButton = createIcon("pass");
+          validateActionButton.title = messages_1.messages.tool_palette.validate_button;
+          validateActionButton.onclick = (_event) => {
+            const modelIds = [this.modelRootId];
+            this.actionDispatcher.dispatch(sprotty_1.RequestMarkersAction.create(modelIds, { reason: sprotty_1.MarkersReason.BATCH }));
+            validateActionButton.focus();
+          };
+          validateActionButton.ariaLabel = validateActionButton.title;
+          validateActionButton.tabIndex = 1;
+          return validateActionButton;
+        }
+        createResetViewportButton() {
+          const resetViewportButton = createIcon("screen-normal");
+          resetViewportButton.title = messages_1.messages.tool_palette.reset_viewport_button;
+          resetViewportButton.onclick = (_event) => {
+            this.actionDispatcher.dispatch(origin_viewport_1.OriginViewportAction.create());
+            resetViewportButton.focus();
+          };
+          resetViewportButton.ariaLabel = resetViewportButton.title;
+          resetViewportButton.tabIndex = 1;
+          return resetViewportButton;
+        }
+        createToggleGridButton() {
+          var _a4;
+          const toggleGridButton = createIcon("symbol-numeric");
+          toggleGridButton.title = messages_1.messages.tool_palette.toggle_grid_button;
+          toggleGridButton.onclick = () => {
+            var _a5, _b2, _c;
+            if ((_a5 = this.gridManager) === null || _a5 === void 0 ? void 0 : _a5.isGridVisible) {
+              toggleGridButton.classList.remove(CLICKED_CSS_CLASS);
+              (_b2 = this.gridManager) === null || _b2 === void 0 ? void 0 : _b2.setGridVisible(false);
+            } else {
+              toggleGridButton.classList.add(CLICKED_CSS_CLASS);
+              (_c = this.gridManager) === null || _c === void 0 ? void 0 : _c.setGridVisible(true);
+            }
+          };
+          if ((_a4 = this.gridManager) === null || _a4 === void 0 ? void 0 : _a4.isGridVisible) {
+            toggleGridButton.classList.add(CLICKED_CSS_CLASS);
+          }
+          toggleGridButton.ariaLabel = toggleGridButton.title;
+          toggleGridButton.tabIndex = 1;
+          return toggleGridButton;
+        }
+        createToggleDebugButton() {
+          var _a4;
+          const toggleDebugButton = createIcon("debug");
+          toggleDebugButton.title = messages_1.messages.tool_palette.debug_mode_button;
+          toggleDebugButton.onclick = () => {
+            var _a5, _b2, _c;
+            if ((_a5 = this.debugManager) === null || _a5 === void 0 ? void 0 : _a5.isDebugEnabled) {
+              toggleDebugButton.classList.remove(CLICKED_CSS_CLASS);
+              (_b2 = this.debugManager) === null || _b2 === void 0 ? void 0 : _b2.setDebugEnabled(false);
+            } else {
+              toggleDebugButton.classList.add(CLICKED_CSS_CLASS);
+              (_c = this.debugManager) === null || _c === void 0 ? void 0 : _c.setDebugEnabled(true);
+            }
+          };
+          if ((_a4 = this.debugManager) === null || _a4 === void 0 ? void 0 : _a4.isDebugEnabled) {
+            toggleDebugButton.classList.add(CLICKED_CSS_CLASS);
+          }
+          toggleDebugButton.ariaLabel = toggleDebugButton.title;
+          toggleDebugButton.tabIndex = 1;
+          return toggleDebugButton;
+        }
+        createSearchButton() {
+          const searchIcon = createIcon(SEARCH_ICON_ID);
+          searchIcon.onclick = (_ev) => {
+            const searchField = document.getElementById(this.containerElement.id + "_search_field");
+            if (searchField) {
+              if (searchField.style.display === "none") {
+                searchField.style.display = "";
+                searchField.focus();
+              } else {
+                searchField.style.display = "none";
+              }
+            }
+          };
+          searchIcon.classList.add("search-icon");
+          searchIcon.title = messages_1.messages.tool_palette.search_button;
+          searchIcon.ariaLabel = searchIcon.title;
+          searchIcon.tabIndex = 1;
+          return searchIcon;
+        }
+        createHeaderSearchField() {
+          const searchField = document.createElement("input");
+          searchField.classList.add("search-input");
+          searchField.id = this.containerElement.id + "_search_field";
+          searchField.type = "text";
+          searchField.placeholder = messages_1.messages.tool_palette.search_placeholder;
+          searchField.style.display = "none";
+          searchField.onkeyup = () => this.requestFilterUpdate(this.searchField.value);
+          searchField.onkeydown = (ev) => this.clearOnEscape(ev);
+          return searchField;
+        }
+        createHeaderTitle() {
+          const header = document.createElement("div");
+          header.classList.add("header-icon");
+          header.appendChild(createIcon(PALETTE_ICON_ID));
+          header.insertAdjacentText("beforeend", "Palette");
+          return header;
+        }
+        createToolButton(item, index) {
+          const button = document.createElement("div");
+          button.tabIndex = index;
+          button.classList.add("tool-button");
+          if (item.icon) {
+            button.appendChild(createIcon(item.icon));
+          }
+          button.insertAdjacentText("beforeend", item.label);
+          button.onclick = this.onClickCreateToolButton(button, item);
+          button.onkeydown = (ev) => this.clearToolOnEscape(ev);
+          return button;
+        }
+        onClickCreateToolButton(button, item) {
+          return (_ev) => {
+            if (!this.editorContext.isReadonly) {
+              this.actionDispatcher.dispatchAll(item.actions);
+              this.changeActiveButton(button);
+              button.focus();
+            }
+          };
+        }
+        onClickStaticToolButton(button, toolId) {
+          return (_ev) => {
+            if (!this.editorContext.isReadonly) {
+              const action = toolId ? tool_1.EnableToolsAction.create([toolId]) : tool_1.EnableDefaultToolsAction.create();
+              this.actionDispatcher.dispatch(action);
+              this.changeActiveButton(button);
+              button.focus();
+            }
+          };
+        }
+        changeActiveButton(button) {
+          if (this.lastActiveButton) {
+            this.lastActiveButton.classList.remove(CLICKED_CSS_CLASS);
+          }
+          if (button) {
+            button.classList.add(CLICKED_CSS_CLASS);
+            this.lastActiveButton = button;
+          } else if (this.defaultToolsButton) {
+            this.defaultToolsButton.classList.add(CLICKED_CSS_CLASS);
+            this.lastActiveButton = this.defaultToolsButton;
+          }
+        }
+        handle(action) {
+          var _a4;
+          this.changeActiveButton();
+          if (sprotty_1.UpdateModelAction.is(action) || sprotty_1.SetModelAction.is(action)) {
+            this.reloadPaletteBody();
+          } else if (tool_1.EnableDefaultToolsAction.is(action)) {
+            if (this.focusTracker.hasFocus) {
+              (_a4 = this.focusTracker.diagramElement) === null || _a4 === void 0 ? void 0 : _a4.focus();
+            }
+          }
+        }
+        editModeChanged(_newValue, _oldValue) {
+          this.actionDispatcher.dispatch(sprotty_1.SetUIExtensionVisibilityAction.create({ extensionId: ToolPalette_1.ID, visible: !this.editorContext.isReadonly }));
+        }
+        clearOnEscape(event) {
+          if ((0, sprotty_1.matchesKeystroke)(event, "Escape")) {
+            this.searchField.value = "";
+            this.requestFilterUpdate("");
+          }
+        }
+        clearToolOnEscape(event) {
+          if ((0, sprotty_1.matchesKeystroke)(event, "Escape")) {
+            this.actionDispatcher.dispatch(tool_1.EnableDefaultToolsAction.create());
+          }
+        }
+        requestFilterUpdate(filter) {
+          if (this.paletteItemsCopy.length === 0) {
+            this.paletteItemsCopy = JSON.parse(JSON.stringify(this.paletteItems));
+          }
+          this.paletteItems = JSON.parse(JSON.stringify(this.paletteItemsCopy));
+          const filteredPaletteItems = [];
+          for (const itemGroup of this.paletteItems) {
+            if (itemGroup.children) {
+              const matchingChildren = itemGroup.children.filter((child) => child.label.toLowerCase().includes(filter.toLowerCase()));
+              if (matchingChildren.length > 0) {
+                itemGroup.children.splice(0, itemGroup.children.length);
+                matchingChildren.forEach((child) => itemGroup.children.push(child));
+                filteredPaletteItems.push(itemGroup);
+              }
+            }
+          }
+          this.paletteItems = filteredPaletteItems;
+          this.createBody();
+        }
+        /**
+         *  @deprecated This hook is no longer used by the ToolPalette.
+         *              It is kept for compatibility reasons and will be removed in the future.
+         *              Move initialization logic to the `postRequestModel` method.
+         *              This ensures that tool palette initialization does not block the diagram loading process.
+         */
+        async preRequestModel() {
+        }
+        async postRequestModel() {
+          await this.setPaletteItems();
+          if (!this.editorContext.isReadonly) {
+            this.show(this.editorContext.modelRoot);
+          }
+        }
+        async setPaletteItems() {
+          const requestAction = sprotty_1.RequestContextActions.create({
+            contextId: ToolPalette_1.ID,
+            editorContext: {
+              selectedElementIds: []
+            }
+          });
+          const response = await this.actionDispatcher.request(requestAction);
+          this.paletteItems = response.actions.map((action) => action);
+          this.dynamic = this.paletteItems.some((item) => this.hasDynamicAction(item));
+        }
+        hasDynamicAction(item) {
+          var _a4;
+          const dynamic = !!item.actions.find((action) => {
+            var _a5;
+            return sprotty_1.TriggerNodeCreationAction.is(action) && ((_a5 = action.ghostElement) === null || _a5 === void 0 ? void 0 : _a5.dynamic);
+          });
+          if (dynamic) {
+            return dynamic;
+          }
+          return ((_a4 = item.children) === null || _a4 === void 0 ? void 0 : _a4.some((child) => this.hasDynamicAction(child))) || false;
+        }
+        async reloadPaletteBody() {
+          if (!this.editorContext.isReadonly && this.dynamic) {
+            await this.setPaletteItems();
+            this.paletteItemsCopy = [];
+            this.requestFilterUpdate(this.searchField.value);
+          }
+        }
+      };
+      exports.ToolPalette = ToolPalette;
+      ToolPalette.ID = "tool-palette";
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        __metadata("design:type", Object)
+      ], ToolPalette.prototype, "actionDispatcher", void 0);
+      __decorate([
+        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
+        __metadata("design:type", editor_context_service_1.EditorContextService)
+      ], ToolPalette.prototype, "editorContext", void 0);
+      __decorate([
+        (0, inversify_1.inject)(focus_tracker_1.FocusTracker),
+        __metadata("design:type", focus_tracker_1.FocusTracker)
+      ], ToolPalette.prototype, "focusTracker", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IGridManager),
+        (0, inversify_1.optional)(),
+        __metadata("design:type", Object)
+      ], ToolPalette.prototype, "gridManager", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IDebugManager),
+        (0, inversify_1.optional)(),
+        __metadata("design:type", Object)
+      ], ToolPalette.prototype, "debugManager", void 0);
+      __decorate([
+        (0, inversify_1.postConstruct)(),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", []),
+        __metadata("design:returntype", void 0)
+      ], ToolPalette.prototype, "postConstruct", null);
+      exports.ToolPalette = ToolPalette = ToolPalette_1 = __decorate([
+        (0, inversify_1.injectable)()
+      ], ToolPalette);
+      function compare(a3, b3) {
+        const sortStringBased = a3.sortString.localeCompare(b3.sortString);
+        if (sortStringBased !== 0) {
+          return sortStringBased;
+        }
+        return a3.label.localeCompare(b3.label);
+      }
+      exports.compare = compare;
+      function createIcon(codiconId) {
+        const icon = document.createElement("i");
+        icon.classList.add(...(0, sprotty_1.codiconCSSClasses)(codiconId));
+        return icon;
+      }
+      exports.createIcon = createIcon;
+      function createToolGroup(item) {
+        const group = document.createElement("div");
+        group.classList.add("tool-group");
+        group.id = item.id;
+        const header = document.createElement("div");
+        header.classList.add("group-header");
+        if (item.icon) {
+          header.appendChild(createIcon(item.icon));
+        }
+        header.insertAdjacentText("beforeend", item.label);
+        header.ondblclick = (_ev) => {
+          const css = "collapsed";
+          changeCSSClass(group, css);
+          Array.from(group.children).forEach((child) => changeCSSClass(child, css));
+          window.getSelection().removeAllRanges();
+        };
+        group.appendChild(header);
+        return group;
+      }
+      exports.createToolGroup = createToolGroup;
+      function changeCSSClass(element, css) {
+        element.classList.contains(css) ? element.classList.remove(css) : element.classList.add(css);
+      }
+      exports.changeCSSClass = changeCSSClass;
+      function changeCodiconClass(element, codiconId) {
+        element.classList.contains((0, sprotty_1.codiconCSSClasses)(codiconId)[1]) ? element.classList.remove((0, sprotty_1.codiconCSSClasses)(codiconId)[1]) : element.classList.add((0, sprotty_1.codiconCSSClasses)(codiconId)[1]);
+      }
+      exports.changeCodiconClass = changeCodiconClass;
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/tool-palette/tool-palette-module.js
+  var require_tool_palette_module = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/tool-palette/tool-palette-module.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.toolPaletteModule = void 0;
+      var sprotty_1 = require_lib4();
+      require_tool_palette2();
+      var tool_1 = require_tool();
+      var tool_palette_1 = require_tool_palette3();
+      exports.toolPaletteModule = new sprotty_1.FeatureModule((bind, _unbind, isBound, _rebind) => {
+        (0, sprotty_1.bindAsService)(bind, sprotty_1.TYPES.IUIExtension, tool_palette_1.ToolPalette);
+        bind(sprotty_1.TYPES.IDiagramStartup).toService(tool_palette_1.ToolPalette);
+        (0, sprotty_1.configureActionHandler)({ bind, isBound }, tool_1.EnableDefaultToolsAction.KIND, tool_palette_1.ToolPalette);
+        (0, sprotty_1.configureActionHandler)({ bind, isBound }, sprotty_1.UpdateModelAction.KIND, tool_palette_1.ToolPalette);
+        (0, sprotty_1.configureActionHandler)({ bind, isBound }, sprotty_1.SetModelAction.KIND, tool_palette_1.ToolPalette);
+      }, { featureId: Symbol("toolPalette") });
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/css/change-bounds.css
+  var require_change_bounds = __commonJS({
+    "node_modules/@eclipse-glsp/client/css/change-bounds.css"(exports, module) {
+      module.exports = {};
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/change-bounds/movement-restrictor.js
+  var require_movement_restrictor = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/change-bounds/movement-restrictor.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.movementRestrictionFeedback = exports.removeMovementRestrictionFeedback = exports.createMovementRestrictionFeedback = exports.NoOverlapMovementRestrictor = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var css_feedback_1 = require_css_feedback();
+      var viewpoint_util_1 = require_viewpoint_util();
+      var model_1 = require_model19();
+      var NoOverlapMovementRestrictor = class NoOverlapMovementRestrictor {
+        constructor() {
+          this.cssClasses = ["movement-not-allowed"];
+        }
+        validate(element, newLocation) {
+          if (!(0, sprotty_1.isMoveable)(element) || !newLocation) {
+            return false;
+          }
+          const dimensions = (0, sprotty_1.isBoundsAware)(element) ? element.bounds : { width: 1, height: 1 };
+          const ghostElement = Object.create(element);
+          ghostElement.bounds = { ...dimensions, ...newLocation };
+          ghostElement.type = "Ghost";
+          ghostElement.id = element.id;
+          return !Array.from(element.root.index.all().filter((node) => node.id !== ghostElement.id && node !== ghostElement.root && node instanceof sprotty_1.GNode).map((node) => node)).some((e2) => this.areOverlapping(e2, ghostElement));
+        }
+        isBoundsRelevant(element, ghostElement) {
+          return element.id !== ghostElement.id && element !== ghostElement.root && element instanceof sprotty_1.GNode && (0, sprotty_1.isBoundsAware)(element);
+        }
+        areOverlapping(element1, element2) {
+          return sprotty_1.Bounds.overlap((0, viewpoint_util_1.toAbsoluteBounds)(element1), (0, viewpoint_util_1.toAbsoluteBounds)(element2));
+        }
+      };
+      exports.NoOverlapMovementRestrictor = NoOverlapMovementRestrictor;
+      exports.NoOverlapMovementRestrictor = NoOverlapMovementRestrictor = __decorate([
+        (0, inversify_1.injectable)()
+      ], NoOverlapMovementRestrictor);
+      function createMovementRestrictionFeedback(element, movementRestrictor) {
+        const elements = [element];
+        if (element instanceof sprotty_1.GParentElement) {
+          element.children.filter((child) => child instanceof model_1.GResizeHandle).forEach((e2) => elements.push(e2));
+        }
+        return css_feedback_1.ModifyCSSFeedbackAction.create({ elements, add: movementRestrictor.cssClasses });
+      }
+      exports.createMovementRestrictionFeedback = createMovementRestrictionFeedback;
+      function removeMovementRestrictionFeedback(element, movementRestrictor) {
+        const elements = [element];
+        if (element instanceof sprotty_1.GParentElement) {
+          element.children.filter((child) => child instanceof model_1.GResizeHandle).forEach((e2) => elements.push(e2));
+        }
+        return css_feedback_1.ModifyCSSFeedbackAction.create({ elements, remove: movementRestrictor.cssClasses });
+      }
+      exports.removeMovementRestrictionFeedback = removeMovementRestrictionFeedback;
+      function movementRestrictionFeedback(element, movementRestrictor, valid) {
+        return valid ? removeMovementRestrictionFeedback(element, movementRestrictor) : createMovementRestrictionFeedback(element, movementRestrictor);
+      }
+      exports.movementRestrictionFeedback = movementRestrictionFeedback;
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/tools/node-creation/insert-indicator.js
+  var require_insert_indicator = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/tools/node-creation/insert-indicator.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.InsertIndicator = exports.ARG_LENGTH = void 0;
+      var sprotty_1 = require_lib4();
+      var uuid_1 = require_commonjs_browser();
+      var args_feature_1 = require_args_feature();
+      exports.ARG_LENGTH = "length";
+      var InsertIndicator = class _InsertIndicator extends sprotty_1.GNode {
+        constructor(length) {
+          super();
+          this.id = (0, uuid_1.v4)();
+          this.type = _InsertIndicator.TYPE;
+          this.features = (0, sprotty_1.createFeatureSet)(_InsertIndicator.DEFAULT_FEATURES);
+          this.cssClasses = ["insert-indicator", "sprotty-node"];
+          this.size = sprotty_1.Dimension.ZERO;
+          this.args = {};
+          if (length) {
+            this.args = { [exports.ARG_LENGTH]: length };
+          }
+        }
+      };
+      exports.InsertIndicator = InsertIndicator;
+      InsertIndicator.DEFAULT_FEATURES = [sprotty_1.boundsFeature, sprotty_1.moveFeature, args_feature_1.argsFeature];
+      InsertIndicator.TYPE = "node:insert-indicator";
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/change-bounds/tracker.js
+  var require_tracker = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/change-bounds/tracker.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.DiagramMovementCalculator = exports.MovementCalculator = void 0;
+      var sprotty_1 = require_lib4();
+      var MovementCalculator = class {
+        setPosition(position) {
+          this.position = { ...position };
+        }
+        updatePosition(param) {
+          var _a4;
+          const vector = sprotty_1.Vector.is(param) ? param : param.vector;
+          this.setPosition(sprotty_1.Point.add((_a4 = this.position) !== null && _a4 !== void 0 ? _a4 : sprotty_1.Point.ORIGIN, vector));
+        }
+        get hasPosition() {
+          return this.position !== void 0;
+        }
+        calculateMoveTo(targetPosition) {
+          return !this.position ? sprotty_1.Movement.ZERO : sprotty_1.Point.move(this.position, targetPosition);
+        }
+        dispose() {
+          this.position = void 0;
+        }
+      };
+      exports.MovementCalculator = MovementCalculator;
+      var DiagramMovementCalculator = class extends MovementCalculator {
+        constructor(positionTracker) {
+          super();
+          this.positionTracker = positionTracker;
+        }
+        init() {
+          const position = this.positionTracker.lastPositionOnDiagram;
+          if (position) {
+            this.setPosition(position);
+          }
+        }
+        calculateMoveToCurrent() {
+          const targetPosition = this.positionTracker.lastPositionOnDiagram;
+          return targetPosition ? this.calculateMoveTo(targetPosition) : sprotty_1.Movement.ZERO;
+        }
+        reset() {
+          this.dispose();
+        }
+      };
+      exports.DiagramMovementCalculator = DiagramMovementCalculator;
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/tools/change-bounds/change-bounds-tracker.js
+  var require_change_bounds_tracker = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/tools/change-bounds/change-bounds-tracker.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.MoveableRoutingHandle = exports.MoveableResizeHandle = exports.ChangeBoundsTracker = exports.TrackedElementResize = exports.DEFAULT_RESIZE_OPTIONS = exports.TrackedMove = exports.TrackedElementMove = exports.DEFAULT_MOVE_OPTIONS = void 0;
+      var sprotty_1 = require_lib4();
+      var gmodel_util_1 = require_gmodel_util();
+      var model_1 = require_model19();
+      var tracker_1 = require_tracker();
+      exports.DEFAULT_MOVE_OPTIONS = {
+        snap: true,
+        restrict: true,
+        validate: true,
+        skipStatic: true,
+        skipInvalid: false
+      };
+      var TrackedElementMove;
+      (function(TrackedElementMove2) {
+        function is(obj) {
+          return (0, sprotty_1.hasObjectProp)(obj, "element") && (0, sprotty_1.hasObjectProp)(obj, "fromPosition") && (0, sprotty_1.hasObjectProp)(obj, "toPosition") && (0, sprotty_1.hasBooleanProp)(obj, "valid");
+        }
+        TrackedElementMove2.is = is;
+      })(TrackedElementMove || (exports.TrackedElementMove = TrackedElementMove = {}));
+      var TrackedMove;
+      (function(TrackedMove2) {
+        function is(obj) {
+          return sprotty_1.Movement.is(obj) && (0, sprotty_1.hasBooleanProp)(obj, "valid");
+        }
+        TrackedMove2.is = is;
+      })(TrackedMove || (exports.TrackedMove = TrackedMove = {}));
+      exports.DEFAULT_RESIZE_OPTIONS = {
+        snap: true,
+        restrict: true,
+        validate: true,
+        symmetric: true,
+        constrainResize: true,
+        skipStatic: true,
+        skipInvalidSize: false,
+        skipInvalidMove: false
+      };
+      var TrackedElementResize;
+      (function(TrackedElementResize2) {
+        function is(obj) {
+          return (0, sprotty_1.isBoundsAware)(obj.element) && (0, sprotty_1.hasObjectProp)(obj, "fromBounds") && (0, sprotty_1.hasObjectProp)(obj, "toBounds") && (0, sprotty_1.hasObjectProp)(obj, "valid");
+        }
+        TrackedElementResize2.is = is;
+      })(TrackedElementResize || (exports.TrackedElementResize = TrackedElementResize = {}));
+      var ChangeBoundsTracker = class {
+        constructor(manager) {
+          this.manager = manager;
+          this.diagramMovement = new tracker_1.DiagramMovementCalculator(manager.positionTracker);
+        }
+        startTracking() {
+          this.diagramMovement.init();
+          return this;
+        }
+        updateTrackingPosition(param) {
+          const update = TrackedMove.is(param) ? sprotty_1.Vector.max(...param.elementMoves.map((move) => move.moveVector)) : param;
+          this.diagramMovement.updatePosition(update);
+        }
+        isTracking() {
+          return this.diagramMovement.hasPosition;
+        }
+        stopTracking() {
+          this.diagramMovement.dispose();
+          return this;
+        }
+        //
+        // MOVE
+        //
+        moveElements(elements, opts) {
+          const options = this.resolveMoveOptions(opts);
+          const update = this.calculateDiagramMovement();
+          const move = { ...update, elementMoves: [], valid: true, options };
+          if (sprotty_1.Vector.isZero(update.vector) && options.skipStatic) {
+            return move;
+          }
+          const elementsToMove = this.getMoveableElements(elements, options);
+          for (const element of elementsToMove) {
+            const elementMove = this.calculateElementMove(element, update.vector, options);
+            if (!this.skipElementMove(elementMove, options)) {
+              move.elementMoves.push(elementMove);
+              move.valid && (move.valid = elementMove.valid);
+            }
+          }
+          return move;
+        }
+        resolveMoveOptions(opts) {
+          var _a4, _b2;
+          return {
+            ...exports.DEFAULT_MOVE_OPTIONS,
+            ...opts,
+            snap: this.manager.usePositionSnap((_a4 = opts === null || opts === void 0 ? void 0 : opts.snap) !== null && _a4 !== void 0 ? _a4 : exports.DEFAULT_MOVE_OPTIONS.snap),
+            restrict: this.manager.useMovementRestriction((_b2 = opts === null || opts === void 0 ? void 0 : opts.restrict) !== null && _b2 !== void 0 ? _b2 : exports.DEFAULT_MOVE_OPTIONS.restrict)
+          };
+        }
+        calculateDiagramMovement() {
+          return this.diagramMovement.calculateMoveToCurrent();
+        }
+        getMoveableElements(elements, options) {
+          var _a4;
+          return Array.isArray(elements) ? elements : (0, gmodel_util_1.getElements)(elements.ctx.index, elements.elementIDs, (_a4 = elements.guard) !== null && _a4 !== void 0 ? _a4 : sprotty_1.isMoveable);
+        }
+        skipElementMove(elementMove, options) {
+          return options.skipInvalid && !elementMove.valid || options.skipStatic && sprotty_1.Vector.isZero(elementMove.moveVector);
+        }
+        calculateElementMove(element, vector, options) {
+          const fromPosition = element.position;
+          const toPosition = sprotty_1.Point.add(fromPosition, vector);
+          const move = { element, fromPosition, toPosition, valid: true, moveVector: vector, sourceVector: vector };
+          if (options.snap) {
+            move.toPosition = this.snapPosition(move, options);
+          }
+          if (options.restrict) {
+            move.toPosition = this.restrictMovement(move, options);
+          }
+          if (options.validate) {
+            move.valid = this.validateElementMove(move, options);
+          }
+          move.moveVector = sprotty_1.Point.vector(move.fromPosition, move.toPosition);
+          return move;
+        }
+        snapPosition(elementMove, opts) {
+          return this.manager.snapPosition(elementMove.element, elementMove.toPosition);
+        }
+        restrictMovement(elementMove, opts) {
+          const movement = sprotty_1.Point.move(elementMove.fromPosition, elementMove.toPosition);
+          return this.manager.restrictMovement(elementMove.element, movement).to;
+        }
+        validateElementMove(elementMove, opts) {
+          return this.manager.hasValidPosition(elementMove.element, elementMove.toPosition);
+        }
+        //
+        // RESIZE
+        //
+        resizeElements(handle, opts) {
+          const options = this.resolveResizeOptions(opts);
+          const update = this.calculateDiagramMovement();
+          const handleMove = this.calculateHandleMove(new MoveableResizeHandle(handle), update.vector, options);
+          const resize = { ...update, valid: { move: true, size: true }, options, handleMove, elementResizes: [] };
+          if (sprotty_1.Vector.isZero(handleMove.moveVector) && options.skipStatic) {
+            return resize;
+          }
+          const elementsToResize = this.getResizableElements(handle, options);
+          for (const element of elementsToResize) {
+            const elementResize = this.calculateElementResize(element, handleMove, options);
+            if (!this.skipElementResize(elementResize, options)) {
+              resize.elementResizes.push(elementResize);
+              resize.valid.move = resize.valid.move && elementResize.valid.move;
+              resize.valid.size = resize.valid.size && elementResize.valid.size;
+            }
+          }
+          return resize;
+        }
+        resolveResizeOptions(opts) {
+          var _a4, _b2, _c;
+          return {
+            ...exports.DEFAULT_RESIZE_OPTIONS,
+            ...opts,
+            snap: this.manager.usePositionSnap((_a4 = opts === null || opts === void 0 ? void 0 : opts.snap) !== null && _a4 !== void 0 ? _a4 : exports.DEFAULT_RESIZE_OPTIONS.snap),
+            restrict: this.manager.useMovementRestriction((_b2 = opts === null || opts === void 0 ? void 0 : opts.restrict) !== null && _b2 !== void 0 ? _b2 : exports.DEFAULT_RESIZE_OPTIONS.restrict),
+            symmetric: this.manager.useSymmetricResize((_c = opts === null || opts === void 0 ? void 0 : opts.symmetric) !== null && _c !== void 0 ? _c : exports.DEFAULT_RESIZE_OPTIONS.symmetric)
+          };
+        }
+        calculateHandleMove(handle, diagramMovement, opts) {
+          const moveOptions = this.resolveMoveOptions({ ...opts, validate: false });
+          return this.calculateElementMove(handle, diagramMovement, moveOptions);
+        }
+        getResizableElements(handle, options) {
+          return [handle.parent];
+        }
+        skipElementResize(elementResize, options) {
+          return options.skipInvalidMove && !elementResize.valid.move || options.skipInvalidSize && !elementResize.valid.size || options.skipStatic && sprotty_1.Dimension.equals(elementResize.fromBounds, elementResize.toBounds);
+        }
+        calculateElementResize(element, handleMove, options) {
+          const fromBounds = element.bounds;
+          const toBounds = this.calculateElementBounds(element, handleMove, options);
+          const resize = { element, fromBounds, toBounds, valid: { size: true, move: true } };
+          if (options.validate) {
+            resize.valid.size = this.manager.hasValidSize(resize.element, resize.toBounds);
+            resize.valid.move = handleMove.valid && this.manager.hasValidPosition(resize.element, resize.toBounds);
+          }
+          return resize;
+        }
+        calculateElementBounds(element, handleMove, options) {
+          let toBounds = this.calculateBounds(element.bounds, handleMove);
+          if (options.symmetric) {
+            const symmetricHandleMove = this.calculateSymmetricHandleMove(handleMove, options);
+            toBounds = this.calculateBounds(toBounds, symmetricHandleMove);
+          }
+          if (!options.constrainResize || this.manager.hasValidSize(element, toBounds)) {
+            return toBounds;
+          }
+          const minimum = this.manager.getMinimumSize(element);
+          handleMove.moveVector = this.constrainResizeVector(element.bounds, handleMove, minimum);
+          if (options.symmetric) {
+            handleMove.moveVector.x = element.bounds.width > minimum.width ? handleMove.moveVector.x / 2 : handleMove.moveVector.x;
+            handleMove.moveVector.y = element.bounds.height > minimum.height ? handleMove.moveVector.y / 2 : handleMove.moveVector.y;
+          }
+          toBounds = this.calculateBounds(element.bounds, handleMove);
+          if (options.symmetric) {
+            const symmetricHandleMove = this.calculateSymmetricHandleMove(handleMove, { ...options, snap: false });
+            toBounds = this.calculateBounds(toBounds, symmetricHandleMove);
+          }
+          return toBounds;
+        }
+        calculateSymmetricHandleMove(handleMove, options) {
+          const moveOptions = this.resolveMoveOptions({ ...options, validate: false, restrict: false });
+          return this.calculateElementMove(handleMove.element.opposite(), sprotty_1.Vector.reverse(handleMove.moveVector), moveOptions);
+        }
+        calculateBounds(src, handleMove) {
+          if (!handleMove || sprotty_1.Vector.isZero(handleMove.moveVector)) {
+            return src;
+          }
+          return this.doCalculateBounds(src, handleMove.moveVector, handleMove.element.location);
+        }
+        doCalculateBounds(src, vector, location2) {
+          switch (location2) {
+            case model_1.ResizeHandleLocation.TopLeft:
+              return { x: src.x + vector.x, y: src.y + vector.y, width: src.width - vector.x, height: src.height - vector.y };
+            case model_1.ResizeHandleLocation.Top:
+              return { ...src, y: src.y + vector.y, height: src.height - vector.y };
+            case model_1.ResizeHandleLocation.TopRight:
+              return { ...src, y: src.y + vector.y, width: src.width + vector.x, height: src.height - vector.y };
+            case model_1.ResizeHandleLocation.Right:
+              return { ...src, width: src.width + vector.x };
+            case model_1.ResizeHandleLocation.BottomRight:
+              return { ...src, width: src.width + vector.x, height: src.height + vector.y };
+            case model_1.ResizeHandleLocation.Bottom:
+              return { ...src, height: src.height + vector.y };
+            case model_1.ResizeHandleLocation.BottomLeft:
+              return { ...src, x: src.x + vector.x, width: src.width - vector.x, height: src.height + vector.y };
+            case model_1.ResizeHandleLocation.Left:
+              return { ...src, x: src.x + vector.x, width: src.width - vector.x };
+          }
+        }
+        constrainResizeVector(src, handleMove, minimum) {
+          const vector = handleMove.moveVector;
+          switch (handleMove.element.location) {
+            case model_1.ResizeHandleLocation.TopLeft:
+              vector.x = src.width - vector.x < minimum.width ? src.width - minimum.width : vector.x;
+              vector.y = src.height - vector.y < minimum.height ? src.height - minimum.height : vector.y;
+              break;
+            case model_1.ResizeHandleLocation.Top:
+              vector.y = src.height - vector.y < minimum.height ? src.height - minimum.height : vector.y;
+              break;
+            case model_1.ResizeHandleLocation.TopRight:
+              vector.x = src.width + vector.x < minimum.width ? minimum.width - src.width : vector.x;
+              vector.y = src.height - vector.y < minimum.height ? src.height - minimum.height : vector.y;
+              break;
+            case model_1.ResizeHandleLocation.Right:
+              vector.x = src.width + vector.x < minimum.width ? minimum.width - src.width : vector.x;
+              break;
+            case model_1.ResizeHandleLocation.BottomRight:
+              vector.x = src.width + vector.x < minimum.width ? minimum.width - src.width : vector.x;
+              vector.y = src.height + vector.y < minimum.height ? minimum.height - src.height : vector.y;
+              break;
+            case model_1.ResizeHandleLocation.Bottom:
+              vector.y = src.height + vector.y < minimum.height ? minimum.height - src.height : vector.y;
+              break;
+            case model_1.ResizeHandleLocation.BottomLeft:
+              vector.x = src.width - vector.x < minimum.width ? src.width - minimum.width : vector.x;
+              vector.y = src.height + vector.y < minimum.height ? minimum.height - src.height : vector.y;
+              break;
+            case model_1.ResizeHandleLocation.Left:
+              vector.x = src.width - vector.x < minimum.width ? src.width - minimum.width : vector.x;
+              break;
+          }
+          return vector;
+        }
+        dispose() {
+          this.stopTracking();
+        }
+      };
+      exports.ChangeBoundsTracker = ChangeBoundsTracker;
+      var MoveableResizeHandle = class _MoveableResizeHandle extends model_1.GResizeHandle {
+        constructor(handle, location2 = handle.location, position = model_1.GResizeHandle.getHandlePosition(handle.parent, location2)) {
+          super(location2, handle.type, handle.hoverFeedback);
+          this.handle = handle;
+          this.location = location2;
+          this.position = position;
+          this.id = handle.id;
+          this.parent = handle.parent;
+        }
+        opposite() {
+          return new _MoveableResizeHandle(this.handle, model_1.ResizeHandleLocation.opposite(this.location));
+        }
+      };
+      exports.MoveableResizeHandle = MoveableResizeHandle;
+      var MoveableRoutingHandle = class extends sprotty_1.GRoutingHandle {
+        constructor(handle, position) {
+          super();
+          this.handle = handle;
+          this.position = position;
+          this.id = handle.id;
+          this.parent = handle.parent;
+        }
+      };
+      exports.MoveableRoutingHandle = MoveableRoutingHandle;
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/tools/change-bounds/change-bounds-manager.js
+  var require_change_bounds_manager = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/tools/change-bounds/change-bounds-manager.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var __param = exports && exports.__param || function(paramIndex, decorator) {
+        return function(target, key) {
+          decorator(target, key, paramIndex);
+        };
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.ChangeBoundsManager = exports.CSS_ACTIVE_HANDLE = exports.CSS_RESTRICTED_RESIZE = exports.CSS_RESIZE_MODE = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var css_feedback_1 = require_css_feedback();
+      var layout_utils_1 = require_layout_utils();
+      var layout_data_1 = require_layout_data();
+      var model_1 = require_model19();
+      var movement_restrictor_1 = require_movement_restrictor();
+      var insert_indicator_1 = require_insert_indicator();
+      var change_bounds_tracker_1 = require_change_bounds_tracker();
+      exports.CSS_RESIZE_MODE = "resize-mode";
+      exports.CSS_RESTRICTED_RESIZE = "resize-not-allowed";
+      exports.CSS_ACTIVE_HANDLE = "active";
+      var ChangeBoundsManager = class ChangeBoundsManager {
+        constructor(positionTracker, movementRestrictor, snapper, helperLineManager, gridManager) {
+          this.positionTracker = positionTracker;
+          this.movementRestrictor = movementRestrictor;
+          this.snapper = snapper;
+          this.helperLineManager = helperLineManager;
+          this.gridManager = gridManager;
+        }
+        unsnapModifier() {
+          return "shift";
+        }
+        usePositionSnap(arg) {
+          return typeof arg === "boolean" ? arg : !arg.shiftKey;
+        }
+        snapPosition(element, position) {
+          var _a4, _b2;
+          return (_b2 = (_a4 = this.snapper) === null || _a4 === void 0 ? void 0 : _a4.snap(position, element)) !== null && _b2 !== void 0 ? _b2 : position;
+        }
+        isValid(element) {
+          return this.hasValidPosition(element) && this.hasValidSize(element);
+        }
+        hasValidPosition(element, position) {
+          return !(0, sprotty_1.isLocateable)(element) || (0, layout_utils_1.isValidMove)(element, position !== null && position !== void 0 ? position : element.position, this.movementRestrictor);
+        }
+        hasValidSize(element, size) {
+          if (!(0, sprotty_1.isBoundsAware)(element)) {
+            return true;
+          }
+          const dimension = size !== null && size !== void 0 ? size : element.bounds;
+          const minimum = this.getMinimumSize(element);
+          if (dimension.width < minimum.width || dimension.height < minimum.height) {
+            return false;
+          }
+          return true;
+        }
+        getMinimumSize(element) {
+          if (!(0, sprotty_1.isBoundsAware)(element)) {
+            return sprotty_1.Dimension.EMPTY;
+          }
+          const definedMinimum = (0, layout_utils_1.minDimensions)(element);
+          const computedMinimum = layout_data_1.LayoutAware.getComputedDimensions(element);
+          return computedMinimum ? {
+            width: Math.max(definedMinimum.width, computedMinimum.width),
+            height: Math.max(definedMinimum.height, computedMinimum.height)
+          } : definedMinimum;
+        }
+        useMovementRestriction(arg) {
+          return this.usePositionSnap(arg);
+        }
+        restrictMovement(element, movement) {
+          const minimumMovement = this.getMinimumMovement(element, movement);
+          if (!minimumMovement) {
+            return movement;
+          }
+          const absVector = sprotty_1.Vector.abs(movement.vector);
+          const targetPosition = {
+            x: absVector.x < minimumMovement.x ? movement.from.x : movement.to.x,
+            y: absVector.y < minimumMovement.y ? movement.from.y : movement.to.y
+          };
+          return sprotty_1.Point.move(movement.from, targetPosition);
+        }
+        getMinimumMovement(element, movement) {
+          var _a4;
+          return element instanceof insert_indicator_1.InsertIndicator && this.gridManager ? this.gridManager.grid : (_a4 = this.helperLineManager) === null || _a4 === void 0 ? void 0 : _a4.getMinimumMoveVector(element, true, movement.direction);
+        }
+        addMoveFeedback(feedback, trackedMove, ctx, event) {
+          feedback.add((0, css_feedback_1.cursorFeedbackAction)(css_feedback_1.CursorCSS.MOVE), (0, css_feedback_1.cursorFeedbackAction)(css_feedback_1.CursorCSS.DEFAULT));
+          trackedMove.elementMoves.forEach((move) => this.addMoveRestrictionFeedback(feedback, move, ctx, event));
+          return feedback;
+        }
+        addResizeFeedback(feedback, resize, ctx, event) {
+          feedback.add(css_feedback_1.ModifyCSSFeedbackAction.create({ add: [exports.CSS_RESIZE_MODE] }), css_feedback_1.ModifyCSSFeedbackAction.create({ remove: [exports.CSS_RESIZE_MODE] }));
+          const cursorClass = model_1.GResizeHandle.getCursorCss(resize.handleMove.element);
+          feedback.add((0, css_feedback_1.cursorFeedbackAction)(cursorClass), (0, css_feedback_1.cursorFeedbackAction)(css_feedback_1.CursorCSS.DEFAULT));
+          const handle = resize.handleMove.element;
+          feedback.add((0, css_feedback_1.applyCssClasses)(handle, exports.CSS_ACTIVE_HANDLE), (0, css_feedback_1.deleteCssClasses)(handle, exports.CSS_ACTIVE_HANDLE));
+          feedback.add((0, css_feedback_1.toggleCssClasses)(handle, !resize.valid.size, exports.CSS_RESTRICTED_RESIZE), (0, css_feedback_1.deleteCssClasses)(handle, exports.CSS_RESTRICTED_RESIZE));
+          resize.elementResizes.forEach((elementResize) => {
+            this.addMoveRestrictionFeedback(feedback, elementResize, ctx, event);
+            feedback.add((0, css_feedback_1.toggleCssClasses)(elementResize.element, !elementResize.valid.size, exports.CSS_RESTRICTED_RESIZE), (0, css_feedback_1.deleteCssClasses)(elementResize.element, exports.CSS_RESTRICTED_RESIZE));
+          });
+          return feedback;
+        }
+        addMoveRestrictionFeedback(feedback, change, ctx, event) {
+          if (this.movementRestrictor) {
+            const valid = change_bounds_tracker_1.TrackedElementMove.is(change) ? change.valid : change.valid.move;
+            feedback.add((0, movement_restrictor_1.movementRestrictionFeedback)(change.element, this.movementRestrictor, valid), (0, movement_restrictor_1.removeMovementRestrictionFeedback)(change.element, this.movementRestrictor));
+          }
+          return feedback;
+        }
+        defaultResizeLocations() {
+          return model_1.ResizeHandleLocation.CORNERS;
+        }
+        useSymmetricResize(arg) {
+          return typeof arg === "boolean" ? arg : arg.ctrlKey;
+        }
+        createTracker() {
+          return new change_bounds_tracker_1.ChangeBoundsTracker(this);
+        }
+      };
+      exports.ChangeBoundsManager = ChangeBoundsManager;
+      exports.ChangeBoundsManager = ChangeBoundsManager = __decorate([
+        (0, inversify_1.injectable)(),
+        __param(0, (0, inversify_1.inject)(sprotty_1.MousePositionTracker)),
+        __param(1, (0, inversify_1.optional)()),
+        __param(1, (0, inversify_1.inject)(sprotty_1.TYPES.IMovementRestrictor)),
+        __param(2, (0, inversify_1.optional)()),
+        __param(2, (0, inversify_1.inject)(sprotty_1.TYPES.ISnapper)),
+        __param(3, (0, inversify_1.optional)()),
+        __param(3, (0, inversify_1.inject)(sprotty_1.TYPES.IHelperLineManager)),
+        __param(4, (0, inversify_1.optional)()),
+        __param(4, (0, inversify_1.inject)(sprotty_1.TYPES.IGridManager)),
+        __metadata("design:paramtypes", [sprotty_1.MousePositionTracker, Object, Object, Object, Object])
+      ], ChangeBoundsManager);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/change-bounds/move-element-key-listener.js
+  var require_move_element_key_listener = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/change-bounds/move-element-key-listener.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.MoveElementKeyListener = void 0;
+      var sprotty_1 = require_lib4();
+      var grid_1 = require_grid();
+      var move_element_action_1 = require_move_element_action();
+      var MoveElementKeyListener = class extends sprotty_1.KeyListener {
+        constructor(selectionService, changeBoundsManager, grid = grid_1.Grid.DEFAULT) {
+          super();
+          this.selectionService = selectionService;
+          this.changeBoundsManager = changeBoundsManager;
+          this.grid = grid;
+        }
+        keyDown(_element, event) {
+          const selectedElementIds = this.selectionService.getSelectedElements().filter((element) => (0, sprotty_1.isMoveable)(element)).map((element) => element.id);
+          const snap = this.changeBoundsManager.usePositionSnap(event);
+          const offsetX = snap ? this.grid.x : 1;
+          const offsetY = snap ? this.grid.y : 1;
+          if (selectedElementIds.length > 0) {
+            if (this.matchesMoveUpKeystroke(event)) {
+              return [move_element_action_1.MoveElementRelativeAction.create({ elementIds: selectedElementIds, moveX: 0, moveY: -offsetY, snap })];
+            } else if (this.matchesMoveDownKeystroke(event)) {
+              return [move_element_action_1.MoveElementRelativeAction.create({ elementIds: selectedElementIds, moveX: 0, moveY: offsetY, snap })];
+            } else if (this.matchesMoveRightKeystroke(event)) {
+              return [move_element_action_1.MoveElementRelativeAction.create({ elementIds: selectedElementIds, moveX: offsetX, moveY: 0, snap })];
+            } else if (this.matchesMoveLeftKeystroke(event)) {
+              return [move_element_action_1.MoveElementRelativeAction.create({ elementIds: selectedElementIds, moveX: -offsetX, moveY: 0, snap })];
+            }
+          }
+          return [];
+        }
+        matchesMoveUpKeystroke(event) {
+          const unsnap = this.changeBoundsManager.unsnapModifier();
+          return (0, sprotty_1.matchesKeystroke)(event, "ArrowUp") || !!unsnap && (0, sprotty_1.matchesKeystroke)(event, "ArrowUp", unsnap);
+        }
+        matchesMoveDownKeystroke(event) {
+          const unsnap = this.changeBoundsManager.unsnapModifier();
+          return (0, sprotty_1.matchesKeystroke)(event, "ArrowDown") || !!unsnap && (0, sprotty_1.matchesKeystroke)(event, "ArrowDown", unsnap);
+        }
+        matchesMoveRightKeystroke(event) {
+          const unsnap = this.changeBoundsManager.unsnapModifier();
+          return (0, sprotty_1.matchesKeystroke)(event, "ArrowRight") || !!unsnap && (0, sprotty_1.matchesKeystroke)(event, "ArrowRight", unsnap);
+        }
+        matchesMoveLeftKeystroke(event) {
+          const unsnap = this.changeBoundsManager.unsnapModifier();
+          return (0, sprotty_1.matchesKeystroke)(event, "ArrowLeft") || !!unsnap && (0, sprotty_1.matchesKeystroke)(event, "ArrowLeft", unsnap);
+        }
+      };
+      exports.MoveElementKeyListener = MoveElementKeyListener;
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/tools/change-bounds/change-bounds-tool-feedback.js
+  var require_change_bounds_tool_feedback = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/tools/change-bounds/change-bounds-tool-feedback.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.MoveFinishedEventAction = exports.MoveInitializedEventAction = exports.HideChangeBoundsToolResizeFeedbackCommand = exports.ShowChangeBoundsToolResizeFeedbackCommand = exports.HideChangeBoundsToolResizeFeedbackAction = exports.ShowChangeBoundsToolResizeFeedbackAction = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var feedback_command_1 = require_feedback_command();
+      var glsp_model_source_1 = require_glsp_model_source();
+      var gmodel_util_1 = require_gmodel_util();
+      var model_1 = require_model19();
+      var ShowChangeBoundsToolResizeFeedbackAction;
+      (function(ShowChangeBoundsToolResizeFeedbackAction2) {
+        ShowChangeBoundsToolResizeFeedbackAction2.KIND = "showChangeBoundsToolResizeFeedback";
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, ShowChangeBoundsToolResizeFeedbackAction2.KIND) && (0, sprotty_1.hasStringProp)(object, "elementId");
+        }
+        ShowChangeBoundsToolResizeFeedbackAction2.is = is;
+        function create(options) {
+          const opts = typeof options === "string" ? { elementId: options } : options;
+          return {
+            kind: ShowChangeBoundsToolResizeFeedbackAction2.KIND,
+            ...opts
+          };
+        }
+        ShowChangeBoundsToolResizeFeedbackAction2.create = create;
+      })(ShowChangeBoundsToolResizeFeedbackAction || (exports.ShowChangeBoundsToolResizeFeedbackAction = ShowChangeBoundsToolResizeFeedbackAction = {}));
+      var HideChangeBoundsToolResizeFeedbackAction;
+      (function(HideChangeBoundsToolResizeFeedbackAction2) {
+        HideChangeBoundsToolResizeFeedbackAction2.KIND = "hideChangeBoundsToolResizeFeedback";
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, HideChangeBoundsToolResizeFeedbackAction2.KIND);
+        }
+        HideChangeBoundsToolResizeFeedbackAction2.is = is;
+        function create() {
+          return { kind: HideChangeBoundsToolResizeFeedbackAction2.KIND };
+        }
+        HideChangeBoundsToolResizeFeedbackAction2.create = create;
+      })(HideChangeBoundsToolResizeFeedbackAction || (exports.HideChangeBoundsToolResizeFeedbackAction = HideChangeBoundsToolResizeFeedbackAction = {}));
+      var ShowChangeBoundsToolResizeFeedbackCommand = class ShowChangeBoundsToolResizeFeedbackCommand extends feedback_command_1.FeedbackCommand {
+        execute(context) {
+          var _a4, _b2;
+          const index = context.root.index;
+          (0, gmodel_util_1.forEachElement)(index, model_1.isResizable, (element) => element.id !== this.action.elementId && (0, model_1.removeResizeHandles)(element));
+          if (this.action.elementId) {
+            const resizeElement = index.getById(this.action.elementId);
+            if (resizeElement && (0, model_1.isResizable)(resizeElement)) {
+              (0, model_1.addResizeHandles)(resizeElement, (_b2 = (_a4 = this.action.resizeLocations) !== null && _a4 !== void 0 ? _a4 : resizeElement.resizeLocations) !== null && _b2 !== void 0 ? _b2 : this.changeBoundsManager.defaultResizeLocations());
+            }
+          }
+          return context.root;
+        }
+      };
+      exports.ShowChangeBoundsToolResizeFeedbackCommand = ShowChangeBoundsToolResizeFeedbackCommand;
+      ShowChangeBoundsToolResizeFeedbackCommand.KIND = ShowChangeBoundsToolResizeFeedbackAction.KIND;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.Action),
+        __metadata("design:type", Object)
+      ], ShowChangeBoundsToolResizeFeedbackCommand.prototype, "action", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IChangeBoundsManager),
+        __metadata("design:type", Object)
+      ], ShowChangeBoundsToolResizeFeedbackCommand.prototype, "changeBoundsManager", void 0);
+      exports.ShowChangeBoundsToolResizeFeedbackCommand = ShowChangeBoundsToolResizeFeedbackCommand = __decorate([
+        (0, inversify_1.injectable)()
+      ], ShowChangeBoundsToolResizeFeedbackCommand);
+      var HideChangeBoundsToolResizeFeedbackCommand = class HideChangeBoundsToolResizeFeedbackCommand extends feedback_command_1.FeedbackCommand {
+        execute(context) {
+          const index = context.root.index;
+          (0, gmodel_util_1.forEachElement)(index, model_1.isResizable, model_1.removeResizeHandles);
+          return context.root;
+        }
+      };
+      exports.HideChangeBoundsToolResizeFeedbackCommand = HideChangeBoundsToolResizeFeedbackCommand;
+      HideChangeBoundsToolResizeFeedbackCommand.KIND = HideChangeBoundsToolResizeFeedbackAction.KIND;
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.Action),
+        __metadata("design:type", Object)
+      ], HideChangeBoundsToolResizeFeedbackCommand.prototype, "action", void 0);
+      exports.HideChangeBoundsToolResizeFeedbackCommand = HideChangeBoundsToolResizeFeedbackCommand = __decorate([
+        (0, inversify_1.injectable)()
+      ], HideChangeBoundsToolResizeFeedbackCommand);
+      var MoveInitializedEventAction;
+      (function(MoveInitializedEventAction2) {
+        MoveInitializedEventAction2.KIND = "move-initialized-event";
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, MoveInitializedEventAction2.KIND);
+        }
+        MoveInitializedEventAction2.is = is;
+        function create() {
+          return glsp_model_source_1.OptionalAction.mark({ kind: MoveInitializedEventAction2.KIND });
+        }
+        MoveInitializedEventAction2.create = create;
+      })(MoveInitializedEventAction || (exports.MoveInitializedEventAction = MoveInitializedEventAction = {}));
+      var MoveFinishedEventAction;
+      (function(MoveFinishedEventAction2) {
+        MoveFinishedEventAction2.KIND = "move-finished-event";
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, MoveFinishedEventAction2.KIND);
+        }
+        MoveFinishedEventAction2.is = is;
+        function create() {
+          return glsp_model_source_1.OptionalAction.mark({ kind: MoveFinishedEventAction2.KIND });
+        }
+        MoveFinishedEventAction2.create = create;
+      })(MoveFinishedEventAction || (exports.MoveFinishedEventAction = MoveFinishedEventAction = {}));
+    }
+  });
+
   // node_modules/@eclipse-glsp/client/lib/features/tools/change-bounds/change-bounds-tool-move-feedback.js
   var require_change_bounds_tool_move_feedback = __commonJS({
     "node_modules/@eclipse-glsp/client/lib/features/tools/change-bounds/change-bounds-tool-move-feedback.js"(exports) {
@@ -47141,11 +48236,14 @@ ${JSON.stringify(message, null, 4)}`);
       var inversify_1 = require_cjs4();
       var sprotty_1 = require_lib4();
       var drag_aware_mouse_listener_1 = require_drag_aware_mouse_listener();
+      var messages_1 = require_messages3();
       var selection_service_1 = require_selection_service();
       var gmodel_util_1 = require_gmodel_util();
       var local_bounds_1 = require_local_bounds();
       var set_bounds_feedback_command_1 = require_set_bounds_feedback_command();
       var model_1 = require_model19();
+      var move_element_key_listener_1 = require_move_element_key_listener();
+      var grid_1 = require_grid();
       var base_tools_1 = require_base_tools();
       var change_bounds_manager_1 = require_change_bounds_manager();
       var change_bounds_tool_feedback_1 = require_change_bounds_tool_feedback();
@@ -47167,6 +48265,18 @@ ${JSON.stringify(message, null, 4)}`);
           if (selection_service_1.ISelectionListener.is(feedbackMoveMouseListener)) {
             this.toDisposeOnDisable.push(this.selectionService.addListener(feedbackMoveMouseListener));
           }
+          const createMoveKeyListener = this.createMoveKeyListener();
+          this.toDisposeOnDisable.push(this.keyTool.registerListener(createMoveKeyListener), (0, messages_1.repeatOnMessagesUpdated)(() => this.shortcutManager.register(ChangeBoundsTool_1.TOKEN, [
+            {
+              shortcuts: ["\u2B05 \u2B06 \u27A1 \u2B07"],
+              description: messages_1.messages.move.shortcut_move,
+              group: messages_1.messages.shortcut.group_move,
+              position: 0
+            }
+          ])));
+          if (sprotty_1.Disposable.is(createMoveKeyListener)) {
+            this.toDisposeOnDisable.push(createMoveKeyListener);
+          }
           const changeBoundsListener = this.createChangeBoundsListener();
           this.toDisposeOnDisable.push(this.mouseTool.registerListener(changeBoundsListener));
           if (sprotty_1.Disposable.is(changeBoundsListener)) {
@@ -47182,12 +48292,16 @@ ${JSON.stringify(message, null, 4)}`);
         createMoveMouseListener() {
           return new change_bounds_tool_move_feedback_1.FeedbackMoveMouseListener(this);
         }
+        createMoveKeyListener() {
+          return new move_element_key_listener_1.MoveElementKeyListener(this.selectionService, this.changeBoundsManager, this.grid);
+        }
         createChangeBoundsListener() {
           return new ChangeBoundsListener(this);
         }
       };
       exports.ChangeBoundsTool = ChangeBoundsTool;
       ChangeBoundsTool.ID = "glsp.change-bounds-tool";
+      ChangeBoundsTool.TOKEN = Symbol.for(ChangeBoundsTool_1.ID);
       __decorate([
         (0, inversify_1.inject)(selection_service_1.SelectionService),
         __metadata("design:type", selection_service_1.SelectionService)
@@ -47211,6 +48325,15 @@ ${JSON.stringify(message, null, 4)}`);
         (0, inversify_1.optional)(),
         __metadata("design:type", Object)
       ], ChangeBoundsTool.prototype, "movementOptions", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.Grid),
+        (0, inversify_1.optional)(),
+        __metadata("design:type", Object)
+      ], ChangeBoundsTool.prototype, "grid", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IShortcutManager),
+        __metadata("design:type", Object)
+      ], ChangeBoundsTool.prototype, "shortcutManager", void 0);
       exports.ChangeBoundsTool = ChangeBoundsTool = ChangeBoundsTool_1 = __decorate([
         (0, inversify_1.injectable)()
       ], ChangeBoundsTool);
@@ -48221,7 +49344,7 @@ ${JSON.stringify(message, null, 4)}`);
           return !container || container.isContainableElement(elementTypeId);
         }
         findContainer(location2, ctx, evt) {
-          return (0, sprotty_1.findChildrenAtPosition)(ctx.root, location2).reverse().find((element) => {
+          return [ctx.root, ...(0, sprotty_1.findChildrenAtPosition)(ctx.root, location2)].reverse().find((element) => {
             var _a4;
             return (0, model_1.isContainable)(element) && !((_a4 = element.cssClasses) === null || _a4 === void 0 ? void 0 : _a4.includes(css_feedback_1.CSS_GHOST_ELEMENT));
           });
@@ -48646,6 +49769,7 @@ ${JSON.stringify(message, null, 4)}`);
       var sprotty_1 = require_lib4();
       var inversify_1 = require_cjs4();
       var argument_utils_1 = require_argument_utils();
+      var grid_1 = require_grid();
       var insert_indicator_1 = require_insert_indicator();
       var InsertIndicatorView = class InsertIndicatorView {
         render(model, context) {
@@ -49371,12 +50495,13 @@ ${JSON.stringify(message, null, 4)}`);
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
       };
       Object.defineProperty(exports, "__esModule", { value: true });
-      exports.RestoreViewportHandler = void 0;
+      exports.ZoomHandler = exports.MoveViewportHandler = exports.RestoreViewportHandler = void 0;
       var sprotty_1 = require_lib4();
       var inversify_1 = require_cjs4();
       var editor_context_service_1 = require_editor_context_service();
       var focus_tracker_1 = require_focus_tracker();
       var tool_1 = require_tool();
+      var gmodel_util_1 = require_gmodel_util();
       var actions_1 = require_actions2();
       var RestoreViewportHandler = class RestoreViewportHandler {
         handle(action) {
@@ -49433,6 +50558,315 @@ ${JSON.stringify(message, null, 4)}`);
       exports.RestoreViewportHandler = RestoreViewportHandler = __decorate([
         (0, inversify_1.injectable)()
       ], RestoreViewportHandler);
+      var MoveViewportHandler = class MoveViewportHandler {
+        handle(action) {
+          return this.handleMoveViewport(action);
+        }
+        handleMoveViewport(action) {
+          const viewport = (0, sprotty_1.findParentByFeature)(this.editorContextService.modelRoot, sprotty_1.isViewport);
+          if (!viewport) {
+            return;
+          }
+          const newViewport = {
+            scroll: {
+              x: viewport.scroll.x + action.moveX,
+              y: viewport.scroll.y + action.moveY
+            },
+            zoom: viewport.zoom
+          };
+          return sprotty_1.SetViewportAction.create(viewport.id, newViewport, { animate: false });
+        }
+      };
+      exports.MoveViewportHandler = MoveViewportHandler;
+      __decorate([
+        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
+        __metadata("design:type", editor_context_service_1.EditorContextService)
+      ], MoveViewportHandler.prototype, "editorContextService", void 0);
+      exports.MoveViewportHandler = MoveViewportHandler = __decorate([
+        (0, inversify_1.injectable)()
+      ], MoveViewportHandler);
+      var ZoomHandler = class ZoomHandler {
+        handle(action) {
+          if (action.elementIds) {
+            return this.handleZoomElement(action.elementIds, action.zoomFactor);
+          } else {
+            return this.handleZoomViewport(action.zoomFactor);
+          }
+        }
+        handleZoomViewport(zoomFactor) {
+          const viewport = (0, sprotty_1.findParentByFeature)(this.editorContextService.modelRoot, sprotty_1.isViewport);
+          if (!viewport) {
+            return;
+          }
+          const newZoom = viewport.zoom * zoomFactor;
+          const newViewport = {
+            scroll: viewport.scroll,
+            zoom: newZoom
+          };
+          return sprotty_1.SetViewportAction.create(viewport.id, newViewport, { animate: false });
+        }
+        handleZoomElement(elementIds, zoomFactor) {
+          const viewport = (0, sprotty_1.findParentByFeature)(this.editorContextService.modelRoot, sprotty_1.isViewport);
+          if (!viewport) {
+            return;
+          }
+          const elements = (0, gmodel_util_1.getElements)(this.editorContextService.modelRoot.index, elementIds, gmodel_util_1.isSelectableAndBoundsAware);
+          const center = this.getCenter(viewport, elements);
+          const newZoom = viewport.zoom * zoomFactor;
+          const newViewport = {
+            scroll: {
+              x: center.x - 0.5 * viewport.canvasBounds.width / newZoom,
+              y: center.y - 0.5 * viewport.canvasBounds.height / newZoom
+            },
+            zoom: newZoom
+          };
+          return sprotty_1.SetViewportAction.create(viewport.id, newViewport, { animate: false });
+        }
+        getCenter(viewport, selectedElements) {
+          const allBounds = selectedElements.map((e2) => this.boundsInViewport(viewport, e2, e2.bounds));
+          const mergedBounds = allBounds.reduce((b0, b1) => sprotty_1.Bounds.combine(b0, b1));
+          return sprotty_1.Bounds.center(mergedBounds);
+        }
+        boundsInViewport(viewport, element, bounds) {
+          if (element instanceof sprotty_1.GChildElement && element.parent !== viewport) {
+            return this.boundsInViewport(viewport, element.parent, element.parent.localToParent(bounds));
+          } else {
+            return bounds;
+          }
+        }
+      };
+      exports.ZoomHandler = ZoomHandler;
+      __decorate([
+        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
+        __metadata("design:type", editor_context_service_1.EditorContextService)
+      ], ZoomHandler.prototype, "editorContextService", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        __metadata("design:type", Object)
+      ], ZoomHandler.prototype, "actionDispatcher", void 0);
+      exports.ZoomHandler = ZoomHandler = __decorate([
+        (0, inversify_1.injectable)()
+      ], ZoomHandler);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/viewport/zoom-viewport-action.js
+  var require_zoom_viewport_action = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/viewport/zoom-viewport-action.js"(exports) {
+      "use strict";
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.ZoomAction = exports.ZoomFactors = void 0;
+      var sprotty_1 = require_lib4();
+      var ZoomFactors;
+      (function(ZoomFactors2) {
+        ZoomFactors2.DEFAULT = { in: 1.2, out: 0.8 };
+      })(ZoomFactors || (exports.ZoomFactors = ZoomFactors = {}));
+      var ZoomAction;
+      (function(ZoomAction2) {
+        ZoomAction2.KIND = "zoom";
+        function is(object) {
+          return sprotty_1.Action.hasKind(object, ZoomAction2.KIND);
+        }
+        ZoomAction2.is = is;
+        function create(options) {
+          return { kind: ZoomAction2.KIND, ...options };
+        }
+        ZoomAction2.create = create;
+      })(ZoomAction || (exports.ZoomAction = ZoomAction = {}));
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/viewport/viewport-key-listener.js
+  var require_viewport_key_listener = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/viewport/viewport-key-listener.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.ZoomKeyListener = exports.MoveViewportKeyListener = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var selection_service_1 = require_selection_service();
+      var grid_1 = require_grid();
+      var zoom_viewport_action_1 = require_zoom_viewport_action();
+      var MoveViewportKeyListener = class MoveViewportKeyListener extends sprotty_1.KeyListener {
+        constructor() {
+          super(...arguments);
+          this.grid = grid_1.Grid.DEFAULT;
+        }
+        keyDown(_element, event) {
+          const selectedElementIds = this.selectionService.getSelectedElementIDs();
+          const snap = this.changeBoundsManager.usePositionSnap(event);
+          const offsetX = snap ? this.grid.x : 1;
+          const offsetY = snap ? this.grid.y : 1;
+          if (selectedElementIds.length === 0) {
+            if (this.matchesMoveUpKeystroke(event)) {
+              return [sprotty_1.MoveViewportAction.create({ moveX: 0, moveY: -offsetY })];
+            } else if (this.matchesMoveDownKeystroke(event)) {
+              return [sprotty_1.MoveViewportAction.create({ moveX: 0, moveY: offsetY })];
+            } else if (this.matchesMoveRightKeystroke(event)) {
+              return [sprotty_1.MoveViewportAction.create({ moveX: offsetX, moveY: 0 })];
+            } else if (this.matchesMoveLeftKeystroke(event)) {
+              return [sprotty_1.MoveViewportAction.create({ moveX: -offsetX, moveY: 0 })];
+            }
+          }
+          return [];
+        }
+        matchesMoveUpKeystroke(event) {
+          return (0, sprotty_1.matchesKeystroke)(event, "ArrowUp");
+        }
+        matchesMoveDownKeystroke(event) {
+          return (0, sprotty_1.matchesKeystroke)(event, "ArrowDown");
+        }
+        matchesMoveRightKeystroke(event) {
+          return (0, sprotty_1.matchesKeystroke)(event, "ArrowRight");
+        }
+        matchesMoveLeftKeystroke(event) {
+          return (0, sprotty_1.matchesKeystroke)(event, "ArrowLeft");
+        }
+      };
+      exports.MoveViewportKeyListener = MoveViewportKeyListener;
+      __decorate([
+        (0, inversify_1.inject)(selection_service_1.SelectionService),
+        __metadata("design:type", selection_service_1.SelectionService)
+      ], MoveViewportKeyListener.prototype, "selectionService", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IChangeBoundsManager),
+        __metadata("design:type", Object)
+      ], MoveViewportKeyListener.prototype, "changeBoundsManager", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.Grid),
+        (0, inversify_1.optional)(),
+        __metadata("design:type", Object)
+      ], MoveViewportKeyListener.prototype, "grid", void 0);
+      exports.MoveViewportKeyListener = MoveViewportKeyListener = __decorate([
+        (0, inversify_1.injectable)()
+      ], MoveViewportKeyListener);
+      var ZoomKeyListener = class ZoomKeyListener extends sprotty_1.KeyListener {
+        keyDown(element, event) {
+          const selectedElementIds = this.selectionService.getSelectedElementIDs();
+          if (selectedElementIds.length === 0) {
+            if (this.matchesZoomOutKeystroke(event)) {
+              return [zoom_viewport_action_1.ZoomAction.create({ zoomFactor: zoom_viewport_action_1.ZoomFactors.DEFAULT.out })];
+            } else if (this.matchesZoomInKeystroke(event)) {
+              return [zoom_viewport_action_1.ZoomAction.create({ zoomFactor: zoom_viewport_action_1.ZoomFactors.DEFAULT.in })];
+            } else if (this.matchesMinZoomLevelKeystroke(event)) {
+              return [sprotty_1.CenterAction.create(selectedElementIds)];
+            }
+          } else {
+            if (this.matchesZoomOutKeystroke(event)) {
+              if (selectedElementIds.length > 0) {
+                return [
+                  zoom_viewport_action_1.ZoomAction.create({
+                    elementIds: selectedElementIds,
+                    zoomFactor: zoom_viewport_action_1.ZoomFactors.DEFAULT.out
+                  })
+                ];
+              }
+            } else if (this.matchesZoomInKeystroke(event)) {
+              if (selectedElementIds.length > 0) {
+                return [zoom_viewport_action_1.ZoomAction.create({ elementIds: selectedElementIds, zoomFactor: zoom_viewport_action_1.ZoomFactors.DEFAULT.in })];
+              }
+            } else if (this.matchesMinZoomLevelKeystroke(event)) {
+              return [sprotty_1.CenterAction.create(selectedElementIds)];
+            }
+          }
+          return [];
+        }
+        matchesZoomInKeystroke(event) {
+          return !event.ctrlKey && (event.key === "+" || (0, sprotty_1.matchesKeystroke)(event, "NumpadAdd"));
+        }
+        matchesMinZoomLevelKeystroke(event) {
+          return (0, sprotty_1.matchesKeystroke)(event, "Digit0", "ctrl") || (0, sprotty_1.matchesKeystroke)(event, "Numpad0", "ctrl");
+        }
+        matchesZoomOutKeystroke(event) {
+          return !event.ctrlKey && ((0, sprotty_1.matchesKeystroke)(event, "Minus") || (0, sprotty_1.matchesKeystroke)(event, "NumpadSubtract"));
+        }
+      };
+      exports.ZoomKeyListener = ZoomKeyListener;
+      __decorate([
+        (0, inversify_1.inject)(selection_service_1.SelectionService),
+        __metadata("design:type", selection_service_1.SelectionService)
+      ], ZoomKeyListener.prototype, "selectionService", void 0);
+      exports.ZoomKeyListener = ZoomKeyListener = __decorate([
+        (0, inversify_1.injectable)()
+      ], ZoomKeyListener);
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/viewport/viewport-tool.js
+  var require_viewport_tool = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/viewport/viewport-tool.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      var __metadata = exports && exports.__metadata || function(k3, v3) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
+      };
+      var ViewportKeyTool_1;
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.ViewportKeyTool = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var messages_1 = require_messages3();
+      var base_tools_1 = require_base_tools();
+      var viewport_key_listener_1 = require_viewport_key_listener();
+      var ViewportKeyTool = ViewportKeyTool_1 = class ViewportKeyTool extends base_tools_1.BaseTool {
+        get id() {
+          return ViewportKeyTool_1.ID;
+        }
+        enable() {
+          this.toDisposeOnDisable.push(this.keyTool.registerListener(this.moveKeyListener), this.keyTool.registerListener(this.zoomKeyListener), (0, messages_1.repeatOnMessagesUpdated)(() => this.shortcutManager.register(ViewportKeyTool_1.TOKEN, [
+            {
+              shortcuts: ["\u2B05 \u2B06 \u27A1 \u2B07"],
+              description: messages_1.messages.viewport.shortcut_move_viewport,
+              group: messages_1.messages.shortcut.group_move,
+              position: 0
+            },
+            {
+              shortcuts: ["+ -"],
+              description: messages_1.messages.viewport.shortcut_zoom_viewport,
+              group: messages_1.messages.shortcut.group_zoom,
+              position: 0
+            },
+            {
+              shortcuts: ["+ -"],
+              description: messages_1.messages.viewport.shortcut_zoom_element,
+              group: messages_1.messages.shortcut.group_zoom,
+              position: 0
+            }
+          ])));
+        }
+      };
+      exports.ViewportKeyTool = ViewportKeyTool;
+      ViewportKeyTool.ID = "glsp.viewport-key-tool";
+      ViewportKeyTool.TOKEN = Symbol.for(ViewportKeyTool_1.ID);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.IShortcutManager),
+        __metadata("design:type", Object)
+      ], ViewportKeyTool.prototype, "shortcutManager", void 0);
+      __decorate([
+        (0, inversify_1.inject)(viewport_key_listener_1.ZoomKeyListener),
+        __metadata("design:type", viewport_key_listener_1.ZoomKeyListener)
+      ], ViewportKeyTool.prototype, "zoomKeyListener", void 0);
+      __decorate([
+        (0, inversify_1.inject)(viewport_key_listener_1.MoveViewportKeyListener),
+        __metadata("design:type", viewport_key_listener_1.MoveViewportKeyListener)
+      ], ViewportKeyTool.prototype, "moveKeyListener", void 0);
+      exports.ViewportKeyTool = ViewportKeyTool = ViewportKeyTool_1 = __decorate([
+        (0, inversify_1.injectable)()
+      ], ViewportKeyTool);
     }
   });
 
@@ -49449,6 +50883,9 @@ ${JSON.stringify(message, null, 4)}`);
       var origin_viewport_1 = require_origin_viewport();
       var reposition_1 = require_reposition();
       var viewport_handler_1 = require_viewport_handler();
+      var viewport_key_listener_1 = require_viewport_key_listener();
+      var viewport_tool_1 = require_viewport_tool();
+      var zoom_viewport_action_1 = require_zoom_viewport_action();
       exports.viewportModule = new sprotty_1.FeatureModule((bind, _unbind, isBound) => {
         const context = { bind, isBound };
         (0, sprotty_1.configureCommand)(context, sprotty_1.CenterCommand);
@@ -49464,6 +50901,14 @@ ${JSON.stringify(message, null, 4)}`);
         (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IDiagramStartup, viewport_handler_1.RestoreViewportHandler);
         (0, sprotty_1.configureActionHandler)(context, tool_1.EnableDefaultToolsAction.KIND, viewport_handler_1.RestoreViewportHandler);
         (0, sprotty_1.configureActionHandler)(context, actions_1.FocusDomAction.KIND, viewport_handler_1.RestoreViewportHandler);
+        bind(sprotty_1.TYPES.ZoomFactors).toConstantValue(zoom_viewport_action_1.ZoomFactors.DEFAULT);
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IDefaultTool, viewport_tool_1.ViewportKeyTool);
+        bind(viewport_handler_1.MoveViewportHandler).toSelf().inSingletonScope();
+        bind(viewport_key_listener_1.MoveViewportKeyListener).toSelf();
+        (0, sprotty_1.configureActionHandler)(context, sprotty_1.MoveViewportAction.KIND, viewport_handler_1.MoveViewportHandler);
+        bind(viewport_handler_1.ZoomHandler).toSelf().inSingletonScope();
+        bind(viewport_key_listener_1.ZoomKeyListener).toSelf();
+        (0, sprotty_1.configureActionHandler)(context, zoom_viewport_action_1.ZoomAction.KIND, viewport_handler_1.ZoomHandler);
       }, { featureId: Symbol("viewport") });
       exports.standaloneViewportModule = new sprotty_1.FeatureModule((bind, _unbind, isBound) => {
         const context = { bind, isBound };
@@ -49481,6 +50926,7 @@ ${JSON.stringify(message, null, 4)}`);
       var sprotty_1 = require_lib4();
       var default_module_1 = require_default_module();
       var bounds_module_1 = require_bounds_module();
+      var resize_module_1 = require_resize_module();
       var command_palette_module_1 = require_command_palette_module();
       var context_menu_module_1 = require_context_menu_module();
       var copy_paste_modules_1 = require_copy_paste_modules();
@@ -49545,7 +50991,8 @@ ${JSON.stringify(message, null, 4)}`);
         validation_modules_1.validationModule,
         sprotty_1.zorderModule,
         svg_metadata_module_1.svgMetadataModule,
-        status_module_1.statusModule
+        status_module_1.statusModule,
+        resize_module_1.resizeModule
       ];
       function createDiagramOptionsModule(diagramOptions, viewerOptions) {
         return new sprotty_1.FeatureModule((bind, unbind, isBound, rebind) => configureDiagramOptions({ bind, unbind, isBound, rebind }, diagramOptions, viewerOptions));
@@ -49581,220 +51028,6 @@ ${JSON.stringify(message, null, 4)}`);
     }
   });
 
-  // node_modules/@eclipse-glsp/client/lib/features/accessibility/key-shortcut/accessible-key-shortcut.js
-  var require_accessible_key_shortcut = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/accessibility/key-shortcut/accessible-key-shortcut.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var KeyShortcutUIExtension_1;
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.KeyShortcutUIExtension = exports.SetAccessibleKeyShortcutAction = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var lodash_1 = require_lodash();
-      var ui_extension_1 = require_ui_extension2();
-      var SetAccessibleKeyShortcutAction;
-      (function(SetAccessibleKeyShortcutAction2) {
-        SetAccessibleKeyShortcutAction2.KIND = "setAccessibleKeyShortcut";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, SetAccessibleKeyShortcutAction2.KIND);
-        }
-        SetAccessibleKeyShortcutAction2.is = is;
-        function create(options) {
-          return { kind: SetAccessibleKeyShortcutAction2.KIND, token: options.token, keys: options.keys };
-        }
-        SetAccessibleKeyShortcutAction2.create = create;
-      })(SetAccessibleKeyShortcutAction || (exports.SetAccessibleKeyShortcutAction = SetAccessibleKeyShortcutAction = {}));
-      var KeyShortcutUIExtension = KeyShortcutUIExtension_1 = class KeyShortcutUIExtension extends ui_extension_1.GLSPAbstractUIExtension {
-        constructor() {
-          super(...arguments);
-          this.registrations = {};
-        }
-        handle(action) {
-          if (SetAccessibleKeyShortcutAction.is(action)) {
-            this.registrations[action.token] = action.keys;
-            if (this.containerElement) {
-              this.refreshUI();
-            }
-          }
-        }
-        id() {
-          return KeyShortcutUIExtension_1.ID;
-        }
-        containerClass() {
-          return KeyShortcutUIExtension_1.ID;
-        }
-        show(root, ...contextElementIds) {
-          super.show(root, ...contextElementIds);
-          this.shortcutsContainer.focus();
-        }
-        refreshUI() {
-          this.shortcutsContainer.innerHTML = "";
-          const registrations = Object.values(this.registrations).flatMap((r3) => r3);
-          registrations.sort((a3, b3) => {
-            if (a3.group < b3.group) {
-              return -1;
-            }
-            if (a3.group > b3.group) {
-              return 1;
-            }
-            return a3.position - b3.position;
-          });
-          const grouped = (0, lodash_1.groupBy)(registrations, (k3) => k3.group);
-          const groupTable = document.createElement("table");
-          groupTable.classList.add("shortcut-table");
-          const tableHead = document.createElement("thead");
-          const tableBody = document.createElement("tbody");
-          const headerRow = document.createElement("tr");
-          const commandCell = document.createElement("th");
-          const keybindingCell = document.createElement("th");
-          commandCell.classList.add("column-title");
-          commandCell.innerText = "Command";
-          keybindingCell.innerText = "Keybinding";
-          headerRow.appendChild(commandCell);
-          headerRow.appendChild(keybindingCell);
-          tableHead.appendChild(headerRow);
-          for (const [group, shortcuts] of Object.entries(grouped)) {
-            tableBody.appendChild(this.createGroupHeader(group));
-            shortcuts.forEach((s3) => {
-              tableBody.appendChild(this.createEntry(s3));
-            });
-          }
-          groupTable.appendChild(tableHead);
-          groupTable.appendChild(tableBody);
-          this.shortcutsContainer.append(groupTable);
-        }
-        createGroupHeader(group) {
-          const entryRow = document.createElement("tr");
-          const groupElement = document.createElement("td");
-          const text = document.createElement("strong");
-          const emptyElement = document.createElement("td");
-          text.innerText = group;
-          groupElement.appendChild(text);
-          entryRow.appendChild(groupElement);
-          entryRow.appendChild(emptyElement);
-          return entryRow;
-        }
-        getShortcutHTML(shortcuts) {
-          const shortcutKeys = document.createElement("span");
-          shortcutKeys.innerHTML = shortcuts.map((key) => `<kbd>${key}</kbd>`).join(" + ");
-          return shortcutKeys;
-        }
-        createEntry(registration) {
-          const entryRow = document.createElement("tr");
-          const shortcutElement = document.createElement("td");
-          const descElement = document.createElement("td");
-          const shortcut = this.getShortcutHTML(registration.shortcuts);
-          descElement.innerText = registration.description;
-          shortcutElement.appendChild(shortcut);
-          entryRow.appendChild(descElement);
-          entryRow.appendChild(shortcutElement);
-          return entryRow;
-        }
-        initializeContents(containerElement) {
-          this.container = document.createElement("div");
-          this.container.classList.add("keyboard-shortcuts-menu");
-          const menuTitle = document.createElement("h3");
-          menuTitle.classList.add("menu-header");
-          menuTitle.innerText = "Keyboard Shortcuts";
-          this.container.appendChild(menuTitle);
-          const closeBtn = document.createElement("button");
-          closeBtn.id = "key-shortcut-close-btn";
-          closeBtn.textContent = "x";
-          closeBtn.addEventListener("click", () => {
-            this.hide();
-          });
-          this.container.appendChild(closeBtn);
-          this.shortcutsContainer = document.createElement("div");
-          this.shortcutsContainer.classList.add("keyboard-shortcuts-container");
-          this.shortcutsContainer.tabIndex = 30;
-          this.shortcutsContainer.addEventListener("keydown", (event) => {
-            if (event.key === "Escape" || (0, sprotty_1.matchesKeystroke)(event, "KeyH", "alt")) {
-              this.hide();
-            }
-          });
-          this.container.appendChild(this.shortcutsContainer);
-          containerElement.appendChild(this.container);
-          containerElement.ariaLabel = "Shortcut-Menu";
-          this.refreshUI();
-        }
-      };
-      exports.KeyShortcutUIExtension = KeyShortcutUIExtension;
-      KeyShortcutUIExtension.ID = "key-shortcut";
-      exports.KeyShortcutUIExtension = KeyShortcutUIExtension = KeyShortcutUIExtension_1 = __decorate([
-        (0, inversify_1.injectable)()
-      ], KeyShortcutUIExtension);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/accessibility/key-shortcut/accessible-key-shortcut-tool.js
-  var require_accessible_key_shortcut_tool = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/accessibility/key-shortcut/accessible-key-shortcut-tool.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var AccessibleKeyShortcutTool_1;
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.AccessibleShortcutKeyListener = exports.AccessibleKeyShortcutTool = void 0;
-      var inversify_1 = require_cjs4();
-      var sprotty_1 = require_lib4();
-      var base_tools_1 = require_base_tools();
-      var accessible_key_shortcut_1 = require_accessible_key_shortcut();
-      var AccessibleKeyShortcutTool = AccessibleKeyShortcutTool_1 = class AccessibleKeyShortcutTool extends base_tools_1.BaseEditTool {
-        constructor() {
-          super(...arguments);
-          this.shortcutKeyListener = new AccessibleShortcutKeyListener();
-        }
-        get id() {
-          return AccessibleKeyShortcutTool_1.ID;
-        }
-        enable() {
-          this.keytool.register(this.shortcutKeyListener);
-        }
-        disable() {
-          this.keytool.deregister(this.shortcutKeyListener);
-        }
-      };
-      exports.AccessibleKeyShortcutTool = AccessibleKeyShortcutTool;
-      AccessibleKeyShortcutTool.ID = "accessible-key-shortcut-tool";
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.KeyTool),
-        __metadata("design:type", sprotty_1.KeyTool)
-      ], AccessibleKeyShortcutTool.prototype, "keytool", void 0);
-      exports.AccessibleKeyShortcutTool = AccessibleKeyShortcutTool = AccessibleKeyShortcutTool_1 = __decorate([
-        (0, inversify_1.injectable)()
-      ], AccessibleKeyShortcutTool);
-      var AccessibleShortcutKeyListener = class _AccessibleShortcutKeyListener extends sprotty_1.KeyListener {
-        constructor() {
-          super(...arguments);
-          this.token = Symbol(_AccessibleShortcutKeyListener.name);
-        }
-        keyDown(element, event) {
-          if (this.matchesActivateShortcutHelpKeystroke(event)) {
-            return [sprotty_1.SetUIExtensionVisibilityAction.create({ extensionId: accessible_key_shortcut_1.KeyShortcutUIExtension.ID, visible: true })];
-          }
-          return [];
-        }
-        matchesActivateShortcutHelpKeystroke(event) {
-          return (0, sprotty_1.matchesKeystroke)(event, "KeyH", "alt");
-        }
-      };
-      exports.AccessibleShortcutKeyListener = AccessibleShortcutKeyListener;
-    }
-  });
-
   // node_modules/@eclipse-glsp/client/lib/features/accessibility/search/search-palette.js
   var require_search_palette = __commonJS({
     "node_modules/@eclipse-glsp/client/lib/features/accessibility/search/search-palette.js"(exports) {
@@ -49813,6 +51046,7 @@ ${JSON.stringify(message, null, 4)}`);
       var lodash_1 = require_lodash();
       var base_autocomplete_palette_1 = require_base_autocomplete_palette();
       var css_feedback_1 = require_css_feedback();
+      var messages_1 = require_messages3();
       var reposition_1 = require_reposition();
       var model_1 = require_model22();
       var CSS_SEARCH_HIDDEN = "search-hidden";
@@ -49895,8 +51129,8 @@ ${JSON.stringify(message, null, 4)}`);
         }
         initializeContents(containerElement) {
           super.initializeContents(containerElement);
-          this.autocompleteWidget.inputField.placeholder = "Search for elements";
-          containerElement.setAttribute("aria-label", "Search Field");
+          this.autocompleteWidget.inputField.placeholder = messages_1.messages.search.placeholder;
+          containerElement.setAttribute("aria-label", messages_1.messages.search.label);
         }
         getSuggestionProviders(root, input) {
           return [
@@ -49985,33 +51219,35 @@ ${JSON.stringify(message, null, 4)}`);
       exports.SearchAutocompletePaletteKeyListener = exports.SearchAutocompletePaletteTool = void 0;
       var sprotty_1 = require_lib4();
       var inversify_1 = require_cjs4();
-      var accessible_key_shortcut_1 = require_accessible_key_shortcut();
+      var messages_1 = require_messages3();
+      var base_tools_1 = require_base_tools();
       var search_palette_1 = require_search_palette();
-      var SearchAutocompletePaletteTool = SearchAutocompletePaletteTool_1 = class SearchAutocompletePaletteTool {
+      var SearchAutocompletePaletteTool = SearchAutocompletePaletteTool_1 = class SearchAutocompletePaletteTool extends base_tools_1.BaseTool {
         constructor() {
+          super(...arguments);
           this.keyListener = new SearchAutocompletePaletteKeyListener(this);
         }
         get id() {
           return SearchAutocompletePaletteTool_1.ID;
         }
         enable() {
-          this.keyTool.register(this.keyListener);
-          this.keyListener.registerShortcutKey();
-        }
-        disable() {
-          this.keyTool.deregister(this.keyListener);
+          this.toDisposeOnDisable.push(this.keyTool.registerListener(this.keyListener), (0, messages_1.repeatOnMessagesUpdated)(() => this.shortcutManager.register(SearchAutocompletePaletteTool_1.TOKEN, [
+            {
+              shortcuts: ["CTRL", "F"],
+              description: messages_1.messages.search.shortcut_activate,
+              group: messages_1.messages.shortcut.group_search,
+              position: 0
+            }
+          ])));
         }
       };
       exports.SearchAutocompletePaletteTool = SearchAutocompletePaletteTool;
       SearchAutocompletePaletteTool.ID = "glsp.search-autocomplete-palette-tool";
+      SearchAutocompletePaletteTool.TOKEN = Symbol.for(SearchAutocompletePaletteTool_1.ID);
       __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        (0, inversify_1.inject)(sprotty_1.TYPES.IShortcutManager),
         __metadata("design:type", Object)
-      ], SearchAutocompletePaletteTool.prototype, "actionDispatcher", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.KeyTool),
-        __metadata("design:type", sprotty_1.KeyTool)
-      ], SearchAutocompletePaletteTool.prototype, "keyTool", void 0);
+      ], SearchAutocompletePaletteTool.prototype, "shortcutManager", void 0);
       exports.SearchAutocompletePaletteTool = SearchAutocompletePaletteTool = SearchAutocompletePaletteTool_1 = __decorate([
         (0, inversify_1.injectable)()
       ], SearchAutocompletePaletteTool);
@@ -50019,13 +51255,6 @@ ${JSON.stringify(message, null, 4)}`);
         constructor(tool) {
           super();
           this.tool = tool;
-          this.token = search_palette_1.SearchAutocompletePalette.name;
-        }
-        registerShortcutKey() {
-          this.tool.actionDispatcher.dispatchOnceModelInitialized(accessible_key_shortcut_1.SetAccessibleKeyShortcutAction.create({
-            token: this.token,
-            keys: [{ shortcuts: ["CTRL", "F"], description: "Activate search for elements", group: "Search", position: 0 }]
-          }));
         }
         keyDown(element, event) {
           if (this.matchesSearchActivateKeystroke(event)) {
@@ -50043,74 +51272,6 @@ ${JSON.stringify(message, null, 4)}`);
         }
       };
       exports.SearchAutocompletePaletteKeyListener = SearchAutocompletePaletteKeyListener;
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/accessibility/toast/messages.json
-  var require_messages2 = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/accessibility/toast/messages.json"(exports, module) {
-      module.exports = {
-        navigation: {
-          default_navigation_mode_activated: "Navigation On: Use arrow keys to select preceding (\u2190) or succeding (\u2192) elements. Use the up (\u2191) and down (\u2193) arrows to navigate paths. Press 'N' to exit.",
-          default_navigation_mode_deactivated: "Navigation Off: Press 'N' for default navigation, 'ALT+N' for position based navigation.",
-          local_navigation_mode_activated: "Position based Nav On: Navigate nearest elements using arrow keys: (\u2191) for above, (\u2193) for below, (\u2190) for previous, (\u2192) for next element. Press 'ALT+N' to exit.",
-          local_navigation_mode_deactivated: "Position based Nav Off: Press 'N' for default navigation, 'ALT+N' for position based navigation."
-        },
-        focus: {
-          focus_on: "Currently focused: ",
-          focus_off: "Currently no element is focused."
-        },
-        resize: {
-          resize_mode_activated: "Resize On: Use plus(+) and minus(-) to resize, 'CTRL'+'0' for default size. Press 'ESC' to exit.",
-          resize_mode_deactivated: "Resize Off: Press 'ALT'+'A' for resize mode."
-        },
-        grid: { zoom_in_grid: "Select a digit from 1-9 to zoom in on the respective box." },
-        tool_palette: { marqueeTool: "Currently marquee tool is only usable with mouse." }
-      };
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/accessibility/toast/toast-handler.js
-  var require_toast_handler = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/accessibility/toast/toast-handler.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.ShowToastMessageAction = exports.HideToastAction = void 0;
-      var sprotty_1 = require_lib4();
-      var HideToastAction;
-      (function(HideToastAction2) {
-        HideToastAction2.KIND = "hideToastMessageAction";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, HideToastAction2.KIND);
-        }
-        HideToastAction2.is = is;
-        function create(options) {
-          return { kind: HideToastAction2.KIND, options };
-        }
-        HideToastAction2.create = create;
-      })(HideToastAction || (exports.HideToastAction = HideToastAction = {}));
-      var ShowToastMessageAction;
-      (function(ShowToastMessageAction2) {
-        ShowToastMessageAction2.KIND = "showToastMessageAction";
-        ShowToastMessageAction2.TIMEOUT = 2e3;
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, ShowToastMessageAction2.KIND);
-        }
-        ShowToastMessageAction2.is = is;
-        function create(options) {
-          var _a4, _b2;
-          return { kind: ShowToastMessageAction2.KIND, options: { ...options, position: (_a4 = options.position) !== null && _a4 !== void 0 ? _a4 : "center", id: (_b2 = options.id) !== null && _b2 !== void 0 ? _b2 : Symbol("toast id") } };
-        }
-        ShowToastMessageAction2.create = create;
-        function createWithTimeout(options) {
-          var _a4, _b2;
-          return {
-            kind: ShowToastMessageAction2.KIND,
-            options: { timeout: ShowToastMessageAction2.TIMEOUT, ...options, position: (_a4 = options.position) !== null && _a4 !== void 0 ? _a4 : "center", id: (_b2 = options.id) !== null && _b2 !== void 0 ? _b2 : Symbol("toast id") }
-          };
-        }
-        ShowToastMessageAction2.createWithTimeout = createWithTimeout;
-      })(ShowToastMessageAction || (exports.ShowToastMessageAction = ShowToastMessageAction = {}));
     }
   });
 
@@ -50132,36 +51293,46 @@ ${JSON.stringify(message, null, 4)}`);
       exports.ElementNavigatorKeyListener = exports.ElementNavigatorTool = void 0;
       var sprotty_1 = require_lib4();
       var inversify_1 = require_cjs4();
+      var messages_1 = require_messages3();
+      var available_shortcuts_tool_1 = require_available_shortcuts_tool();
       var tool_1 = require_tool();
       var model_1 = require_model22();
+      var base_tools_1 = require_base_tools();
       var reposition_1 = require_reposition();
-      var accessible_key_shortcut_1 = require_accessible_key_shortcut();
-      var accessible_key_shortcut_tool_1 = require_accessible_key_shortcut_tool();
       var search_tool_1 = require_search_tool();
-      var messages = require_messages2();
       var toast_handler_1 = require_toast_handler();
-      var ElementNavigatorTool = ElementNavigatorTool_1 = class ElementNavigatorTool {
+      var ElementNavigatorTool = ElementNavigatorTool_1 = class ElementNavigatorTool extends base_tools_1.BaseTool {
         constructor() {
-          this.isEditTool = false;
+          super(...arguments);
           this.elementNavigatorKeyListener = new ElementNavigatorKeyListener(this);
         }
         get id() {
           return ElementNavigatorTool_1.ID;
         }
         enable() {
-          this.keytool.register(this.elementNavigatorKeyListener);
-          this.elementNavigatorKeyListener.registerShortcutKey();
-        }
-        disable() {
-          this.keytool.deregister(this.elementNavigatorKeyListener);
+          this.toDisposeOnDisable.push(this.keyTool.registerListener(this.elementNavigatorKeyListener), (0, messages_1.repeatOnMessagesUpdated)(() => this.shortcutManager.register(ElementNavigatorTool_1.TOKEN, [
+            {
+              shortcuts: ["ALT", "N"],
+              description: messages_1.messages.navigation.shortcut_local_mode,
+              group: messages_1.messages.shortcut.group_navigation,
+              position: 0
+            },
+            {
+              shortcuts: ["N"],
+              description: messages_1.messages.navigation.shortcut_global_mode,
+              group: messages_1.messages.shortcut.group_navigation,
+              position: 1
+            }
+          ])));
         }
       };
       exports.ElementNavigatorTool = ElementNavigatorTool;
       ElementNavigatorTool.ID = "glsp.diagram-navigation";
+      ElementNavigatorTool.TOKEN = Symbol.for(ElementNavigatorTool_1.ID);
       __decorate([
-        (0, inversify_1.inject)(sprotty_1.KeyTool),
-        __metadata("design:type", sprotty_1.KeyTool)
-      ], ElementNavigatorTool.prototype, "keytool", void 0);
+        (0, inversify_1.inject)(sprotty_1.TYPES.IShortcutManager),
+        __metadata("design:type", Object)
+      ], ElementNavigatorTool.prototype, "shortcutManager", void 0);
       __decorate([
         (0, inversify_1.inject)(sprotty_1.TYPES.IElementNavigator),
         __metadata("design:type", Object)
@@ -50170,10 +51341,6 @@ ${JSON.stringify(message, null, 4)}`);
         (0, inversify_1.inject)(sprotty_1.TYPES.ILocalElementNavigator),
         __metadata("design:type", Object)
       ], ElementNavigatorTool.prototype, "localElementNavigator", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], ElementNavigatorTool.prototype, "actionDispatcher", void 0);
       exports.ElementNavigatorTool = ElementNavigatorTool = ElementNavigatorTool_1 = __decorate([
         (0, inversify_1.injectable)()
       ], ElementNavigatorTool);
@@ -50189,26 +51356,6 @@ ${JSON.stringify(message, null, 4)}`);
           this.tool = tool;
           this.mode = NavigationMode.NONE;
           this.token = _ElementNavigatorKeyListener.name;
-        }
-        registerShortcutKey() {
-          this.tool.actionDispatcher.dispatchOnceModelInitialized(accessible_key_shortcut_1.SetAccessibleKeyShortcutAction.create({
-            token: this.token,
-            keys: [
-              { shortcuts: ["N"], description: "Activate default navigation", group: "Navigation", position: 0 },
-              {
-                shortcuts: ["ALT", "N"],
-                description: "Activate position based navigation",
-                group: "Navigation",
-                position: 1
-              },
-              {
-                shortcuts: ["\u2B05  \u2B06  \u27A1  \u2B07"],
-                description: "Navigate by relation or neighbors according to navigation mode",
-                group: "Navigation",
-                position: 2
-              }
-            ]
-          }));
         }
         keyDown(element, event) {
           this.resetOnEscape(event, element);
@@ -50228,19 +51375,19 @@ ${JSON.stringify(message, null, 4)}`);
             (_b2 = (_a4 = this.navigator) === null || _a4 === void 0 ? void 0 : _a4.clean) === null || _b2 === void 0 ? void 0 : _b2.call(_a4, element.root);
             this.clean();
             if (this.mode === NavigationMode.POSITION) {
-              this.tool.actionDispatcher.dispatchAll([
+              this.tool.dispatchActions([
                 tool_1.EnableDefaultToolsAction.create(),
                 toast_handler_1.ShowToastMessageAction.createWithTimeout({
                   id: Symbol.for(_ElementNavigatorKeyListener.name),
-                  message: messages.navigation.local_navigation_mode_deactivated
+                  message: messages_1.messages.navigation.local_navigation_mode_deactivated
                 })
               ]);
             } else if (this.mode === NavigationMode.DEFAULT) {
-              this.tool.actionDispatcher.dispatchAll([
+              this.tool.dispatchActions([
                 tool_1.EnableDefaultToolsAction.create(),
                 toast_handler_1.ShowToastMessageAction.createWithTimeout({
                   id: Symbol.for(_ElementNavigatorKeyListener.name),
-                  message: messages.navigation.default_navigation_mode_deactivated
+                  message: messages_1.messages.navigation.default_navigation_mode_deactivated
                 })
               ]);
             }
@@ -50251,11 +51398,11 @@ ${JSON.stringify(message, null, 4)}`);
           if (this.matchesActivatePositionNavigation(event)) {
             if (this.mode !== NavigationMode.POSITION) {
               this.clean();
-              this.tool.actionDispatcher.dispatchAll([
-                tool_1.EnableToolsAction.create([ElementNavigatorTool.ID, search_tool_1.SearchAutocompletePaletteTool.ID, accessible_key_shortcut_tool_1.AccessibleKeyShortcutTool.ID]),
+              this.tool.dispatchActions([
+                tool_1.EnableToolsAction.create([ElementNavigatorTool.ID, search_tool_1.SearchAutocompletePaletteTool.ID, available_shortcuts_tool_1.AvailableShortcutsTool.ID]),
                 toast_handler_1.ShowToastMessageAction.create({
                   id: Symbol.for(_ElementNavigatorKeyListener.name),
-                  message: messages.navigation.local_navigation_mode_activated
+                  message: messages_1.messages.navigation.local_navigation_mode_activated
                 })
               ]);
               this.navigator = this.tool.elementNavigator;
@@ -50273,11 +51420,11 @@ ${JSON.stringify(message, null, 4)}`);
             (_b2 = (_a4 = this.navigator) === null || _a4 === void 0 ? void 0 : _a4.clean) === null || _b2 === void 0 ? void 0 : _b2.call(_a4, element.root);
             this.clean();
             this.mode = NavigationMode.NONE;
-            this.tool.actionDispatcher.dispatchAll([
+            this.tool.dispatchActions([
               tool_1.EnableDefaultToolsAction.create(),
               toast_handler_1.ShowToastMessageAction.createWithTimeout({
                 id: Symbol.for(_ElementNavigatorKeyListener.name),
-                message: messages.navigation.local_navigation_mode_deactivated
+                message: messages_1.messages.navigation.local_navigation_mode_deactivated
               })
             ]);
           }
@@ -50286,11 +51433,11 @@ ${JSON.stringify(message, null, 4)}`);
           if (this.matchesActivateDefaultNavigation(event)) {
             if (this.mode !== NavigationMode.DEFAULT) {
               this.clean();
-              this.tool.actionDispatcher.dispatchAll([
-                tool_1.EnableToolsAction.create([ElementNavigatorTool.ID, search_tool_1.SearchAutocompletePaletteTool.ID, accessible_key_shortcut_tool_1.AccessibleKeyShortcutTool.ID]),
+              this.tool.dispatchActions([
+                tool_1.EnableToolsAction.create([ElementNavigatorTool.ID, search_tool_1.SearchAutocompletePaletteTool.ID, available_shortcuts_tool_1.AvailableShortcutsTool.ID]),
                 toast_handler_1.ShowToastMessageAction.create({
                   id: Symbol.for(_ElementNavigatorKeyListener.name),
-                  message: messages.navigation.default_navigation_mode_activated
+                  message: messages_1.messages.navigation.default_navigation_mode_activated
                 })
               ]);
               this.navigator = this.tool.localElementNavigator;
@@ -50308,11 +51455,11 @@ ${JSON.stringify(message, null, 4)}`);
             (_b2 = (_a4 = this.navigator) === null || _a4 === void 0 ? void 0 : _a4.clean) === null || _b2 === void 0 ? void 0 : _b2.call(_a4, element.root);
             this.clean();
             this.mode = NavigationMode.NONE;
-            this.tool.actionDispatcher.dispatchAll([
+            this.tool.dispatchActions([
               tool_1.EnableDefaultToolsAction.create(),
               toast_handler_1.ShowToastMessageAction.createWithTimeout({
                 id: Symbol.for(_ElementNavigatorKeyListener.name),
-                message: messages.navigation.default_navigation_mode_deactivated
+                message: messages_1.messages.navigation.default_navigation_mode_deactivated
               })
             ]);
           }
@@ -50598,7 +51745,7 @@ ${JSON.stringify(message, null, 4)}`);
       exports.FocusTrackerTool = void 0;
       var sprotty_1 = require_lib4();
       var inversify_1 = require_cjs4();
-      var messages = require_messages2();
+      var messages_1 = require_messages3();
       var toast_handler_1 = require_toast_handler();
       var FocusTrackerTool = FocusTrackerTool_1 = class FocusTrackerTool {
         constructor() {
@@ -50620,7 +51767,7 @@ ${JSON.stringify(message, null, 4)}`);
         disable() {
         }
         async focusOut(event) {
-          await this.showToast("Focus not set");
+          await this.showToast(messages_1.messages.focus.focus_not_set);
         }
         async focusIn(event) {
           let message;
@@ -50634,7 +51781,7 @@ ${JSON.stringify(message, null, 4)}`);
               if (parent === void 0 && textMessage !== void 0) {
                 message = textMessage;
               } else if (parent !== void 0 && textMessage === void 0) {
-                message = `Focus is in ${parent.ariaLabel}`;
+                message = `${messages_1.messages.focus.focus_within} ${parent.ariaLabel}`;
               } else if (parent !== void 0 && textMessage !== void 0) {
                 message = `${parent.ariaLabel} -> ${textMessage}`;
               }
@@ -50656,7 +51803,7 @@ ${JSON.stringify(message, null, 4)}`);
           return this.actionDispatcher.dispatchAll([
             toast_handler_1.ShowToastMessageAction.create({
               id: Symbol.for(FocusTrackerTool_1.ID),
-              message: `${messages.focus.focus_on} ${message !== null && message !== void 0 ? message : "unknown"}`,
+              message: `${messages_1.messages.focus.focus_on} ${message !== null && message !== void 0 ? message : "unknown"}`,
               position: "left"
             })
           ]);
@@ -50709,37 +51856,6 @@ ${JSON.stringify(message, null, 4)}`);
         (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IDefaultTool, focus_tracker_tool_1.FocusTrackerTool);
       }
       exports.configureFocusTrackerTool = configureFocusTrackerTool;
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/css/key-shortcut.css
-  var require_key_shortcut = __commonJS({
-    "node_modules/@eclipse-glsp/client/css/key-shortcut.css"(exports, module) {
-      module.exports = {};
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/accessibility/key-shortcut/shortcut-help-module.js
-  var require_shortcut_help_module = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/accessibility/key-shortcut/shortcut-help-module.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.glspShortcutHelpModule = exports.configureShortcutHelpTool = exports.shortcutHelpModule = void 0;
-      var sprotty_1 = require_lib4();
-      require_key_shortcut();
-      var accessible_key_shortcut_1 = require_accessible_key_shortcut();
-      var accessible_key_shortcut_tool_1 = require_accessible_key_shortcut_tool();
-      exports.shortcutHelpModule = new sprotty_1.FeatureModule((bind, unbind, isBound, rebind) => {
-        const context = { bind, unbind, isBound, rebind };
-        configureShortcutHelpTool(context);
-      }, { featureId: Symbol("shortcutHelp") });
-      exports.glspShortcutHelpModule = exports.shortcutHelpModule;
-      function configureShortcutHelpTool(context) {
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IDefaultTool, accessible_key_shortcut_tool_1.AccessibleKeyShortcutTool);
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IUIExtension, accessible_key_shortcut_1.KeyShortcutUIExtension);
-        (0, sprotty_1.configureActionHandler)(context, accessible_key_shortcut_1.SetAccessibleKeyShortcutAction.KIND, accessible_key_shortcut_1.KeyShortcutUIExtension);
-      }
-      exports.configureShortcutHelpTool = configureShortcutHelpTool;
     }
   });
 
@@ -50984,452 +52100,6 @@ ${JSON.stringify(message, null, 4)}`);
     }
   });
 
-  // node_modules/@eclipse-glsp/client/lib/features/accessibility/keyboard-tool-palette/keyboard-tool-palette.js
-  var require_keyboard_tool_palette = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/accessibility/keyboard-tool-palette/keyboard-tool-palette.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.KeyboardToolPalette = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var tool_1 = require_tool();
-      var tool_palette_1 = require_tool_palette3();
-      var delete_tool_1 = require_delete_tool();
-      var marquee_mouse_tool_1 = require_marquee_mouse_tool();
-      var actions_1 = require_actions2();
-      var edge_autocomplete_palette_1 = require_edge_autocomplete_palette();
-      var diagram_navigation_tool_1 = require_diagram_navigation_tool();
-      var constants_1 = require_constants();
-      var messages = require_messages2();
-      var toast_handler_1 = require_toast_handler();
-      var SEARCH_ICON_ID = "search";
-      var PALETTE_ICON_ID = "tools";
-      var CHEVRON_DOWN_ICON_ID = "chevron-right";
-      var PALETTE_HEIGHT = "500px";
-      var SELECTION_TOOL_KEY = ["Digit1", "Numpad1"];
-      var DELETION_TOOL_KEY = ["Digit2", "Numpad2"];
-      var MARQUEE_TOOL_KEY = ["Digit3", "Numpad3"];
-      var VALIDATION_TOOL_KEY = ["Digit4", "Numpad4"];
-      var SEARCH_TOOL_KEY = ["Digit5", "Numpad5"];
-      var SHOW_SHORTCUTS_CLASS = "accessibility-show-shortcuts";
-      var AVAILABLE_KEYS = [
-        "KeyA",
-        "KeyB",
-        "KeyC",
-        "KeyD",
-        "KeyE",
-        "KeyF",
-        "KeyG",
-        "KeyH",
-        "KeyI",
-        "KeyJ",
-        "KeyK",
-        "KeyL",
-        "KeyM",
-        "KeyN",
-        "KeyO",
-        "KeyP",
-        "KeyQ",
-        "KeyR",
-        "KeyS",
-        "KeyT",
-        "KeyU",
-        "KeyV",
-        "KeyX",
-        "KeyY",
-        "KeyZ"
-      ];
-      var HEADER_TOOL_KEYS = [SELECTION_TOOL_KEY, DELETION_TOOL_KEY, MARQUEE_TOOL_KEY, VALIDATION_TOOL_KEY, SEARCH_TOOL_KEY];
-      var KeyboardToolPalette = class KeyboardToolPalette extends tool_palette_1.ToolPalette {
-        constructor() {
-          super(...arguments);
-          this.keyboardIndexButtonMapping = /* @__PURE__ */ new Map();
-          this.headerToolsButtonMapping = /* @__PURE__ */ new Map();
-        }
-        get interactablePaletteItems() {
-          return this.paletteItems.sort(tool_palette_1.compare).map((item) => {
-            var _a4, _b2;
-            return (_b2 = (_a4 = item.children) === null || _a4 === void 0 ? void 0 : _a4.sort(tool_palette_1.compare)) !== null && _b2 !== void 0 ? _b2 : [item];
-          }).reduce((acc, val) => acc.concat(val), []);
-        }
-        initializeContents(_containerElement) {
-          this.containerElement.setAttribute("aria-label", "Tool Palette");
-          this.containerElement.tabIndex = 20;
-          this.containerElement.classList.add("accessibility-tool-palette");
-          this.createHeader();
-          this.createBody();
-          this.lastActiveButton = this.defaultToolsButton;
-          this.containerElement.onkeyup = (ev) => {
-            this.clearToolOnEscape(ev);
-            if (this.isShortcutsVisible()) {
-              this.selectItemOnCharacter(ev);
-              this.triggerHeaderToolsByKey(ev);
-            }
-          };
-        }
-        handle(action) {
-          if (tool_palette_1.EnableToolPaletteAction.is(action)) {
-            const requestAction = sprotty_1.RequestContextActions.create({
-              contextId: tool_palette_1.ToolPalette.ID,
-              editorContext: {
-                selectedElementIds: []
-              }
-            });
-            this.actionDispatcher.requestUntil(requestAction).then((response) => {
-              if (sprotty_1.SetContextActions.is(response)) {
-                this.paletteItems = response.actions.map((e2) => e2);
-                this.actionDispatcher.dispatchAll([
-                  sprotty_1.SetUIExtensionVisibilityAction.create({ extensionId: tool_palette_1.ToolPalette.ID, visible: !this.editorContext.isReadonly })
-                ]);
-              }
-            });
-          } else if (actions_1.FocusDomAction.is(action) && action.id === tool_palette_1.ToolPalette.ID) {
-            if (this.containerElement.contains(document.activeElement)) {
-              this.toggleShortcutVisibility();
-            } else {
-              this.showShortcuts();
-            }
-            this.containerElement.focus();
-          } else {
-            super.handle(action);
-          }
-        }
-        addMinimizePaletteButton() {
-          const baseDiv = document.getElementById(this.options.baseDiv);
-          const minPaletteDiv = document.createElement("div");
-          minPaletteDiv.classList.add("minimize-palette-button");
-          this.containerElement.classList.add("collapsible-palette");
-          if (baseDiv) {
-            const insertedDiv = baseDiv.insertBefore(minPaletteDiv, baseDiv.firstChild);
-            const minimizeIcon = (0, tool_palette_1.createIcon)(CHEVRON_DOWN_ICON_ID);
-            this.updateMinimizePaletteButtonTooltip(minPaletteDiv);
-            minimizeIcon.onclick = (_event) => {
-              if (this.isPaletteMaximized()) {
-                this.containerElement.style.overflow = "hidden";
-                this.containerElement.style.maxHeight = "0px";
-              } else {
-                this.containerElement.style.overflow = "visible";
-                this.containerElement.style.maxHeight = PALETTE_HEIGHT;
-              }
-              this.updateMinimizePaletteButtonTooltip(minPaletteDiv);
-              (0, tool_palette_1.changeCodiconClass)(minimizeIcon, PALETTE_ICON_ID);
-              (0, tool_palette_1.changeCodiconClass)(minimizeIcon, CHEVRON_DOWN_ICON_ID);
-            };
-            insertedDiv.appendChild(minimizeIcon);
-          }
-        }
-        createBody() {
-          const bodyDiv = document.createElement("div");
-          bodyDiv.classList.add("palette-body");
-          const tabIndex = 21;
-          let toolButtonCounter = 0;
-          this.keyboardIndexButtonMapping.clear();
-          this.paletteItems.sort(tool_palette_1.compare).forEach((item) => {
-            if (item.children) {
-              const group = (0, tool_palette_1.createToolGroup)(item);
-              item.children.sort(tool_palette_1.compare).forEach((child) => {
-                const button = this.createKeyboardToolButton(child, tabIndex, toolButtonCounter);
-                group.appendChild(button);
-                this.keyboardIndexButtonMapping.set(toolButtonCounter, button);
-                toolButtonCounter++;
-              });
-              bodyDiv.appendChild(group);
-            } else {
-              const button = this.createKeyboardToolButton(item, tabIndex, toolButtonCounter);
-              bodyDiv.appendChild(button);
-              this.keyboardIndexButtonMapping.set(toolButtonCounter, button);
-              toolButtonCounter++;
-            }
-          });
-          if (this.paletteItems.length === 0) {
-            const noResultsDiv = document.createElement("div");
-            noResultsDiv.innerText = "No results found.";
-            noResultsDiv.classList.add("tool-button");
-            bodyDiv.appendChild(noResultsDiv);
-          }
-          if (this.bodyDiv) {
-            this.containerElement.removeChild(this.bodyDiv);
-          }
-          this.containerElement.appendChild(bodyDiv);
-          this.bodyDiv = bodyDiv;
-        }
-        createHeaderTools() {
-          this.headerToolsButtonMapping.clear();
-          let mappingIndex = 0;
-          const headerTools = document.createElement("div");
-          headerTools.classList.add("header-tools");
-          this.defaultToolsButton = this.createDefaultToolButton();
-          this.headerToolsButtonMapping.set(mappingIndex++, this.defaultToolsButton);
-          headerTools.appendChild(this.defaultToolsButton);
-          this.deleteToolButton = this.createMouseDeleteToolButton();
-          this.headerToolsButtonMapping.set(mappingIndex++, this.deleteToolButton);
-          headerTools.appendChild(this.deleteToolButton);
-          this.marqueeToolButton = this.createMarqueeToolButton();
-          this.headerToolsButtonMapping.set(mappingIndex++, this.marqueeToolButton);
-          headerTools.appendChild(this.marqueeToolButton);
-          this.validateToolButton = this.createValidateButton();
-          this.headerToolsButtonMapping.set(mappingIndex++, this.validateToolButton);
-          headerTools.appendChild(this.validateToolButton);
-          const resetViewportButton = this.createResetViewportButton();
-          this.headerToolsButtonMapping.set(mappingIndex++, resetViewportButton);
-          headerTools.appendChild(resetViewportButton);
-          if (this.gridManager) {
-            const toggleGridButton = this.createToggleGridButton();
-            this.headerToolsButtonMapping.set(mappingIndex++, toggleGridButton);
-            headerTools.appendChild(toggleGridButton);
-          }
-          if (this.debugManager) {
-            const toggleDebugButton = this.createToggleDebugButton();
-            this.headerToolsButtonMapping.set(mappingIndex++, toggleDebugButton);
-            headerTools.appendChild(toggleDebugButton);
-          }
-          this.searchToolButton = this.createSearchButton();
-          this.headerToolsButtonMapping.set(mappingIndex++, this.searchToolButton);
-          headerTools.appendChild(this.searchToolButton);
-          return headerTools;
-        }
-        createDefaultToolButton() {
-          const button = (0, tool_palette_1.createIcon)("inspect");
-          button.id = "btn_default_tools";
-          button.title = "Enable selection tool";
-          button.onclick = this.onClickStaticToolButton(button);
-          button.appendChild(this.createKeyboardShotcut(SELECTION_TOOL_KEY[0]));
-          return button;
-        }
-        createMouseDeleteToolButton() {
-          const deleteToolButton = (0, tool_palette_1.createIcon)("chrome-close");
-          deleteToolButton.title = "Enable deletion tool";
-          deleteToolButton.onclick = this.onClickStaticToolButton(deleteToolButton, delete_tool_1.MouseDeleteTool.ID);
-          deleteToolButton.appendChild(this.createKeyboardShotcut(DELETION_TOOL_KEY[0]));
-          return deleteToolButton;
-        }
-        createMarqueeToolButton() {
-          const marqueeToolButton = (0, tool_palette_1.createIcon)("screen-full");
-          marqueeToolButton.title = "Enable marquee tool";
-          const toastMessageAction = toast_handler_1.ShowToastMessageAction.createWithTimeout({
-            id: Symbol.for(diagram_navigation_tool_1.ElementNavigatorKeyListener.name),
-            message: messages.tool_palette.marqueeTool
-          });
-          marqueeToolButton.onclick = this.onClickStaticToolButton(marqueeToolButton, marquee_mouse_tool_1.MarqueeMouseTool.ID, toastMessageAction);
-          marqueeToolButton.appendChild(this.createKeyboardShotcut(MARQUEE_TOOL_KEY[0]));
-          return marqueeToolButton;
-        }
-        createValidateButton() {
-          const validateToolButton = (0, tool_palette_1.createIcon)("pass");
-          validateToolButton.title = "Validate model";
-          validateToolButton.onclick = (_event) => {
-            const modelIds = [this.modelRootId];
-            this.actionDispatcher.dispatch(sprotty_1.RequestMarkersAction.create(modelIds));
-          };
-          validateToolButton.appendChild(this.createKeyboardShotcut(VALIDATION_TOOL_KEY[0]));
-          return validateToolButton;
-        }
-        onClickStaticToolButton(button, toolId, action) {
-          return (_ev) => {
-            if (!this.editorContext.isReadonly) {
-              const defaultAction = toolId ? tool_1.EnableToolsAction.create([toolId]) : tool_1.EnableDefaultToolsAction.create();
-              if (action) {
-                this.actionDispatcher.dispatchAll([defaultAction, action]);
-              } else {
-                this.actionDispatcher.dispatchAll([defaultAction]);
-              }
-              this.changeActiveButton(button);
-              button.focus();
-            }
-          };
-        }
-        createSearchButton() {
-          const searchIcon = (0, tool_palette_1.createIcon)(SEARCH_ICON_ID);
-          searchIcon.onclick = (_ev) => {
-            const searchField = document.getElementById(this.containerElement.id + "_search_field");
-            if (searchField) {
-              if (searchField.style.display === "none") {
-                searchField.style.display = "";
-                searchField.focus();
-              } else {
-                searchField.style.display = "none";
-              }
-            }
-          };
-          searchIcon.classList.add("search-icon");
-          searchIcon.title = "Filter palette entries";
-          searchIcon.appendChild(this.createKeyboardShotcut(SEARCH_TOOL_KEY[0]));
-          return searchIcon;
-        }
-        createHeaderSearchField() {
-          const searchField = document.createElement("input");
-          searchField.classList.add("search-input");
-          searchField.tabIndex = 21;
-          searchField.id = this.containerElement.id + "_search_field";
-          searchField.type = "text";
-          searchField.placeholder = "Search...";
-          searchField.style.display = "none";
-          searchField.onkeyup = (ev) => {
-            this.requestFilterUpdate(this.searchField.value);
-            ev.stopPropagation();
-            if (searchField.value === "") {
-              this.focusToolPaletteOnEscape(ev);
-            } else {
-              this.clearOnEscape(ev);
-            }
-          };
-          return searchField;
-        }
-        focusToolPaletteOnEscape(event) {
-          if ((0, sprotty_1.matchesKeystroke)(event, "Escape")) {
-            this.containerElement.focus();
-          }
-        }
-        createKeyboardShotcut(keyShortcut) {
-          const hint = document.createElement("div");
-          hint.classList.add("key-shortcut");
-          let keyShortcutValue = keyShortcut.toString();
-          if (keyShortcut.includes("Key")) {
-            keyShortcutValue = keyShortcut.toString().substring(3);
-          } else if (keyShortcut.includes("Digit")) {
-            keyShortcutValue = keyShortcut.toString().substring(5);
-          }
-          hint.innerHTML = keyShortcutValue;
-          return hint;
-        }
-        createKeyboardToolButton(item, tabIndex, buttonIndex) {
-          const button = document.createElement("div");
-          if (buttonIndex < AVAILABLE_KEYS.length) {
-            button.appendChild(this.createKeyboardShotcut(AVAILABLE_KEYS[buttonIndex]));
-          }
-          button.tabIndex = tabIndex;
-          button.classList.add("tool-button");
-          if (item.icon) {
-            button.appendChild((0, tool_palette_1.createIcon)(item.icon));
-          }
-          button.insertAdjacentText("beforeend", item.label);
-          button.onclick = this.onClickCreateToolButton(button, item);
-          button.onkeydown = (ev) => {
-            this.clickToolOnEnter(ev, button, item);
-            this.clearToolOnEscape(ev);
-            if ((0, sprotty_1.matchesKeystroke)(ev, "ArrowDown")) {
-              if (buttonIndex + 1 > this.keyboardIndexButtonMapping.size - 1) {
-                this.selectItemViaArrowKey(this.keyboardIndexButtonMapping.get(0));
-              } else {
-                this.selectItemViaArrowKey(this.keyboardIndexButtonMapping.get(buttonIndex + 1));
-              }
-            } else if ((0, sprotty_1.matchesKeystroke)(ev, "ArrowUp")) {
-              if (buttonIndex - 1 < 0) {
-                this.selectItemViaArrowKey(this.keyboardIndexButtonMapping.get(this.keyboardIndexButtonMapping.size - 1));
-              } else {
-                this.selectItemViaArrowKey(this.keyboardIndexButtonMapping.get(buttonIndex - 1));
-              }
-            }
-          };
-          return button;
-        }
-        clickToolOnEnter(event, button, item) {
-          if ((0, sprotty_1.matchesKeystroke)(event, "Enter")) {
-            if (!this.editorContext.isReadonly) {
-              this.actionDispatcher.dispatchAll(item.actions);
-              this.changeActiveButton(button);
-              this.selectItemOnCharacter(event);
-            }
-          }
-        }
-        selectItemOnCharacter(event) {
-          var _a4;
-          let index = void 0;
-          const items = this.interactablePaletteItems;
-          const itemsCount = items.length < AVAILABLE_KEYS.length ? items.length : AVAILABLE_KEYS.length;
-          for (let i2 = 0; i2 < itemsCount; i2++) {
-            const keycode = AVAILABLE_KEYS[i2];
-            if ((0, sprotty_1.matchesKeystroke)(event, keycode)) {
-              index = i2;
-              break;
-            }
-          }
-          if (index !== void 0) {
-            if (items[index].actions.some((a3) => a3.kind === sprotty_1.TriggerNodeCreationAction.KIND)) {
-              this.actionDispatcher.dispatchAll([
-                ...items[index].actions,
-                sprotty_1.SetUIExtensionVisibilityAction.create({
-                  extensionId: constants_1.KeyboardNodeGridMetadata.ID,
-                  visible: true,
-                  contextElementsId: []
-                })
-              ]);
-            } else {
-              this.actionDispatcher.dispatchAll([
-                ...items[index].actions,
-                sprotty_1.SetUIExtensionVisibilityAction.create({
-                  extensionId: edge_autocomplete_palette_1.EdgeAutocompletePaletteMetadata.ID,
-                  visible: true,
-                  contextElementsId: []
-                })
-              ]);
-            }
-            this.changeActiveButton(this.keyboardIndexButtonMapping.get(index));
-            (_a4 = this.keyboardIndexButtonMapping.get(index)) === null || _a4 === void 0 ? void 0 : _a4.focus();
-          }
-        }
-        triggerHeaderToolsByKey(event) {
-          var _a4;
-          let index = void 0;
-          for (let i2 = 0; i2 < HEADER_TOOL_KEYS.length; i2++) {
-            for (let j3 = 0; j3 < HEADER_TOOL_KEYS[i2].length; j3++) {
-              const keycode = HEADER_TOOL_KEYS[i2][j3];
-              if ((0, sprotty_1.matchesKeystroke)(event, keycode)) {
-                event.stopPropagation();
-                event.preventDefault();
-                index = i2;
-                break;
-              }
-            }
-          }
-          if (index !== void 0) {
-            (_a4 = this.headerToolsButtonMapping.get(index)) === null || _a4 === void 0 ? void 0 : _a4.click();
-          }
-        }
-        selectItemViaArrowKey(currentButton) {
-          if (currentButton !== void 0) {
-            this.changeActiveButton(currentButton);
-            currentButton === null || currentButton === void 0 ? void 0 : currentButton.focus();
-          }
-        }
-        clearToolOnEscape(event) {
-          if ((0, sprotty_1.matchesKeystroke)(event, "Escape")) {
-            if (event.target instanceof HTMLElement) {
-              event.target.blur();
-            }
-            this.actionDispatcher.dispatch(tool_1.EnableDefaultToolsAction.create());
-          }
-        }
-        toggleShortcutVisibility() {
-          if (this.isShortcutsVisible()) {
-            this.hideShortcuts();
-          } else {
-            this.showShortcuts();
-          }
-        }
-        isShortcutsVisible() {
-          return this.containerElement.classList.contains(SHOW_SHORTCUTS_CLASS);
-        }
-        showShortcuts() {
-          this.containerElement.classList.add(SHOW_SHORTCUTS_CLASS);
-        }
-        hideShortcuts() {
-          this.containerElement.classList.remove(SHOW_SHORTCUTS_CLASS);
-        }
-      };
-      exports.KeyboardToolPalette = KeyboardToolPalette;
-      exports.KeyboardToolPalette = KeyboardToolPalette = __decorate([
-        (0, inversify_1.injectable)()
-      ], KeyboardToolPalette);
-    }
-  });
-
   // node_modules/@eclipse-glsp/client/lib/features/accessibility/global-keylistener-tool.js
   var require_global_keylistener_tool = __commonJS({
     "node_modules/@eclipse-glsp/client/lib/features/accessibility/global-keylistener-tool.js"(exports) {
@@ -51448,15 +52118,15 @@ ${JSON.stringify(message, null, 4)}`);
       exports.GlobalKeyListenerTool = void 0;
       var sprotty_1 = require_lib4();
       var inversify_1 = require_cjs4();
+      var messages_1 = require_messages3();
       var constants_1 = require_constants();
       var tool_palette_1 = require_tool_palette3();
+      var base_tools_1 = require_base_tools();
       var actions_1 = require_actions2();
-      var accessible_key_shortcut_1 = require_accessible_key_shortcut();
       var constants_2 = require_constants2();
-      var keyboard_tool_palette_1 = require_keyboard_tool_palette();
-      var GlobalKeyListenerTool = GlobalKeyListenerTool_1 = class GlobalKeyListenerTool {
+      var GlobalKeyListenerTool = GlobalKeyListenerTool_1 = class GlobalKeyListenerTool extends base_tools_1.BaseEditTool {
         constructor() {
-          this.isEditTool = false;
+          super(...arguments);
           this.alreadyRegistered = false;
         }
         get id() {
@@ -51466,24 +52136,21 @@ ${JSON.stringify(message, null, 4)}`);
           if (!this.alreadyRegistered) {
             this.alreadyRegistered = true;
             document.addEventListener("keyup", this.trigger.bind(this));
-            this.registerShortcutKey();
+            (0, messages_1.repeatOnMessagesUpdated)(() => this.shortcutManager.register(GlobalKeyListenerTool_1.TOKEN, [
+              {
+                shortcuts: ["ALT", "P"],
+                description: messages_1.messages.focus.shortcut_focus_palette,
+                group: messages_1.messages.shortcut.group_tool_palette,
+                position: 0
+              },
+              {
+                shortcuts: ["ALT", "G"],
+                description: messages_1.messages.focus.shortcut_focus_graph,
+                group: messages_1.messages.shortcut.group_graph,
+                position: 0
+              }
+            ]));
           }
-        }
-        disable() {
-        }
-        registerShortcutKey() {
-          this.actionDispatcher.onceModelInitialized().then(() => {
-            this.actionDispatcher.dispatchAll([
-              accessible_key_shortcut_1.SetAccessibleKeyShortcutAction.create({
-                token: keyboard_tool_palette_1.KeyboardToolPalette.name,
-                keys: [{ shortcuts: ["ALT", "P"], description: "Focus on tool palette", group: "Tool-Palette", position: 0 }]
-              }),
-              accessible_key_shortcut_1.SetAccessibleKeyShortcutAction.create({
-                token: "Graph",
-                keys: [{ shortcuts: ["ALT", "G"], description: "Focus on graph", group: "Graph", position: 0 }]
-              })
-            ]);
-          });
         }
         trigger(event) {
           this.actionDispatcher.dispatchAll(this.handleKeyEvent(event));
@@ -51514,10 +52181,11 @@ ${JSON.stringify(message, null, 4)}`);
       };
       exports.GlobalKeyListenerTool = GlobalKeyListenerTool;
       GlobalKeyListenerTool.ID = "glsp.global-key-listener";
+      GlobalKeyListenerTool.TOKEN = Symbol.for(GlobalKeyListenerTool_1.name);
       __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        (0, inversify_1.inject)(sprotty_1.TYPES.IShortcutManager),
         __metadata("design:type", Object)
-      ], GlobalKeyListenerTool.prototype, "actionDispatcher", void 0);
+      ], GlobalKeyListenerTool.prototype, "shortcutManager", void 0);
       exports.GlobalKeyListenerTool = GlobalKeyListenerTool = GlobalKeyListenerTool_1 = __decorate([
         (0, inversify_1.injectable)()
       ], GlobalKeyListenerTool);
@@ -51656,11 +52324,11 @@ ${JSON.stringify(message, null, 4)}`);
         setContainerVisible(visible) {
           if (this.containerElement) {
             if (visible) {
-              this.containerElement.style.visibility = "visible";
-              this.containerElement.style.opacity = "0.7";
+              this.containerElement.classList.remove("grid-hidden");
+              this.containerElement.classList.add("grid-visible");
             } else {
-              this.containerElement.style.visibility = "hidden";
-              this.containerElement.style.opacity = "0";
+              this.containerElement.classList.remove("grid-visible");
+              this.containerElement.classList.add("grid-hidden");
             }
           }
         }
@@ -52205,9 +52873,429 @@ ${JSON.stringify(message, null, 4)}`);
   });
 
   // node_modules/@eclipse-glsp/client/css/keyboard-tool-palette.css
-  var require_keyboard_tool_palette2 = __commonJS({
+  var require_keyboard_tool_palette = __commonJS({
     "node_modules/@eclipse-glsp/client/css/keyboard-tool-palette.css"(exports, module) {
       module.exports = {};
+    }
+  });
+
+  // node_modules/@eclipse-glsp/client/lib/features/accessibility/keyboard-tool-palette/keyboard-tool-palette.js
+  var require_keyboard_tool_palette2 = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/accessibility/keyboard-tool-palette/keyboard-tool-palette.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.KeyboardToolPalette = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var messages_1 = require_messages3();
+      var tool_1 = require_tool();
+      var tool_palette_1 = require_tool_palette3();
+      var delete_tool_1 = require_delete_tool();
+      var marquee_mouse_tool_1 = require_marquee_mouse_tool();
+      var actions_1 = require_actions2();
+      var edge_autocomplete_palette_1 = require_edge_autocomplete_palette();
+      var diagram_navigation_tool_1 = require_diagram_navigation_tool();
+      var constants_1 = require_constants();
+      var toast_handler_1 = require_toast_handler();
+      var SEARCH_ICON_ID = "search";
+      var SELECTION_TOOL_KEY = ["Digit1", "Numpad1"];
+      var DELETION_TOOL_KEY = ["Digit2", "Numpad2"];
+      var MARQUEE_TOOL_KEY = ["Digit3", "Numpad3"];
+      var VALIDATION_TOOL_KEY = ["Digit4", "Numpad4"];
+      var SEARCH_TOOL_KEY = ["Digit5", "Numpad5"];
+      var SHOW_SHORTCUTS_CLASS = "accessibility-show-shortcuts";
+      var AVAILABLE_KEYS = [
+        "KeyA",
+        "KeyB",
+        "KeyC",
+        "KeyD",
+        "KeyE",
+        "KeyF",
+        "KeyG",
+        "KeyH",
+        "KeyI",
+        "KeyJ",
+        "KeyK",
+        "KeyL",
+        "KeyM",
+        "KeyN",
+        "KeyO",
+        "KeyP",
+        "KeyQ",
+        "KeyR",
+        "KeyS",
+        "KeyT",
+        "KeyU",
+        "KeyV",
+        "KeyX",
+        "KeyY",
+        "KeyZ"
+      ];
+      var HEADER_TOOL_KEYS = [SELECTION_TOOL_KEY, DELETION_TOOL_KEY, MARQUEE_TOOL_KEY, VALIDATION_TOOL_KEY, SEARCH_TOOL_KEY];
+      var KeyboardToolPalette = class KeyboardToolPalette extends tool_palette_1.ToolPalette {
+        constructor() {
+          super(...arguments);
+          this.keyboardIndexButtonMapping = /* @__PURE__ */ new Map();
+          this.headerToolsButtonMapping = /* @__PURE__ */ new Map();
+        }
+        get interactablePaletteItems() {
+          return this.paletteItems.sort(tool_palette_1.compare).map((item) => {
+            var _a4, _b2;
+            return (_b2 = (_a4 = item.children) === null || _a4 === void 0 ? void 0 : _a4.sort(tool_palette_1.compare)) !== null && _b2 !== void 0 ? _b2 : [item];
+          }).reduce((acc, val) => acc.concat(val), []);
+        }
+        initializeContents(_containerElement) {
+          this.containerElement.setAttribute("aria-label", messages_1.messages.tool_palette.label);
+          this.containerElement.tabIndex = 20;
+          this.containerElement.classList.add("accessibility-tool-palette");
+          this.addMinimizePaletteButton();
+          this.createHeader();
+          this.createBody();
+          this.lastActiveButton = this.defaultToolsButton;
+          this.containerElement.onkeyup = (ev) => {
+            this.clearToolOnEscape(ev);
+            if (this.isShortcutsVisible()) {
+              this.selectItemOnCharacter(ev);
+              this.triggerHeaderToolsByKey(ev);
+            }
+          };
+        }
+        handle(action) {
+          if (tool_palette_1.EnableToolPaletteAction.is(action)) {
+            const requestAction = sprotty_1.RequestContextActions.create({
+              contextId: tool_palette_1.ToolPalette.ID,
+              editorContext: {
+                selectedElementIds: []
+              }
+            });
+            this.actionDispatcher.requestUntil(requestAction).then((response) => {
+              if (sprotty_1.SetContextActions.is(response)) {
+                this.paletteItems = response.actions.map((e2) => e2);
+                this.actionDispatcher.dispatchAll([
+                  sprotty_1.SetUIExtensionVisibilityAction.create({ extensionId: tool_palette_1.ToolPalette.ID, visible: !this.editorContext.isReadonly })
+                ]);
+              }
+            });
+          } else if (actions_1.FocusDomAction.is(action) && action.id === tool_palette_1.ToolPalette.ID) {
+            if (this.containerElement.contains(document.activeElement)) {
+              this.toggleShortcutVisibility();
+            } else {
+              this.showShortcuts();
+            }
+            this.containerElement.focus();
+          } else {
+            super.handle(action);
+          }
+        }
+        createBody() {
+          const bodyDiv = document.createElement("div");
+          bodyDiv.classList.add("palette-body");
+          const tabIndex = 21;
+          let toolButtonCounter = 0;
+          this.keyboardIndexButtonMapping.clear();
+          this.paletteItems.sort(tool_palette_1.compare).forEach((item) => {
+            if (item.children) {
+              const group = (0, tool_palette_1.createToolGroup)(item);
+              item.children.sort(tool_palette_1.compare).forEach((child) => {
+                const button = this.createKeyboardToolButton(child, tabIndex, toolButtonCounter);
+                group.appendChild(button);
+                this.keyboardIndexButtonMapping.set(toolButtonCounter, button);
+                toolButtonCounter++;
+              });
+              bodyDiv.appendChild(group);
+            } else {
+              const button = this.createKeyboardToolButton(item, tabIndex, toolButtonCounter);
+              bodyDiv.appendChild(button);
+              this.keyboardIndexButtonMapping.set(toolButtonCounter, button);
+              toolButtonCounter++;
+            }
+          });
+          if (this.paletteItems.length === 0) {
+            const noResultsDiv = document.createElement("div");
+            noResultsDiv.innerText = messages_1.messages.tool_palette.no_items;
+            noResultsDiv.classList.add("tool-button");
+            bodyDiv.appendChild(noResultsDiv);
+          }
+          if (this.bodyDiv) {
+            this.containerElement.removeChild(this.bodyDiv);
+          }
+          this.containerElement.appendChild(bodyDiv);
+          this.bodyDiv = bodyDiv;
+        }
+        createHeaderTools() {
+          this.headerToolsButtonMapping.clear();
+          let mappingIndex = 0;
+          const headerTools = document.createElement("div");
+          headerTools.classList.add("header-tools");
+          this.defaultToolsButton = this.createDefaultToolButton();
+          this.headerToolsButtonMapping.set(mappingIndex++, this.defaultToolsButton);
+          headerTools.appendChild(this.defaultToolsButton);
+          this.deleteToolButton = this.createMouseDeleteToolButton();
+          this.headerToolsButtonMapping.set(mappingIndex++, this.deleteToolButton);
+          headerTools.appendChild(this.deleteToolButton);
+          this.marqueeToolButton = this.createMarqueeToolButton();
+          this.headerToolsButtonMapping.set(mappingIndex++, this.marqueeToolButton);
+          headerTools.appendChild(this.marqueeToolButton);
+          this.validateToolButton = this.createValidateButton();
+          this.headerToolsButtonMapping.set(mappingIndex++, this.validateToolButton);
+          headerTools.appendChild(this.validateToolButton);
+          const resetViewportButton = this.createResetViewportButton();
+          this.headerToolsButtonMapping.set(mappingIndex++, resetViewportButton);
+          headerTools.appendChild(resetViewportButton);
+          if (this.gridManager) {
+            const toggleGridButton = this.createToggleGridButton();
+            this.headerToolsButtonMapping.set(mappingIndex++, toggleGridButton);
+            headerTools.appendChild(toggleGridButton);
+          }
+          if (this.debugManager) {
+            const toggleDebugButton = this.createToggleDebugButton();
+            this.headerToolsButtonMapping.set(mappingIndex++, toggleDebugButton);
+            headerTools.appendChild(toggleDebugButton);
+          }
+          this.searchToolButton = this.createSearchButton();
+          this.headerToolsButtonMapping.set(mappingIndex++, this.searchToolButton);
+          headerTools.appendChild(this.searchToolButton);
+          return headerTools;
+        }
+        createDefaultToolButton() {
+          const button = (0, tool_palette_1.createIcon)("inspect");
+          button.id = "btn_default_tools";
+          button.title = messages_1.messages.tool_palette.selection_button;
+          button.onclick = this.onClickStaticToolButton(button);
+          button.appendChild(this.createKeyboardShotcut(SELECTION_TOOL_KEY[0]));
+          return button;
+        }
+        createMouseDeleteToolButton() {
+          const deleteToolButton = (0, tool_palette_1.createIcon)("chrome-close");
+          deleteToolButton.title = messages_1.messages.tool_palette.delete_button;
+          deleteToolButton.onclick = this.onClickStaticToolButton(deleteToolButton, delete_tool_1.MouseDeleteTool.ID);
+          deleteToolButton.appendChild(this.createKeyboardShotcut(DELETION_TOOL_KEY[0]));
+          return deleteToolButton;
+        }
+        createMarqueeToolButton() {
+          const marqueeToolButton = (0, tool_palette_1.createIcon)("screen-full");
+          marqueeToolButton.title = messages_1.messages.tool_palette.marquee_button;
+          const toastMessageAction = toast_handler_1.ShowToastMessageAction.createWithTimeout({
+            id: Symbol.for(diagram_navigation_tool_1.ElementNavigatorKeyListener.name),
+            message: messages_1.messages.tool_palette.marquee_message
+          });
+          marqueeToolButton.onclick = this.onClickStaticToolButton(marqueeToolButton, marquee_mouse_tool_1.MarqueeMouseTool.ID, toastMessageAction);
+          marqueeToolButton.appendChild(this.createKeyboardShotcut(MARQUEE_TOOL_KEY[0]));
+          return marqueeToolButton;
+        }
+        createValidateButton() {
+          const validateToolButton = (0, tool_palette_1.createIcon)("pass");
+          validateToolButton.title = messages_1.messages.tool_palette.validate_button;
+          validateToolButton.onclick = (_event) => {
+            const modelIds = [this.modelRootId];
+            this.actionDispatcher.dispatch(sprotty_1.RequestMarkersAction.create(modelIds));
+          };
+          validateToolButton.appendChild(this.createKeyboardShotcut(VALIDATION_TOOL_KEY[0]));
+          return validateToolButton;
+        }
+        onClickStaticToolButton(button, toolId, action) {
+          return (_ev) => {
+            if (!this.editorContext.isReadonly) {
+              const defaultAction = toolId ? tool_1.EnableToolsAction.create([toolId]) : tool_1.EnableDefaultToolsAction.create();
+              if (action) {
+                this.actionDispatcher.dispatchAll([defaultAction, action]);
+              } else {
+                this.actionDispatcher.dispatchAll([defaultAction]);
+              }
+              this.changeActiveButton(button);
+              button.focus();
+            }
+          };
+        }
+        createSearchButton() {
+          const searchIcon = (0, tool_palette_1.createIcon)(SEARCH_ICON_ID);
+          searchIcon.onclick = (_ev) => {
+            const searchField = document.getElementById(this.containerElement.id + "_search_field");
+            if (searchField) {
+              if (searchField.style.display === "none") {
+                searchField.style.display = "";
+                searchField.focus();
+              } else {
+                searchField.style.display = "none";
+              }
+            }
+          };
+          searchIcon.classList.add("search-icon");
+          searchIcon.title = messages_1.messages.tool_palette.search_button;
+          searchIcon.appendChild(this.createKeyboardShotcut(SEARCH_TOOL_KEY[0]));
+          return searchIcon;
+        }
+        createHeaderSearchField() {
+          const searchField = document.createElement("input");
+          searchField.classList.add("search-input");
+          searchField.tabIndex = 21;
+          searchField.id = this.containerElement.id + "_search_field";
+          searchField.type = "text";
+          searchField.placeholder = messages_1.messages.tool_palette.search_placeholder;
+          searchField.style.display = "none";
+          searchField.onkeyup = (ev) => {
+            this.requestFilterUpdate(this.searchField.value);
+            ev.stopPropagation();
+            if (searchField.value === "") {
+              this.focusToolPaletteOnEscape(ev);
+            } else {
+              this.clearOnEscape(ev);
+            }
+          };
+          return searchField;
+        }
+        focusToolPaletteOnEscape(event) {
+          if ((0, sprotty_1.matchesKeystroke)(event, "Escape")) {
+            this.containerElement.focus();
+          }
+        }
+        createKeyboardShotcut(keyShortcut) {
+          const hint = document.createElement("div");
+          hint.classList.add("key-shortcut");
+          let keyShortcutValue = keyShortcut.toString();
+          if (keyShortcut.includes("Key")) {
+            keyShortcutValue = keyShortcut.toString().substring(3);
+          } else if (keyShortcut.includes("Digit")) {
+            keyShortcutValue = keyShortcut.toString().substring(5);
+          }
+          hint.innerHTML = keyShortcutValue;
+          return hint;
+        }
+        createKeyboardToolButton(item, tabIndex, buttonIndex) {
+          const button = document.createElement("div");
+          if (buttonIndex < AVAILABLE_KEYS.length) {
+            button.appendChild(this.createKeyboardShotcut(AVAILABLE_KEYS[buttonIndex]));
+          }
+          button.tabIndex = tabIndex;
+          button.classList.add("tool-button");
+          if (item.icon) {
+            button.appendChild((0, tool_palette_1.createIcon)(item.icon));
+          }
+          button.insertAdjacentText("beforeend", item.label);
+          button.onclick = this.onClickCreateToolButton(button, item);
+          button.onkeydown = (ev) => {
+            this.clickToolOnEnter(ev, button, item);
+            this.clearToolOnEscape(ev);
+            if ((0, sprotty_1.matchesKeystroke)(ev, "ArrowDown")) {
+              if (buttonIndex + 1 > this.keyboardIndexButtonMapping.size - 1) {
+                this.selectItemViaArrowKey(this.keyboardIndexButtonMapping.get(0));
+              } else {
+                this.selectItemViaArrowKey(this.keyboardIndexButtonMapping.get(buttonIndex + 1));
+              }
+            } else if ((0, sprotty_1.matchesKeystroke)(ev, "ArrowUp")) {
+              if (buttonIndex - 1 < 0) {
+                this.selectItemViaArrowKey(this.keyboardIndexButtonMapping.get(this.keyboardIndexButtonMapping.size - 1));
+              } else {
+                this.selectItemViaArrowKey(this.keyboardIndexButtonMapping.get(buttonIndex - 1));
+              }
+            }
+          };
+          return button;
+        }
+        clickToolOnEnter(event, button, item) {
+          if ((0, sprotty_1.matchesKeystroke)(event, "Enter")) {
+            if (!this.editorContext.isReadonly) {
+              this.actionDispatcher.dispatchAll(item.actions);
+              this.changeActiveButton(button);
+              this.selectItemOnCharacter(event);
+            }
+          }
+        }
+        selectItemOnCharacter(event) {
+          var _a4;
+          let index = void 0;
+          const items = this.interactablePaletteItems;
+          const itemsCount = items.length < AVAILABLE_KEYS.length ? items.length : AVAILABLE_KEYS.length;
+          for (let i2 = 0; i2 < itemsCount; i2++) {
+            const keycode = AVAILABLE_KEYS[i2];
+            if ((0, sprotty_1.matchesKeystroke)(event, keycode)) {
+              index = i2;
+              break;
+            }
+          }
+          if (index !== void 0) {
+            if (items[index].actions.some((a3) => a3.kind === sprotty_1.TriggerNodeCreationAction.KIND)) {
+              this.actionDispatcher.dispatchAll([
+                ...items[index].actions,
+                sprotty_1.SetUIExtensionVisibilityAction.create({
+                  extensionId: constants_1.KeyboardNodeGridMetadata.ID,
+                  visible: true,
+                  contextElementsId: []
+                })
+              ]);
+            } else {
+              this.actionDispatcher.dispatchAll([
+                ...items[index].actions,
+                sprotty_1.SetUIExtensionVisibilityAction.create({
+                  extensionId: edge_autocomplete_palette_1.EdgeAutocompletePaletteMetadata.ID,
+                  visible: true,
+                  contextElementsId: []
+                })
+              ]);
+            }
+            this.changeActiveButton(this.keyboardIndexButtonMapping.get(index));
+            (_a4 = this.keyboardIndexButtonMapping.get(index)) === null || _a4 === void 0 ? void 0 : _a4.focus();
+          }
+        }
+        triggerHeaderToolsByKey(event) {
+          var _a4;
+          let index = void 0;
+          for (let i2 = 0; i2 < HEADER_TOOL_KEYS.length; i2++) {
+            for (let j3 = 0; j3 < HEADER_TOOL_KEYS[i2].length; j3++) {
+              const keycode = HEADER_TOOL_KEYS[i2][j3];
+              if ((0, sprotty_1.matchesKeystroke)(event, keycode)) {
+                event.stopPropagation();
+                event.preventDefault();
+                index = i2;
+                break;
+              }
+            }
+          }
+          if (index !== void 0) {
+            (_a4 = this.headerToolsButtonMapping.get(index)) === null || _a4 === void 0 ? void 0 : _a4.click();
+          }
+        }
+        selectItemViaArrowKey(currentButton) {
+          if (currentButton !== void 0) {
+            this.changeActiveButton(currentButton);
+            currentButton === null || currentButton === void 0 ? void 0 : currentButton.focus();
+          }
+        }
+        clearToolOnEscape(event) {
+          if ((0, sprotty_1.matchesKeystroke)(event, "Escape")) {
+            if (event.target instanceof HTMLElement) {
+              event.target.blur();
+            }
+            this.actionDispatcher.dispatch(tool_1.EnableDefaultToolsAction.create());
+          }
+        }
+        toggleShortcutVisibility() {
+          if (this.isShortcutsVisible()) {
+            this.hideShortcuts();
+          } else {
+            this.showShortcuts();
+          }
+        }
+        isShortcutsVisible() {
+          return this.containerElement.classList.contains(SHOW_SHORTCUTS_CLASS);
+        }
+        showShortcuts() {
+          this.containerElement.classList.add(SHOW_SHORTCUTS_CLASS);
+        }
+        hideShortcuts() {
+          this.containerElement.classList.remove(SHOW_SHORTCUTS_CLASS);
+        }
+      };
+      exports.KeyboardToolPalette = KeyboardToolPalette;
+      exports.KeyboardToolPalette = KeyboardToolPalette = __decorate([
+        (0, inversify_1.injectable)()
+      ], KeyboardToolPalette);
     }
   });
 
@@ -52217,12 +53305,12 @@ ${JSON.stringify(message, null, 4)}`);
       "use strict";
       Object.defineProperty(exports, "__esModule", { value: true });
       exports.configureKeyboardToolPaletteTool = exports.keyboardToolPaletteModule = void 0;
-      require_keyboard_tool_palette2();
+      require_keyboard_tool_palette();
       var sprotty_1 = require_lib4();
       var tool_1 = require_tool();
       var tool_palette_1 = require_tool_palette3();
       var actions_1 = require_actions2();
-      var keyboard_tool_palette_1 = require_keyboard_tool_palette();
+      var keyboard_tool_palette_1 = require_keyboard_tool_palette2();
       exports.keyboardToolPaletteModule = new sprotty_1.FeatureModule((bind, unbind, isBound, rebind) => {
         const context = { bind, unbind, isBound, rebind };
         configureKeyboardToolPaletteTool(context);
@@ -52240,667 +53328,10 @@ ${JSON.stringify(message, null, 4)}`);
     }
   });
 
-  // node_modules/@eclipse-glsp/client/lib/features/accessibility/move-zoom/move-handler.js
-  var require_move_handler = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/accessibility/move-zoom/move-handler.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.MoveElementHandler = exports.MoveViewportHandler = exports.MoveElementAction = exports.MoveViewportAction = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var lodash_1 = require_lodash();
-      var editor_context_service_1 = require_editor_context_service();
-      var gmodel_util_1 = require_gmodel_util();
-      var layout_utils_1 = require_layout_utils();
-      var viewpoint_util_1 = require_viewpoint_util();
-      var MoveViewportAction;
-      (function(MoveViewportAction2) {
-        MoveViewportAction2.KIND = "moveViewportAction";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, MoveViewportAction2.KIND);
-        }
-        MoveViewportAction2.is = is;
-        function create(moveX, moveY) {
-          return { kind: MoveViewportAction2.KIND, moveX, moveY };
-        }
-        MoveViewportAction2.create = create;
-      })(MoveViewportAction || (exports.MoveViewportAction = MoveViewportAction = {}));
-      var MoveElementAction;
-      (function(MoveElementAction2) {
-        MoveElementAction2.KIND = "moveElementAction";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, MoveElementAction2.KIND);
-        }
-        MoveElementAction2.is = is;
-        function create(elementIds, moveX, moveY, snap = true) {
-          return { kind: MoveElementAction2.KIND, elementIds, moveX, moveY, snap };
-        }
-        MoveElementAction2.create = create;
-      })(MoveElementAction || (exports.MoveElementAction = MoveElementAction = {}));
-      var MoveViewportHandler = class MoveViewportHandler {
-        handle(action) {
-          if (MoveViewportAction.is(action)) {
-            this.handleMoveViewport(action);
-          }
-        }
-        handleMoveViewport(action) {
-          const viewport = (0, sprotty_1.findParentByFeature)(this.editorContextService.modelRoot, sprotty_1.isViewport);
-          if (!viewport) {
-            return;
-          }
-          this.dispatcher.dispatch(this.moveViewport(viewport, action.moveX, action.moveY));
-        }
-        moveViewport(viewport, offsetX, offSetY) {
-          const newViewport = {
-            scroll: {
-              x: viewport.scroll.x + offsetX,
-              y: viewport.scroll.y + offSetY
-            },
-            zoom: viewport.zoom
-          };
-          return sprotty_1.SetViewportAction.create(viewport.id, newViewport, { animate: false });
-        }
-      };
-      exports.MoveViewportHandler = MoveViewportHandler;
-      __decorate([
-        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
-        __metadata("design:type", editor_context_service_1.EditorContextService)
-      ], MoveViewportHandler.prototype, "editorContextService", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], MoveViewportHandler.prototype, "dispatcher", void 0);
-      exports.MoveViewportHandler = MoveViewportHandler = __decorate([
-        (0, inversify_1.injectable)()
-      ], MoveViewportHandler);
-      var MoveElementHandler = class MoveElementHandler {
-        init() {
-          this.moveFeedback = this.feedbackDispatcher.createEmitter();
-        }
-        handle(action) {
-          if (MoveElementAction.is(action)) {
-            this.handleMoveElement(action);
-          }
-        }
-        handleMoveElement(action) {
-          const modelRoot = this.editorContextService.modelRoot;
-          const viewport = (0, sprotty_1.findParentByFeature)(modelRoot, sprotty_1.isViewport);
-          if (!viewport) {
-            return;
-          }
-          const viewportActions = [];
-          const elementMoves = [];
-          const elements = (0, gmodel_util_1.getElements)(modelRoot.index, action.elementIds, gmodel_util_1.isSelectableAndBoundsAware);
-          for (const element of elements) {
-            const newPosition = this.getTargetBounds(element, action);
-            elementMoves.push({
-              elementId: element.id,
-              fromPosition: {
-                x: element.bounds.x,
-                y: element.bounds.y
-              },
-              toPosition: newPosition
-            });
-            if ((0, viewpoint_util_1.outsideOfViewport)(newPosition, viewport)) {
-              viewportActions.push(MoveViewportAction.create(action.moveX, action.moveY));
-            }
-          }
-          this.dispatcher.dispatchAll(viewportActions);
-          const moveAction = sprotty_1.MoveAction.create(elementMoves, { animate: false });
-          this.moveFeedback.add(moveAction).submit();
-          this.scheduleChangeBounds(this.toElementAndBounds(elementMoves));
-        }
-        getTargetBounds(element, action) {
-          let position = sprotty_1.Point.add(element.bounds, { x: action.moveX, y: action.moveY });
-          if (this.snapper && action.snap) {
-            position = this.snapper.snap(position, element);
-          }
-          if (!(0, layout_utils_1.isValidMove)(element, position, this.movementRestrictor)) {
-            position = { x: element.bounds.x, y: element.bounds.y };
-          }
-          return position;
-        }
-        scheduleChangeBounds(elementAndBounds) {
-          var _a4;
-          (_a4 = this.debouncedChangeBounds) === null || _a4 === void 0 ? void 0 : _a4.cancel();
-          this.debouncedChangeBounds = (0, lodash_1.debounce)(() => {
-            this.moveFeedback.dispose();
-            this.dispatcher.dispatchAll([sprotty_1.ChangeBoundsOperation.create(elementAndBounds)]);
-            this.debouncedChangeBounds = void 0;
-          }, 300);
-          this.debouncedChangeBounds();
-        }
-        toElementAndBounds(elementMoves) {
-          const elementBounds = [];
-          for (const elementMove of elementMoves) {
-            const element = this.editorContextService.modelRoot.index.getById(elementMove.elementId);
-            if (element && (0, sprotty_1.isBoundsAware)(element)) {
-              elementBounds.push({
-                elementId: elementMove.elementId,
-                newSize: {
-                  height: element.bounds.height,
-                  width: element.bounds.width
-                },
-                newPosition: {
-                  x: elementMove.toPosition.x,
-                  y: elementMove.toPosition.y
-                }
-              });
-            }
-          }
-          return elementBounds;
-        }
-      };
-      exports.MoveElementHandler = MoveElementHandler;
-      __decorate([
-        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
-        __metadata("design:type", editor_context_service_1.EditorContextService)
-      ], MoveElementHandler.prototype, "editorContextService", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], MoveElementHandler.prototype, "dispatcher", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IFeedbackActionDispatcher),
-        __metadata("design:type", Object)
-      ], MoveElementHandler.prototype, "feedbackDispatcher", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.ISnapper),
-        (0, inversify_1.optional)(),
-        __metadata("design:type", Object)
-      ], MoveElementHandler.prototype, "snapper", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IMovementRestrictor),
-        (0, inversify_1.optional)(),
-        __metadata("design:type", Object)
-      ], MoveElementHandler.prototype, "movementRestrictor", void 0);
-      __decorate([
-        (0, inversify_1.postConstruct)(),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", []),
-        __metadata("design:returntype", void 0)
-      ], MoveElementHandler.prototype, "init", null);
-      exports.MoveElementHandler = MoveElementHandler = __decorate([
-        (0, inversify_1.injectable)()
-      ], MoveElementHandler);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/accessibility/move-zoom/zoom-handler.js
-  var require_zoom_handler = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/accessibility/move-zoom/zoom-handler.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.ZoomElementHandler = exports.ZoomViewportHandler = exports.ZoomElementAction = exports.ZoomViewportAction = void 0;
-      var inversify_1 = require_cjs4();
-      var lodash_1 = require_lodash();
-      var sprotty_1 = require_lib4();
-      var editor_context_service_1 = require_editor_context_service();
-      var gmodel_util_1 = require_gmodel_util();
-      var ZoomViewportAction;
-      (function(ZoomViewportAction2) {
-        ZoomViewportAction2.KIND = "zoomViewportAction";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, ZoomViewportAction2.KIND);
-        }
-        ZoomViewportAction2.is = is;
-        function create(zoomFactor) {
-          return { kind: ZoomViewportAction2.KIND, zoomFactor };
-        }
-        ZoomViewportAction2.create = create;
-      })(ZoomViewportAction || (exports.ZoomViewportAction = ZoomViewportAction = {}));
-      var ZoomElementAction;
-      (function(ZoomElementAction2) {
-        ZoomElementAction2.KIND = "zoomElementAction";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, ZoomElementAction2.KIND);
-        }
-        ZoomElementAction2.is = is;
-        function create(elementIds, zoomFactor) {
-          return { kind: ZoomElementAction2.KIND, elementIds, zoomFactor };
-        }
-        ZoomElementAction2.create = create;
-      })(ZoomElementAction || (exports.ZoomElementAction = ZoomElementAction = {}));
-      var ZoomViewportHandler = class ZoomViewportHandler {
-        constructor() {
-          this.throttledHandleViewportZoom = (0, lodash_1.throttle)((action) => this.handleZoomViewport(action), 150);
-        }
-        handle(action) {
-          if (ZoomViewportAction.is(action)) {
-            this.throttledHandleViewportZoom(action);
-          }
-        }
-        handleZoomViewport(action) {
-          const viewport = (0, sprotty_1.findParentByFeature)(this.editorContextService.modelRoot, sprotty_1.isViewport);
-          if (!viewport) {
-            return;
-          }
-          this.dispatcher.dispatch(this.setNewZoomFactor(viewport, action.zoomFactor));
-        }
-        setNewZoomFactor(viewport, zoomFactor) {
-          const newZoom = viewport.zoom * zoomFactor;
-          const newViewport = {
-            scroll: viewport.scroll,
-            zoom: newZoom
-          };
-          return sprotty_1.SetViewportAction.create(viewport.id, newViewport, { animate: true });
-        }
-      };
-      exports.ZoomViewportHandler = ZoomViewportHandler;
-      ZoomViewportHandler.defaultZoomInFactor = 1.1;
-      ZoomViewportHandler.defaultZoomOutFactor = 0.9;
-      __decorate([
-        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
-        __metadata("design:type", editor_context_service_1.EditorContextService)
-      ], ZoomViewportHandler.prototype, "editorContextService", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], ZoomViewportHandler.prototype, "dispatcher", void 0);
-      exports.ZoomViewportHandler = ZoomViewportHandler = __decorate([
-        (0, inversify_1.injectable)()
-      ], ZoomViewportHandler);
-      var ZoomElementHandler = class ZoomElementHandler {
-        constructor() {
-          this.throttledHandleElementZoom = (0, lodash_1.throttle)((action) => this.handleZoomElement(action), 150);
-        }
-        handle(action) {
-          if (ZoomElementAction.is(action)) {
-            this.throttledHandleElementZoom(action);
-          }
-        }
-        handleZoomElement(action) {
-          const viewport = (0, sprotty_1.findParentByFeature)(this.editorContextService.modelRoot, sprotty_1.isViewport);
-          if (!viewport) {
-            return;
-          }
-          const elements = (0, gmodel_util_1.getElements)(this.editorContextService.modelRoot.index, action.elementIds, gmodel_util_1.isSelectableAndBoundsAware);
-          const center = this.getCenter(viewport, elements);
-          this.dispatcher.dispatch(this.setNewZoomFactor(viewport, action.zoomFactor, center));
-        }
-        getCenter(viewport, selectedElements) {
-          const allBounds = selectedElements.map((e2) => this.boundsInViewport(viewport, e2, e2.bounds));
-          const mergedBounds = allBounds.reduce((b0, b1) => sprotty_1.Bounds.combine(b0, b1));
-          return sprotty_1.Bounds.center(mergedBounds);
-        }
-        // copy from center-fit.ts, translates the children bounds to the viewport bounds
-        boundsInViewport(viewport, element, bounds) {
-          if (element instanceof sprotty_1.GChildElement && element.parent !== viewport) {
-            return this.boundsInViewport(viewport, element.parent, element.parent.localToParent(bounds));
-          } else {
-            return bounds;
-          }
-        }
-        setNewZoomFactor(viewport, zoomFactor, point) {
-          const newZoom = viewport.zoom * zoomFactor;
-          const newViewport = {
-            scroll: {
-              x: point.x - 0.5 * viewport.canvasBounds.width / newZoom,
-              y: point.y - 0.5 * viewport.canvasBounds.height / newZoom
-            },
-            zoom: newZoom
-          };
-          return sprotty_1.SetViewportAction.create(viewport.id, newViewport, { animate: true });
-        }
-      };
-      exports.ZoomElementHandler = ZoomElementHandler;
-      __decorate([
-        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
-        __metadata("design:type", editor_context_service_1.EditorContextService)
-      ], ZoomElementHandler.prototype, "editorContextService", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], ZoomElementHandler.prototype, "dispatcher", void 0);
-      exports.ZoomElementHandler = ZoomElementHandler = __decorate([
-        (0, inversify_1.injectable)()
-      ], ZoomElementHandler);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/accessibility/move-zoom/move-zoom-module.js
-  var require_move_zoom_module = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/accessibility/move-zoom/move-zoom-module.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.configureMoveZoom = exports.moveZoomModule = void 0;
-      var sprotty_1 = require_lib4();
-      var move_handler_1 = require_move_handler();
-      var zoom_handler_1 = require_zoom_handler();
-      exports.moveZoomModule = new sprotty_1.FeatureModule((bind, unbind, isBound, rebind) => {
-        const context = { bind, unbind, isBound, rebind };
-        configureMoveZoom(context);
-      }, { featureId: Symbol("moveZoom") });
-      function configureMoveZoom(context) {
-        context.bind(move_handler_1.MoveViewportHandler).toSelf().inSingletonScope();
-        context.bind(move_handler_1.MoveElementHandler).toSelf().inSingletonScope();
-        context.bind(zoom_handler_1.ZoomViewportHandler).toSelf().inSingletonScope();
-        context.bind(zoom_handler_1.ZoomElementHandler).toSelf().inSingletonScope();
-        (0, sprotty_1.configureActionHandler)(context, move_handler_1.MoveViewportAction.KIND, move_handler_1.MoveViewportHandler);
-        (0, sprotty_1.configureActionHandler)(context, move_handler_1.MoveElementAction.KIND, move_handler_1.MoveElementHandler);
-        (0, sprotty_1.configureActionHandler)(context, zoom_handler_1.ZoomViewportAction.KIND, zoom_handler_1.ZoomViewportHandler);
-        (0, sprotty_1.configureActionHandler)(context, zoom_handler_1.ZoomElementAction.KIND, zoom_handler_1.ZoomElementHandler);
-      }
-      exports.configureMoveZoom = configureMoveZoom;
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/accessibility/resize-key-tool/resize-key-handler.js
-  var require_resize_key_handler = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/accessibility/resize-key-tool/resize-key-handler.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var __param = exports && exports.__param || function(paramIndex, decorator) {
-        return function(target, key) {
-          decorator(target, key, paramIndex);
-        };
-      };
-      var ResizeElementHandler_1;
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.ResizeElementHandler = exports.ResizeElementAction = exports.ResizeType = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var lodash_1 = require_lodash();
-      var editor_context_service_1 = require_editor_context_service();
-      var gmodel_util_1 = require_gmodel_util();
-      var layout_utils_1 = require_layout_utils();
-      var ResizeType;
-      (function(ResizeType2) {
-        ResizeType2[ResizeType2["Increase"] = 0] = "Increase";
-        ResizeType2[ResizeType2["Decrease"] = 1] = "Decrease";
-        ResizeType2[ResizeType2["MinSize"] = 2] = "MinSize";
-      })(ResizeType || (exports.ResizeType = ResizeType = {}));
-      var ResizeElementAction;
-      (function(ResizeElementAction2) {
-        ResizeElementAction2.KIND = "resizeElementAction";
-        function is(object) {
-          return sprotty_1.Action.hasKind(object, ResizeElementAction2.KIND);
-        }
-        ResizeElementAction2.is = is;
-        function create(elementIds, resizeType) {
-          return { kind: ResizeElementAction2.KIND, elementIds, resizeType };
-        }
-        ResizeElementAction2.create = create;
-      })(ResizeElementAction || (exports.ResizeElementAction = ResizeElementAction = {}));
-      var ResizeElementHandler = ResizeElementHandler_1 = class ResizeElementHandler {
-        constructor(snapper) {
-          this.snapper = snapper;
-          this.grid = {
-            x: ResizeElementHandler_1.defaultResizeX,
-            y: ResizeElementHandler_1.defaultResizeY
-          };
-          this.isEditMode = false;
-        }
-        init() {
-          this.resizeFeedback = this.feedbackDispatcher.createEmitter();
-        }
-        handle(action) {
-          if (ResizeElementAction.is(action)) {
-            this.handleResizeElement(action);
-          }
-        }
-        handleResizeElement(action) {
-          var _a4;
-          const elements = (0, gmodel_util_1.getElements)(this.editorContextService.modelRoot.index, action.elementIds, gmodel_util_1.isSelectableAndBoundsAware);
-          const elementAndBounds = this.computeElementAndBounds(elements, action);
-          this.resizeFeedback.add(sprotty_1.SetBoundsAction.create(elementAndBounds)).submit();
-          (_a4 = this.debouncedChangeBounds) === null || _a4 === void 0 ? void 0 : _a4.cancel();
-          this.debouncedChangeBounds = (0, lodash_1.debounce)(() => {
-            this.resizeFeedback.dispose();
-            this.dispatcher.dispatchAll([sprotty_1.ChangeBoundsOperation.create(elementAndBounds)]);
-            this.debouncedChangeBounds = void 0;
-          }, 300);
-          this.debouncedChangeBounds();
-        }
-        computeElementAndBounds(elements, action) {
-          const elementAndBounds = [];
-          elements.forEach((element) => {
-            const { x: x3, y: y3, width: oldWidth, height: oldHeight } = element.bounds;
-            let width = 0;
-            let height = 0;
-            if (action.resizeType === ResizeType.Decrease) {
-              width = oldWidth - this.grid.x;
-              height = oldHeight - this.grid.y;
-            } else if (action.resizeType === ResizeType.Increase) {
-              width = oldWidth + this.grid.x;
-              height = oldHeight + this.grid.y;
-            } else if (action.resizeType === ResizeType.MinSize) {
-              width = (0, layout_utils_1.minWidth)(element);
-              height = (0, layout_utils_1.minHeight)(element);
-            }
-            if (this.isValidBoundChange(element, { x: x3, y: y3 }, { width, height })) {
-              const resizeElement = { id: element.id, bounds: { x: x3, y: y3, width, height } };
-              elementAndBounds.push((0, gmodel_util_1.toElementAndBounds)(resizeElement));
-            }
-          });
-          return elementAndBounds;
-        }
-        isValidBoundChange(element, newPosition, newSize) {
-          return (0, layout_utils_1.isValidSize)(element, newSize) && (0, layout_utils_1.isValidMove)(element, newPosition);
-        }
-      };
-      exports.ResizeElementHandler = ResizeElementHandler;
-      ResizeElementHandler.defaultResizeX = 20;
-      ResizeElementHandler.defaultResizeY = 20;
-      __decorate([
-        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
-        __metadata("design:type", editor_context_service_1.EditorContextService)
-      ], ResizeElementHandler.prototype, "editorContextService", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], ResizeElementHandler.prototype, "dispatcher", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IFeedbackActionDispatcher),
-        __metadata("design:type", Object)
-      ], ResizeElementHandler.prototype, "feedbackDispatcher", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.Grid),
-        (0, inversify_1.optional)(),
-        __metadata("design:type", Object)
-      ], ResizeElementHandler.prototype, "grid", void 0);
-      __decorate([
-        (0, inversify_1.postConstruct)(),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", []),
-        __metadata("design:returntype", void 0)
-      ], ResizeElementHandler.prototype, "init", null);
-      exports.ResizeElementHandler = ResizeElementHandler = ResizeElementHandler_1 = __decorate([
-        (0, inversify_1.injectable)(),
-        __param(0, (0, inversify_1.inject)(sprotty_1.TYPES.ISnapper)),
-        __param(0, (0, inversify_1.optional)()),
-        __metadata("design:paramtypes", [Object])
-      ], ResizeElementHandler);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/accessibility/resize-key-tool/resize-key-tool.js
-  var require_resize_key_tool = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/accessibility/resize-key-tool/resize-key-tool.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var ResizeKeyTool_1;
-      var ResizeKeyListener_1;
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.ResizeKeyListener = exports.ResizeKeyTool = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var selection_service_1 = require_selection_service();
-      var tool_1 = require_tool();
-      var accessible_key_shortcut_1 = require_accessible_key_shortcut();
-      var messages = require_messages2();
-      var toast_handler_1 = require_toast_handler();
-      var resize_key_handler_1 = require_resize_key_handler();
-      var ResizeKeyTool = ResizeKeyTool_1 = class ResizeKeyTool {
-        constructor() {
-          this.isEditTool = true;
-          this.resizeKeyListener = new ResizeKeyListener(this);
-        }
-        get id() {
-          return ResizeKeyTool_1.ID;
-        }
-        enable() {
-          this.keytool.register(this.resizeKeyListener);
-          this.resizeKeyListener.registerShortcutKey();
-        }
-        disable() {
-          this.keytool.deregister(this.resizeKeyListener);
-        }
-      };
-      exports.ResizeKeyTool = ResizeKeyTool;
-      ResizeKeyTool.ID = "glsp.resize-key-tool";
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.KeyTool),
-        __metadata("design:type", sprotty_1.KeyTool)
-      ], ResizeKeyTool.prototype, "keytool", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IMovementRestrictor),
-        (0, inversify_1.optional)(),
-        __metadata("design:type", Object)
-      ], ResizeKeyTool.prototype, "movementRestrictor", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.ISnapper),
-        (0, inversify_1.optional)(),
-        __metadata("design:type", Object)
-      ], ResizeKeyTool.prototype, "snapper", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], ResizeKeyTool.prototype, "actionDispatcher", void 0);
-      __decorate([
-        (0, inversify_1.inject)(selection_service_1.SelectionService),
-        __metadata("design:type", selection_service_1.SelectionService)
-      ], ResizeKeyTool.prototype, "selectionService", void 0);
-      exports.ResizeKeyTool = ResizeKeyTool = ResizeKeyTool_1 = __decorate([
-        (0, inversify_1.injectable)()
-      ], ResizeKeyTool);
-      var ResizeKeyListener = ResizeKeyListener_1 = class ResizeKeyListener extends sprotty_1.KeyListener {
-        constructor(tool) {
-          super();
-          this.tool = tool;
-          this.isEditMode = false;
-          this.token = ResizeKeyListener_1.name;
-        }
-        registerShortcutKey() {
-          this.tool.actionDispatcher.dispatchOnceModelInitialized(accessible_key_shortcut_1.SetAccessibleKeyShortcutAction.create({
-            token: this.token,
-            keys: [
-              { shortcuts: ["ALT", "A"], description: "Activate resize mode for selected element", group: "Resize", position: 0 },
-              { shortcuts: ["+"], description: "Increase size of element", group: "Resize", position: 1 },
-              { shortcuts: ["-"], description: "Increase size of element", group: "Resize", position: 2 },
-              { shortcuts: ["CTRL", "0"], description: "Set element size to default", group: "Resize", position: 3 }
-            ]
-          }));
-        }
-        keyDown(element, event) {
-          const actions = [];
-          const selectedElementsIds = this.tool.selectionService.getSelectedElementIDs();
-          if (this.isEditMode && this.matchesDeactivateResizeModeKeystroke(event)) {
-            this.isEditMode = false;
-            this.tool.actionDispatcher.dispatch(toast_handler_1.ShowToastMessageAction.createWithTimeout({
-              id: Symbol.for(ResizeKeyListener_1.name),
-              message: messages.resize.resize_mode_deactivated
-            }));
-            actions.push(tool_1.EnableDefaultToolsAction.create());
-          }
-          if (selectedElementsIds.length > 0) {
-            if (!this.isEditMode && this.matchesActivateResizeModeKeystroke(event)) {
-              this.isEditMode = true;
-              this.tool.actionDispatcher.dispatch(toast_handler_1.ShowToastMessageAction.create({
-                id: Symbol.for(ResizeKeyListener_1.name),
-                message: messages.resize.resize_mode_activated
-              }));
-              actions.push(tool_1.EnableToolsAction.create([ResizeKeyTool.ID]));
-            }
-            if (this.isEditMode) {
-              if (this.matchesIncreaseSizeKeystroke(event)) {
-                actions.push(resize_key_handler_1.ResizeElementAction.create(selectedElementsIds, resize_key_handler_1.ResizeType.Increase));
-              } else if (this.matchesDecreaseSizeKeystroke(event)) {
-                actions.push(resize_key_handler_1.ResizeElementAction.create(selectedElementsIds, resize_key_handler_1.ResizeType.Decrease));
-              } else if (this.matchesMinSizeKeystroke(event)) {
-                actions.push(resize_key_handler_1.ResizeElementAction.create(selectedElementsIds, resize_key_handler_1.ResizeType.MinSize));
-              }
-            }
-          }
-          return actions;
-        }
-        matchesIncreaseSizeKeystroke(event) {
-          return event.key === "+" || (0, sprotty_1.matchesKeystroke)(event, "NumpadAdd");
-        }
-        matchesActivateResizeModeKeystroke(event) {
-          return (0, sprotty_1.matchesKeystroke)(event, "KeyA", "alt");
-        }
-        matchesDeactivateResizeModeKeystroke(event) {
-          return (0, sprotty_1.matchesKeystroke)(event, "Escape");
-        }
-        matchesMinSizeKeystroke(event) {
-          return (0, sprotty_1.matchesKeystroke)(event, "Digit0", "ctrl") || (0, sprotty_1.matchesKeystroke)(event, "Numpad0", "ctrl");
-        }
-        matchesDecreaseSizeKeystroke(event) {
-          return (0, sprotty_1.matchesKeystroke)(event, "Minus") || (0, sprotty_1.matchesKeystroke)(event, "NumpadSubtract");
-        }
-      };
-      exports.ResizeKeyListener = ResizeKeyListener;
-      exports.ResizeKeyListener = ResizeKeyListener = ResizeKeyListener_1 = __decorate([
-        (0, inversify_1.injectable)(),
-        __metadata("design:paramtypes", [ResizeKeyTool])
-      ], ResizeKeyListener);
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/accessibility/resize-key-tool/resize-key-module.js
-  var require_resize_key_module = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/accessibility/resize-key-tool/resize-key-module.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.configureResizeTools = exports.resizeKeyModule = void 0;
-      var sprotty_1 = require_lib4();
-      var resize_key_handler_1 = require_resize_key_handler();
-      var resize_key_tool_1 = require_resize_key_tool();
-      exports.resizeKeyModule = new sprotty_1.FeatureModule((bind, unbind, isBound, rebind) => {
-        const context = { bind, unbind, isBound, rebind };
-        configureResizeTools(context);
-      }, { featureId: Symbol("resizeKey") });
-      function configureResizeTools(context) {
-        context.bind(resize_key_handler_1.ResizeElementHandler).toSelf().inSingletonScope();
-        (0, sprotty_1.configureActionHandler)(context, resize_key_handler_1.ResizeElementAction.KIND, resize_key_handler_1.ResizeElementHandler);
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IDefaultTool, resize_key_tool_1.ResizeKeyTool);
-      }
-      exports.configureResizeTools = configureResizeTools;
+  // node_modules/@eclipse-glsp/client/css/search.css
+  var require_search = __commonJS({
+    "node_modules/@eclipse-glsp/client/css/search.css"(exports, module) {
+      module.exports = {};
     }
   });
 
@@ -52911,6 +53342,7 @@ ${JSON.stringify(message, null, 4)}`);
       Object.defineProperty(exports, "__esModule", { value: true });
       exports.configureSearchPaletteModule = exports.searchPaletteModule = void 0;
       var sprotty_1 = require_lib4();
+      require_search();
       var search_palette_1 = require_search_palette();
       var search_tool_1 = require_search_tool();
       exports.searchPaletteModule = new sprotty_1.FeatureModule((bind, _unbind, isBound, rebind) => {
@@ -53129,9 +53561,9 @@ ${JSON.stringify(message, null, 4)}`);
     }
   });
 
-  // node_modules/@eclipse-glsp/client/lib/features/accessibility/view-key-tools/movement-key-tool.js
-  var require_movement_key_tool = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/accessibility/view-key-tools/movement-key-tool.js"(exports) {
+  // node_modules/@eclipse-glsp/client/lib/features/accessibility/view-key-tools/grid-cell-zoom-key-tool.js
+  var require_grid_cell_zoom_key_tool = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/features/accessibility/view-key-tools/grid-cell-zoom-key-tool.js"(exports) {
       "use strict";
       var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
         var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
@@ -53142,177 +53574,44 @@ ${JSON.stringify(message, null, 4)}`);
       var __metadata = exports && exports.__metadata || function(k3, v3) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
       };
-      var MovementKeyTool_1;
+      var GridCellZoomTool_1;
       Object.defineProperty(exports, "__esModule", { value: true });
-      exports.MoveKeyListener = exports.MovementKeyTool = void 0;
+      exports.GridZoomKeyListener = exports.GridCellZoomTool = void 0;
       var sprotty_1 = require_lib4();
       var inversify_1 = require_cjs4();
-      var selection_service_1 = require_selection_service();
-      var accessible_key_shortcut_1 = require_accessible_key_shortcut();
-      var move_handler_1 = require_move_handler();
-      var MovementKeyTool = MovementKeyTool_1 = class MovementKeyTool {
-        constructor() {
-          this.isEditTool = true;
-        }
-        get id() {
-          return MovementKeyTool_1.ID;
-        }
-        enable() {
-          if (!this.movementKeyListener) {
-            this.movementKeyListener = new MoveKeyListener(this, this.grid);
-          }
-          this.keytool.register(this.movementKeyListener);
-          this.movementKeyListener.registerShortcutKey();
-        }
-        disable() {
-          this.keytool.deregister(this.movementKeyListener);
-        }
-      };
-      exports.MovementKeyTool = MovementKeyTool;
-      MovementKeyTool.ID = "glsp.movement-key-tool";
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.KeyTool),
-        __metadata("design:type", sprotty_1.KeyTool)
-      ], MovementKeyTool.prototype, "keytool", void 0);
-      __decorate([
-        (0, inversify_1.inject)(selection_service_1.SelectionService),
-        __metadata("design:type", selection_service_1.SelectionService)
-      ], MovementKeyTool.prototype, "selectionService", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.ISnapper),
-        (0, inversify_1.optional)(),
-        __metadata("design:type", Object)
-      ], MovementKeyTool.prototype, "snapper", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
-        __metadata("design:type", Object)
-      ], MovementKeyTool.prototype, "actionDispatcher", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.Grid),
-        (0, inversify_1.optional)(),
-        __metadata("design:type", Object)
-      ], MovementKeyTool.prototype, "grid", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IChangeBoundsManager),
-        __metadata("design:type", Object)
-      ], MovementKeyTool.prototype, "changeBoundsManager", void 0);
-      exports.MovementKeyTool = MovementKeyTool = MovementKeyTool_1 = __decorate([
-        (0, inversify_1.injectable)()
-      ], MovementKeyTool);
-      var MoveKeyListener = class _MoveKeyListener extends sprotty_1.KeyListener {
-        constructor(tool, grid = { x: _MoveKeyListener.defaultMoveX, y: _MoveKeyListener.defaultMoveY }) {
-          super();
-          this.tool = tool;
-          this.grid = grid;
-          this.token = _MoveKeyListener.name;
-        }
-        registerShortcutKey() {
-          this.tool.actionDispatcher.dispatchOnceModelInitialized(accessible_key_shortcut_1.SetAccessibleKeyShortcutAction.create({
-            token: this.token,
-            keys: [{ shortcuts: ["\u2B05  \u2B06  \u27A1  \u2B07"], description: "Move element or viewport", group: "Move", position: 0 }]
-          }));
-        }
-        keyDown(_element, event) {
-          const selectedElementIds = this.tool.selectionService.getSelectedElementIDs();
-          const snap = this.tool.changeBoundsManager.usePositionSnap(event);
-          const offsetX = snap ? this.grid.x : 1;
-          const offsetY = snap ? this.grid.y : 1;
-          if (selectedElementIds.length > 0) {
-            if (this.matchesMoveUpKeystroke(event)) {
-              return [move_handler_1.MoveElementAction.create(selectedElementIds, 0, -offsetY, snap)];
-            } else if (this.matchesMoveDownKeystroke(event)) {
-              return [move_handler_1.MoveElementAction.create(selectedElementIds, 0, offsetY, snap)];
-            } else if (this.matchesMoveRightKeystroke(event)) {
-              return [move_handler_1.MoveElementAction.create(selectedElementIds, offsetX, 0, snap)];
-            } else if (this.matchesMoveLeftKeystroke(event)) {
-              return [move_handler_1.MoveElementAction.create(selectedElementIds, -offsetX, 0, snap)];
-            }
-          } else {
-            if (this.matchesMoveUpKeystroke(event)) {
-              return [move_handler_1.MoveViewportAction.create(0, -offsetY)];
-            } else if (this.matchesMoveDownKeystroke(event)) {
-              return [move_handler_1.MoveViewportAction.create(0, offsetY)];
-            } else if (this.matchesMoveRightKeystroke(event)) {
-              return [move_handler_1.MoveViewportAction.create(offsetX, 0)];
-            } else if (this.matchesMoveLeftKeystroke(event)) {
-              return [move_handler_1.MoveViewportAction.create(-offsetX, 0)];
-            }
-          }
-          return [];
-        }
-        matchesMoveUpKeystroke(event) {
-          const unsnap = this.tool.changeBoundsManager.unsnapModifier();
-          return (0, sprotty_1.matchesKeystroke)(event, "ArrowUp") || !!unsnap && (0, sprotty_1.matchesKeystroke)(event, "ArrowUp", unsnap);
-        }
-        matchesMoveDownKeystroke(event) {
-          const unsnap = this.tool.changeBoundsManager.unsnapModifier();
-          return (0, sprotty_1.matchesKeystroke)(event, "ArrowDown") || !!unsnap && (0, sprotty_1.matchesKeystroke)(event, "ArrowDown", unsnap);
-        }
-        matchesMoveRightKeystroke(event) {
-          const unsnap = this.tool.changeBoundsManager.unsnapModifier();
-          return (0, sprotty_1.matchesKeystroke)(event, "ArrowRight") || !!unsnap && (0, sprotty_1.matchesKeystroke)(event, "ArrowRight", unsnap);
-        }
-        matchesMoveLeftKeystroke(event) {
-          const unsnap = this.tool.changeBoundsManager.unsnapModifier();
-          return (0, sprotty_1.matchesKeystroke)(event, "ArrowLeft") || !!unsnap && (0, sprotty_1.matchesKeystroke)(event, "ArrowLeft", unsnap);
-        }
-      };
-      exports.MoveKeyListener = MoveKeyListener;
-      MoveKeyListener.defaultMoveX = 20;
-      MoveKeyListener.defaultMoveY = 20;
-    }
-  });
-
-  // node_modules/@eclipse-glsp/client/lib/features/accessibility/view-key-tools/zoom-key-tool.js
-  var require_zoom_key_tool = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/accessibility/view-key-tools/zoom-key-tool.js"(exports) {
-      "use strict";
-      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
-        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
-        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
-        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
-      };
-      var __metadata = exports && exports.__metadata || function(k3, v3) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k3, v3);
-      };
-      var ZoomKeyTool_1;
-      Object.defineProperty(exports, "__esModule", { value: true });
-      exports.ZoomKeyListener = exports.ZoomKeyTool = void 0;
-      var sprotty_1 = require_lib4();
-      var inversify_1 = require_cjs4();
-      var editor_context_service_1 = require_editor_context_service();
+      var messages_1 = require_messages3();
       var selection_service_1 = require_selection_service();
       var viewpoint_util_1 = require_viewpoint_util();
+      var base_tools_1 = require_base_tools();
       var diagram_navigation_tool_1 = require_diagram_navigation_tool();
-      var accessible_key_shortcut_1 = require_accessible_key_shortcut();
       var action_1 = require_action3();
-      var zoom_handler_1 = require_zoom_handler();
-      var messages = require_messages2();
       var toast_handler_1 = require_toast_handler();
-      var ZoomKeyTool = ZoomKeyTool_1 = class ZoomKeyTool {
+      var GridCellZoomTool = GridCellZoomTool_1 = class GridCellZoomTool extends base_tools_1.BaseTool {
         constructor() {
-          this.isEditTool = false;
-          this.zoomKeyListener = new ZoomKeyListener(this);
+          super(...arguments);
+          this.zoomKeyListener = new GridZoomKeyListener(this);
         }
         get id() {
-          return ZoomKeyTool_1.ID;
+          return GridCellZoomTool_1.ID;
         }
         enable() {
-          this.keytool.register(this.zoomKeyListener);
-          this.zoomKeyListener.registerShortcutKey();
-        }
-        disable() {
-          this.keytool.deregister(this.zoomKeyListener);
+          this.toDisposeOnDisable.push(this.keyTool.registerListener(this.zoomKeyListener), (0, messages_1.repeatOnMessagesUpdated)(() => this.shortcutManager.register(GridCellZoomTool_1.TOKEN, [
+            {
+              shortcuts: ["CTRL", "+"],
+              description: messages_1.messages.grid.shortcut_zoom_in,
+              group: messages_1.messages.shortcut.group_zoom,
+              position: 0
+            }
+          ])));
         }
         handle(action) {
-          if ((0, sprotty_1.isViewport)(this.editorContextService.modelRoot)) {
+          if ((0, sprotty_1.isViewport)(this.editorContext.modelRoot)) {
             let viewportAction = void 0;
-            if (action_1.KeyboardGridCellSelectedAction.is(action) && action.options.originId === ZoomKeyTool_1.ID) {
-              viewportAction = this.zoomKeyListener.setNewZoomFactor(this.editorContextService.modelRoot, ZoomKeyListener.defaultZoomInFactor, (0, viewpoint_util_1.getAbsolutePositionByPoint)(this.editorContextService.modelRoot, action.options.centerCellPosition));
-            } else if (action_1.KeyboardGridKeyboardEventAction.is(action) && action.options.originId === ZoomKeyTool_1.ID) {
+            if (action_1.KeyboardGridCellSelectedAction.is(action) && action.options.originId === GridCellZoomTool_1.ID) {
+              viewportAction = this.zoomKeyListener.setNewZoomFactor(this.editorContext.modelRoot, this.zoomFactors.in, (0, viewpoint_util_1.getAbsolutePositionByPoint)(this.editorContext.modelRoot, action.options.centerCellPosition));
+            } else if (action_1.KeyboardGridKeyboardEventAction.is(action) && action.options.originId === GridCellZoomTool_1.ID) {
               if ((0, sprotty_1.matchesKeystroke)(action.options.event, "Minus")) {
-                viewportAction = this.zoomKeyListener.setNewZoomFactor(this.editorContextService.modelRoot, ZoomKeyListener.defaultZoomOutFactor);
+                viewportAction = this.zoomKeyListener.setNewZoomFactor(this.editorContext.modelRoot, this.zoomFactors.out);
               } else if ((0, sprotty_1.matchesKeystroke)(action.options.event, "Digit0", "ctrl")) {
                 viewportAction = sprotty_1.CenterAction.create([]);
               }
@@ -53326,43 +53625,28 @@ ${JSON.stringify(message, null, 4)}`);
           }
         }
       };
-      exports.ZoomKeyTool = ZoomKeyTool;
-      ZoomKeyTool.ID = "glsp.zoom-key-tool";
+      exports.GridCellZoomTool = GridCellZoomTool;
+      GridCellZoomTool.ID = "glsp.accessibility-grid-cell-zoom-tool";
+      GridCellZoomTool.TOKEN = Symbol.for(GridCellZoomTool_1.name);
       __decorate([
-        (0, inversify_1.inject)(sprotty_1.KeyTool),
-        __metadata("design:type", sprotty_1.KeyTool)
-      ], ZoomKeyTool.prototype, "keytool", void 0);
-      __decorate([
-        (0, inversify_1.inject)(sprotty_1.TYPES.IActionDispatcher),
+        (0, inversify_1.inject)(sprotty_1.TYPES.IShortcutManager),
         __metadata("design:type", Object)
-      ], ZoomKeyTool.prototype, "actionDispatcher", void 0);
+      ], GridCellZoomTool.prototype, "shortcutManager", void 0);
+      __decorate([
+        (0, inversify_1.inject)(sprotty_1.TYPES.ZoomFactors),
+        __metadata("design:type", Object)
+      ], GridCellZoomTool.prototype, "zoomFactors", void 0);
       __decorate([
         (0, inversify_1.inject)(selection_service_1.SelectionService),
         __metadata("design:type", selection_service_1.SelectionService)
-      ], ZoomKeyTool.prototype, "selectionService", void 0);
-      __decorate([
-        (0, inversify_1.inject)(editor_context_service_1.EditorContextService),
-        __metadata("design:type", editor_context_service_1.EditorContextService)
-      ], ZoomKeyTool.prototype, "editorContextService", void 0);
-      exports.ZoomKeyTool = ZoomKeyTool = ZoomKeyTool_1 = __decorate([
+      ], GridCellZoomTool.prototype, "selectionService", void 0);
+      exports.GridCellZoomTool = GridCellZoomTool = GridCellZoomTool_1 = __decorate([
         (0, inversify_1.injectable)()
-      ], ZoomKeyTool);
-      var ZoomKeyListener = class _ZoomKeyListener extends sprotty_1.KeyListener {
+      ], GridCellZoomTool);
+      var GridZoomKeyListener = class extends sprotty_1.KeyListener {
         constructor(tool) {
           super();
           this.tool = tool;
-          this.token = _ZoomKeyListener.name;
-        }
-        registerShortcutKey() {
-          this.tool.actionDispatcher.dispatchOnceModelInitialized(accessible_key_shortcut_1.SetAccessibleKeyShortcutAction.create({
-            token: this.token,
-            keys: [
-              { shortcuts: ["+"], description: "Zoom in to element or viewport", group: "Zoom", position: 0 },
-              { shortcuts: ["-"], description: "Zoom out to element or viewport", group: "Zoom", position: 1 },
-              { shortcuts: ["CTRL", "0"], description: "Reset zoom to default", group: "Zoom", position: 2 },
-              { shortcuts: ["CTRL", "+"], description: "Zoom in via Grid", group: "Zoom", position: 3 }
-            ]
-          }));
         }
         setNewZoomFactor(viewport, zoomFactor, point) {
           let newViewport;
@@ -53381,54 +53665,28 @@ ${JSON.stringify(message, null, 4)}`);
               zoom: newZoom
             };
           }
-          return sprotty_1.SetViewportAction.create(viewport.id, newViewport, { animate: true });
+          return sprotty_1.SetViewportAction.create(viewport.id, newViewport, { animate: false });
         }
         keyDown(element, event) {
-          const selectedElementIds = this.tool.selectionService.getSelectedElementIDs();
           if (this.matchesZoomViaGrid(event)) {
             return [
               action_1.EnableKeyboardGridAction.create({
-                originId: ZoomKeyTool.ID,
+                originId: GridCellZoomTool.ID,
                 triggerActions: []
               }),
               toast_handler_1.ShowToastMessageAction.createWithTimeout({
                 id: Symbol.for(diagram_navigation_tool_1.ElementNavigatorKeyListener.name),
-                message: messages.grid.zoom_in_grid
+                message: messages_1.messages.grid.zoom_in_grid
               })
             ];
-          } else if (this.matchesZoomOutKeystroke(event)) {
-            if (selectedElementIds.length > 0) {
-              return [zoom_handler_1.ZoomElementAction.create(selectedElementIds, _ZoomKeyListener.defaultZoomOutFactor)];
-            } else {
-              return [zoom_handler_1.ZoomViewportAction.create(_ZoomKeyListener.defaultZoomOutFactor)];
-            }
-          } else if (this.matchesZoomInKeystroke(event)) {
-            if (selectedElementIds.length > 0) {
-              return [zoom_handler_1.ZoomElementAction.create(selectedElementIds, _ZoomKeyListener.defaultZoomInFactor)];
-            } else {
-              return [zoom_handler_1.ZoomViewportAction.create(_ZoomKeyListener.defaultZoomInFactor)];
-            }
-          } else if (this.matchesMinZoomLevelKeystroke(event)) {
-            return [sprotty_1.CenterAction.create(selectedElementIds)];
           }
           return [];
-        }
-        matchesZoomInKeystroke(event) {
-          return event.key === "+" || (0, sprotty_1.matchesKeystroke)(event, "NumpadAdd");
         }
         matchesZoomViaGrid(event) {
           return event.key === "+" && event.ctrlKey;
         }
-        matchesMinZoomLevelKeystroke(event) {
-          return (0, sprotty_1.matchesKeystroke)(event, "Digit0", "ctrl") || (0, sprotty_1.matchesKeystroke)(event, "Numpad0", "ctrl");
-        }
-        matchesZoomOutKeystroke(event) {
-          return (0, sprotty_1.matchesKeystroke)(event, "Minus") || (0, sprotty_1.matchesKeystroke)(event, "NumpadSubtract");
-        }
       };
-      exports.ZoomKeyListener = ZoomKeyListener;
-      ZoomKeyListener.defaultZoomInFactor = 1.1;
-      ZoomKeyListener.defaultZoomOutFactor = 0.9;
+      exports.GridZoomKeyListener = GridZoomKeyListener;
     }
   });
 
@@ -53439,21 +53697,21 @@ ${JSON.stringify(message, null, 4)}`);
       Object.defineProperty(exports, "__esModule", { value: true });
       exports.configureViewKeyTools = exports.viewKeyToolsModule = void 0;
       var sprotty_1 = require_lib4();
+      var viewport_modules_1 = require_viewport_modules();
       var action_1 = require_action3();
       var deselect_key_tool_1 = require_deselect_key_tool();
-      var movement_key_tool_1 = require_movement_key_tool();
-      var zoom_key_tool_1 = require_zoom_key_tool();
+      var grid_cell_zoom_key_tool_1 = require_grid_cell_zoom_key_tool();
       exports.viewKeyToolsModule = new sprotty_1.FeatureModule((bind, _unbind, isBound, rebind) => {
         const context = { bind, isBound, rebind };
         configureViewKeyTools(context);
       }, {
-        featureId: Symbol("viewKeyTools")
+        featureId: Symbol("viewKeyTools"),
+        requires: viewport_modules_1.viewportModule
       });
       function configureViewKeyTools(context) {
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IDefaultTool, movement_key_tool_1.MovementKeyTool);
-        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IDefaultTool, zoom_key_tool_1.ZoomKeyTool);
-        (0, sprotty_1.configureActionHandler)(context, action_1.KeyboardGridCellSelectedAction.KIND, zoom_key_tool_1.ZoomKeyTool);
-        (0, sprotty_1.configureActionHandler)(context, action_1.KeyboardGridKeyboardEventAction.KIND, zoom_key_tool_1.ZoomKeyTool);
+        (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IDefaultTool, grid_cell_zoom_key_tool_1.GridCellZoomTool);
+        (0, sprotty_1.configureActionHandler)(context, action_1.KeyboardGridCellSelectedAction.KIND, grid_cell_zoom_key_tool_1.GridCellZoomTool);
+        (0, sprotty_1.configureActionHandler)(context, action_1.KeyboardGridKeyboardEventAction.KIND, grid_cell_zoom_key_tool_1.GridCellZoomTool);
         (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IDefaultTool, deselect_key_tool_1.DeselectKeyTool);
       }
       exports.configureViewKeyTools = configureViewKeyTools;
@@ -53469,21 +53727,15 @@ ${JSON.stringify(message, null, 4)}`);
       var sprotty_1 = require_lib4();
       var element_navigation_module_1 = require_element_navigation_module();
       var focus_tracker_module_1 = require_focus_tracker_module();
-      var shortcut_help_module_1 = require_shortcut_help_module();
       var keyboard_pointer_module_1 = require_keyboard_pointer_module();
       var keyboard_tool_palette_module_1 = require_keyboard_tool_palette_module();
-      var move_zoom_module_1 = require_move_zoom_module();
-      var resize_key_module_1 = require_resize_key_module();
       var search_palette_module_1 = require_search_palette_module();
       var toast_module_1 = require_toast_module();
       var view_key_tools_module_1 = require_view_key_tools_module();
       exports.accessibilityModule = new sprotty_1.FeatureModule((bind, unbind, isBound, rebind) => {
         const context = { bind, unbind, isBound, rebind };
-        (0, resize_key_module_1.configureResizeTools)(context);
         (0, view_key_tools_module_1.configureViewKeyTools)(context);
-        (0, move_zoom_module_1.configureMoveZoom)(context);
         (0, search_palette_module_1.configureSearchPaletteModule)(context);
-        (0, shortcut_help_module_1.configureShortcutHelpTool)(context);
         (0, keyboard_tool_palette_module_1.configureKeyboardToolPaletteTool)(context);
         (0, keyboard_pointer_module_1.configureKeyboardControlTools)(context);
         (0, element_navigation_module_1.configureElementNavigationTool)(context);
@@ -54225,14 +54477,6 @@ ${JSON.stringify(message, null, 4)}`);
     }
   });
 
-  // node_modules/@eclipse-glsp/client/lib/features/grid/grid.js
-  var require_grid = __commonJS({
-    "node_modules/@eclipse-glsp/client/lib/features/grid/grid.js"(exports) {
-      "use strict";
-      Object.defineProperty(exports, "__esModule", { value: true });
-    }
-  });
-
   // node_modules/@eclipse-glsp/client/lib/features/grid/grid-model.js
   var require_grid_model = __commonJS({
     "node_modules/@eclipse-glsp/client/lib/features/grid/grid-model.js"(exports) {
@@ -54317,6 +54561,7 @@ ${JSON.stringify(message, null, 4)}`);
       exports.GridManager = void 0;
       var sprotty_1 = require_lib4();
       var inversify_1 = require_cjs4();
+      var grid_1 = require_grid();
       var grid_model_1 = require_grid_model();
       var GridManager = class GridManager {
         constructor() {
@@ -54394,8 +54639,9 @@ ${JSON.stringify(message, null, 4)}`);
       exports.GLSPCenterGridSnapper = exports.GridSnapper = void 0;
       var sprotty_1 = require_lib4();
       var inversify_1 = require_cjs4();
+      var grid_1 = require_grid();
       var GridSnapper = class GridSnapper {
-        constructor(grid = { x: 10, y: 10 }) {
+        constructor(grid = grid_1.Grid.DEFAULT) {
           this.grid = grid;
         }
         snap(position, element) {
@@ -54410,7 +54656,7 @@ ${JSON.stringify(message, null, 4)}`);
         __metadata("design:paramtypes", [Object])
       ], GridSnapper);
       var GLSPCenterGridSnapper = class GLSPCenterGridSnapper extends sprotty_1.CenterGridSnapper {
-        constructor(grid = { x: 10, y: 10 }) {
+        constructor(grid = grid_1.Grid.DEFAULT) {
           super();
           this.grid = grid;
         }
@@ -54439,12 +54685,13 @@ ${JSON.stringify(message, null, 4)}`);
       exports.gridModule = void 0;
       var sprotty_1 = require_lib4();
       require_grid2();
+      var grid_1 = require_grid();
       var grid_manager_1 = require_grid_manager();
       var grid_model_1 = require_grid_model();
       var grid_snapper_1 = require_grid_snapper();
       exports.gridModule = new sprotty_1.FeatureModule((bind, unbind, isBound, rebind) => {
         const context = { bind, unbind, isBound, rebind };
-        bind(sprotty_1.TYPES.Grid).toConstantValue({ x: 10, y: 10 });
+        bind(sprotty_1.TYPES.Grid).toConstantValue(grid_1.Grid.DEFAULT);
         (0, sprotty_1.configureCommand)(context, grid_model_1.ShowGridCommand);
         (0, sprotty_1.bindAsService)(context, sprotty_1.TYPES.IGridManager, grid_manager_1.GridManager);
         (0, sprotty_1.configureActionHandler)(context, grid_model_1.ShowGridAction.KIND, grid_manager_1.GridManager);
@@ -54767,6 +55014,7 @@ ${JSON.stringify(message, null, 4)}`);
       var selection_service_1 = require_selection_service();
       var set_bounds_feedback_command_1 = require_set_bounds_feedback_command();
       var model_1 = require_model19();
+      var grid_1 = require_grid();
       var change_bounds_tool_feedback_1 = require_change_bounds_tool_feedback();
       var helper_line_feedback_1 = require_helper_line_feedback();
       var model_2 = require_model20();
@@ -55112,6 +55360,8 @@ ${JSON.stringify(message, null, 4)}`);
       exports.STANDALONE_MODULE_CONFIG = exports.STANDALONE_MODULES = exports.LayoutKeyListener = exports.FallbackActionHandler = exports.standaloneDefaultModule = void 0;
       var sprotty_1 = require_lib4();
       var inversify_1 = require_cjs4();
+      var shortcuts_module_1 = require_shortcuts_module();
+      var resize_module_1 = require_resize_module();
       var copy_paste_modules_1 = require_copy_paste_modules();
       var export_modules_1 = require_export_modules();
       var save_module_1 = require_save_module();
@@ -55160,6 +55410,8 @@ ${JSON.stringify(message, null, 4)}`);
         select_module_1.standaloneSelectModule,
         export_modules_1.standaloneExportModule,
         exports.standaloneDefaultModule,
+        shortcuts_module_1.standaloneShortcutsModule,
+        resize_module_1.standaloneResizeModule,
         save_module_1.saveModule,
         undo_redo_module_1.undoRedoModule
       ];
@@ -55512,6 +55764,36 @@ ${JSON.stringify(message, null, 4)}`);
     }
   });
 
+  // node_modules/@eclipse-glsp/client/lib/views/routing-point-handle-view.js
+  var require_routing_point_handle_view = __commonJS({
+    "node_modules/@eclipse-glsp/client/lib/views/routing-point-handle-view.js"(exports) {
+      "use strict";
+      var __decorate = exports && exports.__decorate || function(decorators, target, key, desc) {
+        var c3 = arguments.length, r3 = c3 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r3 = Reflect.decorate(decorators, target, key, desc);
+        else for (var i2 = decorators.length - 1; i2 >= 0; i2--) if (d3 = decorators[i2]) r3 = (c3 < 3 ? d3(r3) : c3 > 3 ? d3(target, key, r3) : d3(target, key)) || r3;
+        return c3 > 3 && r3 && Object.defineProperty(target, key, r3), r3;
+      };
+      Object.defineProperty(exports, "__esModule", { value: true });
+      exports.GRoutingHandleView = void 0;
+      var sprotty_1 = require_lib4();
+      var inversify_1 = require_cjs4();
+      var model_1 = require_model23();
+      var GRoutingHandleView = class GRoutingHandleView extends sprotty_1.SRoutingHandleView {
+        render(handle, context, args) {
+          if (!(0, model_1.isReconnectHandle)(handle) && (handle.kind === "source" || handle.kind === "target")) {
+            return void 0;
+          }
+          return super.render(handle, context, args);
+        }
+      };
+      exports.GRoutingHandleView = GRoutingHandleView;
+      exports.GRoutingHandleView = GRoutingHandleView = __decorate([
+        (0, inversify_1.injectable)()
+      ], GRoutingHandleView);
+    }
+  });
+
   // node_modules/@eclipse-glsp/client/lib/views/base-view-module.js
   var require_base_view_module = __commonJS({
     "node_modules/@eclipse-glsp/client/lib/views/base-view-module.js"(exports) {
@@ -55525,6 +55807,7 @@ ${JSON.stringify(message, null, 4)}`);
       var ggraph_view_1 = require_ggraph_view();
       var issue_marker_view_1 = require_issue_marker_view();
       var rounded_corner_view_1 = require_rounded_corner_view();
+      var routing_point_handle_view_1 = require_routing_point_handle_view();
       exports.baseViewModule = new sprotty_1.FeatureModule((bind, unbind, isBound, rebind) => {
         const context = { bind, unbind, isBound, rebind };
         configureDefaultModelElements2(context);
@@ -55543,8 +55826,8 @@ ${JSON.stringify(message, null, 4)}`);
         (0, sprotty_1.configureModelElement)(context, sprotty_1.DefaultTypes.COMPARTMENT_HEADER, sprotty_1.GCompartment, sprotty_1.GCompartmentView);
         (0, sprotty_1.configureModelElement)(context, sprotty_1.DefaultTypes.EDGE, model_1.GEdge, gedge_view_1.GEdgeView);
         (0, sprotty_1.configureModelElement)(context, sprotty_1.DefaultTypes.PORT, sprotty_1.GPort, sprotty_1.RectangularNodeView);
-        (0, sprotty_1.configureModelElement)(context, sprotty_1.DefaultTypes.ROUTING_POINT, sprotty_1.GRoutingHandle, sprotty_1.GRoutingHandleView);
-        (0, sprotty_1.configureModelElement)(context, sprotty_1.DefaultTypes.VOLATILE_ROUTING_POINT, sprotty_1.GRoutingHandle, sprotty_1.GRoutingHandleView);
+        (0, sprotty_1.configureModelElement)(context, sprotty_1.DefaultTypes.ROUTING_POINT, sprotty_1.GRoutingHandle, routing_point_handle_view_1.GRoutingHandleView);
+        (0, sprotty_1.configureModelElement)(context, sprotty_1.DefaultTypes.VOLATILE_ROUTING_POINT, sprotty_1.GRoutingHandle, routing_point_handle_view_1.GRoutingHandleView);
         (0, sprotty_1.configureModelElement)(context, sprotty_1.DefaultTypes.LABEL, sprotty_1.GLabel, sprotty_1.GLabelView);
         (0, sprotty_1.configureModelElement)(context, sprotty_1.DefaultTypes.BUTTON_EXPAND, sprotty_1.GButton, sprotty_1.ExpandButtonView);
         (0, sprotty_1.configureModelElement)(context, sprotty_1.DefaultTypes.ISSUE_MARKER, issue_marker_1.GIssueMarker, issue_marker_view_1.GIssueMarkerView);
@@ -55608,6 +55891,7 @@ ${JSON.stringify(message, null, 4)}`);
       var sprotty_1 = require_lib4();
       var inversify_1 = require_cjs4();
       var snabbdom_1 = require_snabbdom_cjs();
+      var messages_1 = require_messages3();
       var grid_style_1 = require_grid_style();
       var GLSPProjectionView = class GLSPProjectionView extends sprotty_1.ProjectedViewportView {
         render(model, context, args) {
@@ -55618,7 +55902,7 @@ ${JSON.stringify(message, null, 4)}`);
             this.renderProjections(model, context, args)
           );
           (0, sprotty_1.setAttr)(rootNode, "tabindex", 1);
-          (0, sprotty_1.setAttr)(rootNode, "aria-label", "Diagram");
+          (0, sprotty_1.setAttr)(rootNode, "aria-label", messages_1.messages.diagram.label);
           return rootNode;
         }
         renderSvg(model, context, args) {
@@ -55754,6 +56038,7 @@ ${JSON.stringify(message, null, 4)}`);
       __exportStar(require_update_model_command(), exports);
       __exportStar(require_focus_state_change_action(), exports);
       __exportStar(require_focus_tracker(), exports);
+      __exportStar(require_messages3(), exports);
       __exportStar(require_diagram_loader(), exports);
       __exportStar(require_glsp_model_source(), exports);
       __exportStar(require_model_initialization_constraint(), exports);
@@ -55762,6 +56047,10 @@ ${JSON.stringify(message, null, 4)}`);
       __exportStar(require_ranked(), exports);
       __exportStar(require_selection_clearing_mouse_listener(), exports);
       __exportStar(require_selection_service(), exports);
+      __exportStar(require_available_shortcuts_extension(), exports);
+      __exportStar(require_available_shortcuts_tool(), exports);
+      __exportStar(require_shortcuts_manager(), exports);
+      __exportStar(require_shortcuts_module(), exports);
       __exportStar(require_tool(), exports);
       __exportStar(require_tool_manager(), exports);
       __exportStar(require_ui_extension2(), exports);
@@ -55785,9 +56074,6 @@ ${JSON.stringify(message, null, 4)}`);
       __exportStar(require_focus_tracker_module(), exports);
       __exportStar(require_focus_tracker_tool(), exports);
       __exportStar(require_global_keylistener_tool(), exports);
-      __exportStar(require_accessible_key_shortcut(), exports);
-      __exportStar(require_accessible_key_shortcut_tool(), exports);
-      __exportStar(require_shortcut_help_module(), exports);
       __exportStar(require_action3(), exports);
       __exportStar(require_constants(), exports);
       __exportStar(require_keyboard_grid(), exports);
@@ -55799,14 +56085,8 @@ ${JSON.stringify(message, null, 4)}`);
       __exportStar(require_keyboard_pointer_listener(), exports);
       __exportStar(require_keyboard_pointer_module(), exports);
       __exportStar(require_keyboard_pointer_position(), exports);
-      __exportStar(require_keyboard_tool_palette(), exports);
+      __exportStar(require_keyboard_tool_palette2(), exports);
       __exportStar(require_keyboard_tool_palette_module(), exports);
-      __exportStar(require_move_handler(), exports);
-      __exportStar(require_move_zoom_module(), exports);
-      __exportStar(require_zoom_handler(), exports);
-      __exportStar(require_resize_key_handler(), exports);
-      __exportStar(require_resize_key_module(), exports);
-      __exportStar(require_resize_key_tool(), exports);
       __exportStar(require_search_palette(), exports);
       __exportStar(require_search_palette_module(), exports);
       __exportStar(require_search_tool(), exports);
@@ -55814,9 +56094,8 @@ ${JSON.stringify(message, null, 4)}`);
       __exportStar(require_toast_module(), exports);
       __exportStar(require_toast_tool(), exports);
       __exportStar(require_deselect_key_tool(), exports);
-      __exportStar(require_movement_key_tool(), exports);
+      __exportStar(require_grid_cell_zoom_key_tool(), exports);
       __exportStar(require_view_key_tools_module(), exports);
-      __exportStar(require_zoom_key_tool(), exports);
       __exportStar(require_bounds_module(), exports);
       __exportStar(require_freeform_layout(), exports);
       __exportStar(require_glsp_hidden_bounds_updater(), exports);
@@ -55827,9 +56106,15 @@ ${JSON.stringify(message, null, 4)}`);
       __exportStar(require_set_bounds_feedback_command(), exports);
       __exportStar(require_vbox_layout2(), exports);
       __exportStar(require_model19(), exports);
+      __exportStar(require_move_element_action(), exports);
+      __exportStar(require_move_element_handler(), exports);
       __exportStar(require_movement_restrictor(), exports);
       __exportStar(require_point_position_updater(), exports);
       __exportStar(require_position_snapper(), exports);
+      __exportStar(require_resize_default_tool(), exports);
+      __exportStar(require_resize_handler(), exports);
+      __exportStar(require_resize_module(), exports);
+      __exportStar(require_resize_tool(), exports);
       __exportStar(require_snap2(), exports);
       __exportStar(require_tracker(), exports);
       __exportStar(require_command_palette3(), exports);
@@ -55940,7 +56225,9 @@ ${JSON.stringify(message, null, 4)}`);
       __exportStar(require_origin_viewport(), exports);
       __exportStar(require_reposition(), exports);
       __exportStar(require_viewport_handler(), exports);
+      __exportStar(require_viewport_key_listener(), exports);
       __exportStar(require_viewport_modules(), exports);
+      __exportStar(require_zoom_viewport_action(), exports);
       __exportStar(require_model22(), exports);
       __exportStar(require_re_exports3(), exports);
       __exportStar(require_standalone_modules(), exports);
@@ -56328,7 +56615,7 @@ ${JSON.stringify(message, null, 4)}`);
   });
 
   // node_modules/vscode-messenger-common/lib/messages.js
-  var require_messages3 = __commonJS({
+  var require_messages4 = __commonJS({
     "node_modules/vscode-messenger-common/lib/messages.js"(exports) {
       "use strict";
       Object.defineProperty(exports, "__esModule", { value: true });
@@ -56398,7 +56685,7 @@ ${JSON.stringify(message, null, 4)}`);
         for (var p3 in m3) if (p3 !== "default" && !Object.prototype.hasOwnProperty.call(exports2, p3)) __createBinding(exports2, m3, p3);
       };
       Object.defineProperty(exports, "__esModule", { value: true });
-      __exportStar(require_messages3(), exports);
+      __exportStar(require_messages4(), exports);
     }
   });
 
@@ -58536,10 +58823,11 @@ Trying to resolve bindings for "${k2(e3.serviceIdentifier)}"`), new Error(s4);
         (0, import_client4.configureActionHandler)(context, ReloadModelAction.KIND, ReloadModelActionHandler);
         (0, import_client4.configureActionHandler)(context, import_sprotty.SetModelAction.KIND, ReloadModelActionHandler);
         (0, import_client4.configureActionHandler)(context, import_sprotty.UpdateModelAction.KIND, ReloadModelActionHandler);
-        (0, import_sprotty.configureModelElement)(context, import_sprotty.DefaultTypes.ROUTING_POINT, import_sprotty.GRoutingHandle, import_sprotty.GRoutingHandleView);
+        (0, import_sprotty.configureModelElement)(context, import_sprotty.DefaultTypes.ROUTING_POINT, import_sprotty.GRoutingHandle, import_sprotty.SRoutingHandleView);
         (0, import_sprotty.configureModelElement)(context, "edge:pushsub", import_client4.GEdge, import_sprotty.PolylineEdgeView);
         (0, import_sprotty.configureModelElement)(context, "node:vssnode", import_sprotty.GNode, import_sprotty.RectangularNodeView);
         (0, import_sprotty.configureModelElement)(context, "node:componentnode", import_sprotty.GNode, import_sprotty.RectangularNodeView);
+        (0, import_sprotty.configureModelElement)(context, "container", import_sprotty.GNode, import_sprotty.RectangularNodeView);
         (0, import_sprotty.configureModelElement)(context, "node:inport", import_sprotty.GNode, import_sprotty.RectangularNodeView);
         (0, import_sprotty.configureModelElement)(context, "node:outport", import_sprotty.GNode, import_sprotty.CircularNodeView);
         (0, import_sprotty.configureModelElement)(context, "node:sensorsignalnode", import_sprotty.GNode, SensorSignalNodeView);

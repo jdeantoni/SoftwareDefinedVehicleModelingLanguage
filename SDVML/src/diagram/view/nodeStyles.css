@@ -30,6 +30,7 @@
     fill: #bbbd84;
     stroke-width: 1px;
     stroke: var(--theia-foreground);
+    position: relative;
 }
 
 .vssnode>.sprotty-node {
@@ -47,15 +48,13 @@
 .outport>.sprotty-node {
   fill: rgb(20, 6, 180);
   font-size: 300%;
-  direction: ltr;
   position: absolute;
-  right: 0%;
+  right: 20px;
 }
 
 
-.label {
-  color: #ee4063;
-    fill: blueviolet;
+.componentnode > .label {
+    fill: rgb(5, 3, 6);
     text-align: center;
 }
 

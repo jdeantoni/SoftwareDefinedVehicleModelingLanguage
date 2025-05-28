@@ -1,6 +1,6 @@
 import { MD5 } from 'object-hash';
 import { isSensor, isActuator } from '../../language/generated/ast.js';
-import { boundsFeature, connectableFeature, deletableFeature, fadeFeature, hoverFeedbackFeature, layoutContainerFeature, moveFeature, nameFeature, popupFeature, RectangularNode, selectFeature } from '@eclipse-glsp/client';
+import { boundsFeature, connectableFeature, deletableFeature, fadeFeature, hoverFeedbackFeature, layoutableChildFeature, layoutContainerFeature, moveFeature, nameFeature, popupFeature, RectangularNode, resizeFeature, selectFeature } from '@eclipse-glsp/client';
 class SDVMLNode extends RectangularNode {
 }
 SDVMLNode.DEFAULT_FEATURES = [
@@ -13,7 +13,9 @@ SDVMLNode.DEFAULT_FEATURES = [
     fadeFeature,
     hoverFeedbackFeature,
     popupFeature,
-    nameFeature
+    nameFeature,
+    resizeFeature,
+    layoutableChildFeature
 ];
 export { SDVMLNode };
 export class SDVMLDiagram extends SDVMLNode {

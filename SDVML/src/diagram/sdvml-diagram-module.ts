@@ -40,6 +40,7 @@ export class SdvmlDiagramModule extends DiagramModule {
 		return sdvmlGModelFactory
 	}
 
+
 	protected override configureActionHandlers(binding: InstanceMultiBinding<ActionHandlerConstructor>): void {
 		super.configureActionHandlers(binding)
 	}
@@ -54,4 +55,6 @@ export class SdvmlDiagramModule extends DiagramModule {
 		this.context.bind(sdvmlModelIndex).toSelf().inSingletonScope()
 		return { service: sdvmlModelIndex }
 	}
+
+
 }

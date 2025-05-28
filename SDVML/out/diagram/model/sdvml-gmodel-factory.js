@@ -110,6 +110,10 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
             .id(compNode.id)
             .layout('hbox')
             .addLayoutOption("elk.portConstraints", "FIXED_SIDE")
+            .addLayoutOption("elk.direction", "RIGHT")
+            .addLayoutOption("elk.portAlignment.east", "CENTER")
+            .addLayoutOption("elk.algorithm", "org.eclipse.elk.layered")
+            .addLayoutOption("elk.spacing.port", 10)
             .position(compNode.position);
         let nodeSize = compNode.size;
         if (!nodeSize) {
@@ -120,7 +124,6 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
         }
         builder.size(nodeSize);
         builder.addLayoutOptions({ prefWidth: nodeSize.width, prefHeight: nodeSize.height, hAlign: 'center', vAlign: 'center' });
-        builder.addLayoutOption("elk.portConstraints", "FIXED_SIDE");
         builder
             .add(GLabel.builder()
             .text(((_a = compNode.name.toString()) !== null && _a !== void 0 ? _a : '') + ": Comp")
@@ -130,16 +133,17 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
         builder.addCssClass('componentnode');
         let subNameToPortNode = new Map();
         for (let sub of compNode.subscribers) {
-            console.error(">>>> id " + sub.id);
+            // console.error(">>>> id "+sub.id)
             const inPort = GPort.builder()
                 .id("port" + sub.id) // Unique ID, perhaps derived from parent node ID
                 .type('node:inport')
                 .addLayoutOption('port.side', "EAST")
+                .addLayoutOption("hAlign", "right")
                 .size(10, 10)
                 .addCssClass('inport')
                 .build();
             subNameToPortNode.set(sub.name, inPort);
-            builder.addChildren(inPort);
+            builder.add(inPort);
         }
         let pubNameToPortNode = new Map();
         for (let pub of compNode.publishers) {
@@ -171,7 +175,6 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
                 .type('edge:pushsub') // Or another edge type
                 .source(pubNameToPortNode.get(pub.name)) // Connects from the output port
                 .target(this.elementNameToNode.get(pub.name)) // Connects to another node's input port
-                .addRoutingPoint(0, 100)
                 .addCssClass('pushsub')
                 .addCssClass('sprotty-edge')
                 .addCssClass('arrow')
@@ -179,6 +182,7 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
             builder.addChildren(myEdge);
         }
         const res = builder.build();
+        // console.error(">>> component children: "+res.children.map(c => c.type))
         //this.elementNameToNode.set(compNode.name,res)
         return res;
     }
