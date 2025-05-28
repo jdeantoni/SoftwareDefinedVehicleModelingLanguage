@@ -27,12 +27,12 @@ let sdvmlApplyLabelEditHandler = class sdvmlApplyLabelEditHandler extends JsonOp
             const labelElement = index.get(operation.labelId);
             const entryGNode = labelElement.parent;
             if (entryGNode && this.modelState.sourceUri) {
-                const entryNode = index.findEntryNode(entryGNode.id);
+                const entryNode = index.findNode(entryGNode.id);
                 if (!entryNode) {
                     throw new GLSPServerError(`Could not retrieve the parent node for the label with id ${operation.labelId}`);
                 }
                 const codeActionParams = createCodeActionParams('editDescription', this.modelState.sourceUri, {
-                    objectIdentifier: (_a = entryNode.parent) === null || _a === void 0 ? void 0 : _a.name,
+                    objectIdentifier: (_a = entryNode.parent) === null || _a === void 0 ? void 0 : _a.id,
                     newValue: `'${operation.text}'`,
                 });
                 return createAndSendCodeAction(languageClient, codeActionParams);

@@ -11,9 +11,22 @@ export class sdvmlModelIndex extends GModelIndex {
 		for (const element of sdvml?.vss.sensorSignals ?? []) {
 			this.idToSDVMLNodeElements.set(element.id, element)
 		}
+		for (const element of sdvml?.vss.actuatorSignals ?? []) {
+			this.idToSDVMLNodeElements.set(element.id, element)
+		}
+		for (const element of sdvml?.components ?? []) {
+			for(const sub of element.subscribers){
+				this.idToSDVMLNodeElements.set("port"+sub.id, sub)
+			}
+			for(const pub of element.publishers){
+				this.idToSDVMLNodeElements.set("port"+pub.id, pub)
+			}
+			this.idToSDVMLNodeElements.set(element.id, element)
+		}
+		this.idToSDVMLNodeElements.set("vss", sdvml?.vss)
 	}
 
-	findEntryNode(id: string): SDVMLNode | undefined {
+	findNode(id: string): SDVMLNode | undefined {
 		return this.idToSDVMLNodeElements.get(id)
 	}
 }

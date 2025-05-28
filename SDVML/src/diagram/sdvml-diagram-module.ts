@@ -17,6 +17,7 @@ import { sdvmlModelStorage } from './model/sdvml-model-storage.js'
 import { sdvmlGModelFactory } from './model/sdvml-gmodel-factory.js'
 import { sdvmlModelIndex } from './model/sdvml-diagram-model-index.js'
 import { sdvmlApplyLabelEditHandler } from './handler/sdvml-apply-label-edit-handler.js'
+import { NodeChangeBoundsHandler } from './handler/sdvml-change-bounds-handlers.js'
 
 
 @injectable()
@@ -46,6 +47,7 @@ export class SdvmlDiagramModule extends DiagramModule {
 	protected override configureOperationHandlers(binding: InstanceMultiBinding<OperationHandlerConstructor>): void {
 		binding.add(sdvmlApplyLabelEditHandler)
 		binding.add(CompoundOperationHandler)
+		binding.add(NodeChangeBoundsHandler)
 	}
 
 	protected override bindGModelIndex(): BindingTarget<GModelIndex> {

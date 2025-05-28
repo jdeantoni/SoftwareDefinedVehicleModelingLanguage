@@ -1,26 +1,61 @@
 
 
-.componentnode {
-  background-color: #ee4063; /* pink */
-  /* stroke-width: 5px;
-  outline-color: aquamarine;
-    outline-style: solid;
-    outline-width: 2px;
-    fill: #82848a;
-     stroke: #ee4063; */
+.sensorsignalnode>.sprotty-node {
+    fill: #84a1bd;
+    stroke-width: 1px;
+    stroke: var(--theia-foreground);
 }
 
-.inport {
+.actuatorsignalnode>.sprotty-node {
+    fill: #a984bd;
+    stroke-width: 1px;
+    stroke: var(--theia-foreground);
+}
+
+/* .componentnode {
+  width: 150px;
+  height: 50px;
+}
+
+.componentnode > .sprotty-node {
+  width: 150px;
+  height: 50px;
+}
+
+.componentnode > .label {
+  width: 150px;
+  height: 50px;
+} */
+.componentnode>.sprotty-node {
+    fill: #bbbd84;
+    stroke-width: 1px;
+    stroke: var(--theia-foreground);
+}
+
+.vssnode>.sprotty-node {
+    fill: azure;
+    stroke-width: 1px;
+    stroke: var(--theia-foreground);
+}
+
+.inport>.sprotty-node {
   fill: rgb(180, 6, 6);
   font-size: 300%;
+  direction: rtl;
 }
 
-.inport:hover {
-  fill: white;
+.outport>.sprotty-node {
+  fill: rgb(20, 6, 180);
   font-size: 300%;
+  direction: ltr;
+  position: absolute;
+  right: 0%;
 }
 
-.sprotty-label {
+
+.label {
+  color: #ee4063;
     fill: blueviolet;
     text-align: center;
 }
+

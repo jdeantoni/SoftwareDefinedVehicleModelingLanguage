@@ -1,48 +1,70 @@
-import { AnyObject, Dimension, hasArrayProp, hasObjectProp, hasStringProp, Point } from '@eclipse-glsp/server'
 import { MD5 } from 'object-hash'
 import { Signal, Model, isSensor, isActuator, Sensor, Actuator, Component, VSS } from '../../language/generated/ast.js'
+import { boundsFeature, connectableFeature, deletableFeature, fadeFeature, GModelElement, hoverFeedbackFeature, layoutContainerFeature, moveFeature, nameFeature, popupFeature, RectangularNode, selectFeature } from '@eclipse-glsp/client'
 
 
-export interface SDVMLNode{
+
+
+
+export class SDVMLNode extends RectangularNode {
+	static override readonly DEFAULT_FEATURES = [
+		connectableFeature,
+		deletableFeature,
+		selectFeature,
+		boundsFeature,
+		moveFeature,
+		layoutContainerFeature,
+		fadeFeature,
+		hoverFeedbackFeature,
+		popupFeature,
+		nameFeature
+	];
 	
-	id: string
-	parent?: Signal | Component | Model
-
-	position?: Point
-	size?: Dimension
 }
-
-export interface SDVMLDiagram {
-	id: string
+export class SDVMLDiagram extends SDVMLNode {
 	vss: VSSNode
 	components: ComponentNode[]
 }
 
-export interface VSSNode extends SDVMLNode{
+export function isSdvmlDiagram(element: GModelElement): element is GModelElement {
+	return element instanceof SDVMLDiagram || false;
+}
+
+export class VSSNode extends SDVMLNode{
 	sensorSignals: SensorSignalNode[]
 	actuatorSignals: ActuatorSignalNode[]
 }
-export function issdvmlDiagram(object: object | undefined): object is SDVMLDiagram {
-	return AnyObject.is(object) && hasStringProp(object, 'id') && hasArrayProp(object, 'nodes')
+
+export function isVSSNode(element: GModelElement): element is GModelElement {
+	return element instanceof isVSSNode || false;
 }
 
-export interface SensorSignalNode extends SDVMLNode {
+export class SensorSignalNode extends SDVMLNode {
 	name:string
 }
 
-export interface ComponentNode extends SDVMLNode {
+export function isSensorSignalNode(element: GModelElement): element is GModelElement {
+	return element instanceof SensorSignalNode || false;
+}
+
+export class ComponentNode extends SDVMLNode {
 	name:string
 	subscribers: SensorSignalNode[]
 	publishers: ActuatorSignalNode[]
 }
 
-export interface ActuatorSignalNode extends SDVMLNode{
+export function isComponentNode(element: GModelElement): element is GModelElement {
+	return element instanceof ComponentNode || false;
+}
+
+export class ActuatorSignalNode extends SDVMLNode{
 	name:string
 }
 
-export function isEntryNode(object: object | undefined): object is SensorSignalNode {
-	return AnyObject.is(object) && hasStringProp(object, 'id') && hasObjectProp(object, 'position')
+export function isActuatorSignalNode(element: GModelElement): element is GModelElement {
+	return element instanceof ActuatorSignalNode || false;
 }
+
 
 
 let sensorSignalNodes : SensorSignalNode[] = []
@@ -51,46 +73,27 @@ let actuatorSignalNodes : SensorSignalNode[] = []
 
 export function generateModelFromAST(model: Model, existingDiagram: SDVMLDiagram): SDVMLDiagram {
 	const vssNode: VSSNode = createVSSNode(model.vss,existingDiagram)
-	const componentNodes : ComponentNode[] = model.components.flatMap((comp) => createDiagramComponentNodes(comp, existingDiagram))
-	return {
-		id: 'sdvml', //this needSignalntNodes]
-		vss:vssNode,
-		components : [...componentNodes]
-	}
+	const componentNodes : ComponentNode[] = model.components.flatMap((comp) => createComponentNodes(comp, existingDiagram))
+	let diagNode : SDVMLDiagram = new SDVMLDiagram()
+	diagNode.id = 'sdvml'
+	diagNode.vss=vssNode
+	diagNode.components = componentNodes
+	return diagNode
 }
 
 function createVSSNode(vss: VSS, existingDiagram: SDVMLDiagram): VSSNode {
-	sensorSignalNodes = vss.signals.filter(sig => isSensor(sig)).flatMap((sig) => createDiagramSensorSignalNodes(sig as Sensor, existingDiagram))
-	actuatorSignalNodes= vss.signals.filter(sig => isActuator(sig)).flatMap((sig) => createDiagramActuatorSignalNodes(sig as Actuator, existingDiagram))
-	return {
-		id: 'vss', //this needSignalntNodes]
-		sensorSignals: [...sensorSignalNodes],
-		actuatorSignals: [...actuatorSignalNodes],
-		parent: vss.$container
-	}
-
+	sensorSignalNodes = vss.signals.filter(sig => isSensor(sig)).flatMap((sig) => createSensorSignalNodes(sig as Sensor, existingDiagram))
+	actuatorSignalNodes= vss.signals.filter(sig => isActuator(sig)).flatMap((sig) => createActuatorSignalNodes(sig as Actuator, existingDiagram))
+	let res : VSSNode = new VSSNode()
+	res.id = 'vss' //this needSignalntNodes]
+	res.sensorSignals = [...sensorSignalNodes]
+	res.actuatorSignals= [...actuatorSignalNodes]
+	return res
 }
 
-function createDiagramSensorSignalNodes(rootNode: Sensor, existingDiagram: SDVMLDiagram): SensorSignalNode [] {
-	const sensorNode = createSensorDiagramNode(rootNode, existingDiagram)
-	let nodes: SensorSignalNode[] = [sensorNode]
-	return nodes
-}
 
-function createDiagramComponentNodes(rootNode: Component, existingDiagram: SDVMLDiagram): ComponentNode [] {
-	const compNode = createComponentNode(rootNode, existingDiagram)
-	// console.error("subscribers: "+compNode.subscribers.map(s => s.name))
-	let nodes: ComponentNode[] = [compNode]
-	return nodes
-}
 
-function createDiagramActuatorSignalNodes(rootNode: Actuator, existingDiagram: SDVMLDiagram): ActuatorSignalNode [] {
-	const diagramNode = createActuatorDiagramNode(rootNode, existingDiagram)
-	let nodes: ActuatorSignalNode[] = [diagramNode]
-	return nodes
-}
-
-function createSensorDiagramNode(rootNode: Signal, existingDiagram: SDVMLDiagram): SensorSignalNode {
+function createSensorSignalNodes(rootNode: Signal, existingDiagram: SDVMLDiagram): SensorSignalNode {
 	const rootNodeHash = MD5(rootNode)
 		let existingNode: SensorSignalNode | undefined
 		if (existingDiagram) {
@@ -100,34 +103,25 @@ function createSensorDiagramNode(rootNode: Signal, existingDiagram: SDVMLDiagram
 				}
 			})
 		}
-
+	
+	let res : SensorSignalNode = new SensorSignalNode()
 		if (existingNode) {
-			return {
-				id: rootNodeHash,
-				name:existingNode.name,
-				parent: rootNode,
-				position: existingNode.position,
-				size: existingNode.size,
-			}
+			res.id = rootNodeHash
+			res.name = existingNode.name
+			res.position = existingNode.position
+			res.size = existingNode.size
+			return res
 		}
 	
 
-	return {
-		id: rootNodeHash,
-		name:rootNode.name,
-		parent: rootNode,
-		position: {
-			x: 100,
-			y: 50,
-		},
-		size: {
-			height: 10,
-			width: 10
-		},
-	}
+	res.id = rootNodeHash
+	res.name =rootNode.name
+	res.position = {x: 100,	y: 50}
+	res.size = {height: 30,	width: 100}
+	return res
 }
 
-function createActuatorDiagramNode(rootNode: Signal, existingDiagram: SDVMLDiagram): ActuatorSignalNode {
+function createActuatorSignalNodes(rootNode: Signal, existingDiagram: SDVMLDiagram): ActuatorSignalNode {
 	const rootNodeHash = MD5(rootNode)
 		let existingNode: ActuatorSignalNode | undefined
 		if (existingDiagram) {
@@ -137,34 +131,25 @@ function createActuatorDiagramNode(rootNode: Signal, existingDiagram: SDVMLDiagr
 				}
 			})
 		}
-
+	
+	let res : ActuatorSignalNode = new ActuatorSignalNode
 		if (existingNode) {
-			return {
-				id: rootNodeHash,
-				name:existingNode.name,
-				parent: rootNode,
-				position: existingNode.position,
-				size: existingNode.size,
-			}
+			res.id = rootNodeHash
+			res.name = existingNode.name
+			res.position = existingNode.position
+			res.size = existingNode.size
+			return res
 		}
 	
 
-	return {
-		id: rootNodeHash,
-		name:rootNode.name,
-		parent: rootNode,
-		position: {
-			x: 500,
-			y: 50,
-		},
-		size: {
-			height: 10,
-			width: 10
-		},
-	}
+	res.id = rootNodeHash
+	res.name = rootNode.name
+	res.position = {x: 500,	y: 50}
+	res.size = {height: 30,	width: 100}
+	return res
 }
 
-function createComponentNode(rootNode: Component, existingDiagram: SDVMLDiagram): ComponentNode {
+function createComponentNodes(rootNode: Component, existingDiagram: SDVMLDiagram): ComponentNode {
 	const rootNodeHash = MD5(rootNode)
 		let existingNode: ComponentNode | undefined
 		if (existingDiagram) {
@@ -175,32 +160,23 @@ function createComponentNode(rootNode: Component, existingDiagram: SDVMLDiagram)
 			})
 		}
 
+		let res : ComponentNode = new ComponentNode()
 		if (existingNode) {
-			return {
-				id: rootNodeHash,
-				name:existingNode.name,
-				parent: rootNode,
-				position: existingNode.position,
-				size: existingNode.size,
-				subscribers:existingNode.subscribers,
-				publishers:existingNode.publishers
-			}
+			res.id = rootNodeHash
+			res.name = existingNode.name
+			res.position = existingNode.position
+			res.size = existingNode.size
+			res.subscribers = existingNode.subscribers
+			res.publishers = existingNode.publishers
+			return res
 		}
 	
 
-	return {
-		id: rootNodeHash,
-		name:rootNode.name,
-		parent: rootNode,
-		position: {
-			x: 300,
-			y: 10,
-		},
-		size: {
-			height: 10,
-			width: 10
-		},
-		subscribers: sensorSignalNodes.filter(s => rootNode.subscribers.find(sn => sn.name == s.name) != undefined),
-		publishers: actuatorSignalNodes.filter(s => rootNode.publishers.find(sn => sn.name == s.name) != undefined)
-	}
+	res.id = rootNodeHash
+	res.name = rootNode.name
+	res.position = {x: 300, y: 10}
+	res.size = {	height: 30,	width: 100}
+	res.subscribers = sensorSignalNodes.filter(s => rootNode.subscribers.find(sn => sn.name == s.name) != undefined)
+	res.publishers = actuatorSignalNodes.filter(s => rootNode.publishers.find(sn => sn.name == s.name) != undefined)
+	return res
 }

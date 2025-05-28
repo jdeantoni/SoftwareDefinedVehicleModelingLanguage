@@ -2935,18 +2935,40 @@ button[data-balloon] {
 }
 
 /* src/diagram/view/nodeStyles.css */
-.componentnode {
-  background-color: #ee4063;
+.sensorsignalnode > .sprotty-node {
+  fill: #84a1bd;
+  stroke-width: 1px;
+  stroke: var(--theia-foreground);
 }
-.inport {
+.actuatorsignalnode > .sprotty-node {
+  fill: #a984bd;
+  stroke-width: 1px;
+  stroke: var(--theia-foreground);
+}
+.componentnode > .sprotty-node {
+  fill: #bbbd84;
+  stroke-width: 1px;
+  stroke: var(--theia-foreground);
+}
+.vssnode > .sprotty-node {
+  fill: azure;
+  stroke-width: 1px;
+  stroke: var(--theia-foreground);
+}
+.inport > .sprotty-node {
   fill: rgb(180, 6, 6);
   font-size: 300%;
+  direction: rtl;
 }
-.inport:hover {
-  fill: white;
+.outport > .sprotty-node {
+  fill: rgb(20, 6, 180);
   font-size: 300%;
+  direction: ltr;
+  position: absolute;
+  right: 0%;
 }
-.sprotty-label {
+.label {
+  color: #ee4063;
   fill: blueviolet;
   text-align: center;
 }

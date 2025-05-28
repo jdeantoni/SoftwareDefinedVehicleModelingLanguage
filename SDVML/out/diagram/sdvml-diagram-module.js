@@ -12,6 +12,7 @@ import { sdvmlModelStorage } from './model/sdvml-model-storage.js';
 import { sdvmlGModelFactory } from './model/sdvml-gmodel-factory.js';
 import { sdvmlModelIndex } from './model/sdvml-diagram-model-index.js';
 import { sdvmlApplyLabelEditHandler } from './handler/sdvml-apply-label-edit-handler.js';
+import { NodeChangeBoundsHandler } from './handler/sdvml-change-bounds-handlers.js';
 let SdvmlDiagramModule = class SdvmlDiagramModule extends DiagramModule {
     constructor() {
         super(...arguments);
@@ -35,6 +36,7 @@ let SdvmlDiagramModule = class SdvmlDiagramModule extends DiagramModule {
     configureOperationHandlers(binding) {
         binding.add(sdvmlApplyLabelEditHandler);
         binding.add(CompoundOperationHandler);
+        binding.add(NodeChangeBoundsHandler);
     }
     bindGModelIndex() {
         this.context.bind(sdvmlModelIndex).toSelf().inSingletonScope();

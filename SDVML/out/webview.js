@@ -58538,7 +58538,7 @@ Trying to resolve bindings for "${k2(e3.serviceIdentifier)}"`), new Error(s4);
         (0, import_client4.configureActionHandler)(context, import_sprotty.UpdateModelAction.KIND, ReloadModelActionHandler);
         (0, import_sprotty.configureModelElement)(context, import_sprotty.DefaultTypes.ROUTING_POINT, import_sprotty.GRoutingHandle, import_sprotty.GRoutingHandleView);
         (0, import_sprotty.configureModelElement)(context, "edge:pushsub", import_client4.GEdge, import_sprotty.PolylineEdgeView);
-        (0, import_sprotty.configureModelElement)(context, "node:vss", import_sprotty.GNode, import_sprotty.RectangularNodeView);
+        (0, import_sprotty.configureModelElement)(context, "node:vssnode", import_sprotty.GNode, import_sprotty.RectangularNodeView);
         (0, import_sprotty.configureModelElement)(context, "node:componentnode", import_sprotty.GNode, import_sprotty.RectangularNodeView);
         (0, import_sprotty.configureModelElement)(context, "node:inport", import_sprotty.GNode, import_sprotty.RectangularNodeView);
         (0, import_sprotty.configureModelElement)(context, "node:outport", import_sprotty.GNode, import_sprotty.CircularNodeView);
@@ -58563,7 +58563,8 @@ Trying to resolve bindings for "${k2(e3.serviceIdentifier)}"`), new Error(s4);
       init_sdvml_diagram_module();
       SDVMLStarter = class extends import_vscode_integration_webview.GLSPStarter {
         createContainer(...containerConfiguration) {
-          return initializesdvmlDiagramContainer(new Pt(), ...containerConfiguration);
+          let container = initializesdvmlDiagramContainer(new Pt(), ...containerConfiguration);
+          return container;
         }
       };
     }

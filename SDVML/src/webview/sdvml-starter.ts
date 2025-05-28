@@ -8,7 +8,8 @@ import { initializesdvmlDiagramContainer } from '../extension/diagram/sdvml-diag
 
 class SDVMLStarter extends GLSPStarter {
 	createContainer(...containerConfiguration: ContainerConfiguration): Container {
-		return initializesdvmlDiagramContainer(new Container(), ...containerConfiguration)
+		let container = initializesdvmlDiagramContainer(new Container(), ...containerConfiguration)
+		return container
 	}
 }
 

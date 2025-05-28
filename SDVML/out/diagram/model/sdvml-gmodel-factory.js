@@ -19,9 +19,16 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
         this.modelState.index.indexsdvml(sdvml);
         const sensorSigNodes = [...sdvml.vss.sensorSignals.flatMap((ssn) => this.generateSensorNode(ssn))];
         const actuatorSigNodes = [...sdvml.vss.actuatorSignals.flatMap((asn) => this.generateActuatorNode(asn))];
-        const vssBuilder = GNode.builder().type('node:vss').id(sdvml.vss.id).layout('vbox').addLayoutOption("hAlign", "center").addLayoutOption("minWidth", "700").position({ x: 0, y: 0 });
+        const vssBuilder = GNode.builder().type('node:vssnode').id(sdvml.vss.id)
+            .layout('hbox').position({ x: 0, y: 300 })
+            .addCssClass("vssnode");
         vssBuilder.addChildren(sensorSigNodes).addChildren(actuatorSigNodes);
-        vssBuilder.size(500, 100);
+        vssBuilder.addChildren(GNode.builder().addChildren(GLabel.builder()
+            .text("VSS")
+            .id(`VSS_label`)
+            .addCssClass("label")
+            .build()).build());
+        vssBuilder.size(700, 100);
         const vssNode = vssBuilder.build();
         const compNodes = [...sdvml.components.flatMap((comp) => this.generateComponentNode(comp))];
         // console.error("test elem ID ")
@@ -31,8 +38,16 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
         const newRoot = GGraph.builder() //
             .id('sdvml')
             .addChildren(vssNode).addChildren(compNodes)
+            .addLayoutOption("elk.hierarchyHandling", "INCLUDE_CHILDREN")
+            .addLayoutOption("elk.partitioning.activate", false)
+            .addLayoutOption("elk.edgeRouting", "POLYLINE")
+            .addLayoutOption("elk.layered.mergeEdges", false)
+            .addLayoutOption("elk.layered.spacing.nodeNodeBetweenLayers", 50)
+            .addLayoutOption("elk.spacing.nodeNode", 50)
+            .addLayoutOption("elk.spacing.edgeNode", 50)
+            .addLayoutOption("elk.portConstraints", "FIXED_SIDE")
             // .addChildren(myEdge)
-            .size(500, 500)
+            // .size(500, 500)
             .build();
         // for (var c of newRoot.children){
         // 	console.error(">>>>> model children size: "+c.id+" ->"+(c as GNode).size.height+";"+(c as GNode).size.width)
@@ -42,7 +57,6 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
     }
     generateSensorNode(sensorSigNode) {
         var _a;
-        const sourceNode = sensorSigNode.parent;
         const builder = GNode.builder().type('node:sensorsignalnode').id(sensorSigNode.id).layout('vbox').position(sensorSigNode.position);
         let nodeSize = sensorSigNode.size;
         if (!nodeSize) {
@@ -55,8 +69,9 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
         builder.addLayoutOptions({ prefWidth: nodeSize.width, prefHeight: nodeSize.height, hAlign: 'center', vAlign: 'left' });
         builder
             .add(GLabel.builder()
-            .text(((_a = sourceNode === null || sourceNode === void 0 ? void 0 : sourceNode.name.toString()) !== null && _a !== void 0 ? _a : '') + ": VSS")
+            .text(((_a = sensorSigNode.name.toString()) !== null && _a !== void 0 ? _a : '') + ": VSS")
             .id(`${sensorSigNode.id}_label`)
+            .addCssClass("label")
             .build());
         builder.addCssClass('sensorsignalnode')
             .addArgs(ArgsUtil.cornerRadius(3));
@@ -66,7 +81,6 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
     }
     generateActuatorNode(actuatorSigNode) {
         var _a;
-        const sourceNode = actuatorSigNode.parent;
         const builder = GNode.builder().type("node:actuatorsignalnode").id(actuatorSigNode.id).layout('vbox').position(actuatorSigNode.position);
         let nodeSize = actuatorSigNode.size;
         // console.error("nodeSize="+nodeSize?.height)
@@ -80,8 +94,9 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
         builder.addLayoutOptions({ prefWidth: nodeSize.width, prefHeight: nodeSize.height, hAlign: 'center', vAlign: 'right' });
         builder
             .add(GLabel.builder()
-            .text(((_a = sourceNode === null || sourceNode === void 0 ? void 0 : sourceNode.name.toString()) !== null && _a !== void 0 ? _a : '') + ": VSS")
+            .text(((_a = actuatorSigNode.name.toString()) !== null && _a !== void 0 ? _a : '') + ": VSS")
             .id(`${actuatorSigNode.id}_label`)
+            .addCssClass("label")
             .build());
         builder.addCssClass('actuatorsignalnode');
         const res = builder.build();
@@ -90,29 +105,37 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
     }
     generateComponentNode(compNode) {
         var _a;
-        const sourceNode = compNode.parent;
-        const builder = GNode.builder().type('node:componentnode').id(compNode.id).layout('vbox').position(compNode.position);
+        const builder = GNode.builder()
+            .type('node:componentnode')
+            .id(compNode.id)
+            .layout('hbox')
+            .addLayoutOption("elk.portConstraints", "FIXED_SIDE")
+            .position(compNode.position);
         let nodeSize = compNode.size;
         if (!nodeSize) {
             nodeSize = {
                 width: 150,
-                height: 80,
+                height: 30,
             };
         }
         builder.size(nodeSize);
         builder.addLayoutOptions({ prefWidth: nodeSize.width, prefHeight: nodeSize.height, hAlign: 'center', vAlign: 'center' });
+        builder.addLayoutOption("elk.portConstraints", "FIXED_SIDE");
         builder
             .add(GLabel.builder()
-            .text(((_a = sourceNode === null || sourceNode === void 0 ? void 0 : sourceNode.name.toString()) !== null && _a !== void 0 ? _a : '') + ": Comp")
+            .text(((_a = compNode.name.toString()) !== null && _a !== void 0 ? _a : '') + ": Comp")
             .id(`${compNode.id}_label`)
+            .addCssClass("label")
             .build());
         builder.addCssClass('componentnode');
         let subNameToPortNode = new Map();
         for (let sub of compNode.subscribers) {
+            console.error(">>>> id " + sub.id);
             const inPort = GPort.builder()
-                .id(compNode.name + '_' + sub.name) // Unique ID, perhaps derived from parent node ID
+                .id("port" + sub.id) // Unique ID, perhaps derived from parent node ID
                 .type('node:inport')
-                .size(10, 10) // Example: 10x10px square port
+                .addLayoutOption('port.side', "EAST")
+                .size(10, 10)
                 .addCssClass('inport')
                 .build();
             subNameToPortNode.set(sub.name, inPort);
@@ -121,10 +144,11 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
         let pubNameToPortNode = new Map();
         for (let pub of compNode.publishers) {
             const outPort = GPort.builder()
-                .id(compNode.name + '_' + pub.name) // Unique ID, perhaps derived from parent node ID
+                .id("port" + pub.id) // Unique ID, perhaps derived from parent node ID
                 .type('node:outport')
                 .size(10, 10) // Example: 10x10px square port
                 .addCssClass('outport')
+                .addLayoutOption('port.side', "EAST")
                 .build();
             pubNameToPortNode.set(pub.name, outPort);
             builder.addChildren(outPort);
@@ -135,7 +159,6 @@ let sdvmlGModelFactory = class sdvmlGModelFactory {
                 .type('edge:pushsub') // Or another edge type
                 .source(this.elementNameToNode.get(sub.name)) // Connects from the output port
                 .target(subNameToPortNode.get(sub.name)) // Connects to another node's input port
-                .addRoutingPoint(0, 100)
                 .addCssClass('pushsub')
                 .addCssClass('sprotty-edge')
                 .addCssClass('arrow')
@@ -168,7 +191,7 @@ sdvmlGModelFactory = __decorate([
     injectable()
 ], sdvmlGModelFactory);
 export { sdvmlGModelFactory };
-// // Define a replacer function for safe JSON.stringify
+// Define a replacer function for safe JSON.stringify
 // function getCircularReplacer() {
 //   const seen = new WeakSet();
 //   return (key: string, value: any) => {

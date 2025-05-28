@@ -6,7 +6,10 @@ import {
   GModelElementConstructor,
   ServerLayoutKind,
   ShapeTypeHint,
-  EdgeTypeHint
+  EdgeTypeHint,
+  GEdge,
+  GPort,
+  GNode
 } from "@eclipse-glsp/server";
 import { injectable } from "inversify";
 
@@ -14,10 +17,26 @@ import { injectable } from "inversify";
 export class sdvmlDiagramConfiguration implements DiagramConfiguration {
   layoutKind = ServerLayoutKind.AUTOMATIC;
   needsClientLayout = true;
+  needsServerLayout = true;
   animatedUpdate = true;
 
   get typeMapping(): Map<string, GModelElementConstructor<GModelElement>> {
     const defaultMappings = getDefaultMapping();
+
+// Layout Model types
+        defaultMappings.set("edge:pushpub", GEdge);
+        // mappings.put(ModelTypes.COMP_HEADER, GraphPackage.Literals.GCOMPARTMENT);
+        defaultMappings.set("node:inport", GPort);
+        defaultMappings.set("node:outport", GPort);
+
+        // BPMN Types
+        defaultMappings.set("node:sensorsignalnode", GNode);
+        defaultMappings.set("node:actuatorsignalnode", GNode);
+        defaultMappings.set("node:componentnode", GNode);
+        defaultMappings.set("node:vssnode", GNode);
+
+
+
     return defaultMappings;
   }
 
@@ -51,11 +70,34 @@ export class sdvmlDiagramConfiguration implements DiagramConfiguration {
         repositionable: true,
         resizable: true,
       },
+      {
+        elementTypeId: 'node:outport',
+        deletable: true,
+        reparentable: false,
+        repositionable: true,
+        resizable: true,
+      },
+      {
+        elementTypeId: 'node:vssnode',
+        deletable: true,
+        reparentable: false,
+        repositionable: true,
+        resizable: true,
+      },
     ];
   }
 
   get edgeTypeHints(): EdgeTypeHint[] {
-		return []
+		return [
+      {
+        routable: true,
+        elementTypeId: "edge:pushpub",
+        repositionable: false,
+        deletable: false,
+        sourceElementTypeIds:["node:sensorsignalnode","node:outport"],
+        targetElementTypeIds:["node:actuatorsignalnode","node:inport"]
+      }
+    ]
 	}
 
   

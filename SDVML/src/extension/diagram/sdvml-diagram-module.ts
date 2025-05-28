@@ -49,7 +49,7 @@ const sdvmlDiagramModule = new ContainerModule((bind: any, unbind: any, isBound:
 	
 	configureModelElement(context,DefaultTypes.ROUTING_POINT, GRoutingHandle, GRoutingHandleView);
 	configureModelElement(context, "edge:pushsub", GEdge, PolylineEdgeView);
-	configureModelElement(context, 'node:vss', GNode, RectangularNodeView)
+	configureModelElement(context, 'node:vssnode', GNode, RectangularNodeView)
 	configureModelElement(context, 'node:componentnode', GNode, RectangularNodeView)
 	configureModelElement(context, 'node:inport', GNode, RectangularNodeView)
 	configureModelElement(context, 'node:outport', GNode, CircularNodeView)
@@ -60,5 +60,9 @@ const sdvmlDiagramModule = new ContainerModule((bind: any, unbind: any, isBound:
 })
 
 export function initializesdvmlDiagramContainer(container: Container, ...containerConfiguration: ContainerConfiguration): Container {
+	    // overrideViewerOptions(container,{
+		// 	needsClientLayout: true,
+		// 	needsServerLayout: true
+		// })
 	return initializeDiagramContainer(container, sdvmlDiagramModule, ...containerConfiguration)
 }

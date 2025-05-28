@@ -5,7 +5,8 @@ import { Container } from 'inversify';
 import { initializesdvmlDiagramContainer } from '../extension/diagram/sdvml-diagram-module';
 class SDVMLStarter extends GLSPStarter {
     createContainer(...containerConfiguration) {
-        return initializesdvmlDiagramContainer(new Container(), ...containerConfiguration);
+        let container = initializesdvmlDiagramContainer(new Container(), ...containerConfiguration);
+        return container;
     }
 }
 export function launchSDVMLDiagram() {
