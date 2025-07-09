@@ -34,6 +34,8 @@ import { SensorSignalNodeView } from '../../diagram/view/CustomNodeViews.js'
 // import { CustomEdgeView } from '../../diagram/view/CustomEdgeView.js'
 
 import "../../diagram/view/nodeStyles.css";
+import { LayoutEngine } from '@eclipse-glsp/server'
+import { GlspElkLayoutEngine } from '@eclipse-glsp/layout-elk'
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 const sdvmlDiagramModule = new ContainerModule((bind: any, unbind: any, isBound: any, rebind: any) => {
@@ -42,6 +44,7 @@ const sdvmlDiagramModule = new ContainerModule((bind: any, unbind: any, isBound:
 	const context = { bind, unbind, isBound, rebind }
 	configureDefaultModelElements(context)
 
+	bind(LayoutEngine).toProvider(GlspElkLayoutEngine)
 	bind(ReloadModelActionHandler).toSelf().inSingletonScope()
 	configureActionHandler(context, ReloadModelAction.KIND, ReloadModelActionHandler)
 	configureActionHandler(context, SetModelAction.KIND, ReloadModelActionHandler)

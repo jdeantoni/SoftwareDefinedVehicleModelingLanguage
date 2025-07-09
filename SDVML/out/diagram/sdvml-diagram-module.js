@@ -13,6 +13,7 @@ import { sdvmlGModelFactory } from './model/sdvml-gmodel-factory.js';
 import { sdvmlModelIndex } from './model/sdvml-diagram-model-index.js';
 import { sdvmlApplyLabelEditHandler } from './handler/sdvml-apply-label-edit-handler.js';
 import { NodeChangeBoundsHandler } from './handler/sdvml-change-bounds-handlers.js';
+// import { ElkFactory, GlspElkLayoutEngine, LayoutConfigurator } from '@eclipse-glsp/layout-elk'
 let SdvmlDiagramModule = class SdvmlDiagramModule extends DiagramModule {
     constructor() {
         super(...arguments);
@@ -30,6 +31,9 @@ let SdvmlDiagramModule = class SdvmlDiagramModule extends DiagramModule {
     bindGModelFactory() {
         return sdvmlGModelFactory;
     }
+    // protected override bindLayoutEngine(): BindingTarget<LayoutEngine> | undefined {
+    // 	return new GlspElkLayoutEngine(new ElkFactory(), undefined,new LayoutConfigurator(),ModelState);
+    // }
     configureActionHandlers(binding) {
         super.configureActionHandlers(binding);
     }
@@ -41,6 +45,11 @@ let SdvmlDiagramModule = class SdvmlDiagramModule extends DiagramModule {
     bindGModelIndex() {
         this.context.bind(sdvmlModelIndex).toSelf().inSingletonScope();
         return { service: sdvmlModelIndex };
+    }
+    configure(bind, unbind, isBound, rebind) {
+        super.configure(bind, unbind, isBound, rebind);
+        // Register the class with the container
+        // bind(GlspElkLayoutEngine).toSelf().inSingletonScope();
     }
 };
 SdvmlDiagramModule = __decorate([

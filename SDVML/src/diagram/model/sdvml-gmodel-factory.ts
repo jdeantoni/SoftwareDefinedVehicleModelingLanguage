@@ -17,7 +17,7 @@ export class sdvmlGModelFactory implements GModelFactory {
 		const sensorSigNodes = [...sdvml.vss.sensorSignals.flatMap((ssn) => this.generateSensorNode(ssn))]
 		const actuatorSigNodes = [...sdvml.vss.actuatorSignals.flatMap((asn) => this.generateActuatorNode(asn))]
 		const vssBuilder = GNode.builder().type('node:vssnode').id(sdvml.vss.id)
-							    .layout('hbox').position({x:0,y:300})
+							    .layout('hbox')//.position({x:0,y:300})
 								.addCssClass("vssnode")
 		vssBuilder.addChildren(sensorSigNodes).addChildren(actuatorSigNodes)
 		vssBuilder.addChildren(GNode.builder().addChildren(GLabel.builder()
@@ -29,22 +29,18 @@ export class sdvmlGModelFactory implements GModelFactory {
 		const vssNode = vssBuilder.build()
 
 		const compNodes = [...sdvml.components.flatMap((comp) => this.generateComponentNode(comp))]
-		// console.error("test elem ID ")
-		// this.elementNameToId.forEach((value, key) => {
-		// 	console.error(`${key}: ${value}`);
-		// });
-		
+
 		
 		const newRoot = GGraph.builder() //
 			.id('sdvml')
 			.addChildren(vssNode).addChildren(compNodes)
-			.addLayoutOption("elk.hierarchyHandling", "INCLUDE_CHILDREN")
-			.addLayoutOption("elk.partitioning.activate", false)
-			.addLayoutOption("elk.edgeRouting", "POLYLINE")
-			.addLayoutOption("elk.layered.mergeEdges", false)
-			.addLayoutOption("elk.layered.spacing.nodeNodeBetweenLayers", 50)
-			.addLayoutOption("elk.spacing.nodeNode", 50)
-			.addLayoutOption("elk.spacing.edgeNode", 50)
+			//.addLayoutOption("elk.hierarchyHandling", "INCLUDE_CHILDREN")
+			//.addLayoutOption("elk.partitioning.activate", false)
+			.addLayoutOption("elk.edgeRouting", "ORTHOGONAL")
+			.addLayoutOption("elk.layered.mergeEdges", "false")
+			.addLayoutOption("elk.layered.spacing.nodeNodeBetweenLayers", "150")
+			.addLayoutOption("elk.spacing.nodeNode", "150")
+			.addLayoutOption("elk.spacing.edgeNode", "150")
 			.addLayoutOption("elk.portConstraints", "FIXED_SIDE")
 
 			// .addChildren(myEdge)
@@ -58,7 +54,7 @@ export class sdvmlGModelFactory implements GModelFactory {
 	}
 
 	protected generateSensorNode(sensorSigNode: SensorSignalNode): GNode {
-		const builder = GNode.builder().type('node:sensorsignalnode').id(sensorSigNode.id).layout('vbox').position(sensorSigNode.position)
+		const builder = GNode.builder().type('node:sensorsignalnode').id(sensorSigNode.id).layout('vbox')//.position(sensorSigNode.position)
 		let nodeSize = sensorSigNode.size
 
 		if (!nodeSize) {
@@ -88,7 +84,7 @@ export class sdvmlGModelFactory implements GModelFactory {
 
 	protected generateActuatorNode(actuatorSigNode: ActuatorSignalNode): GNode {
 
-		const builder = GNode.builder().type("node:actuatorsignalnode").id(actuatorSigNode.id).layout('vbox').position(actuatorSigNode.position)
+		const builder = GNode.builder().type("node:actuatorsignalnode").id(actuatorSigNode.id).layout('vbox')//.position(actuatorSigNode.position)
 		let nodeSize = actuatorSigNode.size
 		// console.error("nodeSize="+nodeSize?.height)
 		if (!nodeSize) {
@@ -124,10 +120,8 @@ export class sdvmlGModelFactory implements GModelFactory {
 							.layout('hbox')
 							.addLayoutOption("elk.portConstraints", "FIXED_SIDE")
 							.addLayoutOption("elk.direction", "RIGHT")
-							.addLayoutOption("elk.portAlignment.east", "CENTER")
-							.addLayoutOption("elk.algorithm", "org.eclipse.elk.layered")
-							.addLayoutOption("elk.spacing.port", 10)
-							.position(compNode.position)
+							.addLayoutOption("elk.spacing.portPort", 20)
+							//.position(compNode.position)
 		let nodeSize = compNode.size
 
 		if (!nodeSize) {
@@ -151,18 +145,22 @@ export class sdvmlGModelFactory implements GModelFactory {
 		builder.addCssClass('componentnode');
 
 		let subNameToPortNode: Map<string,GPort> = new Map()
+		
 		for (let sub of compNode.subscribers){
-			// console.error(">>>> id "+sub.id)
+			// console.error(">>>> compPos "+compNode.position.x+";"+compNode.position.y)
 			const inPort: GPort = GPort.builder()
 				.id("port"+sub.id) // Unique ID, perhaps derived from parent node ID
 				.type('node:inport')
-				.addLayoutOption('port.side', "EAST")
-				.addLayoutOption("hAlign", "right")
+				.addLayoutOption('port.side', "WEST")
+				// .addLayoutOption("hAlign", "left")
 				.size(10, 10)         
+				// .position(compNode.position.x+compNode.size.width-1, compNode.position.y)
 				.addCssClass('inport')
 				.build();
-			subNameToPortNode.set(sub.name,inPort)
+			subNameToPortNode.set(sub.topic.name,inPort)
 			builder.add(inPort)
+			// console.error(">>>> inpotPos "+inPort.id+" \n\t"+inPort.position.x+";"+inPort.position.y)
+
 		}
 
 		let pubNameToPortNode: Map<string,GPort> = new Map()
@@ -174,17 +172,17 @@ export class sdvmlGModelFactory implements GModelFactory {
 				.addCssClass('outport')
 				.addLayoutOption('port.side', "EAST")
 				.build();
-			pubNameToPortNode.set(pub.name,outPort)
+			pubNameToPortNode.set(pub.topic.name,outPort)
 			builder.addChildren(outPort)
 		}
 
 
 		for (let sub of compNode.subscribers){
 			const myEdge = GEdge.builder()
-				.id('edge_'+sub.name)
+				.id('edge_'+sub.topic.name)
 				.type('edge:pushsub') // Or another edge type
-				.source(this.elementNameToNode.get(sub.name)) // Connects from the output port
-				.target(subNameToPortNode.get(sub.name)) // Connects to another node's input port
+				.source(this.elementNameToNode.get(sub.topic.name)) // Connects from the output port
+				.target(subNameToPortNode.get(sub.topic.name)) // Connects to another node's input port
 				.addCssClass('pushsub')
 				.addCssClass('sprotty-edge')
 				.addCssClass('arrow')
@@ -194,10 +192,10 @@ export class sdvmlGModelFactory implements GModelFactory {
 
 		for (let pub of compNode.publishers){
 			const myEdge = GEdge.builder()
-				.id('edge_'+pub.name)
+				.id('edge_'+pub.topic.name)
 				.type('edge:pushsub') // Or another edge type
-				.source(pubNameToPortNode.get(pub.name)) // Connects from the output port
-				.target(this.elementNameToNode.get(pub.name)) // Connects to another node's input port
+				.source(pubNameToPortNode.get(pub.topic.name)) // Connects from the output port
+				.target(this.elementNameToNode.get(pub.topic.name)) // Connects to another node's input port
 				.addCssClass('pushsub')
 				.addCssClass('sprotty-edge')
 				.addCssClass('arrow')

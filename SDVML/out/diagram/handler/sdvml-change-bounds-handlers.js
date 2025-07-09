@@ -23,7 +23,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { ChangeBoundsOperation, GNode, JsonOperationHandler } from '@eclipse-glsp/server';
+import { ChangeBoundsOperation, GNode, GPort, JsonOperationHandler } from '@eclipse-glsp/server';
 import { inject, injectable } from 'inversify';
 import { SDVMLModelState } from '../model/sdvml-model-state';
 let NodeChangeBoundsHandler = class NodeChangeBoundsHandler extends JsonOperationHandler {
@@ -39,14 +39,16 @@ let NodeChangeBoundsHandler = class NodeChangeBoundsHandler extends JsonOperatio
     changeElementBounds(elementId, newSize, newPosition) {
         // console.error(">> change bounds:" + elementId+"  "+newPosition)
         const index = this.modelState.index;
-        const node = index.findByClass(elementId, GNode);
         // console.error(">>>> node: "+node.id)
         let nodeShape = undefined;
         if (elementId.startsWith("port")) {
-            // console.error(">>>> port change bound")
-            nodeShape = node ? index.findNode("port" + node.id) : undefined;
+            const node = index.findByClass(elementId, GPort);
+            // console.error(">>>> port change bound (node:"+node)
+            // console.error("index:"+index.allIds())
+            nodeShape = node ? index.findNode(elementId) : undefined;
         }
         else {
+            const node = index.findByClass(elementId, GNode);
             // console.error(">>>> node change bound")
             nodeShape = node ? index.findNode(node.id) : undefined;
         }

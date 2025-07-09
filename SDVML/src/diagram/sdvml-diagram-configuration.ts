@@ -23,7 +23,6 @@ export class sdvmlDiagramConfiguration implements DiagramConfiguration {
   needsServerLayout = true;
   animatedUpdate = true;
 
-
   get typeMapping(): Map<string, GModelElementConstructor<GModelElement>> {
     const defaultMappings = getDefaultMapping();
 
@@ -33,9 +32,8 @@ export class sdvmlDiagramConfiguration implements DiagramConfiguration {
         defaultMappings.set("node:inport", GPort);
         defaultMappings.set("node:outport", GPort);
 
-        // BPMN Types
+        // SDVML Types
         defaultMappings.set("node:sensorsignalnode", GNode);
-        defaultMappings.set("container", GNode);
         defaultMappings.set("node:actuatorsignalnode", GNode);
         defaultMappings.set("node:componentnode", GNode);
         defaultMappings.set("node:vssnode", GNode);

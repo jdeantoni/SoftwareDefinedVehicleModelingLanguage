@@ -33,6 +33,8 @@ export class SensorSignalNode extends SDVMLNode {
 export function isSensorSignalNode(element) {
     return element instanceof SensorSignalNode || false;
 }
+export class PortNode extends SDVMLNode {
+}
 export class ComponentNode extends SDVMLNode {
 }
 export function isComponentNode(element) {
@@ -135,8 +137,26 @@ function createComponentNodes(rootNode, existingDiagram) {
     res.name = rootNode.name;
     res.position = { x: 300, y: 10 };
     res.size = { height: 30, width: 100 };
-    res.subscribers = sensorSignalNodes.filter(s => rootNode.subscribers.find(sn => sn.name == s.name) != undefined);
-    res.publishers = actuatorSignalNodes.filter(s => rootNode.publishers.find(sn => sn.name == s.name) != undefined);
+    res.subscribers = [];
+    for (let rp of rootNode.subscribers) {
+        let p = new PortNode();
+        p.topic = sensorSignalNodes.find(s => s.name == rp.name);
+        if (p.topic == undefined) {
+            console.error("sensorSig not found for " + rp.name); //+" in "+sensorSignalNodes.map(ssn => ssn.name))
+        }
+        p.id = res.id + "_" + p.topic.id;
+        res.subscribers.push(p);
+    }
+    res.publishers = [];
+    for (let rp of rootNode.publishers) {
+        let p = new PortNode();
+        p.topic = actuatorSignalNodes.find(s => s.name == rp.name);
+        if (p.topic == undefined) {
+            console.error("actuatorSig not found for " + rp.name);
+        }
+        p.id = res.id + "_" + p.topic.id;
+        res.publishers.push(p);
+    }
     return res;
 }
 //# sourceMappingURL=sdvml-diagram-model.js.map

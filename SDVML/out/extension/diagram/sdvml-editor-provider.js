@@ -57,6 +57,7 @@ export default class SDVMLEditorProvider extends GlspEditorProvider {
 
                  </head>
                  <body>
+				 SDVML
                      <div id="${clientId}_container" style="height: 100%;"></div>
                      <script src="${webviewScriptSourceUri}"></script>
                  </body>
