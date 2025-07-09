@@ -16,6 +16,22 @@ import {
     registerValidationChecks,
 } from './sdvml-validator.js';
 
+// NEW IMPORTS FOR SPROTTY
+import { LangiumSprottyServices, SprottyDefaultModule, SprottyDiagramServices, SprottySharedServices, SprottySharedModule, LangiumSprottySharedServices} from 'langium-sprotty';
+import { SdvmlDiagramGenerator } from '../diagram/sdvml-diagram-generator.js'; // Adjust path if you put it in a 'diagram' folder
+
+
+/**
+ * The module that adds Sprotty services to the SDVML language.
+ */
+
+
+export const SdvmlSprottyModule: Module<PartialLangiumServices& LangiumSprottyServices & SdvmlAddedServices & SprottySharedServices, SprottyDiagramServices > = { // Use PartialLangiumServices here
+    diagram: {
+        DiagramGenerator: (services) => new SdvmlDiagramGenerator(services)
+    }
+};
+
 /**
  * Declaration of custom services - add your own service classes here.
  */
@@ -29,7 +45,7 @@ export type SdvmlAddedServices = {
  * Union of Langium default services and your custom services - use this as constructor parameter
  * of custom service classes.
  */
-export type SdvmlServices = LangiumServices & SdvmlAddedServices;
+export type SdvmlServices = LangiumServices;
 
 /**
  * Dependency injection module that overrides Langium default services and contributes the
@@ -61,24 +77,51 @@ export const SdvmlModule: Module<
  * @returns An object wrapping the shared services and the language-specific services
  */
 export function createSdvmlServices(context: DefaultSharedModuleContext): {
-    shared: LangiumSharedServices;
+    shared: LangiumSprottySharedServices;
     Sdvml: SdvmlServices;
 } {
     const shared = inject(
         createDefaultSharedModule(context),
-        SdvmlGeneratedSharedModule
-    );
-    const Sdvml = inject(
-        createDefaultModule({ shared }),
-        SdvmlGeneratedModule,
+        SdvmlGeneratedSharedModule,
+        SprottySharedModule
+        );
+    
+
+const Sdvml = inject(
+        createDefaultModule({ shared }), // Pass the *instance* of shared services here
+        SprottyDefaultModule, // <-- Place this first to extend LangiumServices with 'diagram'
+        SdvmlSprottyModule,   // Your custom diagram generator binding (adds to 'diagram')
+        SdvmlGeneratedModule, // Your core generated language services
         SdvmlModule
-    );
+    ); 
+
+
+    // const Sdvml = inject(
+    //     createDefaultModule({ shared }),
+    //     SdvmlGeneratedModule,
+    //     SdvmlModule
+    // );
+
+//    // Combine the default Sprotty module with your custom Sprotty module
+//     const sdvmlSprotty = createDefaultModule({
+//         shared,
+//         ...SprottyDefaultModule, // Provides core Sprotty Langium services
+//         ...SdvmlSprottyModule    // Provides your custom diagram generator binding
+//     });
+
     shared.ServiceRegistry.register(Sdvml);
+
+
     registerValidationChecks(Sdvml);
-    if (!context.connection) {
-        // We don't run inside a language server
-        // Therefore, initialize the configuration provider instantly
-        shared.workspace.ConfigurationProvider.initialized({});
-    }
     return { shared, Sdvml };
+
+
+    // shared.ServiceRegistry.register(Sdvml);
+    // registerValidationChecks(Sdvml);
+    // if (!context.connection) {
+    //     // We don't run inside a language server
+    //     // Therefore, initialize the configuration provider instantly
+    //     shared.workspace.ConfigurationProvider.initialized({});
+    // }
+    // return { shared, Sdvml };
 }
