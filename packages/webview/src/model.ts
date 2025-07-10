@@ -1,5 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2020 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -28,7 +29,7 @@ export class SdvmlEdge extends SEdgeImpl {
 export class SdvmlEdgeLabel extends SLabelImpl {
     override edgePlacement = <EdgePlacement> {
         rotate: true,
-        position: 0.6
+        position: 0
     };
 }
 

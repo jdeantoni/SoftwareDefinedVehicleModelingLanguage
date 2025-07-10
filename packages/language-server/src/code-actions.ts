@@ -1,5 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2023 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -46,7 +47,7 @@ export class SdvmlCodeActionProvider implements CodeActionProvider {
                 edit: createInsertWorkspaceEdit(
                     document.uri,
                     endOfDocument,
-                    '\n' + 'Signal '+ getNewName('sig', sdvmlModel.signals.map(s => s.name))
+                    '\n' + 'Signal '+ getNewName('sig', sdvmlModel.vss.signals.map(s => s.name))
                 )
             });
         }

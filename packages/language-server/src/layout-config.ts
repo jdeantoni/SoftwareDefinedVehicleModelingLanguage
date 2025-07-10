@@ -1,5 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2021 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -22,7 +23,7 @@ export class SdvmlLayoutConfigurator extends DefaultLayoutConfigurator {
 
     protected override graphOptions(sgraph: SGraph, index: SModelIndex): LayoutOptions {
         return {
-            'org.eclipse.elk.direction': 'DOWN',
+            'org.eclipse.elk.direction': 'RIGHT',
             'org.eclipse.elk.spacing.nodeNode': '30.0',
             'org.eclipse.elk.layered.spacing.edgeNodeBetweenLayers': '30.0'
         };

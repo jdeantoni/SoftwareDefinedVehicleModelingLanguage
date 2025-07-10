@@ -1,5 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2021 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -16,7 +17,7 @@
 
 import { GeneratorContext, LangiumDiagramGenerator } from 'langium-sprotty';
 import { /*SEdge,*/ EdgeLayoutable, SEdge, SLabel, SModelRoot, SNode, SPort/*, EdgeLayoutable*/ } from 'sprotty-protocol';
-import { Signal, Component, Model, isSensor } from './generated/ast.js';
+import { Signal, Component, Model, isSensor, VSS } from './generated/ast.js';
 
 export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
 
@@ -28,8 +29,8 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
             id: sdvmlModel.name ?? 'root',
             children: [
                 ...sdvmlModel.components.map(c => this.generateComponent(c, args)),
-                ...sdvmlModel.signals.map(s => this.generateSignal(s, args)),
-                 ...sdvmlModel.components.flatMap(c => this.generateEdge(c, args))
+                ...sdvmlModel.vss.signals.flatMap(s => this.generateSignal(s, args)),
+                ...sdvmlModel.components.flatMap(c => this.generateEdge(c, args))
             ]
         };
         this.traceProvider.trace(graph, sdvmlModel);
@@ -58,7 +59,7 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
             }
         };
         for (let pub of comp.publishers){
-            const pubId = idCache.uniqueId(pub.name, pub);
+            const pubId = idCache.uniqueId((pub.name != undefined)? pub.name : (pub.sigRef != undefined)&&(pub.sigRef.ref != undefined)? pub.sigRef?.ref?.name:"undefined", pub);
             node.children.push(
                 <SPort>{
                     type: 'port',
@@ -76,7 +77,7 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
         }
 
         for (let sub of comp.subscribers){
-            const subId = idCache.uniqueId(sub.name, sub);
+            const subId = idCache.uniqueId((sub.name != undefined)? sub.name : (sub.sigRef != undefined)&&(sub.sigRef.ref != undefined)? sub.sigRef?.ref?.name:"undefined", sub);
             node.children.push(
                 <SPort>{
                     type: 'port',
@@ -98,12 +99,49 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
         return node;
     }
 
+
+ protected generateVSS(vss: VSS, ctx: GeneratorContext<Model>): SNode {
+        const { idCache } = ctx;
+        const nodeId = idCache.uniqueId("VSS", vss);
+        const node = <SNode>{
+            type: 'node',
+            id: nodeId,
+            children: [
+                <SLabel>{
+                    type: 'label',
+                    id: idCache.uniqueId(nodeId + '.label'),
+                    text: "VSS"
+                }
+            ] as (SLabel | SNode)[],
+            cssClasses: ['.vss-node'],
+            minWidth : 1000,
+            resizeContainer: true,
+            layout: 'stack',
+            layoutOptions: {
+                paddingTop: 100.0,
+                paddingBottom: 100.0,
+                paddingLeft: 100.0,
+                paddingRight: 100.0
+            }
+        };
+        for (let sig of vss.signals){
+            node.children?.push( this.generateSignal(sig,ctx))
+        }
+
+
+
+        this.traceProvider.trace(node, vss);
+        this.markerProvider.addDiagnosticMarker(node, vss, ctx);
+        return node;
+    }
+
+
      protected generateSignal(sig: Signal, ctx: GeneratorContext<Model>): SNode {
         const { idCache } = ctx;
-        const nodeId = idCache.uniqueId(sig.name, sig);
-        const sigType = isSensor(sig)? "sensor-port" : "actuator-port";
+        const nodeId = idCache.uniqueId(sig.name);
+        const sigType = isSensor(sig)? "output" : "input";
         const node = {
-            type: 'node',
+            type: 'node:vss-node',
             id: nodeId,
             children: [
                 <SLabel>{
@@ -112,12 +150,13 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                     text: sig.name
                 },
                 <SPort>{
-                    type: sigType,
-                    id: idCache.uniqueId(nodeId + '.port'),
-                    direction: "vss"
+                    type: "port",
+                    id: idCache.uniqueId(nodeId + '_port',sig),
+                    direction: sigType
                 }
             ],
             layout: 'stack',
+            cssClasses : ["vss-node"],
             layoutOptions: {
                 paddingTop: 10.0,
                 paddingBottom: 10.0,
@@ -136,9 +175,10 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
         for (let sub of comp.subscribers){
             const targetId = idCache.getId(sub);
 
-            const sourceSig = comp.$container.signals.filter(s => s.name == sub.name)[0]
+            const sourceSig = (sub.sigName != undefined)
+                                    ? comp.$container.components.flatMap(c => c.publishers).filter(p => p.name == sub.sigName)[0]
+                                    : sub.sigRef?.ref
             const sourceId = idCache.getId(sourceSig);
-            console.error(`~~~~ sourceId=${sourceId}     targetId=${targetId}`)
             const edgeId = idCache.uniqueId(`${sourceId}_to_${targetId}`, undefined);
             const edge = {
                 type: 'edge',
@@ -149,7 +189,7 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                     <SLabel & EdgeLayoutable>{
                         type: 'label:xref',
                         id: idCache.uniqueId(edgeId + '.label'),
-                        text: sub.name
+                        text: (sub.sigName != undefined)? sub.sigName : sub.sigRef?.ref?.name
                     }
                 ]
             };
@@ -161,9 +201,10 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
         for (let pub of comp.publishers){
             const sourceId = idCache.getId(pub);
 
-            const targetSig = comp.$container.signals.filter(s => s.name == pub.name)[0]
+            const targetSig = (pub.sigName != undefined)
+                                    ? comp.$container.components.flatMap(c => c.subscribers).filter(s => s.name == pub.sigName)[0]
+                                    : pub.sigRef?.ref
             const targetId = idCache.getId(targetSig);
-            console.error(`~~~~ sourceId=${sourceId}     targetId=${targetId}`)
             const edgeId = idCache.uniqueId(`${sourceId}_to_${targetId}`, undefined);
             const edge = {
                 type: 'edge',

@@ -9,7 +9,7 @@
 
 .sprotty-label {
     fill: var(--vscode-button-foreground);
-    stroke-width: 10;
+    stroke-width: 0;
 }
 
 .sprotty-button {
@@ -56,4 +56,13 @@
 .sprotty-hidden {
     width: 0px;
     height: 0px;
+}
+
+.vss-node{
+    fill: aliceblue;
+    stroke-width: 1;
+}
+
+.vss-node .sprotty-label{
+    fill:darkslategrey
 }

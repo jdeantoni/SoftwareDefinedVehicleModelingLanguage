@@ -1794,7 +1794,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.sprotty-node {
 
 .sprotty-label {
     fill: var(--vscode-button-foreground);
-    stroke-width: 10;
+    stroke-width: 0;
 }
 
 .sprotty-button {
@@ -1842,7 +1842,15 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.sprotty-node {
     width: 0px;
     height: 0px;
 }
-`, "",{"version":3,"sources":["webpack://./css/diagram.css"],"names":[],"mappings":"AAAA;IACI;AACJ;;AAEA;IACI,eAAe;IACf,gDAAgD;AACpD;;AAEA;IACI,qCAAqC;IACrC,gBAAgB;AACpB;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,SAAS;IACT,uDAAuD;IACvD,iBAAiB;AACrB;;AAEA;IACI,oDAAoD;AACxD;;AAEA;IACI,8CAA8C;IAC9C,YAAY;IACZ,aAAa;AACjB;;AAEA;IACI,aAAa;AACjB;;AAEA;IACI,uDAAuD;AAC3D;;AAEA;IACI,sDAAsD;IACtD,eAAe;AACnB;;AAEA;IACI,iBAAiB;AACrB;;AAEA;IACI,UAAU;IACV,WAAW;AACf","sourcesContent":[".sprotty-node {\n    fill: var(--vscode-button-background)\n}\n\n.sprotty-node.selected {\n    stroke-width: 2;\n    stroke: var(--vscode-button-secondaryForeground);\n}\n\n.sprotty-label {\n    fill: var(--vscode-button-foreground);\n    stroke-width: 10;\n}\n\n.sprotty-button {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge .sprotty-label {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge {\n    fill:none;\n    stroke: var(--vscode-editorActiveLineNumber-foreground);\n    stroke-width: 2px;\n}\n\n.sprotty-edge-arrow {\n    fill:var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge > .sprotty-routing-handle {\n    fill: var(--vscode-editor-selectionBackground);\n    stroke: none;\n    z-index: 1000;\n}\n\n.sprotty-edge > .sprotty-routing-handle[data-kind='line'] {\n    opacity: 0.35;\n}\n\n.sprotty-edge > .sprotty-routing-handle.selected {\n    fill: var(--vscode-editor-selectionHighlightBackground);\n}\n\n.sprotty-edge > .sprotty-routing-handle.mouseover {\n    stroke: var(--vscode-editor-symbolHighlightBackground);\n    stroke-width: 1;\n}\n\n.sprotty-edge.mouseover:not(.selected) {\n    stroke-width: 3px;\n}\n\n.sprotty-hidden {\n    width: 0px;\n    height: 0px;\n}\n"],"sourceRoot":""}]);
+
+.vss-node{
+    fill: aliceblue;
+    stroke-width: 1;
+}
+
+.vss-node .sprotty-label{
+    fill:darkslategrey
+}`, "",{"version":3,"sources":["webpack://./css/diagram.css"],"names":[],"mappings":"AAAA;IACI;AACJ;;AAEA;IACI,eAAe;IACf,gDAAgD;AACpD;;AAEA;IACI,qCAAqC;IACrC,eAAe;AACnB;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,SAAS;IACT,uDAAuD;IACvD,iBAAiB;AACrB;;AAEA;IACI,oDAAoD;AACxD;;AAEA;IACI,8CAA8C;IAC9C,YAAY;IACZ,aAAa;AACjB;;AAEA;IACI,aAAa;AACjB;;AAEA;IACI,uDAAuD;AAC3D;;AAEA;IACI,sDAAsD;IACtD,eAAe;AACnB;;AAEA;IACI,iBAAiB;AACrB;;AAEA;IACI,UAAU;IACV,WAAW;AACf;;AAEA;IACI,eAAe;IACf,eAAe;AACnB;;AAEA;IACI;AACJ","sourcesContent":[".sprotty-node {\n    fill: var(--vscode-button-background)\n}\n\n.sprotty-node.selected {\n    stroke-width: 2;\n    stroke: var(--vscode-button-secondaryForeground);\n}\n\n.sprotty-label {\n    fill: var(--vscode-button-foreground);\n    stroke-width: 0;\n}\n\n.sprotty-button {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge .sprotty-label {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge {\n    fill:none;\n    stroke: var(--vscode-editorActiveLineNumber-foreground);\n    stroke-width: 2px;\n}\n\n.sprotty-edge-arrow {\n    fill:var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge > .sprotty-routing-handle {\n    fill: var(--vscode-editor-selectionBackground);\n    stroke: none;\n    z-index: 1000;\n}\n\n.sprotty-edge > .sprotty-routing-handle[data-kind='line'] {\n    opacity: 0.35;\n}\n\n.sprotty-edge > .sprotty-routing-handle.selected {\n    fill: var(--vscode-editor-selectionHighlightBackground);\n}\n\n.sprotty-edge > .sprotty-routing-handle.mouseover {\n    stroke: var(--vscode-editor-symbolHighlightBackground);\n    stroke-width: 1;\n}\n\n.sprotty-edge.mouseover:not(.selected) {\n    stroke-width: 3px;\n}\n\n.sprotty-hidden {\n    width: 0px;\n    height: 0px;\n}\n\n.vss-node{\n    fill: aliceblue;\n    stroke-width: 1;\n}\n\n.vss-node .sprotty-label{\n    fill:darkslategrey\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -4469,7 +4477,7 @@ class Request {
     childRequests;
     target;
     requestScope;
-    constructor(serviceIdentifier, parentContext, parentRequest, 
+    constructor(serviceIdentifier, parentContext, parentRequest,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     bindings, target) {
         this.id = (0, id_1.id)();
@@ -5369,7 +5377,7 @@ class BindingWhenSyntax {
             if (request === null) {
                 return false;
             }
-            const targetIsDefault = 
+            const targetIsDefault =
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             request.target !== null &&
                 !request.target.isNamed() &&
@@ -8861,7 +8869,8 @@ function vnode(sel, data, children, text, elm) {
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2021 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -8930,7 +8939,8 @@ exports.ServerActionHandlerRegistry = ServerActionHandlerRegistry;
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2021 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -9424,7 +9434,8 @@ var ReconnectAction;
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2021 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -9680,7 +9691,8 @@ exports.DiagramServer = DiagramServer;
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2021 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -9708,7 +9720,8 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2021 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -10200,7 +10213,8 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2021 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -10468,7 +10482,8 @@ exports.ActionNotification = { method: 'ActionMessage' };
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2020 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -10511,7 +10526,8 @@ __exportStar(__webpack_require__(/*! ./handshake */ "../../node_modules/sprotty-
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2020 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -10703,15 +10719,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _css_loader_dist_cjs_js_sprotty_vscode_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../css-loader/dist/cjs.js!./sprotty-vscode.css */ "../../node_modules/css-loader/dist/cjs.js!../../node_modules/sprotty-vscode-webview/css/sprotty-vscode.css");
 
-      
-      
-      
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
+
+
+
 
 var options = {};
 
@@ -10740,7 +10756,8 @@ var update = _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMP
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2020 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -10790,7 +10807,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CodeActionContextMenuProvider = exports.PaletteMouseListener = exports.PaletteButton = exports.CodeActionPopupPaletteProvider = void 0;
 /********************************************************************************
- * Copyright (c) 2020 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -10954,7 +10972,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CodeActionProvider = void 0;
 /********************************************************************************
- * Copyright (c) 2020 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -11175,7 +11194,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.EditDiagramLocker = void 0;
 /********************************************************************************
- * Copyright (c) 2020 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -11406,7 +11426,8 @@ exports.SprottyLspEditStarter = SprottyLspEditStarter;
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2020 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -11546,7 +11567,8 @@ exports.VscodeLspEditDiagramServer = VscodeLspEditDiagramServer;
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2020 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -11607,7 +11629,8 @@ exports.VsCodeMessenger = Symbol('VsCodeMessenger');
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2018-2022 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -11710,7 +11733,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.VscodeDiagramServer = void 0;
 /********************************************************************************
- * Copyright (c) 2018-2022 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -11960,15 +11984,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _css_loader_dist_cjs_js_sprotty_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../css-loader/dist/cjs.js!./sprotty.css */ "../../node_modules/css-loader/dist/cjs.js!../../node_modules/sprotty/css/sprotty.css");
 
-      
-      
-      
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
+
+
+
 
 var options = {};
 
@@ -17302,7 +17326,8 @@ exports.VBoxLayouter = VBoxLayouter = __decorate([
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2020 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -22738,7 +22763,8 @@ exports.OpenMouseListener = OpenMouseListener;
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2021 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -23522,7 +23548,8 @@ exports.AnchorComputerRegistry = AnchorComputerRegistry = __decorate([
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2021 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -23588,7 +23615,8 @@ exports.BezierDiamondAnchor = BezierDiamondAnchor = __decorate([
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2021 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -25382,7 +25410,8 @@ exports.EdgeRouting = EdgeRouting;
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2020 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -40130,15 +40159,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _node_modules_css_loader_dist_cjs_js_diagram_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js!./diagram.css */ "../../node_modules/css-loader/dist/cjs.js!./css/diagram.css");
 
-      
-      
-      
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
+
+
+
 
 var options = {};
 
@@ -40169,7 +40198,8 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CustomRouter = void 0;
 /********************************************************************************
- * Copyright (c) 2020 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -40205,7 +40235,8 @@ exports.CustomRouter = CustomRouter;
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2020 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -40256,6 +40287,7 @@ const sdvmlDiagramModule = new inversify_1.ContainerModule((bind, unbind, isBoun
     (0, sprotty_1.configureModelElement)(context, 'port', sprotty_1.RectangularPort, views_1.TriangleButtonView);
     (0, sprotty_1.configureModelElement)(context, 'actuator-port', sprotty_1.RectangularPort, views_1.DownTriangleButtonView);
     (0, sprotty_1.configureModelElement)(context, 'sensor-port', sprotty_1.RectangularPort, views_1.TopTriangleButtonView);
+    (0, sprotty_1.configureModelElement)(context, 'node:vss-node', model_1.SdvmlNode, views_1.SdvmlNodeView);
     (0, sprotty_1.configureCommand)(context, sprotty_1.CreateElementCommand);
 });
 function createStateDiagramContainer(widgetId) {
@@ -40284,7 +40316,8 @@ exports.createStateDiagramContainer = createStateDiagramContainer;
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2020 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -40331,7 +40364,8 @@ exports.PaletteButtonView = PaletteButtonView = __decorate([
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2020 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -40361,7 +40395,7 @@ class SdvmlEdgeLabel extends sprotty_1.SLabelImpl {
         super(...arguments);
         this.edgePlacement = {
             rotate: true,
-            position: 0.6
+            position: 0
         };
     }
 }
@@ -40396,7 +40430,8 @@ exports.SdvmlNode = SdvmlNode;
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2020 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -40417,7 +40452,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.TopTriangleButtonView = exports.DownTriangleButtonView = exports.TriangleButtonView = exports.PolylineArrowEdgeView = void 0;
+exports.TopTriangleButtonView = exports.DownTriangleButtonView = exports.TriangleButtonView = exports.SdvmlNodeView = exports.PolylineArrowEdgeView = void 0;
 /** @jsx svg */
 const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const sprotty_1 = __webpack_require__(/*! sprotty */ "../../node_modules/sprotty/lib/index.js");
@@ -40438,6 +40473,20 @@ exports.PolylineArrowEdgeView = PolylineArrowEdgeView;
 exports.PolylineArrowEdgeView = PolylineArrowEdgeView = __decorate([
     (0, inversify_1.injectable)()
 ], PolylineArrowEdgeView);
+let SdvmlNodeView = class SdvmlNodeView extends sprotty_1.RectangularNodeView {
+    render(node, context, args) {
+        if (!this.isVisible(node, context)) {
+            return undefined;
+        }
+        return (0, sprotty_1.svg)("g", null,
+            (0, sprotty_1.svg)("rect", { "class-sprotty-node": node instanceof sprotty_1.SNodeImpl, "class-sprotty-port": node instanceof sprotty_1.SPortImpl, "class-mouseover": node.hoverFeedback, "class-selected": node.selected, "class-vss-node": node instanceof sprotty_1.SNodeImpl, x: "0", y: "0", width: Math.max(node.size.width, 0), height: Math.max(node.size.height, 0) }),
+            context.renderChildren(node));
+    }
+};
+exports.SdvmlNodeView = SdvmlNodeView;
+exports.SdvmlNodeView = SdvmlNodeView = __decorate([
+    (0, inversify_1.injectable)()
+], SdvmlNodeView);
 let TriangleButtonView = class TriangleButtonView {
     render(model, context) {
         return (0, sprotty_1.svg)("path", { d: 'M 0,0 L 8,4 L 0,8 Z' });
@@ -40473,7 +40522,7 @@ exports.TopTriangleButtonView = TopTriangleButtonView = __decorate([
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/ 	
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -40487,14 +40536,14 @@ exports.TopTriangleButtonView = TopTriangleButtonView = __decorate([
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
-/******/ 	
+/******/
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/ 	
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
+/******/
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
@@ -40507,7 +40556,7 @@ exports.TopTriangleButtonView = TopTriangleButtonView = __decorate([
 /******/ 			return getter;
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -40519,7 +40568,7 @@ exports.TopTriangleButtonView = TopTriangleButtonView = __decorate([
 /******/ 			}
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/global */
 /******/ 	(() => {
 /******/ 		__webpack_require__.g = (function() {
@@ -40531,12 +40580,12 @@ exports.TopTriangleButtonView = TopTriangleButtonView = __decorate([
 /******/ 			}
 /******/ 		})();
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -40547,12 +40596,12 @@ exports.TopTriangleButtonView = TopTriangleButtonView = __decorate([
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/nonce */
 /******/ 	(() => {
 /******/ 		__webpack_require__.nc = undefined;
 /******/ 	})();
-/******/ 	
+/******/
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
@@ -40566,7 +40615,8 @@ var exports = __webpack_exports__;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.SdvmlSprottyStarter = void 0;
 /********************************************************************************
- * Copyright (c) 2020 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at

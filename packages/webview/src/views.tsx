@@ -1,5 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2020 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -17,8 +18,8 @@
 /** @jsx svg */
 import { injectable } from 'inversify';
 import { VNode } from 'snabbdom';
-import { PolylineEdgeView, RenderingContext, SEdgeImpl, svg, IView, SPortImpl } from 'sprotty';
-import { Point, toDegrees } from 'sprotty-protocol';
+import { PolylineEdgeView, RenderingContext, SEdgeImpl, svg, IView, SPortImpl, RectangularNodeView, IViewArgs, SNodeImpl, SShapeElementImpl } from 'sprotty';
+import { Hoverable, Point, Selectable, toDegrees } from 'sprotty-protocol';
 
 @injectable()
 export class PolylineArrowEdgeView extends PolylineEdgeView {
@@ -34,6 +35,21 @@ export class PolylineArrowEdgeView extends PolylineEdgeView {
 
     angle(x0: Point, x1: Point): number {
         return toDegrees(Math.atan2(x1.y - x0.y, x1.x - x0.x));
+    }
+}
+
+@injectable()
+export class SdvmlNodeView extends RectangularNodeView{
+    public override render(node: Readonly<SShapeElementImpl & Hoverable & Selectable>, context: RenderingContext, args?: IViewArgs): VNode | undefined {
+        if (!this.isVisible(node, context)) {
+            return undefined;
+        }
+        return <g>
+            <rect class-sprotty-node={node instanceof SNodeImpl} class-sprotty-port={node instanceof SPortImpl}
+                  class-mouseover={node.hoverFeedback} class-selected={node.selected} class-vss-node= {node instanceof SNodeImpl}
+                  x="0" y="0" width={Math.max(node.size.width, 0)} height={Math.max(node.size.height, 0)}></rect>
+            {context.renderChildren(node)}
+        </g>;
     }
 }
 

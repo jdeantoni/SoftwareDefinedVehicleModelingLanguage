@@ -24,6 +24,7 @@ export type SdvmlKeywordNames =
     | ":"
     | "AD"
     | "Actuator"
+    | "App"
     | "Component"
     | "DL"
     | "ExecTime"
@@ -31,12 +32,14 @@ export type SdvmlKeywordNames =
     | "SSP"
     | "Sensor"
     | "Signal"
+    | "VSS"
     | "ms"
     | "on"
     | "periodic"
     | "publish"
     | "service"
     | "subscribe"
+    | "to"
     | "triggered";
 
 export type SdvmlTokenNames = SdvmlTerminalNames | SdvmlKeywordNames;
@@ -58,7 +61,7 @@ export function isTriggeringRule(item: unknown): item is TriggeringRule {
 }
 
 export interface Actuator extends langium.AstNode {
-    readonly $container: Model;
+    readonly $container: VSS;
     readonly $type: 'Actuator';
     ad: RandomVar;
     name: string;
@@ -102,7 +105,7 @@ export interface Model extends langium.AstNode {
     readonly $type: 'Model';
     components: Array<Component>;
     name: string;
-    signals: Array<Signal>;
+    vss: VSS;
 }
 
 export const Model = 'Model';
@@ -126,7 +129,9 @@ export function isPeriodicTriggering(item: unknown): item is PeriodicTriggering 
 export interface Publisher extends langium.AstNode {
     readonly $container: Component;
     readonly $type: 'Publisher';
-    name: string;
+    name?: string;
+    sigName?: string;
+    sigRef?: langium.Reference<Actuator>;
 }
 
 export const Publisher = 'Publisher';
@@ -149,7 +154,7 @@ export function isRandomVar(item: unknown): item is RandomVar {
 }
 
 export interface Sensor extends langium.AstNode {
-    readonly $container: Model;
+    readonly $container: VSS;
     readonly $type: 'Sensor';
     dl: RandomVar;
     name: string;
@@ -179,13 +184,27 @@ export function isService(item: unknown): item is Service {
 export interface Subscriber extends langium.AstNode {
     readonly $container: Component;
     readonly $type: 'Subscriber';
-    name: string;
+    name?: string;
+    sigName?: string;
+    sigRef?: langium.Reference<Sensor>;
 }
 
 export const Subscriber = 'Subscriber';
 
 export function isSubscriber(item: unknown): item is Subscriber {
     return reflection.isInstance(item, Subscriber);
+}
+
+export interface VSS extends langium.AstNode {
+    readonly $container: Model;
+    readonly $type: 'VSS';
+    signals: Array<Signal>;
+}
+
+export const VSS = 'VSS';
+
+export function isVSS(item: unknown): item is VSS {
+    return reflection.isInstance(item, VSS);
 }
 
 export type SdvmlAstType = {
@@ -201,12 +220,13 @@ export type SdvmlAstType = {
     Signal: Signal
     Subscriber: Subscriber
     TriggeringRule: TriggeringRule
+    VSS: VSS
 }
 
 export class SdvmlAstReflection extends langium.AbstractAstReflection {
 
     getAllTypes(): string[] {
-        return [Actuator, Component, EventTriggering, Model, PeriodicTriggering, Publisher, RandomVar, Sensor, Service, Signal, Subscriber, TriggeringRule];
+        return [Actuator, Component, EventTriggering, Model, PeriodicTriggering, Publisher, RandomVar, Sensor, Service, Signal, Subscriber, TriggeringRule, VSS];
     }
 
     protected override computeIsSubtype(subtype: string, supertype: string): boolean {
@@ -230,6 +250,12 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
         switch (referenceId) {
             case 'EventTriggering:trigger': {
                 return Subscriber;
+            }
+            case 'Publisher:sigRef': {
+                return Actuator;
+            }
+            case 'Subscriber:sigRef': {
+                return Sensor;
             }
             default: {
                 throw new Error(`${referenceId} is not a valid reference id.`);
@@ -274,7 +300,7 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                     properties: [
                         { name: 'components', defaultValue: [] },
                         { name: 'name' },
-                        { name: 'signals', defaultValue: [] }
+                        { name: 'vss' }
                     ]
                 };
             }
@@ -290,7 +316,9 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                 return {
                     name: Publisher,
                     properties: [
-                        { name: 'name' }
+                        { name: 'name' },
+                        { name: 'sigName' },
+                        { name: 'sigRef' }
                     ]
                 };
             }
@@ -327,7 +355,17 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                 return {
                     name: Subscriber,
                     properties: [
-                        { name: 'name' }
+                        { name: 'name' },
+                        { name: 'sigName' },
+                        { name: 'sigRef' }
+                    ]
+                };
+            }
+            case VSS: {
+                return {
+                    name: VSS,
+                    properties: [
+                        { name: 'signals', defaultValue: [] }
                     ]
                 };
             }

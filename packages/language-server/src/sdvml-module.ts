@@ -1,5 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2021-2022 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -24,6 +25,10 @@ import { SdvmlGeneratedModule, SdvmlGeneratedSharedModule } from './generated/mo
 import { SdvmlLayoutConfigurator } from './layout-config.js';
 import { registerValidationChecks, SdvmlValidator } from './sdvml-validator.js';
 
+import { SdvmlScopeProvider } from './SdvmlScopeProvider.js';
+
+
+
 /**
  * Declaration of custom services - add your own service classes here.
  */
@@ -37,6 +42,7 @@ export type SdvmlAddedServices = {
         LayoutConfigurator: ILayoutConfigurator
 
     }
+
 };
 
 /**
@@ -62,6 +68,9 @@ export const SdvmlModule: Module<SdvmlServices, PartialLangiumServices & Sprotty
         ElkFactory: () => () => new ElkConstructor({ algorithms: ['layered'] }),
         ElementFilter: () => new DefaultElementFilter,
         LayoutConfigurator: () => new SdvmlLayoutConfigurator
+    },
+    references: {
+        ScopeProvider: (services) => new SdvmlScopeProvider(services)
     }
 };
 

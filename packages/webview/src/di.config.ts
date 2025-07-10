@@ -1,5 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2020 TypeFox and others.
+ * Copyright (c) 2025 Université Côte d'Azur and others.
+
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -29,7 +30,7 @@ import {
 } from 'sprotty';
 import { CustomRouter } from './custom-edge-router';
 import { SdvmlEdge, SdvmlNode } from './model';
-import { DownTriangleButtonView, PolylineArrowEdgeView, TopTriangleButtonView, TriangleButtonView } from './views';
+import { DownTriangleButtonView, PolylineArrowEdgeView, SdvmlNodeView, TopTriangleButtonView, TriangleButtonView } from './views';
 
 const sdvmlDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
@@ -58,8 +59,10 @@ const sdvmlDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) =
     configureModelElement(context, 'routing-point', SRoutingHandleImpl, SRoutingHandleView);
     configureModelElement(context, 'volatile-routing-point', SRoutingHandleImpl, SRoutingHandleView);
     configureModelElement(context, 'port', RectangularPort, TriangleButtonView);
-     configureModelElement(context, 'actuator-port', RectangularPort, DownTriangleButtonView);
-     configureModelElement(context, 'sensor-port', RectangularPort, TopTriangleButtonView);
+    configureModelElement(context, 'actuator-port', RectangularPort, DownTriangleButtonView);
+    configureModelElement(context, 'sensor-port', RectangularPort, TopTriangleButtonView);
+    configureModelElement(context, 'node:vss-node', SdvmlNode, SdvmlNodeView);
+
 
     configureCommand(context, CreateElementCommand);
 });
