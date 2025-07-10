@@ -1,0 +1,17 @@
+{
+    "projectName": "Sdvml",
+    "languages": [
+        {
+            "id": "sdvml",
+            "grammar": "src/sdvml.langium",
+            "fileExtensions": [".sdvml"],
+            "textMate": {
+                "out": "../extension/syntaxes/sdvml.tmLanguage.json"
+            },
+            "monarch": {
+                "out": "../extension/syntaxes/src/syntaxes/sdvml.monarch.ts"
+            }
+        }
+    ],
+    "out": "src/generated"
+}
