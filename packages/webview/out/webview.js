@@ -1,6 +1,1015 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "../../node_modules/@inversifyjs/common/lib/cjs/index.js":
+/*!***************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/common/lib/cjs/index.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.stringifyServiceIdentifier = exports.LazyServiceIdentifier = void 0;
+const stringifyServiceIdentifier_1 = __webpack_require__(/*! ./services/calculations/stringifyServiceIdentifier */ "../../node_modules/@inversifyjs/common/lib/cjs/services/calculations/stringifyServiceIdentifier.js");
+Object.defineProperty(exports, "stringifyServiceIdentifier", ({ enumerable: true, get: function () { return stringifyServiceIdentifier_1.stringifyServiceIdentifier; } }));
+const LazyServiceIdentifier_1 = __webpack_require__(/*! ./services/models/LazyServiceIdentifier */ "../../node_modules/@inversifyjs/common/lib/cjs/services/models/LazyServiceIdentifier.js");
+Object.defineProperty(exports, "LazyServiceIdentifier", ({ enumerable: true, get: function () { return LazyServiceIdentifier_1.LazyServiceIdentifier; } }));
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/common/lib/cjs/services/calculations/stringifyServiceIdentifier.js":
+/*!**********************************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/common/lib/cjs/services/calculations/stringifyServiceIdentifier.js ***!
+  \**********************************************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.stringifyServiceIdentifier = stringifyServiceIdentifier;
+function stringifyServiceIdentifier(serviceIdentifier) {
+    switch (typeof serviceIdentifier) {
+        case 'string':
+        case 'symbol':
+            return serviceIdentifier.toString();
+        case 'function':
+            return serviceIdentifier.name;
+        default:
+            throw new Error(`Unexpected ${typeof serviceIdentifier} service id type`);
+    }
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/common/lib/cjs/services/models/LazyServiceIdentifier.js":
+/*!***********************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/common/lib/cjs/services/models/LazyServiceIdentifier.js ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.LazyServiceIdentifier = exports.islazyServiceIdentifierSymbol = void 0;
+exports.islazyServiceIdentifierSymbol = Symbol.for('@inversifyjs/common/islazyServiceIdentifier');
+class LazyServiceIdentifier {
+    [exports.islazyServiceIdentifierSymbol];
+    #buildServiceId;
+    constructor(buildServiceId) {
+        this.#buildServiceId = buildServiceId;
+        this[exports.islazyServiceIdentifierSymbol] = true;
+    }
+    static is(value) {
+        return (typeof value === 'object' &&
+            value !== null &&
+            value[exports.islazyServiceIdentifierSymbol] === true);
+    }
+    unwrap() {
+        return this.#buildServiceId();
+    }
+}
+exports.LazyServiceIdentifier = LazyServiceIdentifier;
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/error/models/InversifyCoreError.js":
+/*!***************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/error/models/InversifyCoreError.js ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.InversifyCoreError = exports.isAppErrorSymbol = void 0;
+exports.isAppErrorSymbol = Symbol.for('@inversifyjs/core/InversifyCoreError');
+class InversifyCoreError extends Error {
+    [exports.isAppErrorSymbol];
+    kind;
+    constructor(kind, message, options) {
+        super(message, options);
+        this[exports.isAppErrorSymbol] = true;
+        this.kind = kind;
+    }
+    static is(value) {
+        return (typeof value === 'object' &&
+            value !== null &&
+            value[exports.isAppErrorSymbol] === true);
+    }
+    static isErrorOfKind(value, kind) {
+        return InversifyCoreError.is(value) && value.kind === kind;
+    }
+}
+exports.InversifyCoreError = InversifyCoreError;
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/error/models/InversifyCoreErrorKind.js":
+/*!*******************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/error/models/InversifyCoreErrorKind.js ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.InversifyCoreErrorKind = void 0;
+var InversifyCoreErrorKind;
+(function (InversifyCoreErrorKind) {
+    InversifyCoreErrorKind[InversifyCoreErrorKind["injectionDecoratorConflict"] = 0] = "injectionDecoratorConflict";
+    InversifyCoreErrorKind[InversifyCoreErrorKind["missingInjectionDecorator"] = 1] = "missingInjectionDecorator";
+    InversifyCoreErrorKind[InversifyCoreErrorKind["planning"] = 2] = "planning";
+    InversifyCoreErrorKind[InversifyCoreErrorKind["unknown"] = 3] = "unknown";
+})(InversifyCoreErrorKind || (exports.InversifyCoreErrorKind = InversifyCoreErrorKind = {}));
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/index.js":
+/*!*************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/index.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.LegacyTargetImpl = exports.getTargets = exports.getClassMetadataFromMetadataReader = exports.getClassMetadata = exports.getClassElementMetadataFromLegacyMetadata = exports.ClassElementMetadataKind = void 0;
+const getTargets_1 = __webpack_require__(/*! ./legacyTarget/calculations/getTargets */ "../../node_modules/@inversifyjs/core/lib/cjs/legacyTarget/calculations/getTargets.js");
+Object.defineProperty(exports, "getTargets", ({ enumerable: true, get: function () { return getTargets_1.getTargets; } }));
+const LegacyTargetImpl_1 = __webpack_require__(/*! ./legacyTarget/models/LegacyTargetImpl */ "../../node_modules/@inversifyjs/core/lib/cjs/legacyTarget/models/LegacyTargetImpl.js");
+Object.defineProperty(exports, "LegacyTargetImpl", ({ enumerable: true, get: function () { return LegacyTargetImpl_1.LegacyTargetImpl; } }));
+const getClassElementMetadataFromLegacyMetadata_1 = __webpack_require__(/*! ./metadata/calculations/getClassElementMetadataFromLegacyMetadata */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassElementMetadataFromLegacyMetadata.js");
+Object.defineProperty(exports, "getClassElementMetadataFromLegacyMetadata", ({ enumerable: true, get: function () { return getClassElementMetadataFromLegacyMetadata_1.getClassElementMetadataFromLegacyMetadata; } }));
+const getClassMetadata_1 = __webpack_require__(/*! ./metadata/calculations/getClassMetadata */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadata.js");
+Object.defineProperty(exports, "getClassMetadata", ({ enumerable: true, get: function () { return getClassMetadata_1.getClassMetadata; } }));
+const getClassMetadataFromMetadataReader_1 = __webpack_require__(/*! ./metadata/calculations/getClassMetadataFromMetadataReader */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadataFromMetadataReader.js");
+Object.defineProperty(exports, "getClassMetadataFromMetadataReader", ({ enumerable: true, get: function () { return getClassMetadataFromMetadataReader_1.getClassMetadataFromMetadataReader; } }));
+const ClassElementMetadataKind_1 = __webpack_require__(/*! ./metadata/models/ClassElementMetadataKind */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/models/ClassElementMetadataKind.js");
+Object.defineProperty(exports, "ClassElementMetadataKind", ({ enumerable: true, get: function () { return ClassElementMetadataKind_1.ClassElementMetadataKind; } }));
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/legacyTarget/calculations/getTargetId.js":
+/*!*********************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/legacyTarget/calculations/getTargetId.js ***!
+  \*********************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getTargetId = getTargetId;
+const reflect_metadata_utils_1 = __webpack_require__(/*! @inversifyjs/reflect-metadata-utils */ "../../node_modules/@inversifyjs/reflect-metadata-utils/lib/cjs/index.js");
+const ID_METADATA = '@inversifyjs/core/targetId';
+function getTargetId() {
+    const targetId = (0, reflect_metadata_utils_1.getReflectMetadata)(Object, ID_METADATA) ?? 0;
+    if (targetId === Number.MAX_SAFE_INTEGER) {
+        (0, reflect_metadata_utils_1.updateReflectMetadata)(Object, ID_METADATA, targetId, () => Number.MIN_SAFE_INTEGER);
+    }
+    else {
+        (0, reflect_metadata_utils_1.updateReflectMetadata)(Object, ID_METADATA, targetId, (id) => id + 1);
+    }
+    return targetId;
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/legacyTarget/calculations/getTargets.js":
+/*!********************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/legacyTarget/calculations/getTargets.js ***!
+  \********************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getTargets = void 0;
+const getClassMetadata_1 = __webpack_require__(/*! ../../metadata/calculations/getClassMetadata */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadata.js");
+const getClassMetadataFromMetadataReader_1 = __webpack_require__(/*! ../../metadata/calculations/getClassMetadataFromMetadataReader */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadataFromMetadataReader.js");
+const getClassMetadataProperties_1 = __webpack_require__(/*! ../../metadata/calculations/getClassMetadataProperties */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadataProperties.js");
+const getClassMetadataPropertiesFromMetadataReader_1 = __webpack_require__(/*! ../../metadata/calculations/getClassMetadataPropertiesFromMetadataReader */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadataPropertiesFromMetadataReader.js");
+const getTargetsFromMetadataProviders_1 = __webpack_require__(/*! ./getTargetsFromMetadataProviders */ "../../node_modules/@inversifyjs/core/lib/cjs/legacyTarget/calculations/getTargetsFromMetadataProviders.js");
+const getTargets = (metadataReader) => {
+    const getClassMetadataFn = metadataReader === undefined
+        ? getClassMetadata_1.getClassMetadata
+        : (type) => (0, getClassMetadataFromMetadataReader_1.getClassMetadataFromMetadataReader)(type, metadataReader);
+    const getClassMetadataPropertiesFn = metadataReader === undefined
+        ? getClassMetadataProperties_1.getClassMetadataProperties
+        : (type) => (0, getClassMetadataPropertiesFromMetadataReader_1.getClassMetadataPropertiesFromMetadataReader)(type, metadataReader);
+    return (0, getTargetsFromMetadataProviders_1.getTargetsFromMetadataProviders)(getClassMetadataFn, getClassMetadataPropertiesFn);
+};
+exports.getTargets = getTargets;
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/legacyTarget/calculations/getTargetsFromMetadataProviders.js":
+/*!*****************************************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/legacyTarget/calculations/getTargetsFromMetadataProviders.js ***!
+  \*****************************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getTargetsFromMetadataProviders = getTargetsFromMetadataProviders;
+const ClassElementMetadataKind_1 = __webpack_require__(/*! ../../metadata/models/ClassElementMetadataKind */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/models/ClassElementMetadataKind.js");
+const getBaseType_1 = __webpack_require__(/*! ../../prototype/calculations/getBaseType */ "../../node_modules/@inversifyjs/core/lib/cjs/prototype/calculations/getBaseType.js");
+const LegacyTargetImpl_1 = __webpack_require__(/*! ../models/LegacyTargetImpl */ "../../node_modules/@inversifyjs/core/lib/cjs/legacyTarget/models/LegacyTargetImpl.js");
+function getTargetsFromMetadataProviders(getClassMetadata, getClassMetadataProperties) {
+    return function getTagets(type) {
+        const classMetadata = getClassMetadata(type);
+        let baseType = (0, getBaseType_1.getBaseType)(type);
+        while (baseType !== undefined && baseType !== Object) {
+            const classMetadataProperties = getClassMetadataProperties(baseType);
+            for (const [propertyKey, propertyValue] of classMetadataProperties) {
+                if (!classMetadata.properties.has(propertyKey)) {
+                    classMetadata.properties.set(propertyKey, propertyValue);
+                }
+            }
+            baseType = (0, getBaseType_1.getBaseType)(baseType);
+        }
+        const targets = [];
+        for (const constructorArgument of classMetadata.constructorArguments) {
+            if (constructorArgument.kind !== ClassElementMetadataKind_1.ClassElementMetadataKind.unmanaged) {
+                const targetName = constructorArgument.targetName ?? '';
+                targets.push(new LegacyTargetImpl_1.LegacyTargetImpl(targetName, constructorArgument, 'ConstructorArgument'));
+            }
+        }
+        for (const [property, metadata] of classMetadata.properties) {
+            if (metadata.kind !== ClassElementMetadataKind_1.ClassElementMetadataKind.unmanaged) {
+                const targetName = metadata.targetName ?? property;
+                targets.push(new LegacyTargetImpl_1.LegacyTargetImpl(targetName, metadata, 'ClassProperty'));
+            }
+        }
+        return targets;
+    };
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/legacyTarget/models/LegacyTargetImpl.js":
+/*!********************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/legacyTarget/models/LegacyTargetImpl.js ***!
+  \********************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.LegacyTargetImpl = void 0;
+const common_1 = __webpack_require__(/*! @inversifyjs/common */ "../../node_modules/@inversifyjs/common/lib/cjs/index.js");
+const getLegacyMetadata_1 = __webpack_require__(/*! ../../metadata/calculations/getLegacyMetadata */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getLegacyMetadata.js");
+const ClassElementMetadataKind_1 = __webpack_require__(/*! ../../metadata/models/ClassElementMetadataKind */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/models/ClassElementMetadataKind.js");
+const keys_1 = __webpack_require__(/*! ../../reflectMetadata/data/keys */ "../../node_modules/@inversifyjs/core/lib/cjs/reflectMetadata/data/keys.js");
+const LegacyQueryableStringImpl_1 = __webpack_require__(/*! ../../string/models/LegacyQueryableStringImpl */ "../../node_modules/@inversifyjs/core/lib/cjs/string/models/LegacyQueryableStringImpl.js");
+const getDescription_1 = __webpack_require__(/*! ../../symbol/calculations/getDescription */ "../../node_modules/@inversifyjs/core/lib/cjs/symbol/calculations/getDescription.js");
+const getTargetId_1 = __webpack_require__(/*! ../calculations/getTargetId */ "../../node_modules/@inversifyjs/core/lib/cjs/legacyTarget/calculations/getTargetId.js");
+class LegacyTargetImpl {
+    #metadata;
+    #id;
+    #identifier;
+    #lazyLegacyMetadata;
+    #name;
+    #type;
+    constructor(identifier, metadata, type) {
+        this.#id = (0, getTargetId_1.getTargetId)();
+        this.#identifier = identifier;
+        this.#lazyLegacyMetadata = undefined;
+        this.#metadata = metadata;
+        this.#name = new LegacyQueryableStringImpl_1.LegacyQueryableStringImpl(typeof identifier === 'string' ? identifier : (0, getDescription_1.getDescription)(identifier));
+        this.#type = type;
+    }
+    get id() {
+        return this.#id;
+    }
+    /**
+     * If this is a class property target, this is the name of the property to be injected
+     */
+    get identifier() {
+        return this.#identifier;
+    }
+    get metadata() {
+        if (this.#lazyLegacyMetadata === undefined) {
+            this.#lazyLegacyMetadata = (0, getLegacyMetadata_1.getLegacyMetadata)(this.#metadata);
+        }
+        return this.#lazyLegacyMetadata;
+    }
+    get name() {
+        return this.#name;
+    }
+    get type() {
+        return this.#type;
+    }
+    get serviceIdentifier() {
+        if (common_1.LazyServiceIdentifier.is(this.#metadata.value)) {
+            return this.#metadata.value.unwrap();
+        }
+        else {
+            return this.#metadata.value;
+        }
+    }
+    getCustomTags() {
+        return [...this.#metadata.tags.entries()].map(([key, value]) => ({
+            key,
+            value,
+        }));
+    }
+    getNamedTag() {
+        return this.#metadata.name === undefined
+            ? null
+            : {
+                key: keys_1.NAMED_TAG,
+                value: this.#metadata.name,
+            };
+    }
+    hasTag(key) {
+        return this.metadata.some((metadata) => metadata.key === key);
+    }
+    isArray() {
+        return this.#metadata.kind === ClassElementMetadataKind_1.ClassElementMetadataKind.multipleInjection;
+    }
+    isNamed() {
+        return this.#metadata.name !== undefined;
+    }
+    isOptional() {
+        return this.#metadata.optional;
+    }
+    isTagged() {
+        return this.#metadata.tags.size > 0;
+    }
+    matchesArray(name) {
+        return this.isArray() && this.#metadata.value === name;
+    }
+    matchesNamedTag(name) {
+        return this.#metadata.name === name;
+    }
+    matchesTag(key) {
+        return (value) => this.metadata.some((metadata) => metadata.key === key && metadata.value === value);
+    }
+}
+exports.LegacyTargetImpl = LegacyTargetImpl;
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/assertConstructorMetadataArrayFilled.js":
+/*!******************************************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/assertConstructorMetadataArrayFilled.js ***!
+  \******************************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.assertConstructorMetadataArrayFilled = assertConstructorMetadataArrayFilled;
+const InversifyCoreError_1 = __webpack_require__(/*! ../../error/models/InversifyCoreError */ "../../node_modules/@inversifyjs/core/lib/cjs/error/models/InversifyCoreError.js");
+const InversifyCoreErrorKind_1 = __webpack_require__(/*! ../../error/models/InversifyCoreErrorKind */ "../../node_modules/@inversifyjs/core/lib/cjs/error/models/InversifyCoreErrorKind.js");
+function assertConstructorMetadataArrayFilled(type, value) {
+    const undefinedIndexes = [];
+    // Using a for loop to ensure empty values are traversed as well
+    for (let i = 0; i < value.length; ++i) {
+        const element = value[i];
+        if (element === undefined) {
+            undefinedIndexes.push(i);
+        }
+    }
+    if (undefinedIndexes.length > 0) {
+        throw new InversifyCoreError_1.InversifyCoreError(InversifyCoreErrorKind_1.InversifyCoreErrorKind.missingInjectionDecorator, `Found unexpected missing metadata on type "${type.name}" at constructor indexes "${undefinedIndexes.join('", "')}".
+
+Are you using @inject, @multiInject or @unmanaged decorators at those indexes?
+
+If you're using typescript and want to rely on auto injection, set "emitDecoratorMetadata" compiler option to true`);
+    }
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassElementMetadataFromLegacyMetadata.js":
+/*!***********************************************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassElementMetadataFromLegacyMetadata.js ***!
+  \***********************************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getClassElementMetadataFromLegacyMetadata = getClassElementMetadataFromLegacyMetadata;
+const InversifyCoreError_1 = __webpack_require__(/*! ../../error/models/InversifyCoreError */ "../../node_modules/@inversifyjs/core/lib/cjs/error/models/InversifyCoreError.js");
+const InversifyCoreErrorKind_1 = __webpack_require__(/*! ../../error/models/InversifyCoreErrorKind */ "../../node_modules/@inversifyjs/core/lib/cjs/error/models/InversifyCoreErrorKind.js");
+const keys_1 = __webpack_require__(/*! ../../reflectMetadata/data/keys */ "../../node_modules/@inversifyjs/core/lib/cjs/reflectMetadata/data/keys.js");
+const ClassElementMetadataKind_1 = __webpack_require__(/*! ../models/ClassElementMetadataKind */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/models/ClassElementMetadataKind.js");
+function getClassElementMetadataFromLegacyMetadata(metadataList) {
+    const injectMetadata = metadataList.find((metadata) => metadata.key === keys_1.INJECT_TAG);
+    const multiInjectMetadata = metadataList.find((metadata) => metadata.key === keys_1.MULTI_INJECT_TAG);
+    const unmanagedMetadata = metadataList.find((metadata) => metadata.key === keys_1.UNMANAGED_TAG);
+    if (unmanagedMetadata !== undefined) {
+        return getUnmanagedClassElementMetadata(injectMetadata, multiInjectMetadata);
+    }
+    if (multiInjectMetadata === undefined && injectMetadata === undefined) {
+        throw new InversifyCoreError_1.InversifyCoreError(InversifyCoreErrorKind_1.InversifyCoreErrorKind.missingInjectionDecorator, 'Expected @inject, @multiInject or @unmanaged metadata');
+    }
+    const nameMetadata = metadataList.find((metadata) => metadata.key === keys_1.NAMED_TAG);
+    const optionalMetadata = metadataList.find((metadata) => metadata.key === keys_1.OPTIONAL_TAG);
+    const targetNameMetadata = metadataList.find((metadata) => metadata.key === keys_1.NAME_TAG);
+    const managedClassElementMetadata = {
+        kind: injectMetadata === undefined
+            ? ClassElementMetadataKind_1.ClassElementMetadataKind.multipleInjection
+            : ClassElementMetadataKind_1.ClassElementMetadataKind.singleInjection,
+        name: nameMetadata?.value,
+        optional: optionalMetadata !== undefined,
+        tags: new Map(metadataList
+            .filter((metadata) => keys_1.NON_CUSTOM_TAG_KEYS.every((customTagKey) => metadata.key !== customTagKey))
+            .map((metadata) => [
+            metadata.key,
+            metadata.value,
+        ])),
+        targetName: targetNameMetadata?.value,
+        value: injectMetadata === undefined
+            ? multiInjectMetadata?.value
+            : injectMetadata.value,
+    };
+    return managedClassElementMetadata;
+}
+function getUnmanagedClassElementMetadata(injectMetadata, multiInjectMetadata) {
+    if (multiInjectMetadata !== undefined || injectMetadata !== undefined) {
+        throw new InversifyCoreError_1.InversifyCoreError(InversifyCoreErrorKind_1.InversifyCoreErrorKind.missingInjectionDecorator, 'Expected a single @inject, @multiInject or @unmanaged metadata');
+    }
+    return {
+        kind: ClassElementMetadataKind_1.ClassElementMetadataKind.unmanaged,
+    };
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassElementMetadataFromNewable.js":
+/*!****************************************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassElementMetadataFromNewable.js ***!
+  \****************************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getClassElementMetadataFromNewable = getClassElementMetadataFromNewable;
+const ClassElementMetadataKind_1 = __webpack_require__(/*! ../models/ClassElementMetadataKind */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/models/ClassElementMetadataKind.js");
+function getClassElementMetadataFromNewable(type) {
+    return {
+        kind: ClassElementMetadataKind_1.ClassElementMetadataKind.singleInjection,
+        name: undefined,
+        optional: false,
+        tags: new Map(),
+        targetName: undefined,
+        value: type,
+    };
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadata.js":
+/*!**********************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadata.js ***!
+  \**********************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getClassMetadata = getClassMetadata;
+const reflect_metadata_utils_1 = __webpack_require__(/*! @inversifyjs/reflect-metadata-utils */ "../../node_modules/@inversifyjs/reflect-metadata-utils/lib/cjs/index.js");
+const keys_1 = __webpack_require__(/*! ../../reflectMetadata/data/keys */ "../../node_modules/@inversifyjs/core/lib/cjs/reflectMetadata/data/keys.js");
+const getClassMetadataConstructorArguments_1 = __webpack_require__(/*! ./getClassMetadataConstructorArguments */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadataConstructorArguments.js");
+const getClassMetadataProperties_1 = __webpack_require__(/*! ./getClassMetadataProperties */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadataProperties.js");
+function getClassMetadata(type) {
+    const postConstructMetadata = (0, reflect_metadata_utils_1.getReflectMetadata)(type, keys_1.POST_CONSTRUCT);
+    const preDestroyMetadata = (0, reflect_metadata_utils_1.getReflectMetadata)(type, keys_1.PRE_DESTROY);
+    const classMetadata = {
+        constructorArguments: (0, getClassMetadataConstructorArguments_1.getClassMetadataConstructorArguments)(type),
+        lifecycle: {
+            postConstructMethodName: postConstructMetadata?.value,
+            preDestroyMethodName: preDestroyMetadata?.value,
+        },
+        properties: (0, getClassMetadataProperties_1.getClassMetadataProperties)(type),
+    };
+    return classMetadata;
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadataConstructorArguments.js":
+/*!******************************************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadataConstructorArguments.js ***!
+  \******************************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getClassMetadataConstructorArguments = getClassMetadataConstructorArguments;
+const reflect_metadata_utils_1 = __webpack_require__(/*! @inversifyjs/reflect-metadata-utils */ "../../node_modules/@inversifyjs/reflect-metadata-utils/lib/cjs/index.js");
+const keys_1 = __webpack_require__(/*! ../../reflectMetadata/data/keys */ "../../node_modules/@inversifyjs/core/lib/cjs/reflectMetadata/data/keys.js");
+const assertConstructorMetadataArrayFilled_1 = __webpack_require__(/*! ./assertConstructorMetadataArrayFilled */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/assertConstructorMetadataArrayFilled.js");
+const getClassElementMetadataFromNewable_1 = __webpack_require__(/*! ./getClassElementMetadataFromNewable */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassElementMetadataFromNewable.js");
+const getConstructorArgumentMetadataFromLegacyMetadata_1 = __webpack_require__(/*! ./getConstructorArgumentMetadataFromLegacyMetadata */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getConstructorArgumentMetadataFromLegacyMetadata.js");
+function getClassMetadataConstructorArguments(type) {
+    const typescriptMetadataList = (0, reflect_metadata_utils_1.getReflectMetadata)(type, keys_1.DESIGN_PARAM_TYPES);
+    const constructorParametersLegacyMetadata = (0, reflect_metadata_utils_1.getReflectMetadata)(type, keys_1.TAGGED);
+    const constructorArgumentsMetadata = [];
+    if (constructorParametersLegacyMetadata !== undefined) {
+        for (const [stringifiedIndex, metadataList] of Object.entries(constructorParametersLegacyMetadata)) {
+            const index = parseInt(stringifiedIndex);
+            constructorArgumentsMetadata[index] =
+                (0, getConstructorArgumentMetadataFromLegacyMetadata_1.getConstructorArgumentMetadataFromLegacyMetadata)(type, index, metadataList);
+        }
+    }
+    if (typescriptMetadataList !== undefined) {
+        for (let i = 0; i < typescriptMetadataList.length; ++i) {
+            if (constructorArgumentsMetadata[i] === undefined) {
+                const typescriptMetadata = typescriptMetadataList[i];
+                constructorArgumentsMetadata[i] =
+                    (0, getClassElementMetadataFromNewable_1.getClassElementMetadataFromNewable)(typescriptMetadata);
+            }
+        }
+    }
+    (0, assertConstructorMetadataArrayFilled_1.assertConstructorMetadataArrayFilled)(type, constructorArgumentsMetadata);
+    return constructorArgumentsMetadata;
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadataConstructorArgumentsFromMetadataReader.js":
+/*!************************************************************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadataConstructorArgumentsFromMetadataReader.js ***!
+  \************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getClassMetadataConstructorArgumentsFromMetadataReader = getClassMetadataConstructorArgumentsFromMetadataReader;
+const assertConstructorMetadataArrayFilled_1 = __webpack_require__(/*! ./assertConstructorMetadataArrayFilled */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/assertConstructorMetadataArrayFilled.js");
+const getClassElementMetadataFromNewable_1 = __webpack_require__(/*! ./getClassElementMetadataFromNewable */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassElementMetadataFromNewable.js");
+const getConstructorArgumentMetadataFromLegacyMetadata_1 = __webpack_require__(/*! ./getConstructorArgumentMetadataFromLegacyMetadata */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getConstructorArgumentMetadataFromLegacyMetadata.js");
+function getClassMetadataConstructorArgumentsFromMetadataReader(type, metadataReader) {
+    const legacyConstructorMetadata = metadataReader.getConstructorMetadata(type);
+    const constructorArgumentsMetadata = [];
+    for (const [stringifiedIndex, metadataList] of Object.entries(legacyConstructorMetadata.userGeneratedMetadata)) {
+        const index = parseInt(stringifiedIndex);
+        constructorArgumentsMetadata[index] =
+            (0, getConstructorArgumentMetadataFromLegacyMetadata_1.getConstructorArgumentMetadataFromLegacyMetadata)(type, index, metadataList);
+    }
+    if (legacyConstructorMetadata.compilerGeneratedMetadata !== undefined) {
+        for (let i = 0; i < legacyConstructorMetadata.compilerGeneratedMetadata.length; ++i) {
+            if (constructorArgumentsMetadata[i] === undefined) {
+                const typescriptMetadata = legacyConstructorMetadata
+                    .compilerGeneratedMetadata[i];
+                constructorArgumentsMetadata[i] =
+                    (0, getClassElementMetadataFromNewable_1.getClassElementMetadataFromNewable)(typescriptMetadata);
+            }
+        }
+    }
+    (0, assertConstructorMetadataArrayFilled_1.assertConstructorMetadataArrayFilled)(type, constructorArgumentsMetadata);
+    return constructorArgumentsMetadata;
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadataFromMetadataReader.js":
+/*!****************************************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadataFromMetadataReader.js ***!
+  \****************************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getClassMetadataFromMetadataReader = getClassMetadataFromMetadataReader;
+const reflect_metadata_utils_1 = __webpack_require__(/*! @inversifyjs/reflect-metadata-utils */ "../../node_modules/@inversifyjs/reflect-metadata-utils/lib/cjs/index.js");
+const keys_1 = __webpack_require__(/*! ../../reflectMetadata/data/keys */ "../../node_modules/@inversifyjs/core/lib/cjs/reflectMetadata/data/keys.js");
+const getClassMetadataConstructorArgumentsFromMetadataReader_1 = __webpack_require__(/*! ./getClassMetadataConstructorArgumentsFromMetadataReader */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadataConstructorArgumentsFromMetadataReader.js");
+const getClassMetadataPropertiesFromMetadataReader_1 = __webpack_require__(/*! ./getClassMetadataPropertiesFromMetadataReader */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadataPropertiesFromMetadataReader.js");
+function getClassMetadataFromMetadataReader(type, metadataReader) {
+    const postConstructMetadata = (0, reflect_metadata_utils_1.getReflectMetadata)(type, keys_1.POST_CONSTRUCT);
+    const preDestroyMetadata = (0, reflect_metadata_utils_1.getReflectMetadata)(type, keys_1.PRE_DESTROY);
+    const classMetadata = {
+        constructorArguments: (0, getClassMetadataConstructorArgumentsFromMetadataReader_1.getClassMetadataConstructorArgumentsFromMetadataReader)(type, metadataReader),
+        lifecycle: {
+            postConstructMethodName: postConstructMetadata?.value,
+            preDestroyMethodName: preDestroyMetadata?.value,
+        },
+        properties: (0, getClassMetadataPropertiesFromMetadataReader_1.getClassMetadataPropertiesFromMetadataReader)(type, metadataReader),
+    };
+    return classMetadata;
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadataProperties.js":
+/*!********************************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadataProperties.js ***!
+  \********************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getClassMetadataProperties = getClassMetadataProperties;
+const reflect_metadata_utils_1 = __webpack_require__(/*! @inversifyjs/reflect-metadata-utils */ "../../node_modules/@inversifyjs/reflect-metadata-utils/lib/cjs/index.js");
+const keys_1 = __webpack_require__(/*! ../../reflectMetadata/data/keys */ "../../node_modules/@inversifyjs/core/lib/cjs/reflectMetadata/data/keys.js");
+const getPropertyMetadataFromLegacyMetadata_1 = __webpack_require__(/*! ./getPropertyMetadataFromLegacyMetadata */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getPropertyMetadataFromLegacyMetadata.js");
+function getClassMetadataProperties(type) {
+    const propertiesLegacyMetadata = (0, reflect_metadata_utils_1.getReflectMetadata)(type, keys_1.TAGGED_PROP);
+    const propertiesMetadata = new Map();
+    if (propertiesLegacyMetadata !== undefined) {
+        for (const property of Reflect.ownKeys(propertiesLegacyMetadata)) {
+            const legacyMetadata = propertiesLegacyMetadata[property];
+            propertiesMetadata.set(property, (0, getPropertyMetadataFromLegacyMetadata_1.getPropertyMetadataFromLegacyMetadata)(type, property, legacyMetadata));
+        }
+    }
+    return propertiesMetadata;
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadataPropertiesFromMetadataReader.js":
+/*!**************************************************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassMetadataPropertiesFromMetadataReader.js ***!
+  \**************************************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getClassMetadataPropertiesFromMetadataReader = getClassMetadataPropertiesFromMetadataReader;
+const getPropertyMetadataFromLegacyMetadata_1 = __webpack_require__(/*! ./getPropertyMetadataFromLegacyMetadata */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getPropertyMetadataFromLegacyMetadata.js");
+function getClassMetadataPropertiesFromMetadataReader(type, metadataReader) {
+    const propertiesLegacyMetadata = metadataReader.getPropertiesMetadata(type);
+    const propertiesMetadata = new Map();
+    for (const property of Reflect.ownKeys(propertiesLegacyMetadata)) {
+        const legacyMetadata = propertiesLegacyMetadata[property];
+        propertiesMetadata.set(property, (0, getPropertyMetadataFromLegacyMetadata_1.getPropertyMetadataFromLegacyMetadata)(type, property, legacyMetadata));
+    }
+    return propertiesMetadata;
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getConstructorArgumentMetadataFromLegacyMetadata.js":
+/*!******************************************************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getConstructorArgumentMetadataFromLegacyMetadata.js ***!
+  \******************************************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getConstructorArgumentMetadataFromLegacyMetadata = getConstructorArgumentMetadataFromLegacyMetadata;
+const InversifyCoreError_1 = __webpack_require__(/*! ../../error/models/InversifyCoreError */ "../../node_modules/@inversifyjs/core/lib/cjs/error/models/InversifyCoreError.js");
+const InversifyCoreErrorKind_1 = __webpack_require__(/*! ../../error/models/InversifyCoreErrorKind */ "../../node_modules/@inversifyjs/core/lib/cjs/error/models/InversifyCoreErrorKind.js");
+const getClassElementMetadataFromLegacyMetadata_1 = __webpack_require__(/*! ./getClassElementMetadataFromLegacyMetadata */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassElementMetadataFromLegacyMetadata.js");
+function getConstructorArgumentMetadataFromLegacyMetadata(type, index, metadataList) {
+    try {
+        return (0, getClassElementMetadataFromLegacyMetadata_1.getClassElementMetadataFromLegacyMetadata)(metadataList);
+    }
+    catch (error) {
+        if (InversifyCoreError_1.InversifyCoreError.isErrorOfKind(error, InversifyCoreErrorKind_1.InversifyCoreErrorKind.missingInjectionDecorator)) {
+            throw new InversifyCoreError_1.InversifyCoreError(InversifyCoreErrorKind_1.InversifyCoreErrorKind.missingInjectionDecorator, `Expected a single @inject, @multiInject or @unmanaged decorator at type "${type.name}" at constructor arguments at index "${index.toString()}"`, { cause: error });
+        }
+        else {
+            throw error;
+        }
+    }
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getLegacyMetadata.js":
+/*!***********************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getLegacyMetadata.js ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getLegacyMetadata = getLegacyMetadata;
+const keys_1 = __webpack_require__(/*! ../../reflectMetadata/data/keys */ "../../node_modules/@inversifyjs/core/lib/cjs/reflectMetadata/data/keys.js");
+const ClassElementMetadataKind_1 = __webpack_require__(/*! ../models/ClassElementMetadataKind */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/models/ClassElementMetadataKind.js");
+function getLegacyMetadata(classElementMetadata) {
+    switch (classElementMetadata.kind) {
+        case ClassElementMetadataKind_1.ClassElementMetadataKind.unmanaged:
+            return getUnmanagedLegacyMetadata();
+        default:
+            return getManagedLegacyMetadata(classElementMetadata);
+    }
+}
+function getManagedLegacyMetadata(classElementMetadata) {
+    const legacyMetadataList = [
+        getManagedKindLegacyMetadata(classElementMetadata),
+    ];
+    if (classElementMetadata.name !== undefined) {
+        legacyMetadataList.push({
+            key: keys_1.NAMED_TAG,
+            value: classElementMetadata.name,
+        });
+    }
+    if (classElementMetadata.optional) {
+        legacyMetadataList.push({
+            key: keys_1.OPTIONAL_TAG,
+            value: true,
+        });
+    }
+    for (const [tagKey, tagValue] of classElementMetadata.tags) {
+        legacyMetadataList.push({
+            key: tagKey,
+            value: tagValue,
+        });
+    }
+    if (classElementMetadata.targetName !== undefined) {
+        legacyMetadataList.push({
+            key: keys_1.NAME_TAG,
+            value: classElementMetadata.targetName,
+        });
+    }
+    return legacyMetadataList;
+}
+function getManagedKindLegacyMetadata(classElementMetadata) {
+    let kindLegacyMetadata;
+    switch (classElementMetadata.kind) {
+        case ClassElementMetadataKind_1.ClassElementMetadataKind.multipleInjection:
+            kindLegacyMetadata = {
+                key: keys_1.MULTI_INJECT_TAG,
+                value: classElementMetadata.value,
+            };
+            break;
+        case ClassElementMetadataKind_1.ClassElementMetadataKind.singleInjection:
+            kindLegacyMetadata = {
+                key: keys_1.INJECT_TAG,
+                value: classElementMetadata.value,
+            };
+            break;
+    }
+    return kindLegacyMetadata;
+}
+function getUnmanagedLegacyMetadata() {
+    return [
+        {
+            key: keys_1.UNMANAGED_TAG,
+            value: true,
+        },
+    ];
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getPropertyMetadataFromLegacyMetadata.js":
+/*!*******************************************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getPropertyMetadataFromLegacyMetadata.js ***!
+  \*******************************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getPropertyMetadataFromLegacyMetadata = getPropertyMetadataFromLegacyMetadata;
+const InversifyCoreError_1 = __webpack_require__(/*! ../../error/models/InversifyCoreError */ "../../node_modules/@inversifyjs/core/lib/cjs/error/models/InversifyCoreError.js");
+const InversifyCoreErrorKind_1 = __webpack_require__(/*! ../../error/models/InversifyCoreErrorKind */ "../../node_modules/@inversifyjs/core/lib/cjs/error/models/InversifyCoreErrorKind.js");
+const getClassElementMetadataFromLegacyMetadata_1 = __webpack_require__(/*! ./getClassElementMetadataFromLegacyMetadata */ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/calculations/getClassElementMetadataFromLegacyMetadata.js");
+function getPropertyMetadataFromLegacyMetadata(type, key, metadataList) {
+    try {
+        return (0, getClassElementMetadataFromLegacyMetadata_1.getClassElementMetadataFromLegacyMetadata)(metadataList);
+    }
+    catch (error) {
+        if (InversifyCoreError_1.InversifyCoreError.isErrorOfKind(error, InversifyCoreErrorKind_1.InversifyCoreErrorKind.missingInjectionDecorator)) {
+            throw new InversifyCoreError_1.InversifyCoreError(InversifyCoreErrorKind_1.InversifyCoreErrorKind.missingInjectionDecorator, `Expected a single @inject, @multiInject or @unmanaged decorator at type "${type.name}" at property "${key.toString()}"`, { cause: error });
+        }
+        else {
+            throw error;
+        }
+    }
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/metadata/models/ClassElementMetadataKind.js":
+/*!************************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/metadata/models/ClassElementMetadataKind.js ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ClassElementMetadataKind = void 0;
+var ClassElementMetadataKind;
+(function (ClassElementMetadataKind) {
+    ClassElementMetadataKind[ClassElementMetadataKind["multipleInjection"] = 0] = "multipleInjection";
+    ClassElementMetadataKind[ClassElementMetadataKind["singleInjection"] = 1] = "singleInjection";
+    ClassElementMetadataKind[ClassElementMetadataKind["unmanaged"] = 2] = "unmanaged";
+})(ClassElementMetadataKind || (exports.ClassElementMetadataKind = ClassElementMetadataKind = {}));
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/prototype/calculations/getBaseType.js":
+/*!******************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/prototype/calculations/getBaseType.js ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getBaseType = getBaseType;
+function getBaseType(type) {
+    const prototype = Object.getPrototypeOf(type.prototype);
+    const baseType = prototype?.constructor;
+    return baseType;
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/reflectMetadata/data/keys.js":
+/*!*********************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/reflectMetadata/data/keys.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.NON_CUSTOM_TAG_KEYS = exports.PRE_DESTROY = exports.POST_CONSTRUCT = exports.DESIGN_PARAM_TYPES = exports.PARAM_TYPES = exports.TAGGED_PROP = exports.TAGGED = exports.MULTI_INJECT_TAG = exports.INJECT_TAG = exports.OPTIONAL_TAG = exports.UNMANAGED_TAG = exports.NAME_TAG = exports.NAMED_TAG = void 0;
+// Used for named bindings
+exports.NAMED_TAG = 'named';
+exports.NAME_TAG = 'name';
+// The for unmanaged injections (in base classes when using inheritance)
+exports.UNMANAGED_TAG = 'unmanaged';
+// The for optional injections
+exports.OPTIONAL_TAG = 'optional';
+// The type of the binding at design time
+exports.INJECT_TAG = 'inject';
+// The type of the binding at design type for multi-injections
+exports.MULTI_INJECT_TAG = 'multi_inject';
+// used to store constructor arguments tags
+exports.TAGGED = 'inversify:tagged';
+// used to store class properties tags
+exports.TAGGED_PROP = 'inversify:tagged_props';
+// used to store types to be injected
+exports.PARAM_TYPES = 'inversify:paramtypes';
+// used to access design time types
+exports.DESIGN_PARAM_TYPES = 'design:paramtypes';
+// used to identify postConstruct functions
+exports.POST_CONSTRUCT = 'post_construct';
+// used to identify preDestroy functions
+exports.PRE_DESTROY = 'pre_destroy';
+function getNonCustomTagKeys() {
+    return [
+        exports.INJECT_TAG,
+        exports.MULTI_INJECT_TAG,
+        exports.NAME_TAG,
+        exports.UNMANAGED_TAG,
+        exports.NAMED_TAG,
+        exports.OPTIONAL_TAG,
+    ];
+}
+exports.NON_CUSTOM_TAG_KEYS = getNonCustomTagKeys();
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/string/models/LegacyQueryableStringImpl.js":
+/*!***********************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/string/models/LegacyQueryableStringImpl.js ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.LegacyQueryableStringImpl = void 0;
+class LegacyQueryableStringImpl {
+    #str;
+    constructor(str) {
+        this.#str = str;
+    }
+    startsWith(searchString) {
+        return this.#str.startsWith(searchString);
+    }
+    endsWith(searchString) {
+        return this.#str.endsWith(searchString);
+    }
+    contains(searchString) {
+        return this.#str.includes(searchString);
+    }
+    equals(compareString) {
+        return this.#str === compareString;
+    }
+    value() {
+        return this.#str;
+    }
+}
+exports.LegacyQueryableStringImpl = LegacyQueryableStringImpl;
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/core/lib/cjs/symbol/calculations/getDescription.js":
+/*!******************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/core/lib/cjs/symbol/calculations/getDescription.js ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getDescription = getDescription;
+const SYMBOL_INDEX_START = 7;
+const SYMBOL_INDEX_END = -1;
+function getDescription(symbol) {
+    return symbol.toString().slice(SYMBOL_INDEX_START, SYMBOL_INDEX_END);
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/reflect-metadata-utils/lib/cjs/index.js":
+/*!*******************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/reflect-metadata-utils/lib/cjs/index.js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.updateReflectMetadata = exports.getReflectMetadata = void 0;
+const getReflectMetadata_1 = __webpack_require__(/*! ./reflectMetadata/utils/getReflectMetadata */ "../../node_modules/@inversifyjs/reflect-metadata-utils/lib/cjs/reflectMetadata/utils/getReflectMetadata.js");
+Object.defineProperty(exports, "getReflectMetadata", ({ enumerable: true, get: function () { return getReflectMetadata_1.getReflectMetadata; } }));
+const updateReflectMetadata_1 = __webpack_require__(/*! ./reflectMetadata/utils/updateReflectMetadata */ "../../node_modules/@inversifyjs/reflect-metadata-utils/lib/cjs/reflectMetadata/utils/updateReflectMetadata.js");
+Object.defineProperty(exports, "updateReflectMetadata", ({ enumerable: true, get: function () { return updateReflectMetadata_1.updateReflectMetadata; } }));
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/reflect-metadata-utils/lib/cjs/reflectMetadata/utils/getReflectMetadata.js":
+/*!******************************************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/reflect-metadata-utils/lib/cjs/reflectMetadata/utils/getReflectMetadata.js ***!
+  \******************************************************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getReflectMetadata = getReflectMetadata;
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+function getReflectMetadata(target, metadataKey) {
+    return Reflect.getMetadata(metadataKey, target);
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@inversifyjs/reflect-metadata-utils/lib/cjs/reflectMetadata/utils/updateReflectMetadata.js":
+/*!*********************************************************************************************************************!*\
+  !*** ../../node_modules/@inversifyjs/reflect-metadata-utils/lib/cjs/reflectMetadata/utils/updateReflectMetadata.js ***!
+  \*********************************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.updateReflectMetadata = updateReflectMetadata;
+const getReflectMetadata_1 = __webpack_require__(/*! ./getReflectMetadata */ "../../node_modules/@inversifyjs/reflect-metadata-utils/lib/cjs/reflectMetadata/utils/getReflectMetadata.js");
+function updateReflectMetadata(target, metadataKey, defaultValue, callback) {
+    const metadata = (0, getReflectMetadata_1.getReflectMetadata)(target, metadataKey) ?? defaultValue;
+    const updatedMetadata = callback(metadata);
+    Reflect.defineMetadata(metadataKey, updatedMetadata, target);
+}
+
+
+/***/ }),
+
 /***/ "../../node_modules/autocompleter/autocomplete.js":
 /*!********************************************************!*\
   !*** ../../node_modules/autocompleter/autocomplete.js ***!
@@ -977,51 +1986,80 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/annotation/decorator_utils.js":
-/*!*********************************************************************!*\
-  !*** ../../node_modules/inversify/es/annotation/decorator_utils.js ***!
-  \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/annotation/decorator_utils.js":
+/*!**************************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/annotation/decorator_utils.js ***!
+  \**************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   createTaggedDecorator: () => (/* binding */ createTaggedDecorator),
-/* harmony export */   decorate: () => (/* binding */ decorate),
-/* harmony export */   tagParameter: () => (/* binding */ tagParameter),
-/* harmony export */   tagProperty: () => (/* binding */ tagProperty)
-/* harmony export */ });
-/* harmony import */ var _constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/es/constants/error_msgs.js");
-/* harmony import */ var _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/es/constants/metadata_keys.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/js */ "../../node_modules/inversify/es/utils/js.js");
 
-
-
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.decorate = decorate;
+exports.tagParameter = tagParameter;
+exports.tagProperty = tagProperty;
+exports.createTaggedDecorator = createTaggedDecorator;
+const ERROR_MSGS = __importStar(__webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/lib/cjs/constants/error_msgs.js"));
+const METADATA_KEY = __importStar(__webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/lib/cjs/constants/metadata_keys.js"));
+const js_1 = __webpack_require__(/*! ../utils/js */ "../../node_modules/inversify/lib/cjs/utils/js.js");
 function targetIsConstructorFunction(target) {
     return target.prototype !== undefined;
 }
 function _throwIfMethodParameter(parameterName) {
     if (parameterName !== undefined) {
-        throw new Error(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.INVALID_DECORATOR_OPERATION);
+        throw new Error(ERROR_MSGS.INVALID_DECORATOR_OPERATION);
     }
 }
 function tagParameter(annotationTarget, parameterName, parameterIndex, metadata) {
     _throwIfMethodParameter(parameterName);
-    _tagParameterOrProperty(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_1__.TAGGED, annotationTarget, parameterIndex.toString(), metadata);
+    _tagParameterOrProperty(METADATA_KEY.TAGGED, annotationTarget, parameterIndex.toString(), metadata);
 }
 function tagProperty(annotationTarget, propertyName, metadata) {
     if (targetIsConstructorFunction(annotationTarget)) {
-        throw new Error(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.INVALID_DECORATOR_OPERATION);
+        throw new Error(ERROR_MSGS.INVALID_DECORATOR_OPERATION);
     }
-    _tagParameterOrProperty(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_1__.TAGGED_PROP, annotationTarget.constructor, propertyName, metadata);
+    _tagParameterOrProperty(METADATA_KEY.TAGGED_PROP, annotationTarget.constructor, propertyName, metadata);
 }
 function _ensureNoMetadataKeyDuplicates(metadata) {
-    var metadatas = [];
+    let metadatas = [];
     if (Array.isArray(metadata)) {
         metadatas = metadata;
-        var duplicate = (0,_utils_js__WEBPACK_IMPORTED_MODULE_2__.getFirstArrayDuplicate)(metadatas.map(function (md) { return md.key; }));
+        const duplicate = (0, js_1.getFirstArrayDuplicate)(metadatas.map((md) => md.key));
         if (duplicate !== undefined) {
-            throw new Error("".concat(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.DUPLICATED_METADATA, " ").concat(duplicate.toString()));
+            throw new Error(`${ERROR_MSGS.DUPLICATED_METADATA} ${duplicate.toString()}`);
         }
     }
     else {
@@ -1030,32 +2068,30 @@ function _ensureNoMetadataKeyDuplicates(metadata) {
     return metadatas;
 }
 function _tagParameterOrProperty(metadataKey, annotationTarget, key, metadata) {
-    var metadatas = _ensureNoMetadataKeyDuplicates(metadata);
-    var paramsOrPropertiesMetadata = {};
+    const metadatas = _ensureNoMetadataKeyDuplicates(metadata);
+    let paramsOrPropertiesMetadata = {};
+    // read metadata if available
     if (Reflect.hasOwnMetadata(metadataKey, annotationTarget)) {
         paramsOrPropertiesMetadata = Reflect.getMetadata(metadataKey, annotationTarget);
     }
-    var paramOrPropertyMetadata = paramsOrPropertiesMetadata[key];
+    let paramOrPropertyMetadata = paramsOrPropertiesMetadata[key];
     if (paramOrPropertyMetadata === undefined) {
         paramOrPropertyMetadata = [];
     }
     else {
-        var _loop_1 = function (m) {
-            if (metadatas.some(function (md) { return md.key === m.key; })) {
-                throw new Error("".concat(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.DUPLICATED_METADATA, " ").concat(m.key.toString()));
+        for (const m of paramOrPropertyMetadata) {
+            if (metadatas.some((md) => md.key === m.key)) {
+                throw new Error(`${ERROR_MSGS.DUPLICATED_METADATA} ${m.key.toString()}`);
             }
-        };
-        for (var _i = 0, paramOrPropertyMetadata_1 = paramOrPropertyMetadata; _i < paramOrPropertyMetadata_1.length; _i++) {
-            var m = paramOrPropertyMetadata_1[_i];
-            _loop_1(m);
         }
     }
-    paramOrPropertyMetadata.push.apply(paramOrPropertyMetadata, metadatas);
+    // set metadata
+    paramOrPropertyMetadata.push(...metadatas);
     paramsOrPropertiesMetadata[key] = paramOrPropertyMetadata;
     Reflect.defineMetadata(metadataKey, paramsOrPropertiesMetadata, annotationTarget);
 }
 function createTaggedDecorator(metadata) {
-    return function (target, targetKey, indexOrPropertyDescriptor) {
+    return (target, targetKey, indexOrPropertyDescriptor) => {
         if (typeof indexOrPropertyDescriptor === 'number') {
             tagParameter(target, targetKey, indexOrPropertyDescriptor, metadata);
         }
@@ -1068,8 +2104,15 @@ function _decorate(decorators, target) {
     Reflect.decorate(decorators, target);
 }
 function _param(paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); };
+    return function (target, key) {
+        decorator(target, key, paramIndex);
+    };
 }
+// Allows VanillaJS developers to use decorators:
+// decorate(injectable(), FooBar);
+// decorate(targetName('foo', 'bar'), FooBar);
+// decorate(named('foo'), FooBar, 0);
+// decorate(tagged('bar'), FooBar, 1);
 function decorate(decorator, target, parameterIndexOrProperty) {
     if (typeof parameterIndexOrProperty === 'number') {
         _decorate([_param(parameterIndexOrProperty, decorator)], target);
@@ -1083,55 +2126,81 @@ function decorate(decorator, target, parameterIndexOrProperty) {
 }
 
 
-
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/annotation/inject.js":
-/*!************************************************************!*\
-  !*** ../../node_modules/inversify/es/annotation/inject.js ***!
-  \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   inject: () => (/* binding */ inject)
-/* harmony export */ });
-/* harmony import */ var _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/es/constants/metadata_keys.js");
-/* harmony import */ var _inject_base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./inject_base */ "../../node_modules/inversify/es/annotation/inject_base.js");
-
-
-var inject = (0,_inject_base__WEBPACK_IMPORTED_MODULE_0__.injectBase)(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_1__.INJECT_TAG);
-
-
-
-/***/ }),
-
-/***/ "../../node_modules/inversify/es/annotation/inject_base.js":
+/***/ "../../node_modules/inversify/lib/cjs/annotation/inject.js":
 /*!*****************************************************************!*\
-  !*** ../../node_modules/inversify/es/annotation/inject_base.js ***!
+  !*** ../../node_modules/inversify/lib/cjs/annotation/inject.js ***!
   \*****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   injectBase: () => (/* binding */ injectBase)
-/* harmony export */ });
-/* harmony import */ var _constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/es/constants/error_msgs.js");
-/* harmony import */ var _planning_metadata__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../planning/metadata */ "../../node_modules/inversify/es/planning/metadata.js");
-/* harmony import */ var _decorator_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./decorator_utils */ "../../node_modules/inversify/es/annotation/decorator_utils.js");
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.inject = void 0;
+const METADATA_KEY = __importStar(__webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/lib/cjs/constants/metadata_keys.js"));
+const inject_base_1 = __webpack_require__(/*! ./inject_base */ "../../node_modules/inversify/lib/cjs/annotation/inject_base.js");
+const inject = (0, inject_base_1.injectBase)(METADATA_KEY.INJECT_TAG);
+exports.inject = inject;
 
 
+/***/ }),
 
+/***/ "../../node_modules/inversify/lib/cjs/annotation/inject_base.js":
+/*!**********************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/annotation/inject_base.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.injectBase = injectBase;
+const error_msgs_1 = __webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/lib/cjs/constants/error_msgs.js");
+const metadata_1 = __webpack_require__(/*! ../planning/metadata */ "../../node_modules/inversify/lib/cjs/planning/metadata.js");
+const decorator_utils_1 = __webpack_require__(/*! ./decorator_utils */ "../../node_modules/inversify/lib/cjs/annotation/decorator_utils.js");
 function injectBase(metadataKey) {
-    return function (serviceIdentifier) {
-        return function (target, targetKey, indexOrPropertyDescriptor) {
+    return (serviceIdentifier) => {
+        return (target, targetKey, indexOrPropertyDescriptor) => {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (serviceIdentifier === undefined) {
-                var className = typeof target === 'function' ? target.name : target.constructor.name;
-                throw new Error((0,_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.UNDEFINED_INJECT_ANNOTATION)(className));
+                const className = typeof target === 'function' ? target.name : target.constructor.name;
+                throw new Error((0, error_msgs_1.UNDEFINED_INJECT_ANNOTATION)(className));
             }
-            return (0,_decorator_utils__WEBPACK_IMPORTED_MODULE_1__.createTaggedDecorator)(new _planning_metadata__WEBPACK_IMPORTED_MODULE_2__.Metadata(metadataKey, serviceIdentifier))(target, targetKey, indexOrPropertyDescriptor);
+            (0, decorator_utils_1.createTaggedDecorator)(new metadata_1.Metadata(metadataKey, serviceIdentifier))(target, targetKey, indexOrPropertyDescriptor);
         };
     };
 }
@@ -1139,195 +2208,343 @@ function injectBase(metadataKey) {
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/annotation/injectable.js":
-/*!****************************************************************!*\
-  !*** ../../node_modules/inversify/es/annotation/injectable.js ***!
-  \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/annotation/injectable.js":
+/*!*********************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/annotation/injectable.js ***!
+  \*********************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   injectable: () => (/* binding */ injectable)
-/* harmony export */ });
-/* harmony import */ var _constants_error_msgs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/es/constants/error_msgs.js");
-/* harmony import */ var _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/es/constants/metadata_keys.js");
 
-
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.injectable = injectable;
+const ERRORS_MSGS = __importStar(__webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/lib/cjs/constants/error_msgs.js"));
+const METADATA_KEY = __importStar(__webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/lib/cjs/constants/metadata_keys.js"));
 function injectable() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return function (target) {
-        if (Reflect.hasOwnMetadata(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_0__.PARAM_TYPES, target)) {
-            throw new Error(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_1__.DUPLICATED_INJECTABLE_DECORATOR);
+        if (Reflect.hasOwnMetadata(METADATA_KEY.PARAM_TYPES, target)) {
+            throw new Error(ERRORS_MSGS.DUPLICATED_INJECTABLE_DECORATOR);
         }
-        var types = Reflect.getMetadata(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_0__.DESIGN_PARAM_TYPES, target) || [];
-        Reflect.defineMetadata(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_0__.PARAM_TYPES, types, target);
+        const types = Reflect.getMetadata(METADATA_KEY.DESIGN_PARAM_TYPES, target) || [];
+        Reflect.defineMetadata(METADATA_KEY.PARAM_TYPES, types, target);
         return target;
     };
 }
 
 
-
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/annotation/lazy_service_identifier.js":
-/*!*****************************************************************************!*\
-  !*** ../../node_modules/inversify/es/annotation/lazy_service_identifier.js ***!
-  \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/annotation/multi_inject.js":
+/*!***********************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/annotation/multi_inject.js ***!
+  \***********************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   LazyServiceIdentifier: () => (/* binding */ LazyServiceIdentifier)
-/* harmony export */ });
-var LazyServiceIdentifier = (function () {
-    function LazyServiceIdentifier(cb) {
-        this._cb = cb;
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
     }
-    LazyServiceIdentifier.prototype.unwrap = function () {
-        return this._cb();
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
     };
-    return LazyServiceIdentifier;
-}());
-
-
-
-/***/ }),
-
-/***/ "../../node_modules/inversify/es/annotation/multi_inject.js":
-/*!******************************************************************!*\
-  !*** ../../node_modules/inversify/es/annotation/multi_inject.js ***!
-  \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   multiInject: () => (/* binding */ multiInject)
-/* harmony export */ });
-/* harmony import */ var _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/es/constants/metadata_keys.js");
-/* harmony import */ var _inject_base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./inject_base */ "../../node_modules/inversify/es/annotation/inject_base.js");
-
-
-var multiInject = (0,_inject_base__WEBPACK_IMPORTED_MODULE_0__.injectBase)(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_1__.MULTI_INJECT_TAG);
-
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.multiInject = void 0;
+const METADATA_KEY = __importStar(__webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/lib/cjs/constants/metadata_keys.js"));
+const inject_base_1 = __webpack_require__(/*! ./inject_base */ "../../node_modules/inversify/lib/cjs/annotation/inject_base.js");
+const multiInject = (0, inject_base_1.injectBase)(METADATA_KEY.MULTI_INJECT_TAG);
+exports.multiInject = multiInject;
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/annotation/named.js":
-/*!***********************************************************!*\
-  !*** ../../node_modules/inversify/es/annotation/named.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/annotation/named.js":
+/*!****************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/annotation/named.js ***!
+  \****************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   named: () => (/* binding */ named)
-/* harmony export */ });
-/* harmony import */ var _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/es/constants/metadata_keys.js");
-/* harmony import */ var _planning_metadata__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../planning/metadata */ "../../node_modules/inversify/es/planning/metadata.js");
-/* harmony import */ var _decorator_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./decorator_utils */ "../../node_modules/inversify/es/annotation/decorator_utils.js");
 
-
-
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.named = named;
+const METADATA_KEY = __importStar(__webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/lib/cjs/constants/metadata_keys.js"));
+const metadata_1 = __webpack_require__(/*! ../planning/metadata */ "../../node_modules/inversify/lib/cjs/planning/metadata.js");
+const decorator_utils_1 = __webpack_require__(/*! ./decorator_utils */ "../../node_modules/inversify/lib/cjs/annotation/decorator_utils.js");
+// Used to add named metadata which is used to resolve name-based contextual bindings.
 function named(name) {
-    return (0,_decorator_utils__WEBPACK_IMPORTED_MODULE_0__.createTaggedDecorator)(new _planning_metadata__WEBPACK_IMPORTED_MODULE_1__.Metadata(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_2__.NAMED_TAG, name));
+    return (0, decorator_utils_1.createTaggedDecorator)(new metadata_1.Metadata(METADATA_KEY.NAMED_TAG, name));
 }
-
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/annotation/optional.js":
-/*!**************************************************************!*\
-  !*** ../../node_modules/inversify/es/annotation/optional.js ***!
-  \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/annotation/optional.js":
+/*!*******************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/annotation/optional.js ***!
+  \*******************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   optional: () => (/* binding */ optional)
-/* harmony export */ });
-/* harmony import */ var _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/es/constants/metadata_keys.js");
-/* harmony import */ var _planning_metadata__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../planning/metadata */ "../../node_modules/inversify/es/planning/metadata.js");
-/* harmony import */ var _decorator_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./decorator_utils */ "../../node_modules/inversify/es/annotation/decorator_utils.js");
 
-
-
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.optional = optional;
+const METADATA_KEY = __importStar(__webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/lib/cjs/constants/metadata_keys.js"));
+const metadata_1 = __webpack_require__(/*! ../planning/metadata */ "../../node_modules/inversify/lib/cjs/planning/metadata.js");
+const decorator_utils_1 = __webpack_require__(/*! ./decorator_utils */ "../../node_modules/inversify/lib/cjs/annotation/decorator_utils.js");
 function optional() {
-    return (0,_decorator_utils__WEBPACK_IMPORTED_MODULE_0__.createTaggedDecorator)(new _planning_metadata__WEBPACK_IMPORTED_MODULE_1__.Metadata(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_2__.OPTIONAL_TAG, true));
+    return (0, decorator_utils_1.createTaggedDecorator)(new metadata_1.Metadata(METADATA_KEY.OPTIONAL_TAG, true));
 }
 
 
+/***/ }),
+
+/***/ "../../node_modules/inversify/lib/cjs/annotation/post_construct.js":
+/*!*************************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/annotation/post_construct.js ***!
+  \*************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.postConstruct = void 0;
+const ERRORS_MSGS = __importStar(__webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/lib/cjs/constants/error_msgs.js"));
+const METADATA_KEY = __importStar(__webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/lib/cjs/constants/metadata_keys.js"));
+const property_event_decorator_1 = __webpack_require__(/*! ./property_event_decorator */ "../../node_modules/inversify/lib/cjs/annotation/property_event_decorator.js");
+const postConstruct = (0, property_event_decorator_1.propertyEventDecorator)(METADATA_KEY.POST_CONSTRUCT, ERRORS_MSGS.MULTIPLE_POST_CONSTRUCT_METHODS);
+exports.postConstruct = postConstruct;
+
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/annotation/post_construct.js":
-/*!********************************************************************!*\
-  !*** ../../node_modules/inversify/es/annotation/post_construct.js ***!
-  \********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/annotation/pre_destroy.js":
+/*!**********************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/annotation/pre_destroy.js ***!
+  \**********************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   postConstruct: () => (/* binding */ postConstruct)
-/* harmony export */ });
-/* harmony import */ var _constants_error_msgs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/es/constants/error_msgs.js");
-/* harmony import */ var _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/es/constants/metadata_keys.js");
-/* harmony import */ var _property_event_decorator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./property_event_decorator */ "../../node_modules/inversify/es/annotation/property_event_decorator.js");
 
-
-
-var postConstruct = (0,_property_event_decorator__WEBPACK_IMPORTED_MODULE_0__.propertyEventDecorator)(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_1__.POST_CONSTRUCT, _constants_error_msgs__WEBPACK_IMPORTED_MODULE_2__.MULTIPLE_POST_CONSTRUCT_METHODS);
-
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.preDestroy = void 0;
+const ERRORS_MSGS = __importStar(__webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/lib/cjs/constants/error_msgs.js"));
+const METADATA_KEY = __importStar(__webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/lib/cjs/constants/metadata_keys.js"));
+const property_event_decorator_1 = __webpack_require__(/*! ./property_event_decorator */ "../../node_modules/inversify/lib/cjs/annotation/property_event_decorator.js");
+const preDestroy = (0, property_event_decorator_1.propertyEventDecorator)(METADATA_KEY.PRE_DESTROY, ERRORS_MSGS.MULTIPLE_PRE_DESTROY_METHODS);
+exports.preDestroy = preDestroy;
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/annotation/pre_destroy.js":
-/*!*****************************************************************!*\
-  !*** ../../node_modules/inversify/es/annotation/pre_destroy.js ***!
-  \*****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/annotation/property_event_decorator.js":
+/*!***********************************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/annotation/property_event_decorator.js ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   preDestroy: () => (/* binding */ preDestroy)
-/* harmony export */ });
-/* harmony import */ var _constants_error_msgs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/es/constants/error_msgs.js");
-/* harmony import */ var _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/es/constants/metadata_keys.js");
-/* harmony import */ var _property_event_decorator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./property_event_decorator */ "../../node_modules/inversify/es/annotation/property_event_decorator.js");
 
-
-
-var preDestroy = (0,_property_event_decorator__WEBPACK_IMPORTED_MODULE_0__.propertyEventDecorator)(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_1__.PRE_DESTROY, _constants_error_msgs__WEBPACK_IMPORTED_MODULE_2__.MULTIPLE_PRE_DESTROY_METHODS);
-
-
-
-/***/ }),
-
-/***/ "../../node_modules/inversify/es/annotation/property_event_decorator.js":
-/*!******************************************************************************!*\
-  !*** ../../node_modules/inversify/es/annotation/property_event_decorator.js ***!
-  \******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   propertyEventDecorator: () => (/* binding */ propertyEventDecorator)
-/* harmony export */ });
-/* harmony import */ var _planning_metadata__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../planning/metadata */ "../../node_modules/inversify/es/planning/metadata.js");
-
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.propertyEventDecorator = propertyEventDecorator;
+const metadata_1 = __webpack_require__(/*! ../planning/metadata */ "../../node_modules/inversify/lib/cjs/planning/metadata.js");
 function propertyEventDecorator(eventKey, errorMessage) {
-    return function () {
-        return function (target, propertyKey) {
-            var metadata = new _planning_metadata__WEBPACK_IMPORTED_MODULE_0__.Metadata(eventKey, propertyKey);
+    return () => {
+        return (target, propertyKey) => {
+            const metadata = new metadata_1.Metadata(eventKey, propertyKey);
             if (Reflect.hasOwnMetadata(eventKey, target.constructor)) {
                 throw new Error(errorMessage);
             }
@@ -1337,111 +2554,188 @@ function propertyEventDecorator(eventKey, errorMessage) {
 }
 
 
-
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/annotation/tagged.js":
-/*!************************************************************!*\
-  !*** ../../node_modules/inversify/es/annotation/tagged.js ***!
-  \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/annotation/tagged.js":
+/*!*****************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/annotation/tagged.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   tagged: () => (/* binding */ tagged)
-/* harmony export */ });
-/* harmony import */ var _planning_metadata__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../planning/metadata */ "../../node_modules/inversify/es/planning/metadata.js");
-/* harmony import */ var _decorator_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./decorator_utils */ "../../node_modules/inversify/es/annotation/decorator_utils.js");
 
-
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.tagged = tagged;
+const metadata_1 = __webpack_require__(/*! ../planning/metadata */ "../../node_modules/inversify/lib/cjs/planning/metadata.js");
+const decorator_utils_1 = __webpack_require__(/*! ./decorator_utils */ "../../node_modules/inversify/lib/cjs/annotation/decorator_utils.js");
+// Used to add custom metadata which is used to resolve metadata-based contextual bindings.
 function tagged(metadataKey, metadataValue) {
-    return (0,_decorator_utils__WEBPACK_IMPORTED_MODULE_0__.createTaggedDecorator)(new _planning_metadata__WEBPACK_IMPORTED_MODULE_1__.Metadata(metadataKey, metadataValue));
+    return (0, decorator_utils_1.createTaggedDecorator)(new metadata_1.Metadata(metadataKey, metadataValue));
 }
 
 
-
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/annotation/target_name.js":
-/*!*****************************************************************!*\
-  !*** ../../node_modules/inversify/es/annotation/target_name.js ***!
-  \*****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/annotation/target_name.js":
+/*!**********************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/annotation/target_name.js ***!
+  \**********************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   targetName: () => (/* binding */ targetName)
-/* harmony export */ });
-/* harmony import */ var _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/es/constants/metadata_keys.js");
-/* harmony import */ var _planning_metadata__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../planning/metadata */ "../../node_modules/inversify/es/planning/metadata.js");
-/* harmony import */ var _decorator_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./decorator_utils */ "../../node_modules/inversify/es/annotation/decorator_utils.js");
 
-
-
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.targetName = targetName;
+const METADATA_KEY = __importStar(__webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/lib/cjs/constants/metadata_keys.js"));
+const metadata_1 = __webpack_require__(/*! ../planning/metadata */ "../../node_modules/inversify/lib/cjs/planning/metadata.js");
+const decorator_utils_1 = __webpack_require__(/*! ./decorator_utils */ "../../node_modules/inversify/lib/cjs/annotation/decorator_utils.js");
 function targetName(name) {
     return function (target, targetKey, index) {
-        var metadata = new _planning_metadata__WEBPACK_IMPORTED_MODULE_0__.Metadata(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_1__.NAME_TAG, name);
-        (0,_decorator_utils__WEBPACK_IMPORTED_MODULE_2__.tagParameter)(target, targetKey, index, metadata);
+        const metadata = new metadata_1.Metadata(METADATA_KEY.NAME_TAG, name);
+        (0, decorator_utils_1.tagParameter)(target, targetKey, index, metadata);
     };
 }
 
 
-
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/annotation/unmanaged.js":
-/*!***************************************************************!*\
-  !*** ../../node_modules/inversify/es/annotation/unmanaged.js ***!
-  \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/annotation/unmanaged.js":
+/*!********************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/annotation/unmanaged.js ***!
+  \********************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   unmanaged: () => (/* binding */ unmanaged)
-/* harmony export */ });
-/* harmony import */ var _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/es/constants/metadata_keys.js");
-/* harmony import */ var _planning_metadata__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../planning/metadata */ "../../node_modules/inversify/es/planning/metadata.js");
-/* harmony import */ var _decorator_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./decorator_utils */ "../../node_modules/inversify/es/annotation/decorator_utils.js");
 
-
-
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.unmanaged = unmanaged;
+const METADATA_KEY = __importStar(__webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/lib/cjs/constants/metadata_keys.js"));
+const metadata_1 = __webpack_require__(/*! ../planning/metadata */ "../../node_modules/inversify/lib/cjs/planning/metadata.js");
+const decorator_utils_1 = __webpack_require__(/*! ./decorator_utils */ "../../node_modules/inversify/lib/cjs/annotation/decorator_utils.js");
 function unmanaged() {
     return function (target, targetKey, index) {
-        var metadata = new _planning_metadata__WEBPACK_IMPORTED_MODULE_0__.Metadata(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_1__.UNMANAGED_TAG, true);
-        (0,_decorator_utils__WEBPACK_IMPORTED_MODULE_2__.tagParameter)(target, targetKey, index, metadata);
+        const metadata = new metadata_1.Metadata(METADATA_KEY.UNMANAGED_TAG, true);
+        (0, decorator_utils_1.tagParameter)(target, targetKey, index, metadata);
     };
 }
 
 
-
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/bindings/binding.js":
-/*!***********************************************************!*\
-  !*** ../../node_modules/inversify/es/bindings/binding.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/bindings/binding.js":
+/*!****************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/bindings/binding.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Binding: () => (/* binding */ Binding)
-/* harmony export */ });
-/* harmony import */ var _constants_literal_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/literal_types */ "../../node_modules/inversify/es/constants/literal_types.js");
-/* harmony import */ var _utils_id__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/id */ "../../node_modules/inversify/es/utils/id.js");
 
-
-var Binding = (function () {
-    function Binding(serviceIdentifier, scope) {
-        this.id = (0,_utils_id__WEBPACK_IMPORTED_MODULE_0__.id)();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Binding = void 0;
+const literal_types_1 = __webpack_require__(/*! ../constants/literal_types */ "../../node_modules/inversify/lib/cjs/constants/literal_types.js");
+const id_1 = __webpack_require__(/*! ../utils/id */ "../../node_modules/inversify/lib/cjs/utils/id.js");
+class Binding {
+    id;
+    moduleId;
+    // Determines weather the bindings has been already activated
+    // The activation action takes place when an instance is resolved
+    // If the scope is singleton it only happens once
+    activated;
+    // A runtime identifier because at runtime we don't have interfaces
+    serviceIdentifier;
+    // constructor from binding to or toConstructor
+    implementationType;
+    // Cache used to allow singleton scope and BindingType.ConstantValue bindings
+    cache;
+    // Cache used to allow BindingType.DynamicValue bindings
+    dynamicValue;
+    // The scope mode to be used
+    scope;
+    // The kind of binding
+    type;
+    // A factory method used in BindingType.Factory bindings
+    factory;
+    // An async factory method used in BindingType.Provider bindings
+    provider;
+    // A constraint used to limit the contexts in which this binding is applicable
+    constraint;
+    // On activation handler (invoked just before an instance is added to cache and injected)
+    onActivation;
+    // On deactivation handler (invoked just before an instance is unbinded and removed from container)
+    onDeactivation;
+    constructor(serviceIdentifier, scope) {
+        this.id = (0, id_1.id)();
         this.activated = false;
         this.serviceIdentifier = serviceIdentifier;
         this.scope = scope;
-        this.type = _constants_literal_types__WEBPACK_IMPORTED_MODULE_1__.BindingTypeEnum.Invalid;
-        this.constraint = function (request) { return true; };
+        this.type = literal_types_1.BindingTypeEnum.Invalid;
+        this.constraint = (_request) => true;
         this.implementationType = null;
         this.cache = null;
         this.factory = null;
@@ -1450,9 +2744,10 @@ var Binding = (function () {
         this.onDeactivation = null;
         this.dynamicValue = null;
     }
-    Binding.prototype.clone = function () {
-        var clone = new Binding(this.serviceIdentifier, this.scope);
-        clone.activated = (clone.scope === _constants_literal_types__WEBPACK_IMPORTED_MODULE_1__.BindingScopeEnum.Singleton) ? this.activated : false;
+    clone() {
+        const clone = new Binding(this.serviceIdentifier, this.scope);
+        clone.activated =
+            clone.scope === literal_types_1.BindingScopeEnum.Singleton ? this.activated : false;
         clone.implementationType = this.implementationType;
         clone.dynamicValue = this.dynamicValue;
         clone.scope = this.scope;
@@ -1464,161 +2759,123 @@ var Binding = (function () {
         clone.onDeactivation = this.onDeactivation;
         clone.cache = this.cache;
         return clone;
-    };
-    return Binding;
-}());
-
-
-
-/***/ }),
-
-/***/ "../../node_modules/inversify/es/bindings/binding_count.js":
-/*!*****************************************************************!*\
-  !*** ../../node_modules/inversify/es/bindings/binding_count.js ***!
-  \*****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   BindingCount: () => (/* binding */ BindingCount)
-/* harmony export */ });
-var BindingCount = {
-    MultipleBindingsAvailable: 2,
-    NoBindingsAvailable: 0,
-    OnlyOneBindingAvailable: 1
-};
-
-
-/***/ }),
-
-/***/ "../../node_modules/inversify/es/constants/error_msgs.js":
-/*!***************************************************************!*\
-  !*** ../../node_modules/inversify/es/constants/error_msgs.js ***!
-  \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   AMBIGUOUS_MATCH: () => (/* binding */ AMBIGUOUS_MATCH),
-/* harmony export */   ARGUMENTS_LENGTH_MISMATCH: () => (/* binding */ ARGUMENTS_LENGTH_MISMATCH),
-/* harmony export */   ASYNC_UNBIND_REQUIRED: () => (/* binding */ ASYNC_UNBIND_REQUIRED),
-/* harmony export */   CANNOT_UNBIND: () => (/* binding */ CANNOT_UNBIND),
-/* harmony export */   CIRCULAR_DEPENDENCY: () => (/* binding */ CIRCULAR_DEPENDENCY),
-/* harmony export */   CIRCULAR_DEPENDENCY_IN_FACTORY: () => (/* binding */ CIRCULAR_DEPENDENCY_IN_FACTORY),
-/* harmony export */   CONTAINER_OPTIONS_INVALID_AUTO_BIND_INJECTABLE: () => (/* binding */ CONTAINER_OPTIONS_INVALID_AUTO_BIND_INJECTABLE),
-/* harmony export */   CONTAINER_OPTIONS_INVALID_DEFAULT_SCOPE: () => (/* binding */ CONTAINER_OPTIONS_INVALID_DEFAULT_SCOPE),
-/* harmony export */   CONTAINER_OPTIONS_INVALID_SKIP_BASE_CHECK: () => (/* binding */ CONTAINER_OPTIONS_INVALID_SKIP_BASE_CHECK),
-/* harmony export */   CONTAINER_OPTIONS_MUST_BE_AN_OBJECT: () => (/* binding */ CONTAINER_OPTIONS_MUST_BE_AN_OBJECT),
-/* harmony export */   DUPLICATED_INJECTABLE_DECORATOR: () => (/* binding */ DUPLICATED_INJECTABLE_DECORATOR),
-/* harmony export */   DUPLICATED_METADATA: () => (/* binding */ DUPLICATED_METADATA),
-/* harmony export */   INVALID_BINDING_TYPE: () => (/* binding */ INVALID_BINDING_TYPE),
-/* harmony export */   INVALID_DECORATOR_OPERATION: () => (/* binding */ INVALID_DECORATOR_OPERATION),
-/* harmony export */   INVALID_FUNCTION_BINDING: () => (/* binding */ INVALID_FUNCTION_BINDING),
-/* harmony export */   INVALID_MIDDLEWARE_RETURN: () => (/* binding */ INVALID_MIDDLEWARE_RETURN),
-/* harmony export */   INVALID_TO_SELF_VALUE: () => (/* binding */ INVALID_TO_SELF_VALUE),
-/* harmony export */   KEY_NOT_FOUND: () => (/* binding */ KEY_NOT_FOUND),
-/* harmony export */   LAZY_IN_SYNC: () => (/* binding */ LAZY_IN_SYNC),
-/* harmony export */   MISSING_INJECTABLE_ANNOTATION: () => (/* binding */ MISSING_INJECTABLE_ANNOTATION),
-/* harmony export */   MISSING_INJECT_ANNOTATION: () => (/* binding */ MISSING_INJECT_ANNOTATION),
-/* harmony export */   MULTIPLE_POST_CONSTRUCT_METHODS: () => (/* binding */ MULTIPLE_POST_CONSTRUCT_METHODS),
-/* harmony export */   MULTIPLE_PRE_DESTROY_METHODS: () => (/* binding */ MULTIPLE_PRE_DESTROY_METHODS),
-/* harmony export */   NOT_IMPLEMENTED: () => (/* binding */ NOT_IMPLEMENTED),
-/* harmony export */   NOT_REGISTERED: () => (/* binding */ NOT_REGISTERED),
-/* harmony export */   NO_MORE_SNAPSHOTS_AVAILABLE: () => (/* binding */ NO_MORE_SNAPSHOTS_AVAILABLE),
-/* harmony export */   NULL_ARGUMENT: () => (/* binding */ NULL_ARGUMENT),
-/* harmony export */   ON_DEACTIVATION_ERROR: () => (/* binding */ ON_DEACTIVATION_ERROR),
-/* harmony export */   POST_CONSTRUCT_ERROR: () => (/* binding */ POST_CONSTRUCT_ERROR),
-/* harmony export */   PRE_DESTROY_ERROR: () => (/* binding */ PRE_DESTROY_ERROR),
-/* harmony export */   STACK_OVERFLOW: () => (/* binding */ STACK_OVERFLOW),
-/* harmony export */   UNDEFINED_INJECT_ANNOTATION: () => (/* binding */ UNDEFINED_INJECT_ANNOTATION)
-/* harmony export */ });
-var DUPLICATED_INJECTABLE_DECORATOR = 'Cannot apply @injectable decorator multiple times.';
-var DUPLICATED_METADATA = 'Metadata key was used more than once in a parameter:';
-var NULL_ARGUMENT = 'NULL argument';
-var KEY_NOT_FOUND = 'Key Not Found';
-var AMBIGUOUS_MATCH = 'Ambiguous match found for serviceIdentifier:';
-var CANNOT_UNBIND = 'Could not unbind serviceIdentifier:';
-var NOT_REGISTERED = 'No matching bindings found for serviceIdentifier:';
-var MISSING_INJECTABLE_ANNOTATION = 'Missing required @injectable annotation in:';
-var MISSING_INJECT_ANNOTATION = 'Missing required @inject or @multiInject annotation in:';
-var UNDEFINED_INJECT_ANNOTATION = function (name) {
-    return "@inject called with undefined this could mean that the class ".concat(name, " has ") +
-        'a circular dependency problem. You can use a LazyServiceIdentifer to ' +
-        'overcome this limitation.';
-};
-var CIRCULAR_DEPENDENCY = 'Circular dependency found:';
-var NOT_IMPLEMENTED = 'Sorry, this feature is not fully implemented yet.';
-var INVALID_BINDING_TYPE = 'Invalid binding type:';
-var NO_MORE_SNAPSHOTS_AVAILABLE = 'No snapshot available to restore.';
-var INVALID_MIDDLEWARE_RETURN = 'Invalid return type in middleware. Middleware must return!';
-var INVALID_FUNCTION_BINDING = 'Value provided to function binding must be a function!';
-var LAZY_IN_SYNC = function (key) { return "You are attempting to construct ".concat(keyToString(key), " in a synchronous way ") +
-    'but it has asynchronous dependencies.'; };
-var INVALID_TO_SELF_VALUE = 'The toSelf function can only be applied when a constructor is ' +
-    'used as service identifier';
-var INVALID_DECORATOR_OPERATION = 'The @inject @multiInject @tagged and @named decorators ' +
-    'must be applied to the parameters of a class constructor or a class property.';
-var ARGUMENTS_LENGTH_MISMATCH = function () {
-    var values = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        values[_i] = arguments[_i];
     }
-    return 'The number of constructor arguments in the derived class ' +
-        "".concat(values[0], " must be >= than the number of constructor arguments of its base class.");
-};
-var CONTAINER_OPTIONS_MUST_BE_AN_OBJECT = 'Invalid Container constructor argument. Container options ' +
+}
+exports.Binding = Binding;
+
+
+/***/ }),
+
+/***/ "../../node_modules/inversify/lib/cjs/bindings/binding_count.js":
+/*!**********************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/bindings/binding_count.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.BindingCount = void 0;
+var BindingCount;
+(function (BindingCount) {
+    BindingCount[BindingCount["MultipleBindingsAvailable"] = 2] = "MultipleBindingsAvailable";
+    BindingCount[BindingCount["NoBindingsAvailable"] = 0] = "NoBindingsAvailable";
+    BindingCount[BindingCount["OnlyOneBindingAvailable"] = 1] = "OnlyOneBindingAvailable";
+})(BindingCount || (exports.BindingCount = BindingCount = {}));
+
+
+/***/ }),
+
+/***/ "../../node_modules/inversify/lib/cjs/constants/error_msgs.js":
+/*!********************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/constants/error_msgs.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.STACK_OVERFLOW = exports.CIRCULAR_DEPENDENCY_IN_FACTORY = exports.ON_DEACTIVATION_ERROR = exports.PRE_DESTROY_ERROR = exports.POST_CONSTRUCT_ERROR = exports.ASYNC_UNBIND_REQUIRED = exports.MULTIPLE_POST_CONSTRUCT_METHODS = exports.MULTIPLE_PRE_DESTROY_METHODS = exports.CONTAINER_OPTIONS_INVALID_SKIP_BASE_CHECK = exports.CONTAINER_OPTIONS_INVALID_AUTO_BIND_INJECTABLE = exports.CONTAINER_OPTIONS_INVALID_DEFAULT_SCOPE = exports.CONTAINER_OPTIONS_MUST_BE_AN_OBJECT = exports.ARGUMENTS_LENGTH_MISMATCH = exports.INVALID_DECORATOR_OPERATION = exports.INVALID_TO_SELF_VALUE = exports.LAZY_IN_SYNC = exports.INVALID_FUNCTION_BINDING = exports.INVALID_MIDDLEWARE_RETURN = exports.NO_MORE_SNAPSHOTS_AVAILABLE = exports.INVALID_BINDING_TYPE = exports.CIRCULAR_DEPENDENCY = exports.UNDEFINED_INJECT_ANNOTATION = exports.TRYING_TO_RESOLVE_BINDINGS = exports.NOT_REGISTERED = exports.CANNOT_UNBIND = exports.AMBIGUOUS_MATCH = exports.KEY_NOT_FOUND = exports.NULL_ARGUMENT = exports.DUPLICATED_METADATA = exports.DUPLICATED_INJECTABLE_DECORATOR = void 0;
+exports.DUPLICATED_INJECTABLE_DECORATOR = 'Cannot apply @injectable decorator multiple times.';
+exports.DUPLICATED_METADATA = 'Metadata key was used more than once in a parameter:';
+exports.NULL_ARGUMENT = 'NULL argument';
+exports.KEY_NOT_FOUND = 'Key Not Found';
+exports.AMBIGUOUS_MATCH = 'Ambiguous match found for serviceIdentifier:';
+exports.CANNOT_UNBIND = 'Could not unbind serviceIdentifier:';
+exports.NOT_REGISTERED = 'No matching bindings found for serviceIdentifier:';
+const TRYING_TO_RESOLVE_BINDINGS = (name) => `Trying to resolve bindings for "${name}"`;
+exports.TRYING_TO_RESOLVE_BINDINGS = TRYING_TO_RESOLVE_BINDINGS;
+const UNDEFINED_INJECT_ANNOTATION = (name) => `@inject called with undefined this could mean that the class ${name} has ` +
+    'a circular dependency problem. You can use a LazyServiceIdentifer to ' +
+    'overcome this limitation.';
+exports.UNDEFINED_INJECT_ANNOTATION = UNDEFINED_INJECT_ANNOTATION;
+exports.CIRCULAR_DEPENDENCY = 'Circular dependency found:';
+exports.INVALID_BINDING_TYPE = 'Invalid binding type:';
+exports.NO_MORE_SNAPSHOTS_AVAILABLE = 'No snapshot available to restore.';
+exports.INVALID_MIDDLEWARE_RETURN = 'Invalid return type in middleware. Middleware must return!';
+exports.INVALID_FUNCTION_BINDING = 'Value provided to function binding must be a function!';
+const LAZY_IN_SYNC = (key) => `You are attempting to construct ${keyToString(key)} in a synchronous way ` +
+    'but it has asynchronous dependencies.';
+exports.LAZY_IN_SYNC = LAZY_IN_SYNC;
+exports.INVALID_TO_SELF_VALUE = 'The toSelf function can only be applied when a constructor is ' +
+    'used as service identifier';
+exports.INVALID_DECORATOR_OPERATION = 'The @inject @multiInject @tagged and @named decorators ' +
+    'must be applied to the parameters of a class constructor or a class property.';
+const ARGUMENTS_LENGTH_MISMATCH = (name) => 'The number of constructor arguments in the derived class ' +
+    `${name} must be >= than the number of constructor arguments of its base class.`;
+exports.ARGUMENTS_LENGTH_MISMATCH = ARGUMENTS_LENGTH_MISMATCH;
+exports.CONTAINER_OPTIONS_MUST_BE_AN_OBJECT = 'Invalid Container constructor argument. Container options ' +
     'must be an object.';
-var CONTAINER_OPTIONS_INVALID_DEFAULT_SCOPE = 'Invalid Container option. Default scope must ' +
+exports.CONTAINER_OPTIONS_INVALID_DEFAULT_SCOPE = 'Invalid Container option. Default scope must ' +
     'be a string ("singleton" or "transient").';
-var CONTAINER_OPTIONS_INVALID_AUTO_BIND_INJECTABLE = 'Invalid Container option. Auto bind injectable must ' +
-    'be a boolean';
-var CONTAINER_OPTIONS_INVALID_SKIP_BASE_CHECK = 'Invalid Container option. Skip base check must ' +
-    'be a boolean';
-var MULTIPLE_PRE_DESTROY_METHODS = 'Cannot apply @preDestroy decorator multiple times in the same class';
-var MULTIPLE_POST_CONSTRUCT_METHODS = 'Cannot apply @postConstruct decorator multiple times in the same class';
-var ASYNC_UNBIND_REQUIRED = 'Attempting to unbind dependency with asynchronous destruction (@preDestroy or onDeactivation)';
-var POST_CONSTRUCT_ERROR = function (clazz, errorMessage) { return "@postConstruct error in class ".concat(clazz, ": ").concat(errorMessage); };
-var PRE_DESTROY_ERROR = function (clazz, errorMessage) { return "@preDestroy error in class ".concat(clazz, ": ").concat(errorMessage); };
-var ON_DEACTIVATION_ERROR = function (clazz, errorMessage) { return "onDeactivation() error in class ".concat(clazz, ": ").concat(errorMessage); };
-var CIRCULAR_DEPENDENCY_IN_FACTORY = function (factoryType, serviceIdentifier) {
-    return "It looks like there is a circular dependency in one of the '".concat(factoryType, "' bindings. Please investigate bindings with ") +
-        "service identifier '".concat(serviceIdentifier, "'.");
-};
-var STACK_OVERFLOW = 'Maximum call stack size exceeded';
+exports.CONTAINER_OPTIONS_INVALID_AUTO_BIND_INJECTABLE = 'Invalid Container option. Auto bind injectable must ' + 'be a boolean';
+exports.CONTAINER_OPTIONS_INVALID_SKIP_BASE_CHECK = 'Invalid Container option. Skip base check must ' + 'be a boolean';
+exports.MULTIPLE_PRE_DESTROY_METHODS = 'Cannot apply @preDestroy decorator multiple times in the same class';
+exports.MULTIPLE_POST_CONSTRUCT_METHODS = 'Cannot apply @postConstruct decorator multiple times in the same class';
+exports.ASYNC_UNBIND_REQUIRED = 'Attempting to unbind dependency with asynchronous destruction (@preDestroy or onDeactivation)';
+const POST_CONSTRUCT_ERROR = (clazz, errorMessage) => `@postConstruct error in class ${clazz}: ${errorMessage}`;
+exports.POST_CONSTRUCT_ERROR = POST_CONSTRUCT_ERROR;
+const PRE_DESTROY_ERROR = (clazz, errorMessage) => `@preDestroy error in class ${clazz}: ${errorMessage}`;
+exports.PRE_DESTROY_ERROR = PRE_DESTROY_ERROR;
+const ON_DEACTIVATION_ERROR = (clazz, errorMessage) => `onDeactivation() error in class ${clazz}: ${errorMessage}`;
+exports.ON_DEACTIVATION_ERROR = ON_DEACTIVATION_ERROR;
+const CIRCULAR_DEPENDENCY_IN_FACTORY = (factoryType, serviceIdentifier) => `It looks like there is a circular dependency in one of the '${factoryType}' bindings. Please investigate bindings with ` +
+    `service identifier '${serviceIdentifier}'.`;
+exports.CIRCULAR_DEPENDENCY_IN_FACTORY = CIRCULAR_DEPENDENCY_IN_FACTORY;
+exports.STACK_OVERFLOW = 'Maximum call stack size exceeded';
 function keyToString(key) {
     if (typeof key === 'function') {
-        return "[function/class ".concat(key.name || '<anonymous>', "]");
+        return `[function/class ${key.name || '<anonymous>'}]`;
     }
     if (typeof key === 'symbol') {
         return key.toString();
     }
-    return "'".concat(key, "'");
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    return `'${key}'`;
 }
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/constants/literal_types.js":
-/*!******************************************************************!*\
-  !*** ../../node_modules/inversify/es/constants/literal_types.js ***!
-  \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/constants/literal_types.js":
+/*!***********************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/constants/literal_types.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   BindingScopeEnum: () => (/* binding */ BindingScopeEnum),
-/* harmony export */   BindingTypeEnum: () => (/* binding */ BindingTypeEnum),
-/* harmony export */   TargetTypeEnum: () => (/* binding */ TargetTypeEnum)
-/* harmony export */ });
-var BindingScopeEnum = {
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.TargetTypeEnum = exports.BindingTypeEnum = exports.BindingScopeEnum = void 0;
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const BindingScopeEnum = {
     Request: 'Request',
     Singleton: 'Singleton',
-    Transient: 'Transient'
+    Transient: 'Transient',
 };
-var BindingTypeEnum = {
+exports.BindingScopeEnum = BindingScopeEnum;
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const BindingTypeEnum = {
     ConstantValue: 'ConstantValue',
     Constructor: 'Constructor',
     DynamicValue: 'DynamicValue',
@@ -1626,945 +2883,868 @@ var BindingTypeEnum = {
     Function: 'Function',
     Instance: 'Instance',
     Invalid: 'Invalid',
-    Provider: 'Provider'
+    Provider: 'Provider',
 };
-var TargetTypeEnum = {
+exports.BindingTypeEnum = BindingTypeEnum;
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const TargetTypeEnum = {
     ClassProperty: 'ClassProperty',
     ConstructorArgument: 'ConstructorArgument',
-    Variable: 'Variable'
+    Variable: 'Variable',
 };
-
+exports.TargetTypeEnum = TargetTypeEnum;
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/constants/metadata_keys.js":
-/*!******************************************************************!*\
-  !*** ../../node_modules/inversify/es/constants/metadata_keys.js ***!
-  \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/constants/metadata_keys.js":
+/*!***********************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/constants/metadata_keys.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   DESIGN_PARAM_TYPES: () => (/* binding */ DESIGN_PARAM_TYPES),
-/* harmony export */   INJECT_TAG: () => (/* binding */ INJECT_TAG),
-/* harmony export */   MULTI_INJECT_TAG: () => (/* binding */ MULTI_INJECT_TAG),
-/* harmony export */   NAMED_TAG: () => (/* binding */ NAMED_TAG),
-/* harmony export */   NAME_TAG: () => (/* binding */ NAME_TAG),
-/* harmony export */   NON_CUSTOM_TAG_KEYS: () => (/* binding */ NON_CUSTOM_TAG_KEYS),
-/* harmony export */   OPTIONAL_TAG: () => (/* binding */ OPTIONAL_TAG),
-/* harmony export */   PARAM_TYPES: () => (/* binding */ PARAM_TYPES),
-/* harmony export */   POST_CONSTRUCT: () => (/* binding */ POST_CONSTRUCT),
-/* harmony export */   PRE_DESTROY: () => (/* binding */ PRE_DESTROY),
-/* harmony export */   TAGGED: () => (/* binding */ TAGGED),
-/* harmony export */   TAGGED_PROP: () => (/* binding */ TAGGED_PROP),
-/* harmony export */   UNMANAGED_TAG: () => (/* binding */ UNMANAGED_TAG)
-/* harmony export */ });
-var NAMED_TAG = 'named';
-var NAME_TAG = 'name';
-var UNMANAGED_TAG = 'unmanaged';
-var OPTIONAL_TAG = 'optional';
-var INJECT_TAG = 'inject';
-var MULTI_INJECT_TAG = 'multi_inject';
-var TAGGED = 'inversify:tagged';
-var TAGGED_PROP = 'inversify:tagged_props';
-var PARAM_TYPES = 'inversify:paramtypes';
-var DESIGN_PARAM_TYPES = 'design:paramtypes';
-var POST_CONSTRUCT = 'post_construct';
-var PRE_DESTROY = 'pre_destroy';
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.NON_CUSTOM_TAG_KEYS = exports.PRE_DESTROY = exports.POST_CONSTRUCT = exports.DESIGN_PARAM_TYPES = exports.PARAM_TYPES = exports.TAGGED_PROP = exports.TAGGED = exports.MULTI_INJECT_TAG = exports.INJECT_TAG = exports.OPTIONAL_TAG = exports.UNMANAGED_TAG = exports.NAME_TAG = exports.NAMED_TAG = void 0;
+// Used for named bindings
+exports.NAMED_TAG = 'named';
+// The name of the target at design time
+exports.NAME_TAG = 'name';
+// The for unmanaged injections (in base classes when using inheritance)
+exports.UNMANAGED_TAG = 'unmanaged';
+// The for optional injections
+exports.OPTIONAL_TAG = 'optional';
+// The type of the binding at design time
+exports.INJECT_TAG = 'inject';
+// The type of the binding at design type for multi-injections
+exports.MULTI_INJECT_TAG = 'multi_inject';
+// used to store constructor arguments tags
+exports.TAGGED = 'inversify:tagged';
+// used to store class properties tags
+exports.TAGGED_PROP = 'inversify:tagged_props';
+// used to store types to be injected
+exports.PARAM_TYPES = 'inversify:paramtypes';
+// used to access design time types
+exports.DESIGN_PARAM_TYPES = 'design:paramtypes';
+// used to identify postConstruct functions
+exports.POST_CONSTRUCT = 'post_construct';
+// used to identify preDestroy functions
+exports.PRE_DESTROY = 'pre_destroy';
 function getNonCustomTagKeys() {
     return [
-        INJECT_TAG,
-        MULTI_INJECT_TAG,
-        NAME_TAG,
-        UNMANAGED_TAG,
-        NAMED_TAG,
-        OPTIONAL_TAG,
+        exports.INJECT_TAG,
+        exports.MULTI_INJECT_TAG,
+        exports.NAME_TAG,
+        exports.UNMANAGED_TAG,
+        exports.NAMED_TAG,
+        exports.OPTIONAL_TAG,
     ];
 }
-var NON_CUSTOM_TAG_KEYS = getNonCustomTagKeys();
+exports.NON_CUSTOM_TAG_KEYS = getNonCustomTagKeys();
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/container/container.js":
-/*!**************************************************************!*\
-  !*** ../../node_modules/inversify/es/container/container.js ***!
-  \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/container/container.js":
+/*!*******************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/container/container.js ***!
+  \*******************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Container: () => (/* binding */ Container)
-/* harmony export */ });
-/* harmony import */ var _bindings_binding__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../bindings/binding */ "../../node_modules/inversify/es/bindings/binding.js");
-/* harmony import */ var _constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/es/constants/error_msgs.js");
-/* harmony import */ var _constants_literal_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/literal_types */ "../../node_modules/inversify/es/constants/literal_types.js");
-/* harmony import */ var _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/es/constants/metadata_keys.js");
-/* harmony import */ var _planning_metadata_reader__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../planning/metadata_reader */ "../../node_modules/inversify/es/planning/metadata_reader.js");
-/* harmony import */ var _planning_planner__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../planning/planner */ "../../node_modules/inversify/es/planning/planner.js");
-/* harmony import */ var _resolution_resolver__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../resolution/resolver */ "../../node_modules/inversify/es/resolution/resolver.js");
-/* harmony import */ var _syntax_binding_to_syntax__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../syntax/binding_to_syntax */ "../../node_modules/inversify/es/syntax/binding_to_syntax.js");
-/* harmony import */ var _utils_async__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../utils/async */ "../../node_modules/inversify/es/utils/async.js");
-/* harmony import */ var _utils_id__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/id */ "../../node_modules/inversify/es/utils/id.js");
-/* harmony import */ var _utils_serialization__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../utils/serialization */ "../../node_modules/inversify/es/utils/serialization.js");
-/* harmony import */ var _container_snapshot__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./container_snapshot */ "../../node_modules/inversify/es/container/container_snapshot.js");
-/* harmony import */ var _lookup__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./lookup */ "../../node_modules/inversify/es/container/lookup.js");
-/* harmony import */ var _module_activation_store__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./module_activation_store */ "../../node_modules/inversify/es/container/module_activation_store.js");
-var __assign = (undefined && undefined.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
     };
-    return __assign.apply(this, arguments);
-};
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-var __spreadArray = (undefined && undefined.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var Container = (function () {
-    function Container(containerOptions) {
-        var options = containerOptions || {};
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Container = void 0;
+const binding_1 = __webpack_require__(/*! ../bindings/binding */ "../../node_modules/inversify/lib/cjs/bindings/binding.js");
+const ERROR_MSGS = __importStar(__webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/lib/cjs/constants/error_msgs.js"));
+const literal_types_1 = __webpack_require__(/*! ../constants/literal_types */ "../../node_modules/inversify/lib/cjs/constants/literal_types.js");
+const METADATA_KEY = __importStar(__webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/lib/cjs/constants/metadata_keys.js"));
+const metadata_reader_1 = __webpack_require__(/*! ../planning/metadata_reader */ "../../node_modules/inversify/lib/cjs/planning/metadata_reader.js");
+const planner_1 = __webpack_require__(/*! ../planning/planner */ "../../node_modules/inversify/lib/cjs/planning/planner.js");
+const resolver_1 = __webpack_require__(/*! ../resolution/resolver */ "../../node_modules/inversify/lib/cjs/resolution/resolver.js");
+const binding_to_syntax_1 = __webpack_require__(/*! ../syntax/binding_to_syntax */ "../../node_modules/inversify/lib/cjs/syntax/binding_to_syntax.js");
+const async_1 = __webpack_require__(/*! ../utils/async */ "../../node_modules/inversify/lib/cjs/utils/async.js");
+const id_1 = __webpack_require__(/*! ../utils/id */ "../../node_modules/inversify/lib/cjs/utils/id.js");
+const serialization_1 = __webpack_require__(/*! ../utils/serialization */ "../../node_modules/inversify/lib/cjs/utils/serialization.js");
+const container_snapshot_1 = __webpack_require__(/*! ./container_snapshot */ "../../node_modules/inversify/lib/cjs/container/container_snapshot.js");
+const lookup_1 = __webpack_require__(/*! ./lookup */ "../../node_modules/inversify/lib/cjs/container/lookup.js");
+const module_activation_store_1 = __webpack_require__(/*! ./module_activation_store */ "../../node_modules/inversify/lib/cjs/container/module_activation_store.js");
+class Container {
+    id;
+    parent;
+    options;
+    _middleware;
+    _bindingDictionary;
+    _activations;
+    _deactivations;
+    _snapshots;
+    _metadataReader;
+    _moduleActivationStore;
+    constructor(containerOptions) {
+        const options = containerOptions || {};
         if (typeof options !== 'object') {
-            throw new Error("".concat(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.CONTAINER_OPTIONS_MUST_BE_AN_OBJECT));
+            throw new Error(ERROR_MSGS.CONTAINER_OPTIONS_MUST_BE_AN_OBJECT);
         }
         if (options.defaultScope === undefined) {
-            options.defaultScope = _constants_literal_types__WEBPACK_IMPORTED_MODULE_1__.BindingScopeEnum.Transient;
+            options.defaultScope = literal_types_1.BindingScopeEnum.Transient;
         }
-        else if (options.defaultScope !== _constants_literal_types__WEBPACK_IMPORTED_MODULE_1__.BindingScopeEnum.Singleton &&
-            options.defaultScope !== _constants_literal_types__WEBPACK_IMPORTED_MODULE_1__.BindingScopeEnum.Transient &&
-            options.defaultScope !== _constants_literal_types__WEBPACK_IMPORTED_MODULE_1__.BindingScopeEnum.Request) {
-            throw new Error("".concat(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.CONTAINER_OPTIONS_INVALID_DEFAULT_SCOPE));
+        else if (options.defaultScope !== literal_types_1.BindingScopeEnum.Singleton &&
+            options.defaultScope !== literal_types_1.BindingScopeEnum.Transient &&
+            options.defaultScope !== literal_types_1.BindingScopeEnum.Request) {
+            throw new Error(ERROR_MSGS.CONTAINER_OPTIONS_INVALID_DEFAULT_SCOPE);
         }
         if (options.autoBindInjectable === undefined) {
             options.autoBindInjectable = false;
         }
         else if (typeof options.autoBindInjectable !== 'boolean') {
-            throw new Error("".concat(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.CONTAINER_OPTIONS_INVALID_AUTO_BIND_INJECTABLE));
+            throw new Error(ERROR_MSGS.CONTAINER_OPTIONS_INVALID_AUTO_BIND_INJECTABLE);
         }
         if (options.skipBaseClassChecks === undefined) {
             options.skipBaseClassChecks = false;
         }
         else if (typeof options.skipBaseClassChecks !== 'boolean') {
-            throw new Error("".concat(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.CONTAINER_OPTIONS_INVALID_SKIP_BASE_CHECK));
+            throw new Error(ERROR_MSGS.CONTAINER_OPTIONS_INVALID_SKIP_BASE_CHECK);
         }
         this.options = {
             autoBindInjectable: options.autoBindInjectable,
             defaultScope: options.defaultScope,
-            skipBaseClassChecks: options.skipBaseClassChecks
+            skipBaseClassChecks: options.skipBaseClassChecks,
         };
-        this.id = (0,_utils_id__WEBPACK_IMPORTED_MODULE_2__.id)();
-        this._bindingDictionary = new _lookup__WEBPACK_IMPORTED_MODULE_3__.Lookup();
+        this.id = (0, id_1.id)();
+        this._bindingDictionary = new lookup_1.Lookup();
         this._snapshots = [];
         this._middleware = null;
-        this._activations = new _lookup__WEBPACK_IMPORTED_MODULE_3__.Lookup();
-        this._deactivations = new _lookup__WEBPACK_IMPORTED_MODULE_3__.Lookup();
+        this._activations = new lookup_1.Lookup();
+        this._deactivations = new lookup_1.Lookup();
         this.parent = null;
-        this._metadataReader = new _planning_metadata_reader__WEBPACK_IMPORTED_MODULE_4__.MetadataReader();
-        this._moduleActivationStore = new _module_activation_store__WEBPACK_IMPORTED_MODULE_5__.ModuleActivationStore();
+        this._metadataReader = new metadata_reader_1.MetadataReader();
+        this._moduleActivationStore = new module_activation_store_1.ModuleActivationStore();
     }
-    Container.merge = function (container1, container2) {
-        var containers = [];
-        for (var _i = 2; _i < arguments.length; _i++) {
-            containers[_i - 2] = arguments[_i];
-        }
-        var container = new Container();
-        var targetContainers = __spreadArray([container1, container2], containers, true).map(function (targetContainer) { return (0,_planning_planner__WEBPACK_IMPORTED_MODULE_6__.getBindingDictionary)(targetContainer); });
-        var bindingDictionary = (0,_planning_planner__WEBPACK_IMPORTED_MODULE_6__.getBindingDictionary)(container);
+    static merge(container1, container2, ...containers) {
+        const container = new Container();
+        const targetContainers = [
+            container1,
+            container2,
+            ...containers,
+        ].map((targetContainer) => (0, planner_1.getBindingDictionary)(targetContainer));
+        const bindingDictionary = (0, planner_1.getBindingDictionary)(container);
         function copyDictionary(origin, destination) {
-            origin.traverse(function (_key, value) {
-                value.forEach(function (binding) {
+            origin.traverse((_key, value) => {
+                value.forEach((binding) => {
                     destination.add(binding.serviceIdentifier, binding.clone());
                 });
             });
         }
-        targetContainers.forEach(function (targetBindingDictionary) {
+        targetContainers.forEach((targetBindingDictionary) => {
             copyDictionary(targetBindingDictionary, bindingDictionary);
         });
         return container;
-    };
-    Container.prototype.load = function () {
-        var modules = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            modules[_i] = arguments[_i];
-        }
-        var getHelpers = this._getContainerModuleHelpersFactory();
-        for (var _a = 0, modules_1 = modules; _a < modules_1.length; _a++) {
-            var currentModule = modules_1[_a];
-            var containerModuleHelpers = getHelpers(currentModule.id);
+    }
+    load(...modules) {
+        // eslint-disable-next-line @typescript-eslint/typedef
+        const getHelpers = this._getContainerModuleHelpersFactory();
+        for (const currentModule of modules) {
+            // eslint-disable-next-line @typescript-eslint/typedef
+            const containerModuleHelpers = getHelpers(currentModule.id);
             currentModule.registry(containerModuleHelpers.bindFunction, containerModuleHelpers.unbindFunction, containerModuleHelpers.isboundFunction, containerModuleHelpers.rebindFunction, containerModuleHelpers.unbindAsyncFunction, containerModuleHelpers.onActivationFunction, containerModuleHelpers.onDeactivationFunction);
         }
-    };
-    Container.prototype.loadAsync = function () {
-        var modules = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            modules[_i] = arguments[_i];
+    }
+    async loadAsync(...modules) {
+        // eslint-disable-next-line @typescript-eslint/typedef
+        const getHelpers = this._getContainerModuleHelpersFactory();
+        for (const currentModule of modules) {
+            // eslint-disable-next-line @typescript-eslint/typedef
+            const containerModuleHelpers = getHelpers(currentModule.id);
+            await currentModule.registry(containerModuleHelpers.bindFunction, containerModuleHelpers.unbindFunction, containerModuleHelpers.isboundFunction, containerModuleHelpers.rebindFunction, containerModuleHelpers.unbindAsyncFunction, containerModuleHelpers.onActivationFunction, containerModuleHelpers.onDeactivationFunction);
         }
-        return __awaiter(this, void 0, void 0, function () {
-            var getHelpers, _a, modules_2, currentModule, containerModuleHelpers;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        getHelpers = this._getContainerModuleHelpersFactory();
-                        _a = 0, modules_2 = modules;
-                        _b.label = 1;
-                    case 1:
-                        if (!(_a < modules_2.length)) return [3, 4];
-                        currentModule = modules_2[_a];
-                        containerModuleHelpers = getHelpers(currentModule.id);
-                        return [4, currentModule.registry(containerModuleHelpers.bindFunction, containerModuleHelpers.unbindFunction, containerModuleHelpers.isboundFunction, containerModuleHelpers.rebindFunction, containerModuleHelpers.unbindAsyncFunction, containerModuleHelpers.onActivationFunction, containerModuleHelpers.onDeactivationFunction)];
-                    case 2:
-                        _b.sent();
-                        _b.label = 3;
-                    case 3:
-                        _a++;
-                        return [3, 1];
-                    case 4: return [2];
-                }
-            });
+    }
+    unload(...modules) {
+        modules.forEach((module) => {
+            const deactivations = this._removeModuleBindings(module.id);
+            this._deactivateSingletons(deactivations);
+            this._removeModuleHandlers(module.id);
         });
-    };
-    Container.prototype.unload = function () {
-        var _this = this;
-        var modules = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            modules[_i] = arguments[_i];
+    }
+    async unloadAsync(...modules) {
+        for (const module of modules) {
+            const deactivations = this._removeModuleBindings(module.id);
+            await this._deactivateSingletonsAsync(deactivations);
+            this._removeModuleHandlers(module.id);
         }
-        modules.forEach(function (module) {
-            var deactivations = _this._removeModuleBindings(module.id);
-            _this._deactivateSingletons(deactivations);
-            _this._removeModuleHandlers(module.id);
-        });
-    };
-    Container.prototype.unloadAsync = function () {
-        var modules = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            modules[_i] = arguments[_i];
-        }
-        return __awaiter(this, void 0, void 0, function () {
-            var _a, modules_3, module_1, deactivations;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        _a = 0, modules_3 = modules;
-                        _b.label = 1;
-                    case 1:
-                        if (!(_a < modules_3.length)) return [3, 4];
-                        module_1 = modules_3[_a];
-                        deactivations = this._removeModuleBindings(module_1.id);
-                        return [4, this._deactivateSingletonsAsync(deactivations)];
-                    case 2:
-                        _b.sent();
-                        this._removeModuleHandlers(module_1.id);
-                        _b.label = 3;
-                    case 3:
-                        _a++;
-                        return [3, 1];
-                    case 4: return [2];
-                }
-            });
-        });
-    };
-    Container.prototype.bind = function (serviceIdentifier) {
-        var scope = this.options.defaultScope || _constants_literal_types__WEBPACK_IMPORTED_MODULE_1__.BindingScopeEnum.Transient;
-        var binding = new _bindings_binding__WEBPACK_IMPORTED_MODULE_7__.Binding(serviceIdentifier, scope);
-        this._bindingDictionary.add(serviceIdentifier, binding);
-        return new _syntax_binding_to_syntax__WEBPACK_IMPORTED_MODULE_8__.BindingToSyntax(binding);
-    };
-    Container.prototype.rebind = function (serviceIdentifier) {
+    }
+    // Registers a type binding
+    bind(serviceIdentifier) {
+        return this._bind(this._buildBinding(serviceIdentifier));
+    }
+    rebind(serviceIdentifier) {
         this.unbind(serviceIdentifier);
         return this.bind(serviceIdentifier);
-    };
-    Container.prototype.rebindAsync = function (serviceIdentifier) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4, this.unbindAsync(serviceIdentifier)];
-                    case 1:
-                        _a.sent();
-                        return [2, this.bind(serviceIdentifier)];
-                }
-            });
-        });
-    };
-    Container.prototype.unbind = function (serviceIdentifier) {
+    }
+    async rebindAsync(serviceIdentifier) {
+        await this.unbindAsync(serviceIdentifier);
+        return this.bind(serviceIdentifier);
+    }
+    // Removes a type binding from the registry by its key
+    unbind(serviceIdentifier) {
         if (this._bindingDictionary.hasKey(serviceIdentifier)) {
-            var bindings = this._bindingDictionary.get(serviceIdentifier);
+            const bindings = this._bindingDictionary.get(serviceIdentifier);
             this._deactivateSingletons(bindings);
         }
         this._removeServiceFromDictionary(serviceIdentifier);
-    };
-    Container.prototype.unbindAsync = function (serviceIdentifier) {
-        return __awaiter(this, void 0, void 0, function () {
-            var bindings;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!this._bindingDictionary.hasKey(serviceIdentifier)) return [3, 2];
-                        bindings = this._bindingDictionary.get(serviceIdentifier);
-                        return [4, this._deactivateSingletonsAsync(bindings)];
-                    case 1:
-                        _a.sent();
-                        _a.label = 2;
-                    case 2:
-                        this._removeServiceFromDictionary(serviceIdentifier);
-                        return [2];
-                }
-            });
+    }
+    async unbindAsync(serviceIdentifier) {
+        if (this._bindingDictionary.hasKey(serviceIdentifier)) {
+            const bindings = this._bindingDictionary.get(serviceIdentifier);
+            await this._deactivateSingletonsAsync(bindings);
+        }
+        this._removeServiceFromDictionary(serviceIdentifier);
+    }
+    // Removes all the type bindings from the registry
+    unbindAll() {
+        this._bindingDictionary.traverse((_key, value) => {
+            this._deactivateSingletons(value);
         });
-    };
-    Container.prototype.unbindAll = function () {
-        var _this = this;
-        this._bindingDictionary.traverse(function (_key, value) {
-            _this._deactivateSingletons(value);
+        this._bindingDictionary = new lookup_1.Lookup();
+    }
+    async unbindAllAsync() {
+        const promises = [];
+        this._bindingDictionary.traverse((_key, value) => {
+            promises.push(this._deactivateSingletonsAsync(value));
         });
-        this._bindingDictionary = new _lookup__WEBPACK_IMPORTED_MODULE_3__.Lookup();
-    };
-    Container.prototype.unbindAllAsync = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var promises;
-            var _this = this;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        promises = [];
-                        this._bindingDictionary.traverse(function (_key, value) {
-                            promises.push(_this._deactivateSingletonsAsync(value));
-                        });
-                        return [4, Promise.all(promises)];
-                    case 1:
-                        _a.sent();
-                        this._bindingDictionary = new _lookup__WEBPACK_IMPORTED_MODULE_3__.Lookup();
-                        return [2];
-                }
-            });
-        });
-    };
-    Container.prototype.onActivation = function (serviceIdentifier, onActivation) {
+        await Promise.all(promises);
+        this._bindingDictionary = new lookup_1.Lookup();
+    }
+    onActivation(serviceIdentifier, onActivation) {
         this._activations.add(serviceIdentifier, onActivation);
-    };
-    Container.prototype.onDeactivation = function (serviceIdentifier, onDeactivation) {
+    }
+    onDeactivation(serviceIdentifier, onDeactivation) {
         this._deactivations.add(serviceIdentifier, onDeactivation);
-    };
-    Container.prototype.isBound = function (serviceIdentifier) {
-        var bound = this._bindingDictionary.hasKey(serviceIdentifier);
+    }
+    // Allows to check if there are bindings available for serviceIdentifier
+    isBound(serviceIdentifier) {
+        let bound = this._bindingDictionary.hasKey(serviceIdentifier);
         if (!bound && this.parent) {
             bound = this.parent.isBound(serviceIdentifier);
         }
         return bound;
-    };
-    Container.prototype.isCurrentBound = function (serviceIdentifier) {
+    }
+    // check binding dependency only in current container
+    isCurrentBound(serviceIdentifier) {
         return this._bindingDictionary.hasKey(serviceIdentifier);
-    };
-    Container.prototype.isBoundNamed = function (serviceIdentifier, named) {
-        return this.isBoundTagged(serviceIdentifier, _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_9__.NAMED_TAG, named);
-    };
-    Container.prototype.isBoundTagged = function (serviceIdentifier, key, value) {
-        var bound = false;
+    }
+    isBoundNamed(serviceIdentifier, named) {
+        return this.isBoundTagged(serviceIdentifier, METADATA_KEY.NAMED_TAG, named);
+    }
+    // Check if a binding with a complex constraint is available without throwing a error. Ancestors are also verified.
+    isBoundTagged(serviceIdentifier, key, value) {
+        let bound = false;
+        // verify if there are bindings available for serviceIdentifier on current binding dictionary
         if (this._bindingDictionary.hasKey(serviceIdentifier)) {
-            var bindings = this._bindingDictionary.get(serviceIdentifier);
-            var request_1 = (0,_planning_planner__WEBPACK_IMPORTED_MODULE_6__.createMockRequest)(this, serviceIdentifier, key, value);
-            bound = bindings.some(function (b) { return b.constraint(request_1); });
+            const bindings = this._bindingDictionary.get(serviceIdentifier);
+            const request = (0, planner_1.createMockRequest)(this, serviceIdentifier, {
+                customTag: {
+                    key,
+                    value,
+                },
+                isMultiInject: false,
+            });
+            bound = bindings.some((b) => b.constraint(request));
         }
+        // verify if there is a parent container that could solve the request
         if (!bound && this.parent) {
             bound = this.parent.isBoundTagged(serviceIdentifier, key, value);
         }
         return bound;
-    };
-    Container.prototype.snapshot = function () {
-        this._snapshots.push(_container_snapshot__WEBPACK_IMPORTED_MODULE_10__.ContainerSnapshot.of(this._bindingDictionary.clone(), this._middleware, this._activations.clone(), this._deactivations.clone(), this._moduleActivationStore.clone()));
-    };
-    Container.prototype.restore = function () {
-        var snapshot = this._snapshots.pop();
+    }
+    snapshot() {
+        this._snapshots.push(container_snapshot_1.ContainerSnapshot.of(this._bindingDictionary.clone(), this._middleware, this._activations.clone(), this._deactivations.clone(), this._moduleActivationStore.clone()));
+    }
+    restore() {
+        const snapshot = this._snapshots.pop();
         if (snapshot === undefined) {
-            throw new Error(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.NO_MORE_SNAPSHOTS_AVAILABLE);
+            throw new Error(ERROR_MSGS.NO_MORE_SNAPSHOTS_AVAILABLE);
         }
         this._bindingDictionary = snapshot.bindings;
         this._activations = snapshot.activations;
         this._deactivations = snapshot.deactivations;
         this._middleware = snapshot.middleware;
         this._moduleActivationStore = snapshot.moduleActivationStore;
-    };
-    Container.prototype.createChild = function (containerOptions) {
-        var child = new Container(containerOptions || this.options);
+    }
+    createChild(containerOptions) {
+        const child = new Container(containerOptions || this.options);
         child.parent = this;
         return child;
-    };
-    Container.prototype.applyMiddleware = function () {
-        var middlewares = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            middlewares[_i] = arguments[_i];
-        }
-        var initial = (this._middleware) ? this._middleware : this._planAndResolve();
-        this._middleware = middlewares.reduce(function (prev, curr) { return curr(prev); }, initial);
-    };
-    Container.prototype.applyCustomMetadataReader = function (metadataReader) {
+    }
+    applyMiddleware(...middlewares) {
+        const initial = this._middleware
+            ? this._middleware
+            : this._planAndResolve();
+        this._middleware = middlewares.reduce((prev, curr) => curr(prev), initial);
+    }
+    applyCustomMetadataReader(metadataReader) {
         this._metadataReader = metadataReader;
-    };
-    Container.prototype.get = function (serviceIdentifier) {
-        var getArgs = this._getNotAllArgs(serviceIdentifier, false);
+    }
+    // Resolves a dependency by its runtime identifier
+    // The runtime identifier must be associated with only one binding
+    // use getAll when the runtime identifier is associated with multiple bindings
+    get(serviceIdentifier) {
+        const getArgs = this._getNotAllArgs(serviceIdentifier, false, false);
         return this._getButThrowIfAsync(getArgs);
-    };
-    Container.prototype.getAsync = function (serviceIdentifier) {
-        return __awaiter(this, void 0, void 0, function () {
-            var getArgs;
-            return __generator(this, function (_a) {
-                getArgs = this._getNotAllArgs(serviceIdentifier, false);
-                return [2, this._get(getArgs)];
-            });
-        });
-    };
-    Container.prototype.getTagged = function (serviceIdentifier, key, value) {
-        var getArgs = this._getNotAllArgs(serviceIdentifier, false, key, value);
+    }
+    async getAsync(serviceIdentifier) {
+        const getArgs = this._getNotAllArgs(serviceIdentifier, false, false);
+        return this._get(getArgs);
+    }
+    getTagged(serviceIdentifier, key, value) {
+        const getArgs = this._getNotAllArgs(serviceIdentifier, false, false, key, value);
         return this._getButThrowIfAsync(getArgs);
-    };
-    Container.prototype.getTaggedAsync = function (serviceIdentifier, key, value) {
-        return __awaiter(this, void 0, void 0, function () {
-            var getArgs;
-            return __generator(this, function (_a) {
-                getArgs = this._getNotAllArgs(serviceIdentifier, false, key, value);
-                return [2, this._get(getArgs)];
-            });
-        });
-    };
-    Container.prototype.getNamed = function (serviceIdentifier, named) {
-        return this.getTagged(serviceIdentifier, _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_9__.NAMED_TAG, named);
-    };
-    Container.prototype.getNamedAsync = function (serviceIdentifier, named) {
-        return this.getTaggedAsync(serviceIdentifier, _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_9__.NAMED_TAG, named);
-    };
-    Container.prototype.getAll = function (serviceIdentifier) {
-        var getArgs = this._getAllArgs(serviceIdentifier);
+    }
+    async getTaggedAsync(serviceIdentifier, key, value) {
+        const getArgs = this._getNotAllArgs(serviceIdentifier, false, false, key, value);
+        return this._get(getArgs);
+    }
+    getNamed(serviceIdentifier, named) {
+        return this.getTagged(serviceIdentifier, METADATA_KEY.NAMED_TAG, named);
+    }
+    async getNamedAsync(serviceIdentifier, named) {
+        return this.getTaggedAsync(serviceIdentifier, METADATA_KEY.NAMED_TAG, named);
+    }
+    // Resolves a dependency by its runtime identifier
+    // The runtime identifier can be associated with one or multiple bindings
+    getAll(serviceIdentifier, options) {
+        const getArgs = this._getAllArgs(serviceIdentifier, options, false);
         return this._getButThrowIfAsync(getArgs);
-    };
-    Container.prototype.getAllAsync = function (serviceIdentifier) {
-        var getArgs = this._getAllArgs(serviceIdentifier);
+    }
+    async getAllAsync(serviceIdentifier, options) {
+        const getArgs = this._getAllArgs(serviceIdentifier, options, false);
         return this._getAll(getArgs);
-    };
-    Container.prototype.getAllTagged = function (serviceIdentifier, key, value) {
-        var getArgs = this._getNotAllArgs(serviceIdentifier, true, key, value);
+    }
+    getAllTagged(serviceIdentifier, key, value) {
+        const getArgs = this._getNotAllArgs(serviceIdentifier, true, false, key, value);
         return this._getButThrowIfAsync(getArgs);
-    };
-    Container.prototype.getAllTaggedAsync = function (serviceIdentifier, key, value) {
-        var getArgs = this._getNotAllArgs(serviceIdentifier, true, key, value);
+    }
+    async getAllTaggedAsync(serviceIdentifier, key, value) {
+        const getArgs = this._getNotAllArgs(serviceIdentifier, true, false, key, value);
         return this._getAll(getArgs);
-    };
-    Container.prototype.getAllNamed = function (serviceIdentifier, named) {
-        return this.getAllTagged(serviceIdentifier, _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_9__.NAMED_TAG, named);
-    };
-    Container.prototype.getAllNamedAsync = function (serviceIdentifier, named) {
-        return this.getAllTaggedAsync(serviceIdentifier, _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_9__.NAMED_TAG, named);
-    };
-    Container.prototype.resolve = function (constructorFunction) {
-        var isBound = this.isBound(constructorFunction);
+    }
+    getAllNamed(serviceIdentifier, named) {
+        return this.getAllTagged(serviceIdentifier, METADATA_KEY.NAMED_TAG, named);
+    }
+    async getAllNamedAsync(serviceIdentifier, named) {
+        return this.getAllTaggedAsync(serviceIdentifier, METADATA_KEY.NAMED_TAG, named);
+    }
+    resolve(constructorFunction) {
+        const isBound = this.isBound(constructorFunction);
         if (!isBound) {
             this.bind(constructorFunction).toSelf();
         }
-        var resolved = this.get(constructorFunction);
+        const resolved = this.get(constructorFunction);
         if (!isBound) {
             this.unbind(constructorFunction);
         }
         return resolved;
-    };
-    Container.prototype._preDestroy = function (constructor, instance) {
-        var _a, _b;
-        if (Reflect.hasMetadata(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_9__.PRE_DESTROY, constructor)) {
-            var data = Reflect.getMetadata(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_9__.PRE_DESTROY, constructor);
-            return (_b = (_a = instance)[data.value]) === null || _b === void 0 ? void 0 : _b.call(_a);
+    }
+    tryGet(serviceIdentifier) {
+        const getArgs = this._getNotAllArgs(serviceIdentifier, false, true);
+        return this._getButThrowIfAsync(getArgs);
+    }
+    async tryGetAsync(serviceIdentifier) {
+        const getArgs = this._getNotAllArgs(serviceIdentifier, false, true);
+        return this._get(getArgs);
+    }
+    tryGetTagged(serviceIdentifier, key, value) {
+        const getArgs = this._getNotAllArgs(serviceIdentifier, false, true, key, value);
+        return this._getButThrowIfAsync(getArgs);
+    }
+    async tryGetTaggedAsync(serviceIdentifier, key, value) {
+        const getArgs = this._getNotAllArgs(serviceIdentifier, false, true, key, value);
+        return this._get(getArgs);
+    }
+    tryGetNamed(serviceIdentifier, named) {
+        return this.tryGetTagged(serviceIdentifier, METADATA_KEY.NAMED_TAG, named);
+    }
+    async tryGetNamedAsync(serviceIdentifier, named) {
+        return this.tryGetTaggedAsync(serviceIdentifier, METADATA_KEY.NAMED_TAG, named);
+    }
+    tryGetAll(serviceIdentifier, options) {
+        const getArgs = this._getAllArgs(serviceIdentifier, options, true);
+        return this._getButThrowIfAsync(getArgs);
+    }
+    async tryGetAllAsync(serviceIdentifier, options) {
+        const getArgs = this._getAllArgs(serviceIdentifier, options, true);
+        return this._getAll(getArgs);
+    }
+    tryGetAllTagged(serviceIdentifier, key, value) {
+        const getArgs = this._getNotAllArgs(serviceIdentifier, true, true, key, value);
+        return this._getButThrowIfAsync(getArgs);
+    }
+    async tryGetAllTaggedAsync(serviceIdentifier, key, value) {
+        const getArgs = this._getNotAllArgs(serviceIdentifier, true, true, key, value);
+        return this._getAll(getArgs);
+    }
+    tryGetAllNamed(serviceIdentifier, named) {
+        return this.tryGetAllTagged(serviceIdentifier, METADATA_KEY.NAMED_TAG, named);
+    }
+    async tryGetAllNamedAsync(serviceIdentifier, named) {
+        return this.tryGetAllTaggedAsync(serviceIdentifier, METADATA_KEY.NAMED_TAG, named);
+    }
+    _preDestroy(constructor, instance) {
+        if (constructor !== undefined &&
+            Reflect.hasMetadata(METADATA_KEY.PRE_DESTROY, constructor)) {
+            const data = Reflect.getMetadata(METADATA_KEY.PRE_DESTROY, constructor);
+            return instance[data.value]?.();
         }
-    };
-    Container.prototype._removeModuleHandlers = function (moduleId) {
-        var moduleActivationsHandlers = this._moduleActivationStore.remove(moduleId);
+    }
+    _removeModuleHandlers(moduleId) {
+        const moduleActivationsHandlers = this._moduleActivationStore.remove(moduleId);
         this._activations.removeIntersection(moduleActivationsHandlers.onActivations);
         this._deactivations.removeIntersection(moduleActivationsHandlers.onDeactivations);
-    };
-    Container.prototype._removeModuleBindings = function (moduleId) {
-        return this._bindingDictionary.removeByCondition(function (binding) { return binding.moduleId === moduleId; });
-    };
-    Container.prototype._deactivate = function (binding, instance) {
-        var _this = this;
-        var constructor = Object.getPrototypeOf(instance).constructor;
+    }
+    _removeModuleBindings(moduleId) {
+        return this._bindingDictionary.removeByCondition((binding) => binding.moduleId === moduleId);
+    }
+    _deactivate(binding, instance) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const constructor = instance == undefined
+            ? undefined
+            : // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                Object.getPrototypeOf(instance).constructor;
         try {
             if (this._deactivations.hasKey(binding.serviceIdentifier)) {
-                var result = this._deactivateContainer(instance, this._deactivations.get(binding.serviceIdentifier).values());
-                if ((0,_utils_async__WEBPACK_IMPORTED_MODULE_11__.isPromise)(result)) {
-                    return this._handleDeactivationError(result.then(function () { return _this._propagateContainerDeactivationThenBindingAndPreDestroyAsync(binding, instance, constructor); }), constructor);
+                const result = this._deactivateContainer(instance, this._deactivations.get(binding.serviceIdentifier).values());
+                if ((0, async_1.isPromise)(result)) {
+                    return this._handleDeactivationError(result.then(async () => this._propagateContainerDeactivationThenBindingAndPreDestroyAsync(binding, instance, constructor)), binding.serviceIdentifier);
                 }
             }
-            var propagateDeactivationResult = this._propagateContainerDeactivationThenBindingAndPreDestroy(binding, instance, constructor);
-            if ((0,_utils_async__WEBPACK_IMPORTED_MODULE_11__.isPromise)(propagateDeactivationResult)) {
-                return this._handleDeactivationError(propagateDeactivationResult, constructor);
+            const propagateDeactivationResult = this._propagateContainerDeactivationThenBindingAndPreDestroy(binding, instance, constructor);
+            if ((0, async_1.isPromise)(propagateDeactivationResult)) {
+                return this._handleDeactivationError(propagateDeactivationResult, binding.serviceIdentifier);
             }
         }
         catch (ex) {
             if (ex instanceof Error) {
-                throw new Error(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.ON_DEACTIVATION_ERROR(constructor.name, ex.message));
+                throw new Error(ERROR_MSGS.ON_DEACTIVATION_ERROR((0, serialization_1.getServiceIdentifierAsString)(binding.serviceIdentifier), ex.message));
             }
         }
-    };
-    Container.prototype._handleDeactivationError = function (asyncResult, constructor) {
-        return __awaiter(this, void 0, void 0, function () {
-            var ex_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4, asyncResult];
-                    case 1:
-                        _a.sent();
-                        return [3, 3];
-                    case 2:
-                        ex_1 = _a.sent();
-                        if (ex_1 instanceof Error) {
-                            throw new Error(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.ON_DEACTIVATION_ERROR(constructor.name, ex_1.message));
-                        }
-                        return [3, 3];
-                    case 3: return [2];
-                }
-            });
-        });
-    };
-    Container.prototype._deactivateContainer = function (instance, deactivationsIterator) {
-        var _this = this;
-        var deactivation = deactivationsIterator.next();
-        while (deactivation.value) {
-            var result = deactivation.value(instance);
-            if ((0,_utils_async__WEBPACK_IMPORTED_MODULE_11__.isPromise)(result)) {
-                return result.then(function () {
-                    return _this._deactivateContainerAsync(instance, deactivationsIterator);
-                });
+    }
+    async _handleDeactivationError(asyncResult, serviceIdentifier) {
+        try {
+            await asyncResult;
+        }
+        catch (ex) {
+            if (ex instanceof Error) {
+                throw new Error(ERROR_MSGS.ON_DEACTIVATION_ERROR((0, serialization_1.getServiceIdentifierAsString)(serviceIdentifier), ex.message));
+            }
+        }
+    }
+    _deactivateContainer(instance, deactivationsIterator) {
+        let deactivation = deactivationsIterator.next();
+        while (typeof deactivation.value === 'function') {
+            const result = deactivation.value(instance);
+            if ((0, async_1.isPromise)(result)) {
+                return result.then(async () => this._deactivateContainerAsync(instance, deactivationsIterator));
             }
             deactivation = deactivationsIterator.next();
         }
-    };
-    Container.prototype._deactivateContainerAsync = function (instance, deactivationsIterator) {
-        return __awaiter(this, void 0, void 0, function () {
-            var deactivation;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        deactivation = deactivationsIterator.next();
-                        _a.label = 1;
-                    case 1:
-                        if (!deactivation.value) return [3, 3];
-                        return [4, deactivation.value(instance)];
-                    case 2:
-                        _a.sent();
-                        deactivation = deactivationsIterator.next();
-                        return [3, 1];
-                    case 3: return [2];
-                }
-            });
-        });
-    };
-    Container.prototype._getContainerModuleHelpersFactory = function () {
-        var _this = this;
-        var setModuleId = function (bindingToSyntax, moduleId) {
-            bindingToSyntax._binding.moduleId = moduleId;
+    }
+    async _deactivateContainerAsync(instance, deactivationsIterator) {
+        let deactivation = deactivationsIterator.next();
+        while (typeof deactivation.value === 'function') {
+            await deactivation.value(instance);
+            deactivation = deactivationsIterator.next();
+        }
+    }
+    _getContainerModuleHelpersFactory() {
+        const getBindFunction = (moduleId) => (serviceIdentifier) => {
+            const binding = this._buildBinding(serviceIdentifier);
+            binding.moduleId = moduleId;
+            return this._bind(binding);
         };
-        var getBindFunction = function (moduleId) {
-            return function (serviceIdentifier) {
-                var bindingToSyntax = _this.bind(serviceIdentifier);
-                setModuleId(bindingToSyntax, moduleId);
-                return bindingToSyntax;
+        const getUnbindFunction = () => (serviceIdentifier) => {
+            this.unbind(serviceIdentifier);
+        };
+        const getUnbindAsyncFunction = () => async (serviceIdentifier) => {
+            return this.unbindAsync(serviceIdentifier);
+        };
+        const getIsboundFunction = () => (serviceIdentifier) => {
+            return this.isBound(serviceIdentifier);
+        };
+        const getRebindFunction = (moduleId) => {
+            const bind = getBindFunction(moduleId);
+            return (serviceIdentifier) => {
+                this.unbind(serviceIdentifier);
+                return bind(serviceIdentifier);
             };
         };
-        var getUnbindFunction = function () {
-            return function (serviceIdentifier) {
-                return _this.unbind(serviceIdentifier);
-            };
+        const getOnActivationFunction = (moduleId) => (serviceIdentifier, onActivation) => {
+            this._moduleActivationStore.addActivation(moduleId, serviceIdentifier, onActivation);
+            this.onActivation(serviceIdentifier, onActivation);
         };
-        var getUnbindAsyncFunction = function () {
-            return function (serviceIdentifier) {
-                return _this.unbindAsync(serviceIdentifier);
-            };
+        const getOnDeactivationFunction = (moduleId) => (serviceIdentifier, onDeactivation) => {
+            this._moduleActivationStore.addDeactivation(moduleId, serviceIdentifier, onDeactivation);
+            this.onDeactivation(serviceIdentifier, onDeactivation);
         };
-        var getIsboundFunction = function () {
-            return function (serviceIdentifier) {
-                return _this.isBound(serviceIdentifier);
-            };
-        };
-        var getRebindFunction = function (moduleId) {
-            return function (serviceIdentifier) {
-                var bindingToSyntax = _this.rebind(serviceIdentifier);
-                setModuleId(bindingToSyntax, moduleId);
-                return bindingToSyntax;
-            };
-        };
-        var getOnActivationFunction = function (moduleId) {
-            return function (serviceIdentifier, onActivation) {
-                _this._moduleActivationStore.addActivation(moduleId, serviceIdentifier, onActivation);
-                _this.onActivation(serviceIdentifier, onActivation);
-            };
-        };
-        var getOnDeactivationFunction = function (moduleId) {
-            return function (serviceIdentifier, onDeactivation) {
-                _this._moduleActivationStore.addDeactivation(moduleId, serviceIdentifier, onDeactivation);
-                _this.onDeactivation(serviceIdentifier, onDeactivation);
-            };
-        };
-        return function (mId) { return ({
+        return (mId) => ({
             bindFunction: getBindFunction(mId),
             isboundFunction: getIsboundFunction(),
             onActivationFunction: getOnActivationFunction(mId),
             onDeactivationFunction: getOnDeactivationFunction(mId),
             rebindFunction: getRebindFunction(mId),
+            unbindAsyncFunction: getUnbindAsyncFunction(),
             unbindFunction: getUnbindFunction(),
-            unbindAsyncFunction: getUnbindAsyncFunction()
-        }); };
-    };
-    Container.prototype._getAll = function (getArgs) {
+        });
+    }
+    _bind(binding) {
+        this._bindingDictionary.add(binding.serviceIdentifier, binding);
+        return new binding_to_syntax_1.BindingToSyntax(binding);
+    }
+    _buildBinding(serviceIdentifier) {
+        const scope = this.options.defaultScope || literal_types_1.BindingScopeEnum.Transient;
+        return new binding_1.Binding(serviceIdentifier, scope);
+    }
+    async _getAll(getArgs) {
         return Promise.all(this._get(getArgs));
-    };
-    Container.prototype._get = function (getArgs) {
-        var planAndResolveArgs = __assign(__assign({}, getArgs), { contextInterceptor: function (context) { return context; }, targetType: _constants_literal_types__WEBPACK_IMPORTED_MODULE_1__.TargetTypeEnum.Variable });
+    }
+    // Prepares arguments required for resolution and
+    // delegates resolution to _middleware if available
+    // otherwise it delegates resolution to _planAndResolve
+    _get(getArgs) {
+        const planAndResolveArgs = {
+            ...getArgs,
+            contextInterceptor: (context) => context,
+            targetType: literal_types_1.TargetTypeEnum.Variable,
+        };
         if (this._middleware) {
-            var middlewareResult = this._middleware(planAndResolveArgs);
+            const middlewareResult = this._middleware(planAndResolveArgs);
             if (middlewareResult === undefined || middlewareResult === null) {
-                throw new Error(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.INVALID_MIDDLEWARE_RETURN);
+                throw new Error(ERROR_MSGS.INVALID_MIDDLEWARE_RETURN);
             }
             return middlewareResult;
         }
         return this._planAndResolve()(planAndResolveArgs);
-    };
-    Container.prototype._getButThrowIfAsync = function (getArgs) {
-        var result = this._get(getArgs);
-        if ((0,_utils_async__WEBPACK_IMPORTED_MODULE_11__.isPromiseOrContainsPromise)(result)) {
-            throw new Error(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.LAZY_IN_SYNC(getArgs.serviceIdentifier));
+    }
+    _getButThrowIfAsync(getArgs) {
+        const result = this._get(getArgs);
+        if ((0, async_1.isPromiseOrContainsPromise)(result)) {
+            throw new Error(ERROR_MSGS.LAZY_IN_SYNC(getArgs.serviceIdentifier));
         }
         return result;
-    };
-    Container.prototype._getAllArgs = function (serviceIdentifier) {
-        var getAllArgs = {
-            avoidConstraints: true,
+    }
+    _getAllArgs(serviceIdentifier, options, isOptional) {
+        const getAllArgs = {
+            avoidConstraints: !(options?.enforceBindingConstraints ?? false),
             isMultiInject: true,
-            serviceIdentifier: serviceIdentifier,
+            isOptional,
+            serviceIdentifier,
         };
         return getAllArgs;
-    };
-    Container.prototype._getNotAllArgs = function (serviceIdentifier, isMultiInject, key, value) {
-        var getNotAllArgs = {
+    }
+    _getNotAllArgs(serviceIdentifier, isMultiInject, isOptional, key, value) {
+        const getNotAllArgs = {
             avoidConstraints: false,
-            isMultiInject: isMultiInject,
-            serviceIdentifier: serviceIdentifier,
-            key: key,
-            value: value,
+            isMultiInject,
+            isOptional,
+            key,
+            serviceIdentifier,
+            value,
         };
         return getNotAllArgs;
-    };
-    Container.prototype._planAndResolve = function () {
-        var _this = this;
-        return function (args) {
-            var context = (0,_planning_planner__WEBPACK_IMPORTED_MODULE_6__.plan)(_this._metadataReader, _this, args.isMultiInject, args.targetType, args.serviceIdentifier, args.key, args.value, args.avoidConstraints);
+    }
+    _getPlanMetadataFromNextArgs(args) {
+        const planMetadata = {
+            isMultiInject: args.isMultiInject,
+        };
+        if (args.key !== undefined) {
+            planMetadata.customTag = {
+                key: args.key,
+                value: args.value,
+            };
+        }
+        if (args.isOptional === true) {
+            planMetadata.isOptional = true;
+        }
+        return planMetadata;
+    }
+    // Planner creates a plan and Resolver resolves a plan
+    // one of the jobs of the Container is to links the Planner
+    // with the Resolver and that is what this function is about
+    _planAndResolve() {
+        return (args) => {
+            // create a plan
+            let context = (0, planner_1.plan)(this._metadataReader, this, args.targetType, args.serviceIdentifier, this._getPlanMetadataFromNextArgs(args), args.avoidConstraints);
+            // apply context interceptor
             context = args.contextInterceptor(context);
-            var result = (0,_resolution_resolver__WEBPACK_IMPORTED_MODULE_12__.resolve)(context);
+            // resolve plan
+            const result = (0, resolver_1.resolve)(context);
             return result;
         };
-    };
-    Container.prototype._deactivateIfSingleton = function (binding) {
-        var _this = this;
+    }
+    _deactivateIfSingleton(binding) {
         if (!binding.activated) {
             return;
         }
-        if ((0,_utils_async__WEBPACK_IMPORTED_MODULE_11__.isPromise)(binding.cache)) {
-            return binding.cache.then(function (resolved) { return _this._deactivate(binding, resolved); });
+        if ((0, async_1.isPromise)(binding.cache)) {
+            return binding.cache.then((resolved) => this._deactivate(binding, resolved));
         }
         return this._deactivate(binding, binding.cache);
-    };
-    Container.prototype._deactivateSingletons = function (bindings) {
-        for (var _i = 0, bindings_1 = bindings; _i < bindings_1.length; _i++) {
-            var binding = bindings_1[_i];
-            var result = this._deactivateIfSingleton(binding);
-            if ((0,_utils_async__WEBPACK_IMPORTED_MODULE_11__.isPromise)(result)) {
-                throw new Error(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.ASYNC_UNBIND_REQUIRED);
+    }
+    _deactivateSingletons(bindings) {
+        for (const binding of bindings) {
+            const result = this._deactivateIfSingleton(binding);
+            if ((0, async_1.isPromise)(result)) {
+                throw new Error(ERROR_MSGS.ASYNC_UNBIND_REQUIRED);
             }
         }
-    };
-    Container.prototype._deactivateSingletonsAsync = function (bindings) {
-        return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4, Promise.all(bindings.map(function (b) { return _this._deactivateIfSingleton(b); }))];
-                    case 1:
-                        _a.sent();
-                        return [2];
-                }
-            });
-        });
-    };
-    Container.prototype._propagateContainerDeactivationThenBindingAndPreDestroy = function (binding, instance, constructor) {
+    }
+    async _deactivateSingletonsAsync(bindings) {
+        await Promise.all(bindings.map(async (b) => this._deactivateIfSingleton(b)));
+    }
+    _propagateContainerDeactivationThenBindingAndPreDestroy(binding, instance, constructor) {
         if (this.parent) {
             return this._deactivate.bind(this.parent)(binding, instance);
         }
         else {
             return this._bindingDeactivationAndPreDestroy(binding, instance, constructor);
         }
-    };
-    Container.prototype._propagateContainerDeactivationThenBindingAndPreDestroyAsync = function (binding, instance, constructor) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!this.parent) return [3, 2];
-                        return [4, this._deactivate.bind(this.parent)(binding, instance)];
-                    case 1:
-                        _a.sent();
-                        return [3, 4];
-                    case 2: return [4, this._bindingDeactivationAndPreDestroyAsync(binding, instance, constructor)];
-                    case 3:
-                        _a.sent();
-                        _a.label = 4;
-                    case 4: return [2];
-                }
-            });
-        });
-    };
-    Container.prototype._removeServiceFromDictionary = function (serviceIdentifier) {
+    }
+    async _propagateContainerDeactivationThenBindingAndPreDestroyAsync(binding, instance, constructor) {
+        if (this.parent) {
+            await this._deactivate.bind(this.parent)(binding, instance);
+        }
+        else {
+            await this._bindingDeactivationAndPreDestroyAsync(binding, instance, constructor);
+        }
+    }
+    _removeServiceFromDictionary(serviceIdentifier) {
         try {
             this._bindingDictionary.remove(serviceIdentifier);
         }
-        catch (e) {
-            throw new Error("".concat(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.CANNOT_UNBIND, " ").concat((0,_utils_serialization__WEBPACK_IMPORTED_MODULE_13__.getServiceIdentifierAsString)(serviceIdentifier)));
+        catch (_e) {
+            throw new Error(`${ERROR_MSGS.CANNOT_UNBIND} ${(0, serialization_1.getServiceIdentifierAsString)(serviceIdentifier)}`);
         }
-    };
-    Container.prototype._bindingDeactivationAndPreDestroy = function (binding, instance, constructor) {
-        var _this = this;
+    }
+    _bindingDeactivationAndPreDestroy(binding, instance, constructor) {
         if (typeof binding.onDeactivation === 'function') {
-            var result = binding.onDeactivation(instance);
-            if ((0,_utils_async__WEBPACK_IMPORTED_MODULE_11__.isPromise)(result)) {
-                return result.then(function () { return _this._preDestroy(constructor, instance); });
+            const result = binding.onDeactivation(instance);
+            if ((0, async_1.isPromise)(result)) {
+                return result.then(() => this._preDestroy(constructor, instance));
             }
         }
         return this._preDestroy(constructor, instance);
-    };
-    Container.prototype._bindingDeactivationAndPreDestroyAsync = function (binding, instance, constructor) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!(typeof binding.onDeactivation === 'function')) return [3, 2];
-                        return [4, binding.onDeactivation(instance)];
-                    case 1:
-                        _a.sent();
-                        _a.label = 2;
-                    case 2: return [4, this._preDestroy(constructor, instance)];
-                    case 3:
-                        _a.sent();
-                        return [2];
-                }
-            });
-        });
-    };
-    return Container;
-}());
-
+    }
+    async _bindingDeactivationAndPreDestroyAsync(binding, instance, constructor) {
+        if (typeof binding.onDeactivation === 'function') {
+            await binding.onDeactivation(instance);
+        }
+        await this._preDestroy(constructor, instance);
+    }
+}
+exports.Container = Container;
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/container/container_module.js":
-/*!*********************************************************************!*\
-  !*** ../../node_modules/inversify/es/container/container_module.js ***!
-  \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/container/container_module.js":
+/*!**************************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/container/container_module.js ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   AsyncContainerModule: () => (/* binding */ AsyncContainerModule),
-/* harmony export */   ContainerModule: () => (/* binding */ ContainerModule)
-/* harmony export */ });
-/* harmony import */ var _utils_id__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/id */ "../../node_modules/inversify/es/utils/id.js");
 
-var ContainerModule = (function () {
-    function ContainerModule(registry) {
-        this.id = (0,_utils_id__WEBPACK_IMPORTED_MODULE_0__.id)();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AsyncContainerModule = exports.ContainerModule = void 0;
+const id_1 = __webpack_require__(/*! ../utils/id */ "../../node_modules/inversify/lib/cjs/utils/id.js");
+class ContainerModule {
+    id;
+    registry;
+    constructor(registry) {
+        this.id = (0, id_1.id)();
         this.registry = registry;
     }
-    return ContainerModule;
-}());
-
-var AsyncContainerModule = (function () {
-    function AsyncContainerModule(registry) {
-        this.id = (0,_utils_id__WEBPACK_IMPORTED_MODULE_0__.id)();
+}
+exports.ContainerModule = ContainerModule;
+class AsyncContainerModule {
+    id;
+    registry;
+    constructor(registry) {
+        this.id = (0, id_1.id)();
         this.registry = registry;
     }
-    return AsyncContainerModule;
-}());
-
+}
+exports.AsyncContainerModule = AsyncContainerModule;
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/container/container_snapshot.js":
-/*!***********************************************************************!*\
-  !*** ../../node_modules/inversify/es/container/container_snapshot.js ***!
-  \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/container/container_snapshot.js":
+/*!****************************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/container/container_snapshot.js ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   ContainerSnapshot: () => (/* binding */ ContainerSnapshot)
-/* harmony export */ });
-var ContainerSnapshot = (function () {
-    function ContainerSnapshot() {
-    }
-    ContainerSnapshot.of = function (bindings, middleware, activations, deactivations, moduleActivationStore) {
-        var snapshot = new ContainerSnapshot();
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ContainerSnapshot = void 0;
+class ContainerSnapshot {
+    bindings;
+    activations;
+    deactivations;
+    middleware;
+    moduleActivationStore;
+    static of(bindings, middleware, activations, deactivations, moduleActivationStore) {
+        const snapshot = new ContainerSnapshot();
         snapshot.bindings = bindings;
         snapshot.middleware = middleware;
         snapshot.deactivations = deactivations;
         snapshot.activations = activations;
         snapshot.moduleActivationStore = moduleActivationStore;
         return snapshot;
-    };
-    return ContainerSnapshot;
-}());
-
+    }
+}
+exports.ContainerSnapshot = ContainerSnapshot;
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/container/lookup.js":
-/*!***********************************************************!*\
-  !*** ../../node_modules/inversify/es/container/lookup.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/container/lookup.js":
+/*!****************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/container/lookup.js ***!
+  \****************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Lookup: () => (/* binding */ Lookup)
-/* harmony export */ });
-/* harmony import */ var _constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/es/constants/error_msgs.js");
-/* harmony import */ var _utils_clonable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/clonable */ "../../node_modules/inversify/es/utils/clonable.js");
 
-
-var Lookup = (function () {
-    function Lookup() {
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Lookup = void 0;
+const ERROR_MSGS = __importStar(__webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/lib/cjs/constants/error_msgs.js"));
+const clonable_1 = __webpack_require__(/*! ../utils/clonable */ "../../node_modules/inversify/lib/cjs/utils/clonable.js");
+class Lookup {
+    // dictionary used store multiple values for each key <key>
+    _map;
+    constructor() {
         this._map = new Map();
     }
-    Lookup.prototype.getMap = function () {
+    getMap() {
         return this._map;
-    };
-    Lookup.prototype.add = function (serviceIdentifier, value) {
-        if (serviceIdentifier === null || serviceIdentifier === undefined) {
-            throw new Error(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.NULL_ARGUMENT);
-        }
+    }
+    // adds a new entry to _map
+    add(serviceIdentifier, value) {
+        this._checkNonNulish(serviceIdentifier);
         if (value === null || value === undefined) {
-            throw new Error(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.NULL_ARGUMENT);
+            throw new Error(ERROR_MSGS.NULL_ARGUMENT);
         }
-        var entry = this._map.get(serviceIdentifier);
+        const entry = this._map.get(serviceIdentifier);
         if (entry !== undefined) {
             entry.push(value);
         }
         else {
             this._map.set(serviceIdentifier, [value]);
         }
-    };
-    Lookup.prototype.get = function (serviceIdentifier) {
-        if (serviceIdentifier === null || serviceIdentifier === undefined) {
-            throw new Error(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.NULL_ARGUMENT);
-        }
-        var entry = this._map.get(serviceIdentifier);
+    }
+    // gets the value of a entry by its key (serviceIdentifier)
+    get(serviceIdentifier) {
+        this._checkNonNulish(serviceIdentifier);
+        const entry = this._map.get(serviceIdentifier);
         if (entry !== undefined) {
             return entry;
         }
         else {
-            throw new Error(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.KEY_NOT_FOUND);
+            throw new Error(ERROR_MSGS.KEY_NOT_FOUND);
         }
-    };
-    Lookup.prototype.remove = function (serviceIdentifier) {
-        if (serviceIdentifier === null || serviceIdentifier === undefined) {
-            throw new Error(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.NULL_ARGUMENT);
-        }
+    }
+    // removes a entry from _map by its key (serviceIdentifier)
+    remove(serviceIdentifier) {
+        this._checkNonNulish(serviceIdentifier);
         if (!this._map.delete(serviceIdentifier)) {
-            throw new Error(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.KEY_NOT_FOUND);
+            throw new Error(ERROR_MSGS.KEY_NOT_FOUND);
         }
-    };
-    Lookup.prototype.removeIntersection = function (lookup) {
-        var _this = this;
-        this.traverse(function (serviceIdentifier, value) {
-            var lookupActivations = lookup.hasKey(serviceIdentifier) ? lookup.get(serviceIdentifier) : undefined;
+    }
+    removeIntersection(lookup) {
+        this.traverse((serviceIdentifier, value) => {
+            const lookupActivations = lookup.hasKey(serviceIdentifier)
+                ? lookup.get(serviceIdentifier)
+                : undefined;
             if (lookupActivations !== undefined) {
-                var filteredValues = value.filter(function (lookupValue) {
-                    return !lookupActivations.some(function (moduleActivation) { return lookupValue === moduleActivation; });
-                });
-                _this._setValue(serviceIdentifier, filteredValues);
+                const filteredValues = value.filter((lookupValue) => !lookupActivations.some((moduleActivation) => lookupValue === moduleActivation));
+                this._setValue(serviceIdentifier, filteredValues);
             }
         });
-    };
-    Lookup.prototype.removeByCondition = function (condition) {
-        var _this = this;
-        var removals = [];
-        this._map.forEach(function (entries, key) {
-            var updatedEntries = [];
-            for (var _i = 0, entries_1 = entries; _i < entries_1.length; _i++) {
-                var entry = entries_1[_i];
-                var remove = condition(entry);
+    }
+    removeByCondition(condition) {
+        const removals = [];
+        this._map.forEach((entries, key) => {
+            const updatedEntries = [];
+            for (const entry of entries) {
+                const remove = condition(entry);
                 if (remove) {
                     removals.push(entry);
                 }
@@ -2572,434 +3752,535 @@ var Lookup = (function () {
                     updatedEntries.push(entry);
                 }
             }
-            _this._setValue(key, updatedEntries);
+            this._setValue(key, updatedEntries);
         });
         return removals;
-    };
-    Lookup.prototype.hasKey = function (serviceIdentifier) {
-        if (serviceIdentifier === null || serviceIdentifier === undefined) {
-            throw new Error(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.NULL_ARGUMENT);
-        }
+    }
+    // returns true if _map contains a key (serviceIdentifier)
+    hasKey(serviceIdentifier) {
+        this._checkNonNulish(serviceIdentifier);
         return this._map.has(serviceIdentifier);
-    };
-    Lookup.prototype.clone = function () {
-        var copy = new Lookup();
-        this._map.forEach(function (value, key) {
-            value.forEach(function (b) { return copy.add(key, (0,_utils_clonable__WEBPACK_IMPORTED_MODULE_1__.isClonable)(b) ? b.clone() : b); });
+    }
+    // returns a new Lookup instance; note: this is not a deep clone, only Lookup related data structure (dictionary) is
+    // cloned, content remains the same
+    clone() {
+        const copy = new Lookup();
+        this._map.forEach((value, key) => {
+            value.forEach((b) => {
+                copy.add(key, (0, clonable_1.isClonable)(b) ? b.clone() : b);
+            });
         });
         return copy;
-    };
-    Lookup.prototype.traverse = function (func) {
-        this._map.forEach(function (value, key) {
+    }
+    traverse(func) {
+        this._map.forEach((value, key) => {
             func(key, value);
         });
-    };
-    Lookup.prototype._setValue = function (serviceIdentifier, value) {
+    }
+    _checkNonNulish(value) {
+        if (value == null) {
+            throw new Error(ERROR_MSGS.NULL_ARGUMENT);
+        }
+    }
+    _setValue(serviceIdentifier, value) {
         if (value.length > 0) {
             this._map.set(serviceIdentifier, value);
         }
         else {
             this._map.delete(serviceIdentifier);
         }
-    };
-    return Lookup;
-}());
-
+    }
+}
+exports.Lookup = Lookup;
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/container/module_activation_store.js":
-/*!****************************************************************************!*\
-  !*** ../../node_modules/inversify/es/container/module_activation_store.js ***!
-  \****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/container/module_activation_store.js":
+/*!*********************************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/container/module_activation_store.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   ModuleActivationStore: () => (/* binding */ ModuleActivationStore)
-/* harmony export */ });
-/* harmony import */ var _lookup__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lookup */ "../../node_modules/inversify/es/container/lookup.js");
 
-var ModuleActivationStore = (function () {
-    function ModuleActivationStore() {
-        this._map = new Map();
-    }
-    ModuleActivationStore.prototype.remove = function (moduleId) {
-        if (this._map.has(moduleId)) {
-            var handlers = this._map.get(moduleId);
-            this._map.delete(moduleId);
-            return handlers;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ModuleActivationStore = void 0;
+const lookup_1 = __webpack_require__(/*! ./lookup */ "../../node_modules/inversify/lib/cjs/container/lookup.js");
+class ModuleActivationStore {
+    _map = new Map();
+    remove(moduleId) {
+        const handlers = this._map.get(moduleId);
+        if (handlers === undefined) {
+            return this._getEmptyHandlersStore();
         }
-        return this._getEmptyHandlersStore();
-    };
-    ModuleActivationStore.prototype.addDeactivation = function (moduleId, serviceIdentifier, onDeactivation) {
-        this._getModuleActivationHandlers(moduleId)
-            .onDeactivations.add(serviceIdentifier, onDeactivation);
-    };
-    ModuleActivationStore.prototype.addActivation = function (moduleId, serviceIdentifier, onActivation) {
-        this._getModuleActivationHandlers(moduleId)
-            .onActivations.add(serviceIdentifier, onActivation);
-    };
-    ModuleActivationStore.prototype.clone = function () {
-        var clone = new ModuleActivationStore();
-        this._map.forEach(function (handlersStore, moduleId) {
+        this._map.delete(moduleId);
+        return handlers;
+    }
+    addDeactivation(moduleId, serviceIdentifier, onDeactivation) {
+        this._getModuleActivationHandlers(moduleId).onDeactivations.add(serviceIdentifier, onDeactivation);
+    }
+    addActivation(moduleId, serviceIdentifier, onActivation) {
+        this._getModuleActivationHandlers(moduleId).onActivations.add(serviceIdentifier, onActivation);
+    }
+    clone() {
+        const clone = new ModuleActivationStore();
+        this._map.forEach((handlersStore, moduleId) => {
             clone._map.set(moduleId, {
                 onActivations: handlersStore.onActivations.clone(),
                 onDeactivations: handlersStore.onDeactivations.clone(),
             });
         });
         return clone;
-    };
-    ModuleActivationStore.prototype._getModuleActivationHandlers = function (moduleId) {
-        var moduleActivationHandlers = this._map.get(moduleId);
+    }
+    _getModuleActivationHandlers(moduleId) {
+        let moduleActivationHandlers = this._map.get(moduleId);
         if (moduleActivationHandlers === undefined) {
             moduleActivationHandlers = this._getEmptyHandlersStore();
             this._map.set(moduleId, moduleActivationHandlers);
         }
         return moduleActivationHandlers;
-    };
-    ModuleActivationStore.prototype._getEmptyHandlersStore = function () {
-        var handlersStore = {
-            onActivations: new _lookup__WEBPACK_IMPORTED_MODULE_0__.Lookup(),
-            onDeactivations: new _lookup__WEBPACK_IMPORTED_MODULE_0__.Lookup()
+    }
+    _getEmptyHandlersStore() {
+        const handlersStore = {
+            onActivations: new lookup_1.Lookup(),
+            onDeactivations: new lookup_1.Lookup(),
         };
         return handlersStore;
+    }
+}
+exports.ModuleActivationStore = ModuleActivationStore;
+
+
+/***/ }),
+
+/***/ "../../node_modules/inversify/lib/cjs/index.js":
+/*!*****************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/index.js ***!
+  \*****************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
     };
-    return ModuleActivationStore;
-}());
-
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.multiBindToService = exports.getServiceIdentifierAsString = exports.typeConstraint = exports.namedConstraint = exports.taggedConstraint = exports.traverseAncerstors = exports.decorate = exports.id = exports.MetadataReader = exports.preDestroy = exports.postConstruct = exports.targetName = exports.multiInject = exports.unmanaged = exports.optional = exports.inject = exports.named = exports.tagged = exports.injectable = exports.createTaggedDecorator = exports.ContainerModule = exports.AsyncContainerModule = exports.TargetTypeEnum = exports.BindingTypeEnum = exports.BindingScopeEnum = exports.Container = exports.METADATA_KEY = exports.LazyServiceIdentifer = exports.LazyServiceIdentifier = void 0;
+/* eslint-disable @typescript-eslint/naming-convention */
+__webpack_require__(/*! reflect-metadata */ "../../node_modules/reflect-metadata/Reflect.js");
+const common_1 = __webpack_require__(/*! @inversifyjs/common */ "../../node_modules/@inversifyjs/common/lib/cjs/index.js");
+const keys = __importStar(__webpack_require__(/*! ./constants/metadata_keys */ "../../node_modules/inversify/lib/cjs/constants/metadata_keys.js"));
+var common_2 = __webpack_require__(/*! @inversifyjs/common */ "../../node_modules/@inversifyjs/common/lib/cjs/index.js");
+Object.defineProperty(exports, "LazyServiceIdentifier", ({ enumerable: true, get: function () { return common_2.LazyServiceIdentifier; } }));
+/**
+ * @deprecated Use LazyServiceIdentifier instead
+ */
+exports.LazyServiceIdentifer = common_1.LazyServiceIdentifier;
+// eslint-disable-next-line @typescript-eslint/typedef
+exports.METADATA_KEY = keys;
+var container_1 = __webpack_require__(/*! ./container/container */ "../../node_modules/inversify/lib/cjs/container/container.js");
+Object.defineProperty(exports, "Container", ({ enumerable: true, get: function () { return container_1.Container; } }));
+var literal_types_1 = __webpack_require__(/*! ./constants/literal_types */ "../../node_modules/inversify/lib/cjs/constants/literal_types.js");
+Object.defineProperty(exports, "BindingScopeEnum", ({ enumerable: true, get: function () { return literal_types_1.BindingScopeEnum; } }));
+Object.defineProperty(exports, "BindingTypeEnum", ({ enumerable: true, get: function () { return literal_types_1.BindingTypeEnum; } }));
+Object.defineProperty(exports, "TargetTypeEnum", ({ enumerable: true, get: function () { return literal_types_1.TargetTypeEnum; } }));
+var container_module_1 = __webpack_require__(/*! ./container/container_module */ "../../node_modules/inversify/lib/cjs/container/container_module.js");
+Object.defineProperty(exports, "AsyncContainerModule", ({ enumerable: true, get: function () { return container_module_1.AsyncContainerModule; } }));
+Object.defineProperty(exports, "ContainerModule", ({ enumerable: true, get: function () { return container_module_1.ContainerModule; } }));
+var decorator_utils_1 = __webpack_require__(/*! ./annotation/decorator_utils */ "../../node_modules/inversify/lib/cjs/annotation/decorator_utils.js");
+Object.defineProperty(exports, "createTaggedDecorator", ({ enumerable: true, get: function () { return decorator_utils_1.createTaggedDecorator; } }));
+var injectable_1 = __webpack_require__(/*! ./annotation/injectable */ "../../node_modules/inversify/lib/cjs/annotation/injectable.js");
+Object.defineProperty(exports, "injectable", ({ enumerable: true, get: function () { return injectable_1.injectable; } }));
+var tagged_1 = __webpack_require__(/*! ./annotation/tagged */ "../../node_modules/inversify/lib/cjs/annotation/tagged.js");
+Object.defineProperty(exports, "tagged", ({ enumerable: true, get: function () { return tagged_1.tagged; } }));
+var named_1 = __webpack_require__(/*! ./annotation/named */ "../../node_modules/inversify/lib/cjs/annotation/named.js");
+Object.defineProperty(exports, "named", ({ enumerable: true, get: function () { return named_1.named; } }));
+var inject_1 = __webpack_require__(/*! ./annotation/inject */ "../../node_modules/inversify/lib/cjs/annotation/inject.js");
+Object.defineProperty(exports, "inject", ({ enumerable: true, get: function () { return inject_1.inject; } }));
+var optional_1 = __webpack_require__(/*! ./annotation/optional */ "../../node_modules/inversify/lib/cjs/annotation/optional.js");
+Object.defineProperty(exports, "optional", ({ enumerable: true, get: function () { return optional_1.optional; } }));
+var unmanaged_1 = __webpack_require__(/*! ./annotation/unmanaged */ "../../node_modules/inversify/lib/cjs/annotation/unmanaged.js");
+Object.defineProperty(exports, "unmanaged", ({ enumerable: true, get: function () { return unmanaged_1.unmanaged; } }));
+var multi_inject_1 = __webpack_require__(/*! ./annotation/multi_inject */ "../../node_modules/inversify/lib/cjs/annotation/multi_inject.js");
+Object.defineProperty(exports, "multiInject", ({ enumerable: true, get: function () { return multi_inject_1.multiInject; } }));
+var target_name_1 = __webpack_require__(/*! ./annotation/target_name */ "../../node_modules/inversify/lib/cjs/annotation/target_name.js");
+Object.defineProperty(exports, "targetName", ({ enumerable: true, get: function () { return target_name_1.targetName; } }));
+var post_construct_1 = __webpack_require__(/*! ./annotation/post_construct */ "../../node_modules/inversify/lib/cjs/annotation/post_construct.js");
+Object.defineProperty(exports, "postConstruct", ({ enumerable: true, get: function () { return post_construct_1.postConstruct; } }));
+var pre_destroy_1 = __webpack_require__(/*! ./annotation/pre_destroy */ "../../node_modules/inversify/lib/cjs/annotation/pre_destroy.js");
+Object.defineProperty(exports, "preDestroy", ({ enumerable: true, get: function () { return pre_destroy_1.preDestroy; } }));
+var metadata_reader_1 = __webpack_require__(/*! ./planning/metadata_reader */ "../../node_modules/inversify/lib/cjs/planning/metadata_reader.js");
+Object.defineProperty(exports, "MetadataReader", ({ enumerable: true, get: function () { return metadata_reader_1.MetadataReader; } }));
+var id_1 = __webpack_require__(/*! ./utils/id */ "../../node_modules/inversify/lib/cjs/utils/id.js");
+Object.defineProperty(exports, "id", ({ enumerable: true, get: function () { return id_1.id; } }));
+var decorator_utils_2 = __webpack_require__(/*! ./annotation/decorator_utils */ "../../node_modules/inversify/lib/cjs/annotation/decorator_utils.js");
+Object.defineProperty(exports, "decorate", ({ enumerable: true, get: function () { return decorator_utils_2.decorate; } }));
+var constraint_helpers_1 = __webpack_require__(/*! ./syntax/constraint_helpers */ "../../node_modules/inversify/lib/cjs/syntax/constraint_helpers.js");
+Object.defineProperty(exports, "traverseAncerstors", ({ enumerable: true, get: function () { return constraint_helpers_1.traverseAncerstors; } }));
+Object.defineProperty(exports, "taggedConstraint", ({ enumerable: true, get: function () { return constraint_helpers_1.taggedConstraint; } }));
+Object.defineProperty(exports, "namedConstraint", ({ enumerable: true, get: function () { return constraint_helpers_1.namedConstraint; } }));
+Object.defineProperty(exports, "typeConstraint", ({ enumerable: true, get: function () { return constraint_helpers_1.typeConstraint; } }));
+var serialization_1 = __webpack_require__(/*! ./utils/serialization */ "../../node_modules/inversify/lib/cjs/utils/serialization.js");
+Object.defineProperty(exports, "getServiceIdentifierAsString", ({ enumerable: true, get: function () { return serialization_1.getServiceIdentifierAsString; } }));
+var binding_utils_1 = __webpack_require__(/*! ./utils/binding_utils */ "../../node_modules/inversify/lib/cjs/utils/binding_utils.js");
+Object.defineProperty(exports, "multiBindToService", ({ enumerable: true, get: function () { return binding_utils_1.multiBindToService; } }));
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/interfaces/interfaces.js":
+/***/ "../../node_modules/inversify/lib/cjs/planning/context.js":
 /*!****************************************************************!*\
-  !*** ../../node_modules/inversify/es/interfaces/interfaces.js ***!
+  !*** ../../node_modules/inversify/lib/cjs/planning/context.js ***!
   \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   interfaces: () => (/* binding */ interfaces)
-/* harmony export */ });
-var interfaces;
-(function (interfaces) {
-    ;
-})(interfaces || (interfaces = {}));
 
-
-
-/***/ }),
-
-/***/ "../../node_modules/inversify/es/inversify.js":
-/*!****************************************************!*\
-  !*** ../../node_modules/inversify/es/inversify.js ***!
-  \****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   AsyncContainerModule: () => (/* reexport safe */ _container_container_module__WEBPACK_IMPORTED_MODULE_3__.AsyncContainerModule),
-/* harmony export */   BindingScopeEnum: () => (/* reexport safe */ _constants_literal_types__WEBPACK_IMPORTED_MODULE_2__.BindingScopeEnum),
-/* harmony export */   BindingTypeEnum: () => (/* reexport safe */ _constants_literal_types__WEBPACK_IMPORTED_MODULE_2__.BindingTypeEnum),
-/* harmony export */   Container: () => (/* reexport safe */ _container_container__WEBPACK_IMPORTED_MODULE_1__.Container),
-/* harmony export */   ContainerModule: () => (/* reexport safe */ _container_container_module__WEBPACK_IMPORTED_MODULE_3__.ContainerModule),
-/* harmony export */   LazyServiceIdentifer: () => (/* reexport safe */ _annotation_lazy_service_identifier__WEBPACK_IMPORTED_MODULE_9__.LazyServiceIdentifier),
-/* harmony export */   LazyServiceIdentifier: () => (/* reexport safe */ _annotation_lazy_service_identifier__WEBPACK_IMPORTED_MODULE_9__.LazyServiceIdentifier),
-/* harmony export */   METADATA_KEY: () => (/* binding */ METADATA_KEY),
-/* harmony export */   MetadataReader: () => (/* reexport safe */ _planning_metadata_reader__WEBPACK_IMPORTED_MODULE_16__.MetadataReader),
-/* harmony export */   TargetTypeEnum: () => (/* reexport safe */ _constants_literal_types__WEBPACK_IMPORTED_MODULE_2__.TargetTypeEnum),
-/* harmony export */   createTaggedDecorator: () => (/* reexport safe */ _annotation_decorator_utils__WEBPACK_IMPORTED_MODULE_4__.createTaggedDecorator),
-/* harmony export */   decorate: () => (/* reexport safe */ _annotation_decorator_utils__WEBPACK_IMPORTED_MODULE_4__.decorate),
-/* harmony export */   getServiceIdentifierAsString: () => (/* reexport safe */ _utils_serialization__WEBPACK_IMPORTED_MODULE_20__.getServiceIdentifierAsString),
-/* harmony export */   id: () => (/* reexport safe */ _utils_id__WEBPACK_IMPORTED_MODULE_17__.id),
-/* harmony export */   inject: () => (/* reexport safe */ _annotation_inject__WEBPACK_IMPORTED_MODULE_8__.inject),
-/* harmony export */   injectable: () => (/* reexport safe */ _annotation_injectable__WEBPACK_IMPORTED_MODULE_5__.injectable),
-/* harmony export */   interfaces: () => (/* reexport safe */ _interfaces_interfaces__WEBPACK_IMPORTED_MODULE_18__.interfaces),
-/* harmony export */   multiBindToService: () => (/* reexport safe */ _utils_binding_utils__WEBPACK_IMPORTED_MODULE_21__.multiBindToService),
-/* harmony export */   multiInject: () => (/* reexport safe */ _annotation_multi_inject__WEBPACK_IMPORTED_MODULE_12__.multiInject),
-/* harmony export */   named: () => (/* reexport safe */ _annotation_named__WEBPACK_IMPORTED_MODULE_7__.named),
-/* harmony export */   namedConstraint: () => (/* reexport safe */ _syntax_constraint_helpers__WEBPACK_IMPORTED_MODULE_19__.namedConstraint),
-/* harmony export */   optional: () => (/* reexport safe */ _annotation_optional__WEBPACK_IMPORTED_MODULE_10__.optional),
-/* harmony export */   postConstruct: () => (/* reexport safe */ _annotation_post_construct__WEBPACK_IMPORTED_MODULE_14__.postConstruct),
-/* harmony export */   preDestroy: () => (/* reexport safe */ _annotation_pre_destroy__WEBPACK_IMPORTED_MODULE_15__.preDestroy),
-/* harmony export */   tagged: () => (/* reexport safe */ _annotation_tagged__WEBPACK_IMPORTED_MODULE_6__.tagged),
-/* harmony export */   taggedConstraint: () => (/* reexport safe */ _syntax_constraint_helpers__WEBPACK_IMPORTED_MODULE_19__.taggedConstraint),
-/* harmony export */   targetName: () => (/* reexport safe */ _annotation_target_name__WEBPACK_IMPORTED_MODULE_13__.targetName),
-/* harmony export */   traverseAncerstors: () => (/* reexport safe */ _syntax_constraint_helpers__WEBPACK_IMPORTED_MODULE_19__.traverseAncerstors),
-/* harmony export */   typeConstraint: () => (/* reexport safe */ _syntax_constraint_helpers__WEBPACK_IMPORTED_MODULE_19__.typeConstraint),
-/* harmony export */   unmanaged: () => (/* reexport safe */ _annotation_unmanaged__WEBPACK_IMPORTED_MODULE_11__.unmanaged)
-/* harmony export */ });
-/* harmony import */ var _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants/metadata_keys */ "../../node_modules/inversify/es/constants/metadata_keys.js");
-/* harmony import */ var _container_container__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./container/container */ "../../node_modules/inversify/es/container/container.js");
-/* harmony import */ var _constants_literal_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants/literal_types */ "../../node_modules/inversify/es/constants/literal_types.js");
-/* harmony import */ var _container_container_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./container/container_module */ "../../node_modules/inversify/es/container/container_module.js");
-/* harmony import */ var _annotation_decorator_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./annotation/decorator_utils */ "../../node_modules/inversify/es/annotation/decorator_utils.js");
-/* harmony import */ var _annotation_injectable__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./annotation/injectable */ "../../node_modules/inversify/es/annotation/injectable.js");
-/* harmony import */ var _annotation_tagged__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./annotation/tagged */ "../../node_modules/inversify/es/annotation/tagged.js");
-/* harmony import */ var _annotation_named__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./annotation/named */ "../../node_modules/inversify/es/annotation/named.js");
-/* harmony import */ var _annotation_inject__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./annotation/inject */ "../../node_modules/inversify/es/annotation/inject.js");
-/* harmony import */ var _annotation_lazy_service_identifier__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./annotation/lazy_service_identifier */ "../../node_modules/inversify/es/annotation/lazy_service_identifier.js");
-/* harmony import */ var _annotation_optional__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./annotation/optional */ "../../node_modules/inversify/es/annotation/optional.js");
-/* harmony import */ var _annotation_unmanaged__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./annotation/unmanaged */ "../../node_modules/inversify/es/annotation/unmanaged.js");
-/* harmony import */ var _annotation_multi_inject__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./annotation/multi_inject */ "../../node_modules/inversify/es/annotation/multi_inject.js");
-/* harmony import */ var _annotation_target_name__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./annotation/target_name */ "../../node_modules/inversify/es/annotation/target_name.js");
-/* harmony import */ var _annotation_post_construct__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./annotation/post_construct */ "../../node_modules/inversify/es/annotation/post_construct.js");
-/* harmony import */ var _annotation_pre_destroy__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./annotation/pre_destroy */ "../../node_modules/inversify/es/annotation/pre_destroy.js");
-/* harmony import */ var _planning_metadata_reader__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./planning/metadata_reader */ "../../node_modules/inversify/es/planning/metadata_reader.js");
-/* harmony import */ var _utils_id__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./utils/id */ "../../node_modules/inversify/es/utils/id.js");
-/* harmony import */ var _interfaces_interfaces__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./interfaces/interfaces */ "../../node_modules/inversify/es/interfaces/interfaces.js");
-/* harmony import */ var _syntax_constraint_helpers__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./syntax/constraint_helpers */ "../../node_modules/inversify/es/syntax/constraint_helpers.js");
-/* harmony import */ var _utils_serialization__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./utils/serialization */ "../../node_modules/inversify/es/utils/serialization.js");
-/* harmony import */ var _utils_binding_utils__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./utils/binding_utils */ "../../node_modules/inversify/es/utils/binding_utils.js");
-
-var METADATA_KEY = _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_0__;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/***/ }),
-
-/***/ "../../node_modules/inversify/es/planning/context.js":
-/*!***********************************************************!*\
-  !*** ../../node_modules/inversify/es/planning/context.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Context: () => (/* binding */ Context)
-/* harmony export */ });
-/* harmony import */ var _utils_id__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/id */ "../../node_modules/inversify/es/utils/id.js");
-
-var Context = (function () {
-    function Context(container) {
-        this.id = (0,_utils_id__WEBPACK_IMPORTED_MODULE_0__.id)();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Context = void 0;
+const id_1 = __webpack_require__(/*! ../utils/id */ "../../node_modules/inversify/lib/cjs/utils/id.js");
+class Context {
+    id;
+    container;
+    plan;
+    currentRequest;
+    constructor(container) {
+        this.id = (0, id_1.id)();
         this.container = container;
     }
-    Context.prototype.addPlan = function (plan) {
+    addPlan(plan) {
         this.plan = plan;
-    };
-    Context.prototype.setCurrentRequest = function (currentRequest) {
+    }
+    setCurrentRequest(currentRequest) {
         this.currentRequest = currentRequest;
-    };
-    return Context;
-}());
-
+    }
+}
+exports.Context = Context;
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/planning/metadata.js":
-/*!************************************************************!*\
-  !*** ../../node_modules/inversify/es/planning/metadata.js ***!
-  \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/planning/metadata.js":
+/*!*****************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/planning/metadata.js ***!
+  \*****************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Metadata: () => (/* binding */ Metadata)
-/* harmony export */ });
-/* harmony import */ var _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/es/constants/metadata_keys.js");
 
-var Metadata = (function () {
-    function Metadata(key, value) {
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Metadata = void 0;
+const METADATA_KEY = __importStar(__webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/lib/cjs/constants/metadata_keys.js"));
+class Metadata {
+    key;
+    value;
+    constructor(key, value) {
         this.key = key;
         this.value = value;
     }
-    Metadata.prototype.toString = function () {
-        if (this.key === _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_0__.NAMED_TAG) {
-            return "named: ".concat(String(this.value).toString(), " ");
+    toString() {
+        if (this.key === METADATA_KEY.NAMED_TAG) {
+            return `named: ${String(this.value).toString()} `;
         }
         else {
-            return "tagged: { key:".concat(this.key.toString(), ", value: ").concat(String(this.value), " }");
+            return `tagged: { key:${this.key.toString()}, value: ${String(this.value)} }`;
         }
-    };
-    return Metadata;
-}());
-
-
-
-/***/ }),
-
-/***/ "../../node_modules/inversify/es/planning/metadata_reader.js":
-/*!*******************************************************************!*\
-  !*** ../../node_modules/inversify/es/planning/metadata_reader.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   MetadataReader: () => (/* binding */ MetadataReader)
-/* harmony export */ });
-/* harmony import */ var _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/es/constants/metadata_keys.js");
-
-var MetadataReader = (function () {
-    function MetadataReader() {
     }
-    MetadataReader.prototype.getConstructorMetadata = function (constructorFunc) {
-        var compilerGeneratedMetadata = Reflect.getMetadata(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_0__.PARAM_TYPES, constructorFunc);
-        var userGeneratedMetadata = Reflect.getMetadata(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_0__.TAGGED, constructorFunc);
-        return {
-            compilerGeneratedMetadata: compilerGeneratedMetadata,
-            userGeneratedMetadata: userGeneratedMetadata || {}
-        };
-    };
-    MetadataReader.prototype.getPropertiesMetadata = function (constructorFunc) {
-        var userGeneratedMetadata = Reflect.getMetadata(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_0__.TAGGED_PROP, constructorFunc) || [];
-        return userGeneratedMetadata;
-    };
-    return MetadataReader;
-}());
-
+}
+exports.Metadata = Metadata;
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/planning/plan.js":
-/*!********************************************************!*\
-  !*** ../../node_modules/inversify/es/planning/plan.js ***!
-  \********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/planning/metadata_reader.js":
+/*!************************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/planning/metadata_reader.js ***!
+  \************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Plan: () => (/* binding */ Plan)
-/* harmony export */ });
-var Plan = (function () {
-    function Plan(parentContext, rootRequest) {
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.MetadataReader = void 0;
+const METADATA_KEY = __importStar(__webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/lib/cjs/constants/metadata_keys.js"));
+class MetadataReader {
+    getConstructorMetadata(constructorFunc) {
+        // TypeScript compiler generated annotations
+        const compilerGeneratedMetadata = Reflect.getMetadata(METADATA_KEY.DESIGN_PARAM_TYPES, constructorFunc) ?? [];
+        // User generated constructor annotations
+        const userGeneratedMetadata = Reflect.getMetadata(METADATA_KEY.TAGGED, constructorFunc);
+        return {
+            compilerGeneratedMetadata,
+            userGeneratedMetadata: userGeneratedMetadata ?? {},
+        };
+    }
+    getPropertiesMetadata(constructorFunc) {
+        // User generated properties annotations
+        const userGeneratedMetadata = Reflect.getMetadata(METADATA_KEY.TAGGED_PROP, constructorFunc) ?? {};
+        return userGeneratedMetadata;
+    }
+}
+exports.MetadataReader = MetadataReader;
+
+
+/***/ }),
+
+/***/ "../../node_modules/inversify/lib/cjs/planning/plan.js":
+/*!*************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/planning/plan.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Plan = void 0;
+class Plan {
+    parentContext;
+    rootRequest;
+    constructor(parentContext, rootRequest) {
         this.parentContext = parentContext;
         this.rootRequest = rootRequest;
     }
-    return Plan;
-}());
-
+}
+exports.Plan = Plan;
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/planning/planner.js":
-/*!***********************************************************!*\
-  !*** ../../node_modules/inversify/es/planning/planner.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/planning/planner.js":
+/*!****************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/planning/planner.js ***!
+  \****************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   createMockRequest: () => (/* binding */ createMockRequest),
-/* harmony export */   getBindingDictionary: () => (/* binding */ getBindingDictionary),
-/* harmony export */   plan: () => (/* binding */ plan)
-/* harmony export */ });
-/* harmony import */ var _bindings_binding_count__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../bindings/binding_count */ "../../node_modules/inversify/es/bindings/binding_count.js");
-/* harmony import */ var _constants_error_msgs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/es/constants/error_msgs.js");
-/* harmony import */ var _constants_literal_types__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../constants/literal_types */ "../../node_modules/inversify/es/constants/literal_types.js");
-/* harmony import */ var _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/es/constants/metadata_keys.js");
-/* harmony import */ var _utils_exceptions__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../utils/exceptions */ "../../node_modules/inversify/es/utils/exceptions.js");
-/* harmony import */ var _utils_serialization__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./reflection_utils */ "../../node_modules/inversify/es/utils/serialization.js");
-/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./context */ "../../node_modules/inversify/es/planning/context.js");
-/* harmony import */ var _metadata__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./metadata */ "../../node_modules/inversify/es/planning/metadata.js");
-/* harmony import */ var _plan__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./plan */ "../../node_modules/inversify/es/planning/plan.js");
-/* harmony import */ var _reflection_utils__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./reflection_utils */ "../../node_modules/inversify/es/planning/reflection_utils.js");
-/* harmony import */ var _request__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./request */ "../../node_modules/inversify/es/planning/request.js");
-/* harmony import */ var _target__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./target */ "../../node_modules/inversify/es/planning/target.js");
 
-
-
-
-
-
-
-
-
-
-
-
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getBindingDictionary = getBindingDictionary;
+exports.plan = plan;
+exports.createMockRequest = createMockRequest;
+const core_1 = __webpack_require__(/*! @inversifyjs/core */ "../../node_modules/@inversifyjs/core/lib/cjs/index.js");
+const binding_count_1 = __webpack_require__(/*! ../bindings/binding_count */ "../../node_modules/inversify/lib/cjs/bindings/binding_count.js");
+const ERROR_MSGS = __importStar(__webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/lib/cjs/constants/error_msgs.js"));
+const literal_types_1 = __webpack_require__(/*! ../constants/literal_types */ "../../node_modules/inversify/lib/cjs/constants/literal_types.js");
+const METADATA_KEY = __importStar(__webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/lib/cjs/constants/metadata_keys.js"));
+const exceptions_1 = __webpack_require__(/*! ../utils/exceptions */ "../../node_modules/inversify/lib/cjs/utils/exceptions.js");
+const serialization_1 = __webpack_require__(/*! ../utils/serialization */ "../../node_modules/inversify/lib/cjs/utils/serialization.js");
+const context_1 = __webpack_require__(/*! ./context */ "../../node_modules/inversify/lib/cjs/planning/context.js");
+const metadata_1 = __webpack_require__(/*! ./metadata */ "../../node_modules/inversify/lib/cjs/planning/metadata.js");
+const plan_1 = __webpack_require__(/*! ./plan */ "../../node_modules/inversify/lib/cjs/planning/plan.js");
+const reflection_utils_1 = __webpack_require__(/*! ./reflection_utils */ "../../node_modules/inversify/lib/cjs/planning/reflection_utils.js");
+const request_1 = __webpack_require__(/*! ./request */ "../../node_modules/inversify/lib/cjs/planning/request.js");
 function getBindingDictionary(cntnr) {
     return cntnr._bindingDictionary;
 }
-function _createTarget(isMultiInject, targetType, serviceIdentifier, name, key, value) {
-    var metadataKey = isMultiInject ? _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_0__.MULTI_INJECT_TAG : _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_0__.INJECT_TAG;
-    var injectMetadata = new _metadata__WEBPACK_IMPORTED_MODULE_1__.Metadata(metadataKey, serviceIdentifier);
-    var target = new _target__WEBPACK_IMPORTED_MODULE_2__.Target(targetType, name, serviceIdentifier, injectMetadata);
-    if (key !== undefined) {
-        var tagMetadata = new _metadata__WEBPACK_IMPORTED_MODULE_1__.Metadata(key, value);
-        target.metadata.push(tagMetadata);
+function _createTarget(targetType, serviceIdentifier, metadata) {
+    const metadataList = _getTargetMetadata(serviceIdentifier, metadata);
+    const classElementMetadata = (0, core_1.getClassElementMetadataFromLegacyMetadata)(metadataList);
+    if (classElementMetadata.kind === core_1.ClassElementMetadataKind.unmanaged) {
+        throw new Error('Unexpected metadata when creating target');
     }
+    const target = new core_1.LegacyTargetImpl('', classElementMetadata, targetType);
     return target;
 }
 function _getActiveBindings(metadataReader, avoidConstraints, context, parentRequest, target) {
-    var bindings = getBindings(context.container, target.serviceIdentifier);
-    var activeBindings = [];
-    if (bindings.length === _bindings_binding_count__WEBPACK_IMPORTED_MODULE_3__.BindingCount.NoBindingsAvailable &&
-        context.container.options.autoBindInjectable &&
+    let bindings = getBindings(context.container, target.serviceIdentifier);
+    let activeBindings = [];
+    // automatic binding
+    if (bindings.length === binding_count_1.BindingCount.NoBindingsAvailable &&
+        context.container.options.autoBindInjectable === true &&
         typeof target.serviceIdentifier === 'function' &&
-        metadataReader.getConstructorMetadata(target.serviceIdentifier).compilerGeneratedMetadata) {
+        metadataReader.getConstructorMetadata(target.serviceIdentifier)
+            .compilerGeneratedMetadata) {
         context.container.bind(target.serviceIdentifier).toSelf();
         bindings = getBindings(context.container, target.serviceIdentifier);
     }
+    // multiple bindings available
     if (!avoidConstraints) {
-        activeBindings = bindings.filter(function (binding) {
-            var request = new _request__WEBPACK_IMPORTED_MODULE_4__.Request(binding.serviceIdentifier, context, parentRequest, binding, target);
+        // apply constraints if available to reduce the number of active bindings
+        activeBindings = bindings.filter((binding) => {
+            const request = new request_1.Request(binding.serviceIdentifier, context, parentRequest, binding, target);
             return binding.constraint(request);
         });
     }
     else {
+        // simple injection or multi-injection without constraints
         activeBindings = bindings;
     }
-    _validateActiveBindingCount(target.serviceIdentifier, activeBindings, target, context.container);
+    // validate active bindings
+    _validateActiveBindingCount(target.serviceIdentifier, activeBindings, parentRequest, target, context.container);
     return activeBindings;
 }
-function _validateActiveBindingCount(serviceIdentifier, bindings, target, container) {
+function _getTargetMetadata(serviceIdentifier, metadata) {
+    const metadataKey = metadata.isMultiInject
+        ? METADATA_KEY.MULTI_INJECT_TAG
+        : METADATA_KEY.INJECT_TAG;
+    const metadataList = [
+        new metadata_1.Metadata(metadataKey, serviceIdentifier),
+    ];
+    if (metadata.customTag !== undefined) {
+        metadataList.push(new metadata_1.Metadata(metadata.customTag.key, metadata.customTag.value));
+    }
+    if (metadata.isOptional === true) {
+        metadataList.push(new metadata_1.Metadata(METADATA_KEY.OPTIONAL_TAG, true));
+    }
+    return metadataList;
+}
+function _validateActiveBindingCount(serviceIdentifier, bindings, parentRequest, target, container) {
     switch (bindings.length) {
-        case _bindings_binding_count__WEBPACK_IMPORTED_MODULE_3__.BindingCount.NoBindingsAvailable:
+        case binding_count_1.BindingCount.NoBindingsAvailable:
             if (target.isOptional()) {
                 return bindings;
             }
             else {
-                var serviceIdentifierString = (0,_utils_serialization__WEBPACK_IMPORTED_MODULE_5__.getServiceIdentifierAsString)(serviceIdentifier);
-                var msg = _constants_error_msgs__WEBPACK_IMPORTED_MODULE_6__.NOT_REGISTERED;
-                msg += (0,_utils_serialization__WEBPACK_IMPORTED_MODULE_5__.listMetadataForTarget)(serviceIdentifierString, target);
-                msg += (0,_utils_serialization__WEBPACK_IMPORTED_MODULE_5__.listRegisteredBindingsForServiceIdentifier)(container, serviceIdentifierString, getBindings);
+                const serviceIdentifierString = (0, serialization_1.getServiceIdentifierAsString)(serviceIdentifier);
+                let msg = ERROR_MSGS.NOT_REGISTERED;
+                msg += (0, serialization_1.listMetadataForTarget)(serviceIdentifierString, target);
+                msg += (0, serialization_1.listRegisteredBindingsForServiceIdentifier)(container, serviceIdentifierString, getBindings);
+                if (parentRequest !== null) {
+                    msg += `\n${ERROR_MSGS.TRYING_TO_RESOLVE_BINDINGS((0, serialization_1.getServiceIdentifierAsString)(parentRequest.serviceIdentifier))}`;
+                }
                 throw new Error(msg);
             }
-        case _bindings_binding_count__WEBPACK_IMPORTED_MODULE_3__.BindingCount.OnlyOneBindingAvailable:
+        case binding_count_1.BindingCount.OnlyOneBindingAvailable:
             return bindings;
-        case _bindings_binding_count__WEBPACK_IMPORTED_MODULE_3__.BindingCount.MultipleBindingsAvailable:
+        case binding_count_1.BindingCount.MultipleBindingsAvailable:
         default:
             if (!target.isArray()) {
-                var serviceIdentifierString = (0,_utils_serialization__WEBPACK_IMPORTED_MODULE_5__.getServiceIdentifierAsString)(serviceIdentifier);
-                var msg = "".concat(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_6__.AMBIGUOUS_MATCH, " ").concat(serviceIdentifierString);
-                msg += (0,_utils_serialization__WEBPACK_IMPORTED_MODULE_5__.listRegisteredBindingsForServiceIdentifier)(container, serviceIdentifierString, getBindings);
+                const serviceIdentifierString = (0, serialization_1.getServiceIdentifierAsString)(serviceIdentifier);
+                let msg = `${ERROR_MSGS.AMBIGUOUS_MATCH} ${serviceIdentifierString}`;
+                msg += (0, serialization_1.listRegisteredBindingsForServiceIdentifier)(container, serviceIdentifierString, getBindings);
                 throw new Error(msg);
             }
             else {
@@ -3008,498 +4289,262 @@ function _validateActiveBindingCount(serviceIdentifier, bindings, target, contai
     }
 }
 function _createSubRequests(metadataReader, avoidConstraints, serviceIdentifier, context, parentRequest, target) {
-    var activeBindings;
-    var childRequest;
+    let activeBindings;
+    let childRequest;
     if (parentRequest === null) {
         activeBindings = _getActiveBindings(metadataReader, avoidConstraints, context, null, target);
-        childRequest = new _request__WEBPACK_IMPORTED_MODULE_4__.Request(serviceIdentifier, context, null, activeBindings, target);
-        var thePlan = new _plan__WEBPACK_IMPORTED_MODULE_7__.Plan(context, childRequest);
+        childRequest = new request_1.Request(serviceIdentifier, context, null, activeBindings, target);
+        const thePlan = new plan_1.Plan(context, childRequest);
         context.addPlan(thePlan);
     }
     else {
         activeBindings = _getActiveBindings(metadataReader, avoidConstraints, context, parentRequest, target);
         childRequest = parentRequest.addChildRequest(target.serviceIdentifier, activeBindings, target);
     }
-    activeBindings.forEach(function (binding) {
-        var subChildRequest = null;
+    activeBindings.forEach((binding) => {
+        let subChildRequest = null;
         if (target.isArray()) {
             subChildRequest = childRequest.addChildRequest(binding.serviceIdentifier, binding, target);
         }
         else {
-            if (binding.cache) {
+            if (binding.cache !== null) {
                 return;
             }
             subChildRequest = childRequest;
         }
-        if (binding.type === _constants_literal_types__WEBPACK_IMPORTED_MODULE_8__.BindingTypeEnum.Instance && binding.implementationType !== null) {
-            var dependencies = (0,_reflection_utils__WEBPACK_IMPORTED_MODULE_9__.getDependencies)(metadataReader, binding.implementationType);
-            if (!context.container.options.skipBaseClassChecks) {
-                var baseClassDependencyCount = (0,_reflection_utils__WEBPACK_IMPORTED_MODULE_9__.getBaseClassDependencyCount)(metadataReader, binding.implementationType);
+        if (binding.type === literal_types_1.BindingTypeEnum.Instance &&
+            binding.implementationType !== null) {
+            const dependencies = (0, reflection_utils_1.getDependencies)(metadataReader, binding.implementationType);
+            if (context.container.options.skipBaseClassChecks !== true) {
+                // Throw if a derived class does not implement its constructor explicitly
+                // We do this to prevent errors when a base class (parent) has dependencies
+                // and one of the derived classes (children) has no dependencies
+                const baseClassDependencyCount = (0, reflection_utils_1.getBaseClassDependencyCount)(metadataReader, binding.implementationType);
                 if (dependencies.length < baseClassDependencyCount) {
-                    var error = _constants_error_msgs__WEBPACK_IMPORTED_MODULE_6__.ARGUMENTS_LENGTH_MISMATCH((0,_utils_serialization__WEBPACK_IMPORTED_MODULE_5__.getFunctionName)(binding.implementationType));
+                    const error = ERROR_MSGS.ARGUMENTS_LENGTH_MISMATCH((0, reflection_utils_1.getFunctionName)(binding.implementationType));
                     throw new Error(error);
                 }
             }
-            dependencies.forEach(function (dependency) {
+            dependencies.forEach((dependency) => {
                 _createSubRequests(metadataReader, false, dependency.serviceIdentifier, context, subChildRequest, dependency);
             });
         }
     });
 }
 function getBindings(container, serviceIdentifier) {
-    var bindings = [];
-    var bindingDictionary = getBindingDictionary(container);
+    let bindings = [];
+    const bindingDictionary = getBindingDictionary(container);
     if (bindingDictionary.hasKey(serviceIdentifier)) {
         bindings = bindingDictionary.get(serviceIdentifier);
     }
     else if (container.parent !== null) {
+        // recursively try to get bindings from parent container
         bindings = getBindings(container.parent, serviceIdentifier);
     }
     return bindings;
 }
-function plan(metadataReader, container, isMultiInject, targetType, serviceIdentifier, key, value, avoidConstraints) {
-    if (avoidConstraints === void 0) { avoidConstraints = false; }
-    var context = new _context__WEBPACK_IMPORTED_MODULE_10__.Context(container);
-    var target = _createTarget(isMultiInject, targetType, serviceIdentifier, '', key, value);
+function plan(metadataReader, container, targetType, serviceIdentifier, metadata, avoidConstraints = false) {
+    const context = new context_1.Context(container);
+    const target = _createTarget(targetType, serviceIdentifier, metadata);
     try {
         _createSubRequests(metadataReader, avoidConstraints, serviceIdentifier, context, null, target);
         return context;
     }
     catch (error) {
-        if ((0,_utils_exceptions__WEBPACK_IMPORTED_MODULE_11__.isStackOverflowException)(error)) {
-            (0,_utils_serialization__WEBPACK_IMPORTED_MODULE_5__.circularDependencyToException)(context.plan.rootRequest);
+        if ((0, exceptions_1.isStackOverflowException)(error)) {
+            (0, serialization_1.circularDependencyToException)(context.plan.rootRequest);
         }
         throw error;
     }
 }
-function createMockRequest(container, serviceIdentifier, key, value) {
-    var target = new _target__WEBPACK_IMPORTED_MODULE_2__.Target(_constants_literal_types__WEBPACK_IMPORTED_MODULE_8__.TargetTypeEnum.Variable, '', serviceIdentifier, new _metadata__WEBPACK_IMPORTED_MODULE_1__.Metadata(key, value));
-    var context = new _context__WEBPACK_IMPORTED_MODULE_10__.Context(container);
-    var request = new _request__WEBPACK_IMPORTED_MODULE_4__.Request(serviceIdentifier, context, null, [], target);
+function createMockRequest(container, serviceIdentifier, metadata) {
+    const metadataList = _getTargetMetadata(serviceIdentifier, metadata);
+    const classElementMetadata = (0, core_1.getClassElementMetadataFromLegacyMetadata)(metadataList);
+    if (classElementMetadata.kind === core_1.ClassElementMetadataKind.unmanaged) {
+        throw new Error('Unexpected metadata when creating target');
+    }
+    const target = new core_1.LegacyTargetImpl('', classElementMetadata, 'Variable');
+    const context = new context_1.Context(container);
+    const request = new request_1.Request(serviceIdentifier, context, null, [], target);
     return request;
 }
 
 
-
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/planning/queryable_string.js":
-/*!********************************************************************!*\
-  !*** ../../node_modules/inversify/es/planning/queryable_string.js ***!
-  \********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/planning/reflection_utils.js":
+/*!*************************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/planning/reflection_utils.js ***!
+  \*************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   QueryableString: () => (/* binding */ QueryableString)
-/* harmony export */ });
-var QueryableString = (function () {
-    function QueryableString(str) {
-        this.str = str;
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
     }
-    QueryableString.prototype.startsWith = function (searchString) {
-        return this.str.indexOf(searchString) === 0;
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
     };
-    QueryableString.prototype.endsWith = function (searchString) {
-        var reverseString = '';
-        var reverseSearchString = searchString.split('').reverse().join('');
-        reverseString = this.str.split('').reverse().join('');
-        return this.startsWith.call({ str: reverseString }, reverseSearchString);
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
     };
-    QueryableString.prototype.contains = function (searchString) {
-        return (this.str.indexOf(searchString) !== -1);
-    };
-    QueryableString.prototype.equals = function (compareString) {
-        return this.str === compareString;
-    };
-    QueryableString.prototype.value = function () {
-        return this.str;
-    };
-    return QueryableString;
-}());
-
-
-
-/***/ }),
-
-/***/ "../../node_modules/inversify/es/planning/reflection_utils.js":
-/*!********************************************************************!*\
-  !*** ../../node_modules/inversify/es/planning/reflection_utils.js ***!
-  \********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   getBaseClassDependencyCount: () => (/* binding */ getBaseClassDependencyCount),
-/* harmony export */   getDependencies: () => (/* binding */ getDependencies),
-/* harmony export */   getFunctionName: () => (/* reexport safe */ _utils_serialization__WEBPACK_IMPORTED_MODULE_0__.getFunctionName)
-/* harmony export */ });
-/* harmony import */ var _annotation_lazy_service_identifier__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../annotation/lazy_service_identifier */ "../../node_modules/inversify/es/annotation/lazy_service_identifier.js");
-/* harmony import */ var _constants_error_msgs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/es/constants/error_msgs.js");
-/* harmony import */ var _constants_literal_types__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../constants/literal_types */ "../../node_modules/inversify/es/constants/literal_types.js");
-/* harmony import */ var _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/es/constants/metadata_keys.js");
-/* harmony import */ var _utils_serialization__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/serialization */ "../../node_modules/inversify/es/utils/serialization.js");
-/* harmony import */ var _target__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./target */ "../../node_modules/inversify/es/planning/target.js");
-var __spreadArray = (undefined && undefined.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
-
-
-
-
-
-
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getFunctionName = void 0;
+exports.getDependencies = getDependencies;
+exports.getBaseClassDependencyCount = getBaseClassDependencyCount;
+const core_1 = __webpack_require__(/*! @inversifyjs/core */ "../../node_modules/@inversifyjs/core/lib/cjs/index.js");
+const METADATA_KEY = __importStar(__webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/lib/cjs/constants/metadata_keys.js"));
+const get_base_type_1 = __webpack_require__(/*! ../utils/get_base_type */ "../../node_modules/inversify/lib/cjs/utils/get_base_type.js");
+const serialization_1 = __webpack_require__(/*! ../utils/serialization */ "../../node_modules/inversify/lib/cjs/utils/serialization.js");
+Object.defineProperty(exports, "getFunctionName", ({ enumerable: true, get: function () { return serialization_1.getFunctionName; } }));
 function getDependencies(metadataReader, func) {
-    var constructorName = (0,_utils_serialization__WEBPACK_IMPORTED_MODULE_0__.getFunctionName)(func);
-    return getTargets(metadataReader, constructorName, func, false);
-}
-function getTargets(metadataReader, constructorName, func, isBaseClass) {
-    var metadata = metadataReader.getConstructorMetadata(func);
-    var serviceIdentifiers = metadata.compilerGeneratedMetadata;
-    if (serviceIdentifiers === undefined) {
-        var msg = "".concat(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_1__.MISSING_INJECTABLE_ANNOTATION, " ").concat(constructorName, ".");
-        throw new Error(msg);
-    }
-    var constructorArgsMetadata = metadata.userGeneratedMetadata;
-    var keys = Object.keys(constructorArgsMetadata);
-    var hasUserDeclaredUnknownInjections = (func.length === 0 && keys.length > 0);
-    var hasOptionalParameters = keys.length > func.length;
-    var iterations = (hasUserDeclaredUnknownInjections || hasOptionalParameters) ? keys.length : func.length;
-    var constructorTargets = getConstructorArgsAsTargets(isBaseClass, constructorName, serviceIdentifiers, constructorArgsMetadata, iterations);
-    var propertyTargets = getClassPropsAsTargets(metadataReader, func, constructorName);
-    var targets = __spreadArray(__spreadArray([], constructorTargets, true), propertyTargets, true);
-    return targets;
-}
-function getConstructorArgsAsTarget(index, isBaseClass, constructorName, serviceIdentifiers, constructorArgsMetadata) {
-    var targetMetadata = constructorArgsMetadata[index.toString()] || [];
-    var metadata = formatTargetMetadata(targetMetadata);
-    var isManaged = metadata.unmanaged !== true;
-    var serviceIdentifier = serviceIdentifiers[index];
-    var injectIdentifier = metadata.inject || metadata.multiInject;
-    serviceIdentifier = (injectIdentifier ? injectIdentifier : serviceIdentifier);
-    if (serviceIdentifier instanceof _annotation_lazy_service_identifier__WEBPACK_IMPORTED_MODULE_2__.LazyServiceIdentifier) {
-        serviceIdentifier = serviceIdentifier.unwrap();
-    }
-    if (isManaged) {
-        var isObject = serviceIdentifier === Object;
-        var isFunction = serviceIdentifier === Function;
-        var isUndefined = serviceIdentifier === undefined;
-        var isUnknownType = isObject || isFunction || isUndefined;
-        if (!isBaseClass && isUnknownType) {
-            var msg = "".concat(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_1__.MISSING_INJECT_ANNOTATION, " argument ").concat(index, " in class ").concat(constructorName, ".");
-            throw new Error(msg);
-        }
-        var target = new _target__WEBPACK_IMPORTED_MODULE_3__.Target(_constants_literal_types__WEBPACK_IMPORTED_MODULE_4__.TargetTypeEnum.ConstructorArgument, metadata.targetName, serviceIdentifier);
-        target.metadata = targetMetadata;
-        return target;
-    }
-    return null;
-}
-function getConstructorArgsAsTargets(isBaseClass, constructorName, serviceIdentifiers, constructorArgsMetadata, iterations) {
-    var targets = [];
-    for (var i = 0; i < iterations; i++) {
-        var index = i;
-        var target = getConstructorArgsAsTarget(index, isBaseClass, constructorName, serviceIdentifiers, constructorArgsMetadata);
-        if (target !== null) {
-            targets.push(target);
-        }
-    }
-    return targets;
-}
-function _getServiceIdentifierForProperty(inject, multiInject, propertyName, className) {
-    var serviceIdentifier = (inject || multiInject);
-    if (serviceIdentifier === undefined) {
-        var msg = "".concat(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_1__.MISSING_INJECTABLE_ANNOTATION, " for property ").concat(String(propertyName), " in class ").concat(className, ".");
-        throw new Error(msg);
-    }
-    return serviceIdentifier;
-}
-function getClassPropsAsTargets(metadataReader, constructorFunc, constructorName) {
-    var classPropsMetadata = metadataReader.getPropertiesMetadata(constructorFunc);
-    var targets = [];
-    var symbolKeys = Object.getOwnPropertySymbols(classPropsMetadata);
-    var stringKeys = Object.keys(classPropsMetadata);
-    var keys = stringKeys.concat(symbolKeys);
-    for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
-        var key = keys_1[_i];
-        var targetMetadata = classPropsMetadata[key];
-        var metadata = formatTargetMetadata(targetMetadata);
-        var identifier = metadata.targetName || key;
-        var serviceIdentifier = _getServiceIdentifierForProperty(metadata.inject, metadata.multiInject, key, constructorName);
-        var target = new _target__WEBPACK_IMPORTED_MODULE_3__.Target(_constants_literal_types__WEBPACK_IMPORTED_MODULE_4__.TargetTypeEnum.ClassProperty, identifier, serviceIdentifier);
-        target.metadata = targetMetadata;
-        targets.push(target);
-    }
-    var baseConstructor = Object.getPrototypeOf(constructorFunc.prototype).constructor;
-    if (baseConstructor !== Object) {
-        var baseTargets = getClassPropsAsTargets(metadataReader, baseConstructor, constructorName);
-        targets = __spreadArray(__spreadArray([], targets, true), baseTargets, true);
-    }
-    return targets;
+    return (0, core_1.getTargets)(metadataReader)(func);
 }
 function getBaseClassDependencyCount(metadataReader, func) {
-    var baseConstructor = Object.getPrototypeOf(func.prototype).constructor;
-    if (baseConstructor !== Object) {
-        var baseConstructorName = (0,_utils_serialization__WEBPACK_IMPORTED_MODULE_0__.getFunctionName)(baseConstructor);
-        var targets = getTargets(metadataReader, baseConstructorName, baseConstructor, true);
-        var metadata = targets.map(function (t) { return t.metadata.filter(function (m) { return m.key === _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_5__.UNMANAGED_TAG; }); });
-        var unmanagedCount = [].concat.apply([], metadata).length;
-        var dependencyCount = targets.length - unmanagedCount;
-        if (dependencyCount > 0) {
-            return dependencyCount;
-        }
-        else {
-            return getBaseClassDependencyCount(metadataReader, baseConstructor);
-        }
-    }
-    else {
+    const baseConstructor = (0, get_base_type_1.getBaseType)(func);
+    if (baseConstructor === undefined || baseConstructor === Object) {
         return 0;
     }
+    // get targets for base class
+    const targets = (0, core_1.getTargets)(metadataReader)(baseConstructor);
+    // get unmanaged metadata
+    const metadata = targets.map((t) => t.metadata.filter((m) => m.key === METADATA_KEY.UNMANAGED_TAG));
+    // Compare the number of constructor arguments with the number of
+    // unmanaged dependencies unmanaged dependencies are not required
+    const unmanagedCount = [].concat.apply([], metadata).length;
+    const dependencyCount = targets.length - unmanagedCount;
+    if (dependencyCount > 0) {
+        return dependencyCount;
+    }
+    else {
+        return getBaseClassDependencyCount(metadataReader, baseConstructor);
+    }
 }
-function formatTargetMetadata(targetMetadata) {
-    var targetMetadataMap = {};
-    targetMetadata.forEach(function (m) {
-        targetMetadataMap[m.key.toString()] = m.value;
-    });
-    return {
-        inject: targetMetadataMap[_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_5__.INJECT_TAG],
-        multiInject: targetMetadataMap[_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_5__.MULTI_INJECT_TAG],
-        targetName: targetMetadataMap[_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_5__.NAME_TAG],
-        unmanaged: targetMetadataMap[_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_5__.UNMANAGED_TAG]
-    };
-}
-
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/planning/request.js":
-/*!***********************************************************!*\
-  !*** ../../node_modules/inversify/es/planning/request.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/planning/request.js":
+/*!****************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/planning/request.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Request: () => (/* binding */ Request)
-/* harmony export */ });
-/* harmony import */ var _utils_id__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/id */ "../../node_modules/inversify/es/utils/id.js");
 
-var Request = (function () {
-    function Request(serviceIdentifier, parentContext, parentRequest, bindings, target) {
-        this.id = (0,_utils_id__WEBPACK_IMPORTED_MODULE_0__.id)();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Request = void 0;
+const id_1 = __webpack_require__(/*! ../utils/id */ "../../node_modules/inversify/lib/cjs/utils/id.js");
+class Request {
+    id;
+    serviceIdentifier;
+    parentContext;
+    parentRequest;
+    bindings;
+    childRequests;
+    target;
+    requestScope;
+    constructor(serviceIdentifier, parentContext, parentRequest, 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    bindings, target) {
+        this.id = (0, id_1.id)();
         this.serviceIdentifier = serviceIdentifier;
         this.parentContext = parentContext;
         this.parentRequest = parentRequest;
         this.target = target;
         this.childRequests = [];
-        this.bindings = (Array.isArray(bindings) ? bindings : [bindings]);
-        this.requestScope = parentRequest === null
-            ? new Map()
-            : null;
+        this.bindings = Array.isArray(bindings) ? bindings : [bindings];
+        // Set requestScope if Request is the root request
+        this.requestScope = parentRequest === null ? new Map() : null;
     }
-    Request.prototype.addChildRequest = function (serviceIdentifier, bindings, target) {
-        var child = new Request(serviceIdentifier, this.parentContext, this, bindings, target);
+    addChildRequest(serviceIdentifier, bindings, target) {
+        const child = new Request(serviceIdentifier, this.parentContext, this, bindings, target);
         this.childRequests.push(child);
         return child;
-    };
-    return Request;
-}());
-
+    }
+}
+exports.Request = Request;
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/planning/target.js":
-/*!**********************************************************!*\
-  !*** ../../node_modules/inversify/es/planning/target.js ***!
-  \**********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/resolution/instantiation.js":
+/*!************************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/resolution/instantiation.js ***!
+  \************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Target: () => (/* binding */ Target)
-/* harmony export */ });
-/* harmony import */ var _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/es/constants/metadata_keys.js");
-/* harmony import */ var _utils_id__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/id */ "../../node_modules/inversify/es/utils/id.js");
-/* harmony import */ var _utils_serialization__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/serialization */ "../../node_modules/inversify/es/utils/serialization.js");
-/* harmony import */ var _metadata__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./metadata */ "../../node_modules/inversify/es/planning/metadata.js");
-/* harmony import */ var _queryable_string__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./queryable_string */ "../../node_modules/inversify/es/planning/queryable_string.js");
 
-
-
-
-
-var Target = (function () {
-    function Target(type, identifier, serviceIdentifier, namedOrTagged) {
-        this.id = (0,_utils_id__WEBPACK_IMPORTED_MODULE_0__.id)();
-        this.type = type;
-        this.serviceIdentifier = serviceIdentifier;
-        var queryableName = typeof identifier === 'symbol' ? (0,_utils_serialization__WEBPACK_IMPORTED_MODULE_1__.getSymbolDescription)(identifier) : identifier;
-        this.name = new _queryable_string__WEBPACK_IMPORTED_MODULE_2__.QueryableString(queryableName || '');
-        this.identifier = identifier;
-        this.metadata = new Array();
-        var metadataItem = null;
-        if (typeof namedOrTagged === 'string') {
-            metadataItem = new _metadata__WEBPACK_IMPORTED_MODULE_3__.Metadata(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_4__.NAMED_TAG, namedOrTagged);
-        }
-        else if (namedOrTagged instanceof _metadata__WEBPACK_IMPORTED_MODULE_3__.Metadata) {
-            metadataItem = namedOrTagged;
-        }
-        if (metadataItem !== null) {
-            this.metadata.push(metadataItem);
-        }
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
     }
-    Target.prototype.hasTag = function (key) {
-        for (var _i = 0, _a = this.metadata; _i < _a.length; _i++) {
-            var m = _a[_i];
-            if (m.key === key) {
-                return true;
-            }
-        }
-        return false;
-    };
-    Target.prototype.isArray = function () {
-        return this.hasTag(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_4__.MULTI_INJECT_TAG);
-    };
-    Target.prototype.matchesArray = function (name) {
-        return this.matchesTag(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_4__.MULTI_INJECT_TAG)(name);
-    };
-    Target.prototype.isNamed = function () {
-        return this.hasTag(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_4__.NAMED_TAG);
-    };
-    Target.prototype.isTagged = function () {
-        return this.metadata.some(function (metadata) { return _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_4__.NON_CUSTOM_TAG_KEYS.every(function (key) { return metadata.key !== key; }); });
-    };
-    Target.prototype.isOptional = function () {
-        return this.matchesTag(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_4__.OPTIONAL_TAG)(true);
-    };
-    Target.prototype.getNamedTag = function () {
-        if (this.isNamed()) {
-            return this.metadata.filter(function (m) { return m.key === _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_4__.NAMED_TAG; })[0];
-        }
-        return null;
-    };
-    Target.prototype.getCustomTags = function () {
-        if (this.isTagged()) {
-            return this.metadata.filter(function (metadata) { return _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_4__.NON_CUSTOM_TAG_KEYS.every(function (key) { return metadata.key !== key; }); });
-        }
-        else {
-            return null;
-        }
-    };
-    Target.prototype.matchesNamedTag = function (name) {
-        return this.matchesTag(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_4__.NAMED_TAG)(name);
-    };
-    Target.prototype.matchesTag = function (key) {
-        var _this = this;
-        return function (value) {
-            for (var _i = 0, _a = _this.metadata; _i < _a.length; _i++) {
-                var m = _a[_i];
-                if (m.key === key && m.value === value) {
-                    return true;
-                }
-            }
-            return false;
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
         };
+        return ownKeys(o);
     };
-    return Target;
-}());
-
-
-
-/***/ }),
-
-/***/ "../../node_modules/inversify/es/resolution/instantiation.js":
-/*!*******************************************************************!*\
-  !*** ../../node_modules/inversify/es/resolution/instantiation.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   resolveInstance: () => (/* binding */ resolveInstance)
-/* harmony export */ });
-/* harmony import */ var _constants_error_msgs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/es/constants/error_msgs.js");
-/* harmony import */ var _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/literal_types */ "../../node_modules/inversify/es/constants/literal_types.js");
-/* harmony import */ var _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/es/constants/metadata_keys.js");
-/* harmony import */ var _utils_async__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/async */ "../../node_modules/inversify/es/utils/async.js");
-var __assign = (undefined && undefined.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
     };
-    return __assign.apply(this, arguments);
-};
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-var __spreadArray = (undefined && undefined.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
-
-
-
-
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.resolveInstance = resolveInstance;
+const error_msgs_1 = __webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/lib/cjs/constants/error_msgs.js");
+const literal_types_1 = __webpack_require__(/*! ../constants/literal_types */ "../../node_modules/inversify/lib/cjs/constants/literal_types.js");
+const METADATA_KEY = __importStar(__webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/lib/cjs/constants/metadata_keys.js"));
+const async_1 = __webpack_require__(/*! ../utils/async */ "../../node_modules/inversify/lib/cjs/utils/async.js");
 function _resolveRequests(childRequests, resolveRequest) {
-    return childRequests.reduce(function (resolvedRequests, childRequest) {
-        var injection = resolveRequest(childRequest);
-        var targetType = childRequest.target.type;
-        if (targetType === _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.TargetTypeEnum.ConstructorArgument) {
+    return childRequests.reduce((resolvedRequests, childRequest) => {
+        const injection = resolveRequest(childRequest);
+        const targetType = childRequest.target.type;
+        if (targetType === literal_types_1.TargetTypeEnum.ConstructorArgument) {
             resolvedRequests.constructorInjections.push(injection);
         }
         else {
@@ -3507,16 +4552,24 @@ function _resolveRequests(childRequests, resolveRequest) {
             resolvedRequests.propertyInjections.push(injection);
         }
         if (!resolvedRequests.isAsync) {
-            resolvedRequests.isAsync = (0,_utils_async__WEBPACK_IMPORTED_MODULE_1__.isPromiseOrContainsPromise)(injection);
+            resolvedRequests.isAsync = (0, async_1.isPromiseOrContainsPromise)(injection);
         }
         return resolvedRequests;
-    }, { constructorInjections: [], propertyInjections: [], propertyRequests: [], isAsync: false });
+    }, {
+        constructorInjections: [],
+        isAsync: false,
+        propertyInjections: [],
+        propertyRequests: [],
+    });
 }
 function _createInstance(constr, childRequests, resolveRequest) {
-    var result;
+    let result;
     if (childRequests.length > 0) {
-        var resolved = _resolveRequests(childRequests, resolveRequest);
-        var createInstanceWithInjectionsArg = __assign(__assign({}, resolved), { constr: constr });
+        const resolved = _resolveRequests(childRequests, resolveRequest);
+        const createInstanceWithInjectionsArg = {
+            ...resolved,
+            constr,
+        };
         if (resolved.isAsync) {
             result = createInstanceWithInjectionsAsync(createInstanceWithInjectionsArg);
         }
@@ -3530,95 +4583,78 @@ function _createInstance(constr, childRequests, resolveRequest) {
     return result;
 }
 function createInstanceWithInjections(args) {
-    var _a;
-    var instance = new ((_a = args.constr).bind.apply(_a, __spreadArray([void 0], args.constructorInjections, false)))();
-    args.propertyRequests.forEach(function (r, index) {
-        var property = r.target.identifier;
-        var injection = args.propertyInjections[index];
+    const instance = new args.constr(...args.constructorInjections);
+    args.propertyRequests.forEach((r, index) => {
+        const property = r.target.identifier;
+        const injection = args.propertyInjections[index];
         if (!r.target.isOptional() || injection !== undefined) {
             instance[property] = injection;
         }
     });
     return instance;
 }
-function createInstanceWithInjectionsAsync(args) {
-    return __awaiter(this, void 0, void 0, function () {
-        var constructorInjections, propertyInjections;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4, possiblyWaitInjections(args.constructorInjections)];
-                case 1:
-                    constructorInjections = _a.sent();
-                    return [4, possiblyWaitInjections(args.propertyInjections)];
-                case 2:
-                    propertyInjections = _a.sent();
-                    return [2, createInstanceWithInjections(__assign(__assign({}, args), { constructorInjections: constructorInjections, propertyInjections: propertyInjections }))];
-            }
-        });
+async function createInstanceWithInjectionsAsync(args) {
+    const constructorInjections = await possiblyWaitInjections(args.constructorInjections);
+    const propertyInjections = await possiblyWaitInjections(args.propertyInjections);
+    return createInstanceWithInjections({
+        ...args,
+        constructorInjections,
+        propertyInjections,
     });
 }
-function possiblyWaitInjections(possiblePromiseinjections) {
-    return __awaiter(this, void 0, void 0, function () {
-        var injections, _i, possiblePromiseinjections_1, injection;
-        return __generator(this, function (_a) {
-            injections = [];
-            for (_i = 0, possiblePromiseinjections_1 = possiblePromiseinjections; _i < possiblePromiseinjections_1.length; _i++) {
-                injection = possiblePromiseinjections_1[_i];
-                if (Array.isArray(injection)) {
-                    injections.push(Promise.all(injection));
-                }
-                else {
-                    injections.push(injection);
-                }
-            }
-            return [2, Promise.all(injections)];
-        });
-    });
+async function possiblyWaitInjections(possiblePromiseinjections) {
+    const injections = [];
+    for (const injection of possiblePromiseinjections) {
+        if (Array.isArray(injection)) {
+            injections.push(Promise.all(injection));
+        }
+        else {
+            injections.push(injection);
+        }
+    }
+    return Promise.all(injections);
 }
 function _getInstanceAfterPostConstruct(constr, result) {
-    var postConstructResult = _postConstruct(constr, result);
-    if ((0,_utils_async__WEBPACK_IMPORTED_MODULE_1__.isPromise)(postConstructResult)) {
-        return postConstructResult.then(function () { return result; });
+    const postConstructResult = _postConstruct(constr, result);
+    if ((0, async_1.isPromise)(postConstructResult)) {
+        return postConstructResult.then(() => result);
     }
     else {
         return result;
     }
 }
 function _postConstruct(constr, instance) {
-    var _a, _b;
-    if (Reflect.hasMetadata(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_2__.POST_CONSTRUCT, constr)) {
-        var data = Reflect.getMetadata(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_2__.POST_CONSTRUCT, constr);
+    if (Reflect.hasMetadata(METADATA_KEY.POST_CONSTRUCT, constr)) {
+        const data = Reflect.getMetadata(METADATA_KEY.POST_CONSTRUCT, constr);
         try {
-            return (_b = (_a = instance)[data.value]) === null || _b === void 0 ? void 0 : _b.call(_a);
+            return instance[data.value]?.();
         }
         catch (e) {
             if (e instanceof Error) {
-                throw new Error((0,_constants_error_msgs__WEBPACK_IMPORTED_MODULE_3__.POST_CONSTRUCT_ERROR)(constr.name, e.message));
+                throw new Error((0, error_msgs_1.POST_CONSTRUCT_ERROR)(constr.name, e.message));
             }
         }
     }
 }
 function _validateInstanceResolution(binding, constr) {
-    if (binding.scope !== _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingScopeEnum.Singleton) {
+    if (binding.scope !== literal_types_1.BindingScopeEnum.Singleton) {
         _throwIfHandlingDeactivation(binding, constr);
     }
 }
 function _throwIfHandlingDeactivation(binding, constr) {
-    var scopeErrorMessage = "Class cannot be instantiated in ".concat(binding.scope === _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingScopeEnum.Request ?
-        'request' :
-        'transient', " scope.");
+    const scopeErrorMessage = `Class cannot be instantiated in ${binding.scope === literal_types_1.BindingScopeEnum.Request ? 'request' : 'transient'} scope.`;
     if (typeof binding.onDeactivation === 'function') {
-        throw new Error((0,_constants_error_msgs__WEBPACK_IMPORTED_MODULE_3__.ON_DEACTIVATION_ERROR)(constr.name, scopeErrorMessage));
+        throw new Error((0, error_msgs_1.ON_DEACTIVATION_ERROR)(constr.name, scopeErrorMessage));
     }
-    if (Reflect.hasMetadata(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_2__.PRE_DESTROY, constr)) {
-        throw new Error((0,_constants_error_msgs__WEBPACK_IMPORTED_MODULE_3__.PRE_DESTROY_ERROR)(constr.name, scopeErrorMessage));
+    if (Reflect.hasMetadata(METADATA_KEY.PRE_DESTROY, constr)) {
+        throw new Error((0, error_msgs_1.PRE_DESTROY_ERROR)(constr.name, scopeErrorMessage));
     }
 }
 function resolveInstance(binding, constr, childRequests, resolveRequest) {
     _validateInstanceResolution(binding, constr);
-    var result = _createInstance(constr, childRequests, resolveRequest);
-    if ((0,_utils_async__WEBPACK_IMPORTED_MODULE_1__.isPromise)(result)) {
-        return result.then(function (resolvedResult) { return _getInstanceAfterPostConstruct(constr, resolvedResult); });
+    const result = _createInstance(constr, childRequests, resolveRequest);
+    if ((0, async_1.isPromise)(result)) {
+        return result.then((resolvedResult) => _getInstanceAfterPostConstruct(constr, resolvedResult));
     }
     else {
         return _getInstanceAfterPostConstruct(constr, result);
@@ -3626,135 +4662,129 @@ function resolveInstance(binding, constr, childRequests, resolveRequest) {
 }
 
 
-
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/resolution/resolver.js":
-/*!**************************************************************!*\
-  !*** ../../node_modules/inversify/es/resolution/resolver.js ***!
-  \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/resolution/resolver.js":
+/*!*******************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/resolution/resolver.js ***!
+  \*******************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   resolve: () => (/* binding */ resolve)
-/* harmony export */ });
-/* harmony import */ var _constants_error_msgs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/es/constants/error_msgs.js");
-/* harmony import */ var _constants_literal_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../constants/literal_types */ "../../node_modules/inversify/es/constants/literal_types.js");
-/* harmony import */ var _planning_planner__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../planning/planner */ "../../node_modules/inversify/es/planning/planner.js");
-/* harmony import */ var _scope_scope__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../scope/scope */ "../../node_modules/inversify/es/scope/scope.js");
-/* harmony import */ var _utils_async__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/async */ "../../node_modules/inversify/es/utils/async.js");
-/* harmony import */ var _utils_binding_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/binding_utils */ "../../node_modules/inversify/es/utils/binding_utils.js");
-/* harmony import */ var _utils_exceptions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/exceptions */ "../../node_modules/inversify/es/utils/exceptions.js");
-/* harmony import */ var _instantiation__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./instantiation */ "../../node_modules/inversify/es/resolution/instantiation.js");
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.resolve = resolve;
+const ERROR_MSGS = __importStar(__webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/lib/cjs/constants/error_msgs.js"));
+const literal_types_1 = __webpack_require__(/*! ../constants/literal_types */ "../../node_modules/inversify/lib/cjs/constants/literal_types.js");
+const planner_1 = __webpack_require__(/*! ../planning/planner */ "../../node_modules/inversify/lib/cjs/planning/planner.js");
+const scope_1 = __webpack_require__(/*! ../scope/scope */ "../../node_modules/inversify/lib/cjs/scope/scope.js");
+const async_1 = __webpack_require__(/*! ../utils/async */ "../../node_modules/inversify/lib/cjs/utils/async.js");
+const binding_utils_1 = __webpack_require__(/*! ../utils/binding_utils */ "../../node_modules/inversify/lib/cjs/utils/binding_utils.js");
+const exceptions_1 = __webpack_require__(/*! ../utils/exceptions */ "../../node_modules/inversify/lib/cjs/utils/exceptions.js");
+const instantiation_1 = __webpack_require__(/*! ./instantiation */ "../../node_modules/inversify/lib/cjs/resolution/instantiation.js");
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const _resolveRequest = (requestScope) => (request) => {
+    request.parentContext.setCurrentRequest(request);
+    const bindings = request.bindings;
+    const childRequests = request.childRequests;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/strict-boolean-expressions
+    const targetIsAnArray = request.target && request.target.isArray();
+    const targetParentIsNotAnArray = !request.parentRequest ||
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/strict-boolean-expressions
+        !request.parentRequest.target ||
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/strict-boolean-expressions
+        !request.target ||
+        !request.parentRequest.target.matchesArray(request.target.serviceIdentifier);
+    if (targetIsAnArray && targetParentIsNotAnArray) {
+        // Create an array instead of creating an instance
+        return childRequests.map((childRequest) => {
+            const resolveRequest = _resolveRequest(requestScope);
+            return resolveRequest(childRequest);
+        });
+    }
+    else {
+        if (request.target.isOptional() && bindings.length === 0) {
+            return undefined;
+        }
+        const binding = bindings[0];
+        return _resolveBinding(requestScope, request, binding);
     }
 };
-
-
-
-
-
-
-
-
-var _resolveRequest = function (requestScope) {
-    return function (request) {
-        request.parentContext.setCurrentRequest(request);
-        var bindings = request.bindings;
-        var childRequests = request.childRequests;
-        var targetIsAnArray = request.target && request.target.isArray();
-        var targetParentIsNotAnArray = !request.parentRequest ||
-            !request.parentRequest.target ||
-            !request.target ||
-            !request.parentRequest.target.matchesArray(request.target.serviceIdentifier);
-        if (targetIsAnArray && targetParentIsNotAnArray) {
-            return childRequests.map(function (childRequest) {
-                var _f = _resolveRequest(requestScope);
-                return _f(childRequest);
-            });
-        }
-        else {
-            if (request.target.isOptional() && bindings.length === 0) {
-                return undefined;
-            }
-            var binding = bindings[0];
-            return _resolveBinding(requestScope, request, binding);
-        }
-    };
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const _resolveFactoryFromBinding = (binding, context) => {
+    const factoryDetails = (0, binding_utils_1.getFactoryDetails)(binding);
+    return (0, exceptions_1.tryAndThrowErrorIfStackOverflow)(() => factoryDetails.factory.bind(binding)(context), () => new Error(ERROR_MSGS.CIRCULAR_DEPENDENCY_IN_FACTORY(factoryDetails.factoryType, context.currentRequest.serviceIdentifier.toString())));
 };
-var _resolveFactoryFromBinding = function (binding, context) {
-    var factoryDetails = (0,_utils_binding_utils__WEBPACK_IMPORTED_MODULE_0__.getFactoryDetails)(binding);
-    return (0,_utils_exceptions__WEBPACK_IMPORTED_MODULE_1__.tryAndThrowErrorIfStackOverflow)(function () { return factoryDetails.factory.bind(binding)(context); }, function () { return new Error(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_2__.CIRCULAR_DEPENDENCY_IN_FACTORY(factoryDetails.factoryType, context.currentRequest.serviceIdentifier.toString())); });
-};
-var _getResolvedFromBinding = function (requestScope, request, binding) {
-    var result;
-    var childRequests = request.childRequests;
-    (0,_utils_binding_utils__WEBPACK_IMPORTED_MODULE_0__.ensureFullyBound)(binding);
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const _getResolvedFromBinding = (requestScope, request, binding) => {
+    let result;
+    const childRequests = request.childRequests;
+    (0, binding_utils_1.ensureFullyBound)(binding);
     switch (binding.type) {
-        case _constants_literal_types__WEBPACK_IMPORTED_MODULE_3__.BindingTypeEnum.ConstantValue:
-        case _constants_literal_types__WEBPACK_IMPORTED_MODULE_3__.BindingTypeEnum.Function:
+        case literal_types_1.BindingTypeEnum.ConstantValue:
+        case literal_types_1.BindingTypeEnum.Function:
             result = binding.cache;
             break;
-        case _constants_literal_types__WEBPACK_IMPORTED_MODULE_3__.BindingTypeEnum.Constructor:
+        case literal_types_1.BindingTypeEnum.Constructor:
             result = binding.implementationType;
             break;
-        case _constants_literal_types__WEBPACK_IMPORTED_MODULE_3__.BindingTypeEnum.Instance:
-            result = (0,_instantiation__WEBPACK_IMPORTED_MODULE_4__.resolveInstance)(binding, binding.implementationType, childRequests, _resolveRequest(requestScope));
+        case literal_types_1.BindingTypeEnum.Instance:
+            result = (0, instantiation_1.resolveInstance)(binding, binding.implementationType, childRequests, _resolveRequest(requestScope));
             break;
         default:
             result = _resolveFactoryFromBinding(binding, request.parentContext);
     }
     return result;
 };
-var _resolveInScope = function (requestScope, binding, resolveFromBinding) {
-    var result = (0,_scope_scope__WEBPACK_IMPORTED_MODULE_5__.tryGetFromScope)(requestScope, binding);
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const _resolveInScope = (requestScope, binding, resolveFromBinding) => {
+    let result = (0, scope_1.tryGetFromScope)(requestScope, binding);
     if (result !== null) {
         return result;
     }
     result = resolveFromBinding();
-    (0,_scope_scope__WEBPACK_IMPORTED_MODULE_5__.saveToScope)(requestScope, binding, result);
+    (0, scope_1.saveToScope)(requestScope, binding, result);
     return result;
 };
-var _resolveBinding = function (requestScope, request, binding) {
-    return _resolveInScope(requestScope, binding, function () {
-        var result = _getResolvedFromBinding(requestScope, request, binding);
-        if ((0,_utils_async__WEBPACK_IMPORTED_MODULE_6__.isPromise)(result)) {
-            result = result.then(function (resolved) { return _onActivation(request, binding, resolved); });
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const _resolveBinding = (requestScope, request, binding) => {
+    return _resolveInScope(requestScope, binding, () => {
+        let result = _getResolvedFromBinding(requestScope, request, binding);
+        if ((0, async_1.isPromise)(result)) {
+            result = result.then((resolved) => _onActivation(request, binding, resolved));
         }
         else {
             result = _onActivation(request, binding, result);
@@ -3763,27 +4793,31 @@ var _resolveBinding = function (requestScope, request, binding) {
     });
 };
 function _onActivation(request, binding, resolved) {
-    var result = _bindingActivation(request.parentContext, binding, resolved);
-    var containersIterator = _getContainersIterator(request.parentContext.container);
-    var container;
-    var containersIteratorResult = containersIterator.next();
+    let result = _bindingActivation(request.parentContext, binding, resolved);
+    const containersIterator = _getContainersIterator(request.parentContext.container);
+    let container;
+    let containersIteratorResult = containersIterator.next();
     do {
         container = containersIteratorResult.value;
-        var context_1 = request.parentContext;
-        var serviceIdentifier = request.serviceIdentifier;
-        var activationsIterator = _getContainerActivationsForService(container, serviceIdentifier);
-        if ((0,_utils_async__WEBPACK_IMPORTED_MODULE_6__.isPromise)(result)) {
-            result = _activateContainerAsync(activationsIterator, context_1, result);
+        const context = request.parentContext;
+        const serviceIdentifier = request.serviceIdentifier;
+        const activationsIterator = _getContainerActivationsForService(container, serviceIdentifier);
+        if ((0, async_1.isPromise)(result)) {
+            result = _activateContainerAsync(activationsIterator, context, result);
         }
         else {
-            result = _activateContainer(activationsIterator, context_1, result);
+            result = _activateContainer(activationsIterator, context, result);
         }
         containersIteratorResult = containersIterator.next();
-    } while (containersIteratorResult.done !== true && !(0,_planning_planner__WEBPACK_IMPORTED_MODULE_7__.getBindingDictionary)(container).hasKey(request.serviceIdentifier));
+        // make sure if we are currently on the container that owns the binding, not to keep looping down to child containers
+    } while (containersIteratorResult.done !== true &&
+        !(0, planner_1.getBindingDictionary)(container).hasKey(request.serviceIdentifier));
     return result;
 }
-var _bindingActivation = function (context, binding, previousResult) {
-    var result;
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const _bindingActivation = (context, binding, previousResult) => {
+    let result;
+    // use activation handler if available
     if (typeof binding.onActivation === 'function') {
         result = binding.onActivation(context, previousResult);
     }
@@ -3792,50 +4826,46 @@ var _bindingActivation = function (context, binding, previousResult) {
     }
     return result;
 };
-var _activateContainer = function (activationsIterator, context, result) {
-    var activation = activationsIterator.next();
-    while (!activation.done) {
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const _activateContainer = (activationsIterator, context, result) => {
+    let activation = activationsIterator.next();
+    while (activation.done !== true) {
         result = activation.value(context, result);
-        if ((0,_utils_async__WEBPACK_IMPORTED_MODULE_6__.isPromise)(result)) {
+        if ((0, async_1.isPromise)(result)) {
             return _activateContainerAsync(activationsIterator, context, result);
         }
         activation = activationsIterator.next();
     }
     return result;
 };
-var _activateContainerAsync = function (activationsIterator, context, resultPromise) { return __awaiter(void 0, void 0, void 0, function () {
-    var result, activation;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4, resultPromise];
-            case 1:
-                result = _a.sent();
-                activation = activationsIterator.next();
-                _a.label = 2;
-            case 2:
-                if (!!activation.done) return [3, 4];
-                return [4, activation.value(context, result)];
-            case 3:
-                result = _a.sent();
-                activation = activationsIterator.next();
-                return [3, 2];
-            case 4: return [2, result];
-        }
-    });
-}); };
-var _getContainerActivationsForService = function (container, serviceIdentifier) {
-    var activations = container._activations;
-    return activations.hasKey(serviceIdentifier) ? activations.get(serviceIdentifier).values() : [].values();
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const _activateContainerAsync = async (activationsIterator, context, resultPromise) => {
+    let result = await resultPromise;
+    let activation = activationsIterator.next();
+    while (activation.done !== true) {
+        result = await activation.value(context, result);
+        activation = activationsIterator.next();
+    }
+    return result;
 };
-var _getContainersIterator = function (container) {
-    var containersStack = [container];
-    var parent = container.parent;
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const _getContainerActivationsForService = (container, serviceIdentifier) => {
+    // smell accessing _activations, but similar pattern is done in planner.getBindingDictionary()
+    const activations = container._activations;
+    return activations.hasKey(serviceIdentifier)
+        ? activations.get(serviceIdentifier).values()
+        : [].values();
+};
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const _getContainersIterator = (container) => {
+    const containersStack = [container];
+    let parent = container.parent;
     while (parent !== null) {
         containersStack.push(parent);
         parent = parent.parent;
     }
-    var getNextContainer = function () {
-        var nextContainer = containersStack.pop();
+    const getNextContainer = () => {
+        const nextContainer = containersStack.pop();
         if (nextContainer !== undefined) {
             return { done: false, value: nextContainer };
         }
@@ -3843,605 +4873,617 @@ var _getContainersIterator = function (container) {
             return { done: true, value: undefined };
         }
     };
-    var containersIterator = {
+    const containersIterator = {
         next: getNextContainer,
     };
     return containersIterator;
 };
 function resolve(context) {
-    var _f = _resolveRequest(context.plan.rootRequest.requestScope);
-    return _f(context.plan.rootRequest);
+    const resolveRequestFunction = _resolveRequest(context.plan.rootRequest.requestScope);
+    return resolveRequestFunction(context.plan.rootRequest);
 }
-
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/scope/scope.js":
-/*!******************************************************!*\
-  !*** ../../node_modules/inversify/es/scope/scope.js ***!
-  \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/scope/scope.js":
+/*!***********************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/scope/scope.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   saveToScope: () => (/* binding */ saveToScope),
-/* harmony export */   tryGetFromScope: () => (/* binding */ tryGetFromScope)
-/* harmony export */ });
-/* harmony import */ var _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/literal_types */ "../../node_modules/inversify/es/constants/literal_types.js");
-/* harmony import */ var _utils_async__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/async */ "../../node_modules/inversify/es/utils/async.js");
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 
-
-var tryGetFromScope = function (requestScope, binding) {
-    if ((binding.scope === _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingScopeEnum.Singleton) && binding.activated) {
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.saveToScope = exports.tryGetFromScope = void 0;
+const literal_types_1 = __webpack_require__(/*! ../constants/literal_types */ "../../node_modules/inversify/lib/cjs/constants/literal_types.js");
+const async_1 = __webpack_require__(/*! ../utils/async */ "../../node_modules/inversify/lib/cjs/utils/async.js");
+const tryGetFromScope = (requestScope, binding) => {
+    if (binding.scope === literal_types_1.BindingScopeEnum.Singleton && binding.activated) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return binding.cache;
     }
-    if (binding.scope === _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingScopeEnum.Request &&
+    if (binding.scope === literal_types_1.BindingScopeEnum.Request &&
         requestScope.has(binding.id)) {
         return requestScope.get(binding.id);
     }
     return null;
 };
-var saveToScope = function (requestScope, binding, result) {
-    if (binding.scope === _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingScopeEnum.Singleton) {
+exports.tryGetFromScope = tryGetFromScope;
+const saveToScope = (requestScope, binding, result) => {
+    if (binding.scope === literal_types_1.BindingScopeEnum.Singleton) {
         _saveToSingletonScope(binding, result);
     }
-    if (binding.scope === _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingScopeEnum.Request) {
+    if (binding.scope === literal_types_1.BindingScopeEnum.Request) {
         _saveToRequestScope(requestScope, binding, result);
     }
 };
-var _saveToRequestScope = function (requestScope, binding, result) {
+exports.saveToScope = saveToScope;
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const _saveToRequestScope = (requestScope, binding, result) => {
     if (!requestScope.has(binding.id)) {
         requestScope.set(binding.id, result);
     }
 };
-var _saveToSingletonScope = function (binding, result) {
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const _saveToSingletonScope = (binding, result) => {
+    // store in cache if scope is singleton
     binding.cache = result;
     binding.activated = true;
-    if ((0,_utils_async__WEBPACK_IMPORTED_MODULE_1__.isPromise)(result)) {
+    if ((0, async_1.isPromise)(result)) {
         void _saveAsyncResultToSingletonScope(binding, result);
     }
 };
-var _saveAsyncResultToSingletonScope = function (binding, asyncResult) { return __awaiter(void 0, void 0, void 0, function () {
-    var result, ex_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4, asyncResult];
-            case 1:
-                result = _a.sent();
-                binding.cache = result;
-                return [3, 3];
-            case 2:
-                ex_1 = _a.sent();
-                binding.cache = null;
-                binding.activated = false;
-                throw ex_1;
-            case 3: return [2];
-        }
-    });
-}); };
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const _saveAsyncResultToSingletonScope = async (binding, asyncResult) => {
+    try {
+        const result = await asyncResult;
+        binding.cache = result;
+    }
+    catch (ex) {
+        // allow binding to retry in future
+        binding.cache = null;
+        binding.activated = false;
+        throw ex;
+    }
+};
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/syntax/binding_in_syntax.js":
-/*!*******************************************************************!*\
-  !*** ../../node_modules/inversify/es/syntax/binding_in_syntax.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/syntax/binding_in_syntax.js":
+/*!************************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/syntax/binding_in_syntax.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   BindingInSyntax: () => (/* binding */ BindingInSyntax)
-/* harmony export */ });
-/* harmony import */ var _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/literal_types */ "../../node_modules/inversify/es/constants/literal_types.js");
-/* harmony import */ var _binding_when_on_syntax__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./binding_when_on_syntax */ "../../node_modules/inversify/es/syntax/binding_when_on_syntax.js");
 
-
-var BindingInSyntax = (function () {
-    function BindingInSyntax(binding) {
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.BindingInSyntax = void 0;
+const literal_types_1 = __webpack_require__(/*! ../constants/literal_types */ "../../node_modules/inversify/lib/cjs/constants/literal_types.js");
+const binding_when_on_syntax_1 = __webpack_require__(/*! ./binding_when_on_syntax */ "../../node_modules/inversify/lib/cjs/syntax/binding_when_on_syntax.js");
+class BindingInSyntax {
+    _binding;
+    constructor(binding) {
         this._binding = binding;
     }
-    BindingInSyntax.prototype.inRequestScope = function () {
-        this._binding.scope = _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingScopeEnum.Request;
-        return new _binding_when_on_syntax__WEBPACK_IMPORTED_MODULE_1__.BindingWhenOnSyntax(this._binding);
-    };
-    BindingInSyntax.prototype.inSingletonScope = function () {
-        this._binding.scope = _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingScopeEnum.Singleton;
-        return new _binding_when_on_syntax__WEBPACK_IMPORTED_MODULE_1__.BindingWhenOnSyntax(this._binding);
-    };
-    BindingInSyntax.prototype.inTransientScope = function () {
-        this._binding.scope = _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingScopeEnum.Transient;
-        return new _binding_when_on_syntax__WEBPACK_IMPORTED_MODULE_1__.BindingWhenOnSyntax(this._binding);
-    };
-    return BindingInSyntax;
-}());
-
+    inRequestScope() {
+        this._binding.scope = literal_types_1.BindingScopeEnum.Request;
+        return new binding_when_on_syntax_1.BindingWhenOnSyntax(this._binding);
+    }
+    inSingletonScope() {
+        this._binding.scope = literal_types_1.BindingScopeEnum.Singleton;
+        return new binding_when_on_syntax_1.BindingWhenOnSyntax(this._binding);
+    }
+    inTransientScope() {
+        this._binding.scope = literal_types_1.BindingScopeEnum.Transient;
+        return new binding_when_on_syntax_1.BindingWhenOnSyntax(this._binding);
+    }
+}
+exports.BindingInSyntax = BindingInSyntax;
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/syntax/binding_in_when_on_syntax.js":
-/*!***************************************************************************!*\
-  !*** ../../node_modules/inversify/es/syntax/binding_in_when_on_syntax.js ***!
-  \***************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/syntax/binding_in_when_on_syntax.js":
+/*!********************************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/syntax/binding_in_when_on_syntax.js ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   BindingInWhenOnSyntax: () => (/* binding */ BindingInWhenOnSyntax)
-/* harmony export */ });
-/* harmony import */ var _binding_in_syntax__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./binding_in_syntax */ "../../node_modules/inversify/es/syntax/binding_in_syntax.js");
-/* harmony import */ var _binding_on_syntax__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./binding_on_syntax */ "../../node_modules/inversify/es/syntax/binding_on_syntax.js");
-/* harmony import */ var _binding_when_syntax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./binding_when_syntax */ "../../node_modules/inversify/es/syntax/binding_when_syntax.js");
 
-
-
-var BindingInWhenOnSyntax = (function () {
-    function BindingInWhenOnSyntax(binding) {
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.BindingInWhenOnSyntax = void 0;
+const binding_in_syntax_1 = __webpack_require__(/*! ./binding_in_syntax */ "../../node_modules/inversify/lib/cjs/syntax/binding_in_syntax.js");
+const binding_on_syntax_1 = __webpack_require__(/*! ./binding_on_syntax */ "../../node_modules/inversify/lib/cjs/syntax/binding_on_syntax.js");
+const binding_when_syntax_1 = __webpack_require__(/*! ./binding_when_syntax */ "../../node_modules/inversify/lib/cjs/syntax/binding_when_syntax.js");
+class BindingInWhenOnSyntax {
+    _bindingInSyntax;
+    _bindingWhenSyntax;
+    _bindingOnSyntax;
+    _binding;
+    constructor(binding) {
         this._binding = binding;
-        this._bindingWhenSyntax = new _binding_when_syntax__WEBPACK_IMPORTED_MODULE_0__.BindingWhenSyntax(this._binding);
-        this._bindingOnSyntax = new _binding_on_syntax__WEBPACK_IMPORTED_MODULE_1__.BindingOnSyntax(this._binding);
-        this._bindingInSyntax = new _binding_in_syntax__WEBPACK_IMPORTED_MODULE_2__.BindingInSyntax(binding);
+        this._bindingWhenSyntax = new binding_when_syntax_1.BindingWhenSyntax(this._binding);
+        this._bindingOnSyntax = new binding_on_syntax_1.BindingOnSyntax(this._binding);
+        this._bindingInSyntax = new binding_in_syntax_1.BindingInSyntax(binding);
     }
-    BindingInWhenOnSyntax.prototype.inRequestScope = function () {
+    inRequestScope() {
         return this._bindingInSyntax.inRequestScope();
-    };
-    BindingInWhenOnSyntax.prototype.inSingletonScope = function () {
+    }
+    inSingletonScope() {
         return this._bindingInSyntax.inSingletonScope();
-    };
-    BindingInWhenOnSyntax.prototype.inTransientScope = function () {
+    }
+    inTransientScope() {
         return this._bindingInSyntax.inTransientScope();
-    };
-    BindingInWhenOnSyntax.prototype.when = function (constraint) {
+    }
+    when(constraint) {
         return this._bindingWhenSyntax.when(constraint);
-    };
-    BindingInWhenOnSyntax.prototype.whenTargetNamed = function (name) {
+    }
+    whenTargetNamed(name) {
         return this._bindingWhenSyntax.whenTargetNamed(name);
-    };
-    BindingInWhenOnSyntax.prototype.whenTargetIsDefault = function () {
+    }
+    whenTargetIsDefault() {
         return this._bindingWhenSyntax.whenTargetIsDefault();
-    };
-    BindingInWhenOnSyntax.prototype.whenTargetTagged = function (tag, value) {
+    }
+    whenTargetTagged(tag, value) {
         return this._bindingWhenSyntax.whenTargetTagged(tag, value);
-    };
-    BindingInWhenOnSyntax.prototype.whenInjectedInto = function (parent) {
+    }
+    whenInjectedInto(parent) {
         return this._bindingWhenSyntax.whenInjectedInto(parent);
-    };
-    BindingInWhenOnSyntax.prototype.whenParentNamed = function (name) {
+    }
+    whenParentNamed(name) {
         return this._bindingWhenSyntax.whenParentNamed(name);
-    };
-    BindingInWhenOnSyntax.prototype.whenParentTagged = function (tag, value) {
+    }
+    whenParentTagged(tag, value) {
         return this._bindingWhenSyntax.whenParentTagged(tag, value);
-    };
-    BindingInWhenOnSyntax.prototype.whenAnyAncestorIs = function (ancestor) {
+    }
+    whenAnyAncestorIs(ancestor) {
         return this._bindingWhenSyntax.whenAnyAncestorIs(ancestor);
-    };
-    BindingInWhenOnSyntax.prototype.whenNoAncestorIs = function (ancestor) {
+    }
+    whenNoAncestorIs(ancestor) {
         return this._bindingWhenSyntax.whenNoAncestorIs(ancestor);
-    };
-    BindingInWhenOnSyntax.prototype.whenAnyAncestorNamed = function (name) {
+    }
+    whenAnyAncestorNamed(name) {
         return this._bindingWhenSyntax.whenAnyAncestorNamed(name);
-    };
-    BindingInWhenOnSyntax.prototype.whenAnyAncestorTagged = function (tag, value) {
+    }
+    whenAnyAncestorTagged(tag, value) {
         return this._bindingWhenSyntax.whenAnyAncestorTagged(tag, value);
-    };
-    BindingInWhenOnSyntax.prototype.whenNoAncestorNamed = function (name) {
+    }
+    whenNoAncestorNamed(name) {
         return this._bindingWhenSyntax.whenNoAncestorNamed(name);
-    };
-    BindingInWhenOnSyntax.prototype.whenNoAncestorTagged = function (tag, value) {
+    }
+    whenNoAncestorTagged(tag, value) {
         return this._bindingWhenSyntax.whenNoAncestorTagged(tag, value);
-    };
-    BindingInWhenOnSyntax.prototype.whenAnyAncestorMatches = function (constraint) {
+    }
+    whenAnyAncestorMatches(constraint) {
         return this._bindingWhenSyntax.whenAnyAncestorMatches(constraint);
-    };
-    BindingInWhenOnSyntax.prototype.whenNoAncestorMatches = function (constraint) {
+    }
+    whenNoAncestorMatches(constraint) {
         return this._bindingWhenSyntax.whenNoAncestorMatches(constraint);
-    };
-    BindingInWhenOnSyntax.prototype.onActivation = function (handler) {
+    }
+    onActivation(handler) {
         return this._bindingOnSyntax.onActivation(handler);
-    };
-    BindingInWhenOnSyntax.prototype.onDeactivation = function (handler) {
+    }
+    onDeactivation(handler) {
         return this._bindingOnSyntax.onDeactivation(handler);
-    };
-    return BindingInWhenOnSyntax;
-}());
-
+    }
+}
+exports.BindingInWhenOnSyntax = BindingInWhenOnSyntax;
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/syntax/binding_on_syntax.js":
-/*!*******************************************************************!*\
-  !*** ../../node_modules/inversify/es/syntax/binding_on_syntax.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/syntax/binding_on_syntax.js":
+/*!************************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/syntax/binding_on_syntax.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   BindingOnSyntax: () => (/* binding */ BindingOnSyntax)
-/* harmony export */ });
-/* harmony import */ var _binding_when_syntax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./binding_when_syntax */ "../../node_modules/inversify/es/syntax/binding_when_syntax.js");
 
-var BindingOnSyntax = (function () {
-    function BindingOnSyntax(binding) {
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.BindingOnSyntax = void 0;
+const binding_when_syntax_1 = __webpack_require__(/*! ./binding_when_syntax */ "../../node_modules/inversify/lib/cjs/syntax/binding_when_syntax.js");
+class BindingOnSyntax {
+    _binding;
+    constructor(binding) {
         this._binding = binding;
     }
-    BindingOnSyntax.prototype.onActivation = function (handler) {
+    onActivation(handler) {
         this._binding.onActivation = handler;
-        return new _binding_when_syntax__WEBPACK_IMPORTED_MODULE_0__.BindingWhenSyntax(this._binding);
-    };
-    BindingOnSyntax.prototype.onDeactivation = function (handler) {
+        return new binding_when_syntax_1.BindingWhenSyntax(this._binding);
+    }
+    onDeactivation(handler) {
         this._binding.onDeactivation = handler;
-        return new _binding_when_syntax__WEBPACK_IMPORTED_MODULE_0__.BindingWhenSyntax(this._binding);
-    };
-    return BindingOnSyntax;
-}());
-
+        return new binding_when_syntax_1.BindingWhenSyntax(this._binding);
+    }
+}
+exports.BindingOnSyntax = BindingOnSyntax;
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/syntax/binding_to_syntax.js":
-/*!*******************************************************************!*\
-  !*** ../../node_modules/inversify/es/syntax/binding_to_syntax.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/syntax/binding_to_syntax.js":
+/*!************************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/syntax/binding_to_syntax.js ***!
+  \************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   BindingToSyntax: () => (/* binding */ BindingToSyntax)
-/* harmony export */ });
-/* harmony import */ var _constants_error_msgs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/es/constants/error_msgs.js");
-/* harmony import */ var _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/literal_types */ "../../node_modules/inversify/es/constants/literal_types.js");
-/* harmony import */ var _binding_in_when_on_syntax__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./binding_in_when_on_syntax */ "../../node_modules/inversify/es/syntax/binding_in_when_on_syntax.js");
-/* harmony import */ var _binding_when_on_syntax__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./binding_when_on_syntax */ "../../node_modules/inversify/es/syntax/binding_when_on_syntax.js");
 
-
-
-
-var BindingToSyntax = (function () {
-    function BindingToSyntax(binding) {
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.BindingToSyntax = void 0;
+const ERROR_MSGS = __importStar(__webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/lib/cjs/constants/error_msgs.js"));
+const literal_types_1 = __webpack_require__(/*! ../constants/literal_types */ "../../node_modules/inversify/lib/cjs/constants/literal_types.js");
+const binding_in_when_on_syntax_1 = __webpack_require__(/*! ./binding_in_when_on_syntax */ "../../node_modules/inversify/lib/cjs/syntax/binding_in_when_on_syntax.js");
+const binding_when_on_syntax_1 = __webpack_require__(/*! ./binding_when_on_syntax */ "../../node_modules/inversify/lib/cjs/syntax/binding_when_on_syntax.js");
+class BindingToSyntax {
+    // TODO: Implement an internal type `_BindingToSyntax<T>` wherein this member
+    // can be public. Let `BindingToSyntax<T>` be the presentational type that
+    // depends on it, and does not expose this member as public.
+    _binding;
+    constructor(binding) {
         this._binding = binding;
     }
-    BindingToSyntax.prototype.to = function (constructor) {
-        this._binding.type = _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingTypeEnum.Instance;
+    to(constructor) {
+        this._binding.type = literal_types_1.BindingTypeEnum.Instance;
         this._binding.implementationType = constructor;
-        return new _binding_in_when_on_syntax__WEBPACK_IMPORTED_MODULE_1__.BindingInWhenOnSyntax(this._binding);
-    };
-    BindingToSyntax.prototype.toSelf = function () {
-        if (typeof this._binding.serviceIdentifier !== "function") {
-            throw new Error("".concat(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_2__.INVALID_TO_SELF_VALUE));
+        return new binding_in_when_on_syntax_1.BindingInWhenOnSyntax(this._binding);
+    }
+    toSelf() {
+        if (typeof this._binding.serviceIdentifier !== 'function') {
+            throw new Error(ERROR_MSGS.INVALID_TO_SELF_VALUE);
         }
-        var self = this._binding.serviceIdentifier;
+        const self = this._binding
+            .serviceIdentifier;
         return this.to(self);
-    };
-    BindingToSyntax.prototype.toConstantValue = function (value) {
-        this._binding.type = _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingTypeEnum.ConstantValue;
+    }
+    toConstantValue(value) {
+        this._binding.type = literal_types_1.BindingTypeEnum.ConstantValue;
         this._binding.cache = value;
         this._binding.dynamicValue = null;
         this._binding.implementationType = null;
-        this._binding.scope = _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingScopeEnum.Singleton;
-        return new _binding_when_on_syntax__WEBPACK_IMPORTED_MODULE_3__.BindingWhenOnSyntax(this._binding);
-    };
-    BindingToSyntax.prototype.toDynamicValue = function (func) {
-        this._binding.type = _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingTypeEnum.DynamicValue;
+        this._binding.scope = literal_types_1.BindingScopeEnum.Singleton;
+        return new binding_when_on_syntax_1.BindingWhenOnSyntax(this._binding);
+    }
+    toDynamicValue(func) {
+        this._binding.type = literal_types_1.BindingTypeEnum.DynamicValue;
         this._binding.cache = null;
         this._binding.dynamicValue = func;
         this._binding.implementationType = null;
-        return new _binding_in_when_on_syntax__WEBPACK_IMPORTED_MODULE_1__.BindingInWhenOnSyntax(this._binding);
-    };
-    BindingToSyntax.prototype.toConstructor = function (constructor) {
-        this._binding.type = _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingTypeEnum.Constructor;
+        return new binding_in_when_on_syntax_1.BindingInWhenOnSyntax(this._binding);
+    }
+    toConstructor(constructor) {
+        this._binding.type = literal_types_1.BindingTypeEnum.Constructor;
         this._binding.implementationType = constructor;
-        this._binding.scope = _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingScopeEnum.Singleton;
-        return new _binding_when_on_syntax__WEBPACK_IMPORTED_MODULE_3__.BindingWhenOnSyntax(this._binding);
-    };
-    BindingToSyntax.prototype.toFactory = function (factory) {
-        this._binding.type = _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingTypeEnum.Factory;
+        this._binding.scope = literal_types_1.BindingScopeEnum.Singleton;
+        return new binding_when_on_syntax_1.BindingWhenOnSyntax(this._binding);
+    }
+    toFactory(factory) {
+        this._binding.type = literal_types_1.BindingTypeEnum.Factory;
         this._binding.factory = factory;
-        this._binding.scope = _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingScopeEnum.Singleton;
-        return new _binding_when_on_syntax__WEBPACK_IMPORTED_MODULE_3__.BindingWhenOnSyntax(this._binding);
-    };
-    BindingToSyntax.prototype.toFunction = function (func) {
-        if (typeof func !== "function") {
-            throw new Error(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_2__.INVALID_FUNCTION_BINDING);
+        this._binding.scope = literal_types_1.BindingScopeEnum.Singleton;
+        return new binding_when_on_syntax_1.BindingWhenOnSyntax(this._binding);
+    }
+    toFunction(func) {
+        // toFunction is an alias of toConstantValue
+        if (typeof func !== 'function') {
+            throw new Error(ERROR_MSGS.INVALID_FUNCTION_BINDING);
         }
-        var bindingWhenOnSyntax = this.toConstantValue(func);
-        this._binding.type = _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingTypeEnum.Function;
-        this._binding.scope = _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingScopeEnum.Singleton;
+        const bindingWhenOnSyntax = this.toConstantValue(func);
+        this._binding.type = literal_types_1.BindingTypeEnum.Function;
+        this._binding.scope = literal_types_1.BindingScopeEnum.Singleton;
         return bindingWhenOnSyntax;
-    };
-    BindingToSyntax.prototype.toAutoFactory = function (serviceIdentifier) {
-        this._binding.type = _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingTypeEnum.Factory;
-        this._binding.factory = function (context) {
-            var autofactory = function () { return context.container.get(serviceIdentifier); };
+    }
+    toAutoFactory(serviceIdentifier) {
+        this._binding.type = literal_types_1.BindingTypeEnum.Factory;
+        this._binding.factory = (context) => {
+            const autofactory = () => context.container.get(serviceIdentifier);
             return autofactory;
         };
-        this._binding.scope = _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingScopeEnum.Singleton;
-        return new _binding_when_on_syntax__WEBPACK_IMPORTED_MODULE_3__.BindingWhenOnSyntax(this._binding);
-    };
-    BindingToSyntax.prototype.toAutoNamedFactory = function (serviceIdentifier) {
-        this._binding.type = _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingTypeEnum.Factory;
-        this._binding.factory = function (context) {
-            return function (named) { return context.container.getNamed(serviceIdentifier, named); };
+        this._binding.scope = literal_types_1.BindingScopeEnum.Singleton;
+        return new binding_when_on_syntax_1.BindingWhenOnSyntax(this._binding);
+    }
+    toAutoNamedFactory(serviceIdentifier) {
+        this._binding.type = literal_types_1.BindingTypeEnum.Factory;
+        this._binding.factory = (context) => {
+            return (named) => context.container.getNamed(serviceIdentifier, named);
         };
-        return new _binding_when_on_syntax__WEBPACK_IMPORTED_MODULE_3__.BindingWhenOnSyntax(this._binding);
-    };
-    BindingToSyntax.prototype.toProvider = function (provider) {
-        this._binding.type = _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingTypeEnum.Provider;
+        return new binding_when_on_syntax_1.BindingWhenOnSyntax(this._binding);
+    }
+    toProvider(provider) {
+        this._binding.type = literal_types_1.BindingTypeEnum.Provider;
         this._binding.provider = provider;
-        this._binding.scope = _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingScopeEnum.Singleton;
-        return new _binding_when_on_syntax__WEBPACK_IMPORTED_MODULE_3__.BindingWhenOnSyntax(this._binding);
-    };
-    BindingToSyntax.prototype.toService = function (service) {
-        this.toDynamicValue(function (context) { return context.container.get(service); });
-    };
-    return BindingToSyntax;
-}());
-
+        this._binding.scope = literal_types_1.BindingScopeEnum.Singleton;
+        return new binding_when_on_syntax_1.BindingWhenOnSyntax(this._binding);
+    }
+    toService(service) {
+        this._binding.type = literal_types_1.BindingTypeEnum.DynamicValue;
+        // Service bindings should never ever be cached. This is just a workaround to achieve that. A better design should replace this approach.
+        Object.defineProperty(this._binding, 'cache', {
+            configurable: true,
+            enumerable: true,
+            get() {
+                return null;
+            },
+            set(_value) { },
+        });
+        this._binding.dynamicValue = (context) => {
+            try {
+                return context.container.get(service);
+            }
+            catch (_error) {
+                // This is a performance degradation in this edge case, we do need to improve the internal resolution architecture in order to solve this properly.
+                return context.container.getAsync(service);
+            }
+        };
+        this._binding.implementationType = null;
+    }
+}
+exports.BindingToSyntax = BindingToSyntax;
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/syntax/binding_when_on_syntax.js":
-/*!************************************************************************!*\
-  !*** ../../node_modules/inversify/es/syntax/binding_when_on_syntax.js ***!
-  \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/syntax/binding_when_on_syntax.js":
+/*!*****************************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/syntax/binding_when_on_syntax.js ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   BindingWhenOnSyntax: () => (/* binding */ BindingWhenOnSyntax)
-/* harmony export */ });
-/* harmony import */ var _binding_on_syntax__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./binding_on_syntax */ "../../node_modules/inversify/es/syntax/binding_on_syntax.js");
-/* harmony import */ var _binding_when_syntax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./binding_when_syntax */ "../../node_modules/inversify/es/syntax/binding_when_syntax.js");
 
-
-var BindingWhenOnSyntax = (function () {
-    function BindingWhenOnSyntax(binding) {
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.BindingWhenOnSyntax = void 0;
+const binding_on_syntax_1 = __webpack_require__(/*! ./binding_on_syntax */ "../../node_modules/inversify/lib/cjs/syntax/binding_on_syntax.js");
+const binding_when_syntax_1 = __webpack_require__(/*! ./binding_when_syntax */ "../../node_modules/inversify/lib/cjs/syntax/binding_when_syntax.js");
+class BindingWhenOnSyntax {
+    _bindingWhenSyntax;
+    _bindingOnSyntax;
+    _binding;
+    constructor(binding) {
         this._binding = binding;
-        this._bindingWhenSyntax = new _binding_when_syntax__WEBPACK_IMPORTED_MODULE_0__.BindingWhenSyntax(this._binding);
-        this._bindingOnSyntax = new _binding_on_syntax__WEBPACK_IMPORTED_MODULE_1__.BindingOnSyntax(this._binding);
+        this._bindingWhenSyntax = new binding_when_syntax_1.BindingWhenSyntax(this._binding);
+        this._bindingOnSyntax = new binding_on_syntax_1.BindingOnSyntax(this._binding);
     }
-    BindingWhenOnSyntax.prototype.when = function (constraint) {
+    when(constraint) {
         return this._bindingWhenSyntax.when(constraint);
-    };
-    BindingWhenOnSyntax.prototype.whenTargetNamed = function (name) {
+    }
+    whenTargetNamed(name) {
         return this._bindingWhenSyntax.whenTargetNamed(name);
-    };
-    BindingWhenOnSyntax.prototype.whenTargetIsDefault = function () {
+    }
+    whenTargetIsDefault() {
         return this._bindingWhenSyntax.whenTargetIsDefault();
-    };
-    BindingWhenOnSyntax.prototype.whenTargetTagged = function (tag, value) {
+    }
+    whenTargetTagged(tag, value) {
         return this._bindingWhenSyntax.whenTargetTagged(tag, value);
-    };
-    BindingWhenOnSyntax.prototype.whenInjectedInto = function (parent) {
+    }
+    whenInjectedInto(parent) {
         return this._bindingWhenSyntax.whenInjectedInto(parent);
-    };
-    BindingWhenOnSyntax.prototype.whenParentNamed = function (name) {
+    }
+    whenParentNamed(name) {
         return this._bindingWhenSyntax.whenParentNamed(name);
-    };
-    BindingWhenOnSyntax.prototype.whenParentTagged = function (tag, value) {
+    }
+    whenParentTagged(tag, value) {
         return this._bindingWhenSyntax.whenParentTagged(tag, value);
-    };
-    BindingWhenOnSyntax.prototype.whenAnyAncestorIs = function (ancestor) {
+    }
+    whenAnyAncestorIs(ancestor) {
         return this._bindingWhenSyntax.whenAnyAncestorIs(ancestor);
-    };
-    BindingWhenOnSyntax.prototype.whenNoAncestorIs = function (ancestor) {
+    }
+    whenNoAncestorIs(ancestor) {
         return this._bindingWhenSyntax.whenNoAncestorIs(ancestor);
-    };
-    BindingWhenOnSyntax.prototype.whenAnyAncestorNamed = function (name) {
+    }
+    whenAnyAncestorNamed(name) {
         return this._bindingWhenSyntax.whenAnyAncestorNamed(name);
-    };
-    BindingWhenOnSyntax.prototype.whenAnyAncestorTagged = function (tag, value) {
+    }
+    whenAnyAncestorTagged(tag, value) {
         return this._bindingWhenSyntax.whenAnyAncestorTagged(tag, value);
-    };
-    BindingWhenOnSyntax.prototype.whenNoAncestorNamed = function (name) {
+    }
+    whenNoAncestorNamed(name) {
         return this._bindingWhenSyntax.whenNoAncestorNamed(name);
-    };
-    BindingWhenOnSyntax.prototype.whenNoAncestorTagged = function (tag, value) {
+    }
+    whenNoAncestorTagged(tag, value) {
         return this._bindingWhenSyntax.whenNoAncestorTagged(tag, value);
-    };
-    BindingWhenOnSyntax.prototype.whenAnyAncestorMatches = function (constraint) {
+    }
+    whenAnyAncestorMatches(constraint) {
         return this._bindingWhenSyntax.whenAnyAncestorMatches(constraint);
-    };
-    BindingWhenOnSyntax.prototype.whenNoAncestorMatches = function (constraint) {
+    }
+    whenNoAncestorMatches(constraint) {
         return this._bindingWhenSyntax.whenNoAncestorMatches(constraint);
-    };
-    BindingWhenOnSyntax.prototype.onActivation = function (handler) {
+    }
+    onActivation(handler) {
         return this._bindingOnSyntax.onActivation(handler);
-    };
-    BindingWhenOnSyntax.prototype.onDeactivation = function (handler) {
+    }
+    onDeactivation(handler) {
         return this._bindingOnSyntax.onDeactivation(handler);
-    };
-    return BindingWhenOnSyntax;
-}());
-
+    }
+}
+exports.BindingWhenOnSyntax = BindingWhenOnSyntax;
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/syntax/binding_when_syntax.js":
-/*!*********************************************************************!*\
-  !*** ../../node_modules/inversify/es/syntax/binding_when_syntax.js ***!
-  \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/syntax/binding_when_syntax.js":
+/*!**************************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/syntax/binding_when_syntax.js ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   BindingWhenSyntax: () => (/* binding */ BindingWhenSyntax)
-/* harmony export */ });
-/* harmony import */ var _binding_on_syntax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./binding_on_syntax */ "../../node_modules/inversify/es/syntax/binding_on_syntax.js");
-/* harmony import */ var _constraint_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constraint_helpers */ "../../node_modules/inversify/es/syntax/constraint_helpers.js");
 
-
-var BindingWhenSyntax = (function () {
-    function BindingWhenSyntax(binding) {
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.BindingWhenSyntax = void 0;
+const binding_on_syntax_1 = __webpack_require__(/*! ./binding_on_syntax */ "../../node_modules/inversify/lib/cjs/syntax/binding_on_syntax.js");
+const constraint_helpers_1 = __webpack_require__(/*! ./constraint_helpers */ "../../node_modules/inversify/lib/cjs/syntax/constraint_helpers.js");
+class BindingWhenSyntax {
+    _binding;
+    constructor(binding) {
         this._binding = binding;
     }
-    BindingWhenSyntax.prototype.when = function (constraint) {
+    when(constraint) {
         this._binding.constraint = constraint;
-        return new _binding_on_syntax__WEBPACK_IMPORTED_MODULE_0__.BindingOnSyntax(this._binding);
-    };
-    BindingWhenSyntax.prototype.whenTargetNamed = function (name) {
-        this._binding.constraint = (0,_constraint_helpers__WEBPACK_IMPORTED_MODULE_1__.namedConstraint)(name);
-        return new _binding_on_syntax__WEBPACK_IMPORTED_MODULE_0__.BindingOnSyntax(this._binding);
-    };
-    BindingWhenSyntax.prototype.whenTargetIsDefault = function () {
-        this._binding.constraint = function (request) {
+        return new binding_on_syntax_1.BindingOnSyntax(this._binding);
+    }
+    whenTargetNamed(name) {
+        this._binding.constraint = (0, constraint_helpers_1.namedConstraint)(name);
+        return new binding_on_syntax_1.BindingOnSyntax(this._binding);
+    }
+    whenTargetIsDefault() {
+        this._binding.constraint = (request) => {
             if (request === null) {
                 return false;
             }
-            var targetIsDefault = (request.target !== null) &&
-                (!request.target.isNamed()) &&
-                (!request.target.isTagged());
+            const targetIsDefault = 
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            request.target !== null &&
+                !request.target.isNamed() &&
+                !request.target.isTagged();
             return targetIsDefault;
         };
-        return new _binding_on_syntax__WEBPACK_IMPORTED_MODULE_0__.BindingOnSyntax(this._binding);
-    };
-    BindingWhenSyntax.prototype.whenTargetTagged = function (tag, value) {
-        this._binding.constraint = (0,_constraint_helpers__WEBPACK_IMPORTED_MODULE_1__.taggedConstraint)(tag)(value);
-        return new _binding_on_syntax__WEBPACK_IMPORTED_MODULE_0__.BindingOnSyntax(this._binding);
-    };
-    BindingWhenSyntax.prototype.whenInjectedInto = function (parent) {
-        this._binding.constraint = function (request) {
-            return request !== null && (0,_constraint_helpers__WEBPACK_IMPORTED_MODULE_1__.typeConstraint)(parent)(request.parentRequest);
-        };
-        return new _binding_on_syntax__WEBPACK_IMPORTED_MODULE_0__.BindingOnSyntax(this._binding);
-    };
-    BindingWhenSyntax.prototype.whenParentNamed = function (name) {
-        this._binding.constraint = function (request) {
-            return request !== null && (0,_constraint_helpers__WEBPACK_IMPORTED_MODULE_1__.namedConstraint)(name)(request.parentRequest);
-        };
-        return new _binding_on_syntax__WEBPACK_IMPORTED_MODULE_0__.BindingOnSyntax(this._binding);
-    };
-    BindingWhenSyntax.prototype.whenParentTagged = function (tag, value) {
-        this._binding.constraint = function (request) {
-            return request !== null && (0,_constraint_helpers__WEBPACK_IMPORTED_MODULE_1__.taggedConstraint)(tag)(value)(request.parentRequest);
-        };
-        return new _binding_on_syntax__WEBPACK_IMPORTED_MODULE_0__.BindingOnSyntax(this._binding);
-    };
-    BindingWhenSyntax.prototype.whenAnyAncestorIs = function (ancestor) {
-        this._binding.constraint = function (request) {
-            return request !== null && (0,_constraint_helpers__WEBPACK_IMPORTED_MODULE_1__.traverseAncerstors)(request, (0,_constraint_helpers__WEBPACK_IMPORTED_MODULE_1__.typeConstraint)(ancestor));
-        };
-        return new _binding_on_syntax__WEBPACK_IMPORTED_MODULE_0__.BindingOnSyntax(this._binding);
-    };
-    BindingWhenSyntax.prototype.whenNoAncestorIs = function (ancestor) {
-        this._binding.constraint = function (request) {
-            return request !== null && !(0,_constraint_helpers__WEBPACK_IMPORTED_MODULE_1__.traverseAncerstors)(request, (0,_constraint_helpers__WEBPACK_IMPORTED_MODULE_1__.typeConstraint)(ancestor));
-        };
-        return new _binding_on_syntax__WEBPACK_IMPORTED_MODULE_0__.BindingOnSyntax(this._binding);
-    };
-    BindingWhenSyntax.prototype.whenAnyAncestorNamed = function (name) {
-        this._binding.constraint = function (request) {
-            return request !== null && (0,_constraint_helpers__WEBPACK_IMPORTED_MODULE_1__.traverseAncerstors)(request, (0,_constraint_helpers__WEBPACK_IMPORTED_MODULE_1__.namedConstraint)(name));
-        };
-        return new _binding_on_syntax__WEBPACK_IMPORTED_MODULE_0__.BindingOnSyntax(this._binding);
-    };
-    BindingWhenSyntax.prototype.whenNoAncestorNamed = function (name) {
-        this._binding.constraint = function (request) {
-            return request !== null && !(0,_constraint_helpers__WEBPACK_IMPORTED_MODULE_1__.traverseAncerstors)(request, (0,_constraint_helpers__WEBPACK_IMPORTED_MODULE_1__.namedConstraint)(name));
-        };
-        return new _binding_on_syntax__WEBPACK_IMPORTED_MODULE_0__.BindingOnSyntax(this._binding);
-    };
-    BindingWhenSyntax.prototype.whenAnyAncestorTagged = function (tag, value) {
-        this._binding.constraint = function (request) {
-            return request !== null && (0,_constraint_helpers__WEBPACK_IMPORTED_MODULE_1__.traverseAncerstors)(request, (0,_constraint_helpers__WEBPACK_IMPORTED_MODULE_1__.taggedConstraint)(tag)(value));
-        };
-        return new _binding_on_syntax__WEBPACK_IMPORTED_MODULE_0__.BindingOnSyntax(this._binding);
-    };
-    BindingWhenSyntax.prototype.whenNoAncestorTagged = function (tag, value) {
-        this._binding.constraint = function (request) {
-            return request !== null && !(0,_constraint_helpers__WEBPACK_IMPORTED_MODULE_1__.traverseAncerstors)(request, (0,_constraint_helpers__WEBPACK_IMPORTED_MODULE_1__.taggedConstraint)(tag)(value));
-        };
-        return new _binding_on_syntax__WEBPACK_IMPORTED_MODULE_0__.BindingOnSyntax(this._binding);
-    };
-    BindingWhenSyntax.prototype.whenAnyAncestorMatches = function (constraint) {
-        this._binding.constraint = function (request) {
-            return request !== null && (0,_constraint_helpers__WEBPACK_IMPORTED_MODULE_1__.traverseAncerstors)(request, constraint);
-        };
-        return new _binding_on_syntax__WEBPACK_IMPORTED_MODULE_0__.BindingOnSyntax(this._binding);
-    };
-    BindingWhenSyntax.prototype.whenNoAncestorMatches = function (constraint) {
-        this._binding.constraint = function (request) {
-            return request !== null && !(0,_constraint_helpers__WEBPACK_IMPORTED_MODULE_1__.traverseAncerstors)(request, constraint);
-        };
-        return new _binding_on_syntax__WEBPACK_IMPORTED_MODULE_0__.BindingOnSyntax(this._binding);
-    };
-    return BindingWhenSyntax;
-}());
-
+        return new binding_on_syntax_1.BindingOnSyntax(this._binding);
+    }
+    whenTargetTagged(tag, value) {
+        this._binding.constraint = (0, constraint_helpers_1.taggedConstraint)(tag)(value);
+        return new binding_on_syntax_1.BindingOnSyntax(this._binding);
+    }
+    whenInjectedInto(parent) {
+        this._binding.constraint = (request) => request !== null && (0, constraint_helpers_1.typeConstraint)(parent)(request.parentRequest);
+        return new binding_on_syntax_1.BindingOnSyntax(this._binding);
+    }
+    whenParentNamed(name) {
+        this._binding.constraint = (request) => request !== null && (0, constraint_helpers_1.namedConstraint)(name)(request.parentRequest);
+        return new binding_on_syntax_1.BindingOnSyntax(this._binding);
+    }
+    whenParentTagged(tag, value) {
+        this._binding.constraint = (request) => request !== null && (0, constraint_helpers_1.taggedConstraint)(tag)(value)(request.parentRequest);
+        return new binding_on_syntax_1.BindingOnSyntax(this._binding);
+    }
+    whenAnyAncestorIs(ancestor) {
+        this._binding.constraint = (request) => request !== null && (0, constraint_helpers_1.traverseAncerstors)(request, (0, constraint_helpers_1.typeConstraint)(ancestor));
+        return new binding_on_syntax_1.BindingOnSyntax(this._binding);
+    }
+    whenNoAncestorIs(ancestor) {
+        this._binding.constraint = (request) => request !== null &&
+            !(0, constraint_helpers_1.traverseAncerstors)(request, (0, constraint_helpers_1.typeConstraint)(ancestor));
+        return new binding_on_syntax_1.BindingOnSyntax(this._binding);
+    }
+    whenAnyAncestorNamed(name) {
+        this._binding.constraint = (request) => request !== null && (0, constraint_helpers_1.traverseAncerstors)(request, (0, constraint_helpers_1.namedConstraint)(name));
+        return new binding_on_syntax_1.BindingOnSyntax(this._binding);
+    }
+    whenNoAncestorNamed(name) {
+        this._binding.constraint = (request) => request !== null && !(0, constraint_helpers_1.traverseAncerstors)(request, (0, constraint_helpers_1.namedConstraint)(name));
+        return new binding_on_syntax_1.BindingOnSyntax(this._binding);
+    }
+    whenAnyAncestorTagged(tag, value) {
+        this._binding.constraint = (request) => request !== null &&
+            (0, constraint_helpers_1.traverseAncerstors)(request, (0, constraint_helpers_1.taggedConstraint)(tag)(value));
+        return new binding_on_syntax_1.BindingOnSyntax(this._binding);
+    }
+    whenNoAncestorTagged(tag, value) {
+        this._binding.constraint = (request) => request !== null &&
+            !(0, constraint_helpers_1.traverseAncerstors)(request, (0, constraint_helpers_1.taggedConstraint)(tag)(value));
+        return new binding_on_syntax_1.BindingOnSyntax(this._binding);
+    }
+    whenAnyAncestorMatches(constraint) {
+        this._binding.constraint = (request) => request !== null &&
+            (0, constraint_helpers_1.traverseAncerstors)(request, constraint);
+        return new binding_on_syntax_1.BindingOnSyntax(this._binding);
+    }
+    whenNoAncestorMatches(constraint) {
+        this._binding.constraint = (request) => request !== null &&
+            !(0, constraint_helpers_1.traverseAncerstors)(request, constraint);
+        return new binding_on_syntax_1.BindingOnSyntax(this._binding);
+    }
+}
+exports.BindingWhenSyntax = BindingWhenSyntax;
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/syntax/constraint_helpers.js":
-/*!********************************************************************!*\
-  !*** ../../node_modules/inversify/es/syntax/constraint_helpers.js ***!
-  \********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/syntax/constraint_helpers.js":
+/*!*************************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/syntax/constraint_helpers.js ***!
+  \*************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   namedConstraint: () => (/* binding */ namedConstraint),
-/* harmony export */   taggedConstraint: () => (/* binding */ taggedConstraint),
-/* harmony export */   traverseAncerstors: () => (/* binding */ traverseAncerstors),
-/* harmony export */   typeConstraint: () => (/* binding */ typeConstraint)
-/* harmony export */ });
-/* harmony import */ var _constants_metadata_keys__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/es/constants/metadata_keys.js");
-/* harmony import */ var _planning_metadata__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../planning/metadata */ "../../node_modules/inversify/es/planning/metadata.js");
 
-
-var traverseAncerstors = function (request, constraint) {
-    var parent = request.parentRequest;
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.typeConstraint = exports.namedConstraint = exports.taggedConstraint = exports.traverseAncerstors = void 0;
+const METADATA_KEY = __importStar(__webpack_require__(/*! ../constants/metadata_keys */ "../../node_modules/inversify/lib/cjs/constants/metadata_keys.js"));
+const metadata_1 = __webpack_require__(/*! ../planning/metadata */ "../../node_modules/inversify/lib/cjs/planning/metadata.js");
+const traverseAncerstors = (request, constraint) => {
+    const parent = request.parentRequest;
     if (parent !== null) {
         return constraint(parent) ? true : traverseAncerstors(parent, constraint);
     }
@@ -4449,49 +5491,55 @@ var traverseAncerstors = function (request, constraint) {
         return false;
     }
 };
-var taggedConstraint = function (key) { return function (value) {
-    var constraint = function (request) {
-        return request !== null && request.target !== null && request.target.matchesTag(key)(value);
-    };
-    constraint.metaData = new _planning_metadata__WEBPACK_IMPORTED_MODULE_0__.Metadata(key, value);
+exports.traverseAncerstors = traverseAncerstors;
+// This helpers use currying to help you to generate constraints
+const taggedConstraint = (key) => (value) => {
+    const constraint = (request) => request !== null &&
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        request.target !== null &&
+        request.target.matchesTag(key)(value);
+    constraint.metaData = new metadata_1.Metadata(key, value);
     return constraint;
-}; };
-var namedConstraint = taggedConstraint(_constants_metadata_keys__WEBPACK_IMPORTED_MODULE_1__.NAMED_TAG);
-var typeConstraint = function (type) { return function (request) {
-    var binding = null;
+};
+exports.taggedConstraint = taggedConstraint;
+const namedConstraint = taggedConstraint(METADATA_KEY.NAMED_TAG);
+exports.namedConstraint = namedConstraint;
+const typeConstraint = (type) => (request) => {
+    // Using index 0 because constraints are applied
+    // to one binding at a time (see Planner class)
+    let binding = null;
     if (request !== null) {
         binding = request.bindings[0];
         if (typeof type === 'string') {
-            var serviceIdentifier = binding.serviceIdentifier;
-            return serviceIdentifier === type;
+            return binding.serviceIdentifier === type;
         }
         else {
-            var constructor = request.bindings[0].implementationType;
+            const constructor = request.bindings[0].implementationType;
             return type === constructor;
         }
     }
     return false;
-}; };
-
+};
+exports.typeConstraint = typeConstraint;
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/utils/async.js":
-/*!******************************************************!*\
-  !*** ../../node_modules/inversify/es/utils/async.js ***!
-  \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/utils/async.js":
+/*!***********************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/utils/async.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   isPromise: () => (/* binding */ isPromise),
-/* harmony export */   isPromiseOrContainsPromise: () => (/* binding */ isPromiseOrContainsPromise)
-/* harmony export */ });
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.isPromise = isPromise;
+exports.isPromiseOrContainsPromise = isPromiseOrContainsPromise;
 function isPromise(object) {
-    var isObjectOrFunction = (typeof object === 'object' && object !== null) || typeof object === 'function';
-    return isObjectOrFunction && typeof object.then === "function";
+    const isObjectOrFunction = (typeof object === 'object' && object !== null) ||
+        typeof object === 'function';
+    return (isObjectOrFunction && typeof object.then === 'function');
 }
 function isPromiseOrContainsPromise(object) {
     if (isPromise(object)) {
@@ -4501,194 +5549,267 @@ function isPromiseOrContainsPromise(object) {
 }
 
 
-
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/utils/binding_utils.js":
-/*!**************************************************************!*\
-  !*** ../../node_modules/inversify/es/utils/binding_utils.js ***!
-  \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/utils/binding_utils.js":
+/*!*******************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/utils/binding_utils.js ***!
+  \*******************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   ensureFullyBound: () => (/* binding */ ensureFullyBound),
-/* harmony export */   getFactoryDetails: () => (/* binding */ getFactoryDetails),
-/* harmony export */   multiBindToService: () => (/* binding */ multiBindToService)
-/* harmony export */ });
-/* harmony import */ var _utils_serialization__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/serialization */ "../../node_modules/inversify/es/utils/serialization.js");
-/* harmony import */ var _constants_error_msgs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/es/constants/error_msgs.js");
-/* harmony import */ var _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/literal_types */ "../../node_modules/inversify/es/constants/literal_types.js");
-/* harmony import */ var _factory_type__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./factory_type */ "../../node_modules/inversify/es/utils/factory_type.js");
 
-
-
-
-var multiBindToService = function (container) {
-    return function (service) {
-        return function () {
-            var types = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                types[_i] = arguments[_i];
-            }
-            return types.forEach(function (t) { return container.bind(t).toService(service); });
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
         };
+        return ownKeys(o);
     };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getFactoryDetails = exports.ensureFullyBound = exports.multiBindToService = void 0;
+const ERROR_MSGS = __importStar(__webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/lib/cjs/constants/error_msgs.js"));
+const literal_types_1 = __webpack_require__(/*! ../constants/literal_types */ "../../node_modules/inversify/lib/cjs/constants/literal_types.js");
+const serialization_1 = __webpack_require__(/*! ../utils/serialization */ "../../node_modules/inversify/lib/cjs/utils/serialization.js");
+const factory_type_1 = __webpack_require__(/*! ./factory_type */ "../../node_modules/inversify/lib/cjs/utils/factory_type.js");
+const multiBindToService = (container) => (service) => (...types) => {
+    types.forEach((t) => {
+        container.bind(t).toService(service);
+    });
 };
-var ensureFullyBound = function (binding) {
-    var boundValue = null;
+exports.multiBindToService = multiBindToService;
+const ensureFullyBound = (binding) => {
+    let boundValue = null;
+    // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
     switch (binding.type) {
-        case _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingTypeEnum.ConstantValue:
-        case _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingTypeEnum.Function:
+        case literal_types_1.BindingTypeEnum.ConstantValue:
+        case literal_types_1.BindingTypeEnum.Function:
             boundValue = binding.cache;
             break;
-        case _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingTypeEnum.Constructor:
-        case _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingTypeEnum.Instance:
+        case literal_types_1.BindingTypeEnum.Constructor:
+        case literal_types_1.BindingTypeEnum.Instance:
             boundValue = binding.implementationType;
             break;
-        case _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingTypeEnum.DynamicValue:
+        case literal_types_1.BindingTypeEnum.DynamicValue:
             boundValue = binding.dynamicValue;
             break;
-        case _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingTypeEnum.Provider:
+        case literal_types_1.BindingTypeEnum.Provider:
             boundValue = binding.provider;
             break;
-        case _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingTypeEnum.Factory:
+        case literal_types_1.BindingTypeEnum.Factory:
             boundValue = binding.factory;
             break;
     }
     if (boundValue === null) {
-        var serviceIdentifierAsString = (0,_utils_serialization__WEBPACK_IMPORTED_MODULE_1__.getServiceIdentifierAsString)(binding.serviceIdentifier);
-        throw new Error("".concat(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_2__.INVALID_BINDING_TYPE, " ").concat(serviceIdentifierAsString));
+        // The user probably created a binding but didn't finish it
+        // e.g. container.bind<T>('Something'); missing BindingToSyntax
+        const serviceIdentifierAsString = (0, serialization_1.getServiceIdentifierAsString)(binding.serviceIdentifier);
+        throw new Error(`${ERROR_MSGS.INVALID_BINDING_TYPE} ${serviceIdentifierAsString}`);
     }
 };
-var getFactoryDetails = function (binding) {
+exports.ensureFullyBound = ensureFullyBound;
+const getFactoryDetails = (binding) => {
     switch (binding.type) {
-        case _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingTypeEnum.Factory:
-            return { factory: binding.factory, factoryType: _factory_type__WEBPACK_IMPORTED_MODULE_3__.FactoryType.Factory };
-        case _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingTypeEnum.Provider:
-            return { factory: binding.provider, factoryType: _factory_type__WEBPACK_IMPORTED_MODULE_3__.FactoryType.Provider };
-        case _constants_literal_types__WEBPACK_IMPORTED_MODULE_0__.BindingTypeEnum.DynamicValue:
-            return { factory: binding.dynamicValue, factoryType: _factory_type__WEBPACK_IMPORTED_MODULE_3__.FactoryType.DynamicValue };
+        case literal_types_1.BindingTypeEnum.Factory:
+            return { factory: binding.factory, factoryType: factory_type_1.FactoryType.Factory };
+        case literal_types_1.BindingTypeEnum.Provider:
+            return { factory: binding.provider, factoryType: factory_type_1.FactoryType.Provider };
+        case literal_types_1.BindingTypeEnum.DynamicValue:
+            return {
+                factory: binding.dynamicValue,
+                factoryType: factory_type_1.FactoryType.DynamicValue,
+            };
         default:
-            throw new Error("Unexpected factory type ".concat(binding.type));
+            throw new Error(`Unexpected factory type ${binding.type}`);
     }
 };
+exports.getFactoryDetails = getFactoryDetails;
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/utils/clonable.js":
-/*!*********************************************************!*\
-  !*** ../../node_modules/inversify/es/utils/clonable.js ***!
-  \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/utils/clonable.js":
+/*!**************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/utils/clonable.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   isClonable: () => (/* binding */ isClonable)
-/* harmony export */ });
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.isClonable = isClonable;
 function isClonable(obj) {
-    return (typeof obj === 'object')
-        && (obj !== null)
-        && ('clone' in obj)
-        && typeof obj.clone === 'function';
+    return (typeof obj === 'object' &&
+        obj !== null &&
+        'clone' in obj &&
+        typeof obj.clone === 'function');
 }
 
 
-
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/utils/exceptions.js":
-/*!***********************************************************!*\
-  !*** ../../node_modules/inversify/es/utils/exceptions.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/utils/exceptions.js":
+/*!****************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/utils/exceptions.js ***!
+  \****************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   isStackOverflowException: () => (/* binding */ isStackOverflowException),
-/* harmony export */   tryAndThrowErrorIfStackOverflow: () => (/* binding */ tryAndThrowErrorIfStackOverflow)
-/* harmony export */ });
-/* harmony import */ var _constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/es/constants/error_msgs.js");
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.tryAndThrowErrorIfStackOverflow = void 0;
+exports.isStackOverflowException = isStackOverflowException;
+const ERROR_MSGS = __importStar(__webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/lib/cjs/constants/error_msgs.js"));
 function isStackOverflowException(error) {
     return (error instanceof RangeError ||
-        error.message === _constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.STACK_OVERFLOW);
+        error.message === ERROR_MSGS.STACK_OVERFLOW);
 }
-var tryAndThrowErrorIfStackOverflow = function (fn, errorCallback) {
+const tryAndThrowErrorIfStackOverflow = (fn, errorCallback) => {
     try {
         return fn();
     }
     catch (error) {
         if (isStackOverflowException(error)) {
-            error = errorCallback();
+            throw errorCallback();
         }
         throw error;
     }
 };
+exports.tryAndThrowErrorIfStackOverflow = tryAndThrowErrorIfStackOverflow;
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/utils/factory_type.js":
-/*!*************************************************************!*\
-  !*** ../../node_modules/inversify/es/utils/factory_type.js ***!
-  \*************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/utils/factory_type.js":
+/*!******************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/utils/factory_type.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   FactoryType: () => (/* binding */ FactoryType)
-/* harmony export */ });
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.FactoryType = void 0;
 var FactoryType;
 (function (FactoryType) {
     FactoryType["DynamicValue"] = "toDynamicValue";
     FactoryType["Factory"] = "toFactory";
     FactoryType["Provider"] = "toProvider";
-})(FactoryType || (FactoryType = {}));
+})(FactoryType || (exports.FactoryType = FactoryType = {}));
 
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/utils/id.js":
-/*!***************************************************!*\
-  !*** ../../node_modules/inversify/es/utils/id.js ***!
-  \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/utils/get_base_type.js":
+/*!*******************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/utils/get_base_type.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   id: () => (/* binding */ id)
-/* harmony export */ });
-var idCounter = 0;
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getBaseType = getBaseType;
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+function getBaseType(type) {
+    const prototype = Object.getPrototypeOf(type.prototype);
+    const baseType = prototype?.constructor;
+    return baseType;
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/inversify/lib/cjs/utils/id.js":
+/*!********************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/utils/id.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.id = id;
+let idCounter = 0;
 function id() {
     return idCounter++;
 }
 
 
-
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/utils/js.js":
-/*!***************************************************!*\
-  !*** ../../node_modules/inversify/es/utils/js.js ***!
-  \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/utils/js.js":
+/*!********************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/utils/js.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   getFirstArrayDuplicate: () => (/* binding */ getFirstArrayDuplicate)
-/* harmony export */ });
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getFirstArrayDuplicate = getFirstArrayDuplicate;
 function getFirstArrayDuplicate(array) {
-    var seenValues = new Set();
-    for (var _i = 0, array_1 = array; _i < array_1.length; _i++) {
-        var entry = array_1[_i];
+    const seenValues = new Set();
+    for (const entry of array) {
         if (seenValues.has(entry)) {
             return entry;
         }
@@ -4702,50 +5823,82 @@ function getFirstArrayDuplicate(array) {
 
 /***/ }),
 
-/***/ "../../node_modules/inversify/es/utils/serialization.js":
-/*!**************************************************************!*\
-  !*** ../../node_modules/inversify/es/utils/serialization.js ***!
-  \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "../../node_modules/inversify/lib/cjs/utils/serialization.js":
+/*!*******************************************************************!*\
+  !*** ../../node_modules/inversify/lib/cjs/utils/serialization.js ***!
+  \*******************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   circularDependencyToException: () => (/* binding */ circularDependencyToException),
-/* harmony export */   getFunctionName: () => (/* binding */ getFunctionName),
-/* harmony export */   getServiceIdentifierAsString: () => (/* binding */ getServiceIdentifierAsString),
-/* harmony export */   getSymbolDescription: () => (/* binding */ getSymbolDescription),
-/* harmony export */   listMetadataForTarget: () => (/* binding */ listMetadataForTarget),
-/* harmony export */   listRegisteredBindingsForServiceIdentifier: () => (/* binding */ listRegisteredBindingsForServiceIdentifier)
-/* harmony export */ });
-/* harmony import */ var _constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/es/constants/error_msgs.js");
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getFunctionName = getFunctionName;
+exports.getServiceIdentifierAsString = getServiceIdentifierAsString;
+exports.listRegisteredBindingsForServiceIdentifier = listRegisteredBindingsForServiceIdentifier;
+exports.listMetadataForTarget = listMetadataForTarget;
+exports.circularDependencyToException = circularDependencyToException;
+exports.getSymbolDescription = getSymbolDescription;
+const ERROR_MSGS = __importStar(__webpack_require__(/*! ../constants/error_msgs */ "../../node_modules/inversify/lib/cjs/constants/error_msgs.js"));
 function getServiceIdentifierAsString(serviceIdentifier) {
     if (typeof serviceIdentifier === 'function') {
-        var _serviceIdentifier = serviceIdentifier;
-        return _serviceIdentifier.name;
+        return serviceIdentifier.name;
     }
     else if (typeof serviceIdentifier === 'symbol') {
         return serviceIdentifier.toString();
     }
     else {
-        var _serviceIdentifier = serviceIdentifier;
-        return _serviceIdentifier;
+        return serviceIdentifier;
     }
 }
 function listRegisteredBindingsForServiceIdentifier(container, serviceIdentifier, getBindings) {
-    var registeredBindingsList = '';
-    var registeredBindings = getBindings(container, serviceIdentifier);
+    let registeredBindingsList = '';
+    const registeredBindings = getBindings(container, serviceIdentifier);
     if (registeredBindings.length !== 0) {
         registeredBindingsList = '\nRegistered bindings:';
-        registeredBindings.forEach(function (binding) {
-            var name = 'Object';
+        registeredBindings.forEach((binding) => {
+            // Use 'Object as name of constant value injections'
+            let name = 'Object';
+            // Use function name if available
             if (binding.implementationType !== null) {
                 name = getFunctionName(binding.implementationType);
             }
-            registeredBindingsList = "".concat(registeredBindingsList, "\n ").concat(name);
+            registeredBindingsList = `${registeredBindingsList}\n ${name}`;
             if (binding.constraint.metaData) {
-                registeredBindingsList = "".concat(registeredBindingsList, " - ").concat(binding.constraint.metaData);
+                // eslint-disable-next-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
+                registeredBindingsList = `${registeredBindingsList} - ${binding.constraint.metaData}`;
             }
         });
     }
@@ -4763,23 +5916,22 @@ function alreadyDependencyChain(request, serviceIdentifier) {
     }
 }
 function dependencyChainToString(request) {
-    function _createStringArr(req, result) {
-        if (result === void 0) { result = []; }
-        var serviceIdentifier = getServiceIdentifierAsString(req.serviceIdentifier);
+    function _createStringArr(req, result = []) {
+        const serviceIdentifier = getServiceIdentifierAsString(req.serviceIdentifier);
         result.push(serviceIdentifier);
         if (req.parentRequest !== null) {
             return _createStringArr(req.parentRequest, result);
         }
         return result;
     }
-    var stringArr = _createStringArr(request);
+    const stringArr = _createStringArr(request);
     return stringArr.reverse().join(' --> ');
 }
 function circularDependencyToException(request) {
-    request.childRequests.forEach(function (childRequest) {
-        if (alreadyDependencyChain(childRequest, childRequest.serviceIdentifier)) {
-            var services = dependencyChainToString(childRequest);
-            throw new Error("".concat(_constants_error_msgs__WEBPACK_IMPORTED_MODULE_0__.CIRCULAR_DEPENDENCY, " ").concat(services));
+    request.childRequests.forEach((childRequest) => {
+        if (alreadyDependencyChain(request, childRequest.serviceIdentifier)) {
+            const services = dependencyChainToString(childRequest);
+            throw new Error(`${ERROR_MSGS.CIRCULAR_DEPENDENCY} ${services}`);
         }
         else {
             circularDependencyToException(childRequest);
@@ -4788,37 +5940,43 @@ function circularDependencyToException(request) {
 }
 function listMetadataForTarget(serviceIdentifierString, target) {
     if (target.isTagged() || target.isNamed()) {
-        var m_1 = '';
-        var namedTag = target.getNamedTag();
-        var otherTags = target.getCustomTags();
+        let m = '';
+        const namedTag = target.getNamedTag();
+        const otherTags = target.getCustomTags();
         if (namedTag !== null) {
-            m_1 += namedTag.toString() + '\n';
+            m += stringifyMetadata(namedTag) + '\n';
         }
         if (otherTags !== null) {
-            otherTags.forEach(function (tag) {
-                m_1 += tag.toString() + '\n';
+            otherTags.forEach((tag) => {
+                m += stringifyMetadata(tag) + '\n';
             });
         }
-        return " ".concat(serviceIdentifierString, "\n ").concat(serviceIdentifierString, " - ").concat(m_1);
+        return ` ${serviceIdentifierString}\n ${serviceIdentifierString} - ${m}`;
     }
     else {
-        return " ".concat(serviceIdentifierString);
+        return ` ${serviceIdentifierString}`;
     }
 }
 function getFunctionName(func) {
-    if (func.name) {
+    if (func.name != null && func.name !== '') {
         return func.name;
     }
     else {
-        var name_1 = func.toString();
-        var match = name_1.match(/^function\s*([^\s(]+)/);
-        return match ? match[1] : "Anonymous function: ".concat(name_1);
+        // eslint-disable-next-line @typescript-eslint/no-base-to-string
+        const name = func.toString();
+        const match = name.match(/^function\s*([^\s(]+)/);
+        return match === null
+            ? `Anonymous function: ${name}`
+            : match[1];
     }
 }
 function getSymbolDescription(symbol) {
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     return symbol.toString().slice(7, -1);
 }
-
+function stringifyMetadata(metadata) {
+    return `{"key":"${metadata.key.toString()}","value":"${metadata.value.toString()}"}`;
+}
 
 
 /***/ }),
@@ -9559,9 +10717,7 @@ var options = {};
 
 options.styleTagTransform = (_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
 options.setAttributes = (_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
-
-      options.insert = _style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
-    
+options.insert = _style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
 options.domAPI = (_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
@@ -9648,7 +10804,7 @@ exports.CodeActionContextMenuProvider = exports.PaletteMouseListener = exports.P
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const sprotty_1 = __webpack_require__(/*! sprotty */ "../../node_modules/sprotty/lib/index.js");
 const sprotty_protocol_1 = __webpack_require__(/*! sprotty-protocol */ "../../node_modules/sprotty-protocol/lib/index.js");
 const editing_1 = __webpack_require__(/*! sprotty-vscode-protocol/lib/lsp/editing */ "../../node_modules/sprotty-vscode-protocol/lib/lsp/editing/index.js");
@@ -9812,7 +10968,7 @@ exports.CodeActionProvider = void 0;
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const sprotty_vscode_protocol_1 = __webpack_require__(/*! sprotty-vscode-protocol */ "../../node_modules/sprotty-vscode-protocol/lib/index.js");
 const vscode_languageserver_protocol_1 = __webpack_require__(/*! vscode-languageserver-protocol */ "../../node_modules/vscode-languageserver-protocol/lib/browser/main.js");
 const language_client_proxy_1 = __webpack_require__(/*! ./language-client-proxy */ "../../node_modules/sprotty-vscode-webview/lib/lsp/editing/language-client-proxy.js");
@@ -9884,7 +11040,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.DeleteWithWorkspaceEditCommand = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const sprotty_1 = __webpack_require__(/*! sprotty */ "../../node_modules/sprotty/lib/index.js");
 const editing_1 = __webpack_require__(/*! sprotty-vscode-protocol/lib/lsp/editing */ "../../node_modules/sprotty-vscode-protocol/lib/lsp/editing/index.js");
 const traceable_1 = __webpack_require__(/*! ./traceable */ "../../node_modules/sprotty-vscode-webview/lib/lsp/editing/traceable.js");
@@ -10033,7 +11189,7 @@ exports.EditDiagramLocker = void 0;
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const sprotty_1 = __webpack_require__(/*! sprotty */ "../../node_modules/sprotty/lib/index.js");
 const sprotty_protocol_1 = __webpack_require__(/*! sprotty-protocol */ "../../node_modules/sprotty-protocol/lib/index.js");
 /**
@@ -10148,7 +11304,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.LanguageClientProxy = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const vscode_languageserver_protocol_1 = __webpack_require__(/*! vscode-languageserver-protocol */ "../../node_modules/vscode-languageserver-protocol/lib/browser/main.js");
 const vscode_messenger_common_1 = __webpack_require__(/*! vscode-messenger-common */ "../../node_modules/vscode-messenger-common/lib/index.js");
 const vscode_messenger_webview_1 = __webpack_require__(/*! vscode-messenger-webview */ "../../node_modules/vscode-messenger-webview/lib/index.js");
@@ -10568,7 +11724,7 @@ exports.VscodeDiagramServer = void 0;
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const sprotty_1 = __webpack_require__(/*! sprotty */ "../../node_modules/sprotty/lib/index.js");
 const sprotty_protocol_1 = __webpack_require__(/*! sprotty-protocol */ "../../node_modules/sprotty-protocol/lib/index.js");
 const sprotty_vscode_protocol_1 = __webpack_require__(/*! sprotty-vscode-protocol */ "../../node_modules/sprotty-vscode-protocol/lib/index.js");
@@ -10663,7 +11819,7 @@ exports.VscodeDiagramWidget = exports.VscodeDiagramWidgetFactory = void 0;
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const sprotty_1 = __webpack_require__(/*! sprotty */ "../../node_modules/sprotty/lib/index.js");
 const sprotty_protocol_1 = __webpack_require__(/*! sprotty-protocol */ "../../node_modules/sprotty-protocol/lib/index.js");
 const sprotty_vscode_protocol_1 = __webpack_require__(/*! sprotty-vscode-protocol */ "../../node_modules/sprotty-vscode-protocol/lib/index.js");
@@ -10818,9 +11974,7 @@ var options = {};
 
 options.styleTagTransform = (_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
 options.setAttributes = (_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
-
-      options.insert = _style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
-    
+options.insert = _style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
 options.domAPI = (_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
@@ -10868,7 +12022,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ActionDispatcher = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const async_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/async */ "../../node_modules/sprotty-protocol/lib/utils/async.js");
 const types_1 = __webpack_require__(/*! ../types */ "../../node_modules/sprotty/lib/base/types.js");
@@ -11068,7 +12222,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.onAction = exports.configureActionHandler = exports.ActionHandlerRegistry = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../types */ "../../node_modules/sprotty/lib/base/types.js");
 const registry_1 = __webpack_require__(/*! ../../utils/registry */ "../../node_modules/sprotty/lib/utils/registry.js");
 const inversify_2 = __webpack_require__(/*! ../../utils/inversify */ "../../node_modules/sprotty/lib/utils/inversify.js");
@@ -11205,7 +12359,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.DefaultDiagramLocker = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 let DefaultDiagramLocker = class DefaultDiagramLocker {
     isAllowed(action) {
         return true;
@@ -11250,7 +12404,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AnimationFrameSyncer = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 let AnimationFrameSyncer = class AnimationFrameSyncer {
     constructor() {
         this.tasks = [];
@@ -11484,7 +12638,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.configureCommand = exports.CommandActionHandlerInitializer = exports.CommandActionHandler = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const inversify_2 = __webpack_require__(/*! ../../utils/inversify */ "../../node_modules/sprotty/lib/utils/inversify.js");
 const types_1 = __webpack_require__(/*! ../types */ "../../node_modules/sprotty/lib/base/types.js");
 class CommandActionHandler {
@@ -11629,7 +12783,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CommandStack = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../types */ "../../node_modules/sprotty/lib/base/types.js");
 const smodel_factory_1 = __webpack_require__(/*! ../model/smodel-factory */ "../../node_modules/sprotty/lib/base/model/smodel-factory.js");
 const smodel_1 = __webpack_require__(/*! ../model/smodel */ "../../node_modules/sprotty/lib/base/model/smodel.js");
@@ -12038,7 +13192,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ResetCommand = exports.SystemCommand = exports.PopupCommand = exports.HiddenCommand = exports.MergeableCommand = exports.Command = exports.isStoppableCommand = void 0;
 __webpack_require__(/*! reflect-metadata */ "../../node_modules/reflect-metadata/Reflect.js");
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const sprotty_protocol_1 = __webpack_require__(/*! sprotty-protocol */ "../../node_modules/sprotty-protocol/lib/index.js");
 function isStoppableCommand(command) {
     return command && (0, sprotty_protocol_1.hasOwnProperty)(command, 'stoppableCommandKey') && 'stopExecution' in command && typeof command.stopExecution === 'function';
@@ -12189,7 +13343,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ModelRequestCommand = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../types */ "../../node_modules/sprotty/lib/base/types.js");
 const command_1 = __webpack_require__(/*! ./command */ "../../node_modules/sprotty/lib/base/commands/command.js");
 /**
@@ -12245,7 +13399,7 @@ exports.ModelRequestCommand = ModelRequestCommand = __decorate([
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ./types */ "../../node_modules/sprotty/lib/base/types.js");
 const initialize_canvas_1 = __webpack_require__(/*! ./features/initialize-canvas */ "../../node_modules/sprotty/lib/base/features/initialize-canvas.js");
 const logging_1 = __webpack_require__(/*! ../utils/logging */ "../../node_modules/sprotty/lib/utils/logging.js");
@@ -12297,7 +13451,8 @@ const defaultContainerModule = new inversify_1.ContainerModule((bind, _unbind, i
     });
     bind(types_1.TYPES.IDiagramLocker).to(diagram_locker_1.DefaultDiagramLocker).inSingletonScope();
     // Action handler
-    bind(types_1.TYPES.IActionHandlerInitializer).to(command_registration_1.CommandActionHandlerInitializer);
+    bind(command_registration_1.CommandActionHandlerInitializer).toSelf().inSingletonScope();
+    bind(types_1.TYPES.IActionHandlerInitializer).toService(command_registration_1.CommandActionHandlerInitializer);
     // Command Stack ---------------------------------------------
     bind(types_1.TYPES.ICommandStack).to(command_stack_1.CommandStack).inSingletonScope();
     bind(types_1.TYPES.ICommandStackProvider).toProvider(ctx => {
@@ -12421,7 +13576,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.InitializeCanvasBoundsCommand = exports.InitializeCanvasBoundsAction = exports.CanvasBoundsInitializer = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 const types_1 = __webpack_require__(/*! ../types */ "../../node_modules/sprotty/lib/base/types.js");
 const smodel_1 = __webpack_require__(/*! ../model/smodel */ "../../node_modules/sprotty/lib/base/model/smodel.js");
@@ -12549,7 +13704,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.SetModelCommand = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const command_1 = __webpack_require__(/*! ../commands/command */ "../../node_modules/sprotty/lib/base/commands/command.js");
 const types_1 = __webpack_require__(/*! ../types */ "../../node_modules/sprotty/lib/base/types.js");
@@ -12622,7 +13777,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createFeatureSet = exports.EMPTY_ROOT = exports.SModelFactory = exports.SModelRegistry = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../types */ "../../node_modules/sprotty/lib/base/types.js");
 const registry_1 = __webpack_require__(/*! ../../utils/registry */ "../../node_modules/sprotty/lib/utils/registry.js");
 const smodel_1 = __webpack_require__(/*! ./smodel */ "../../node_modules/sprotty/lib/base/model/smodel.js");
@@ -13289,7 +14444,7 @@ exports.SetUIExtensionVisibilityCommand = exports.SetUIExtensionVisibilityAction
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const registry_1 = __webpack_require__(/*! ../../utils/registry */ "../../node_modules/sprotty/lib/utils/registry.js");
 const command_1 = __webpack_require__(/*! ../commands/command */ "../../node_modules/sprotty/lib/base/commands/command.js");
 const types_1 = __webpack_require__(/*! ../types */ "../../node_modules/sprotty/lib/base/types.js");
@@ -13391,7 +14546,7 @@ exports.AbstractUIExtension = exports.isUIExtension = void 0;
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const sprotty_protocol_1 = __webpack_require__(/*! sprotty-protocol */ "../../node_modules/sprotty-protocol/lib/index.js");
 const types_1 = __webpack_require__(/*! ../types */ "../../node_modules/sprotty/lib/base/types.js");
 function isUIExtension(object) {
@@ -13518,7 +14673,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CssClassPostprocessor = void 0;
 const model_utils_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/model-utils */ "../../node_modules/sprotty-protocol/lib/utils/model-utils.js");
 const vnode_utils_1 = __webpack_require__(/*! ./vnode-utils */ "../../node_modules/sprotty/lib/base/views/vnode-utils.js");
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 let CssClassPostprocessor = class CssClassPostprocessor {
     decorate(vnode, element) {
         if (element.cssClasses) {
@@ -13578,7 +14733,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.DOMHelper = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../types */ "../../node_modules/sprotty/lib/base/types.js");
 let DOMHelper = class DOMHelper {
     getPrefix() {
@@ -13639,7 +14794,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.IdPostprocessor = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../types */ "../../node_modules/sprotty/lib/base/types.js");
 const dom_helper_1 = __webpack_require__(/*! ./dom-helper */ "../../node_modules/sprotty/lib/base/views/dom-helper.js");
 const vnode_utils_1 = __webpack_require__(/*! ./vnode-utils */ "../../node_modules/sprotty/lib/base/views/vnode-utils.js");
@@ -13709,7 +14864,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.KeyListener = exports.KeyTool = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../types */ "../../node_modules/sprotty/lib/base/types.js");
 const smodel_1 = __webpack_require__(/*! ../model/smodel */ "../../node_modules/sprotty/lib/base/model/smodel.js");
 const vnode_utils_1 = __webpack_require__(/*! ./vnode-utils */ "../../node_modules/sprotty/lib/base/views/vnode-utils.js");
@@ -13816,7 +14971,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.MousePositionTracker = exports.MouseListener = exports.PopupMouseTool = exports.MouseTool = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const smodel_1 = __webpack_require__(/*! ../model/smodel */ "../../node_modules/sprotty/lib/base/model/smodel.js");
 const types_1 = __webpack_require__(/*! ../types */ "../../node_modules/sprotty/lib/base/types.js");
@@ -14054,7 +15209,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.isThunk = exports.ThunkView = void 0;
 const snabbdom_1 = __webpack_require__(/*! snabbdom */ "../../node_modules/snabbdom/build/index.js");
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 /**
  * An view that avoids calculation and patching of VNodes unless some model properties have changed.
  * Based on snabbdom's thunks.
@@ -14173,7 +15328,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.MissingView = exports.EmptyView = exports.configureView = exports.overrideModelElement = exports.configureModelElement = exports.ViewRegistry = exports.findArgValue = void 0;
 /** @jsx svg */
 const jsx_1 = __webpack_require__(/*! ../../lib/jsx */ "../../node_modules/sprotty/lib/lib/jsx.js");
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../types */ "../../node_modules/sprotty/lib/base/types.js");
 const registry_1 = __webpack_require__(/*! ../../utils/registry */ "../../node_modules/sprotty/lib/utils/registry.js");
 const inversify_2 = __webpack_require__(/*! ../../utils/inversify */ "../../node_modules/sprotty/lib/utils/inversify.js");
@@ -14338,7 +15493,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ViewerCache = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../types */ "../../node_modules/sprotty/lib/base/types.js");
 const animation_frame_syncer_1 = __webpack_require__(/*! ../animations/animation-frame-syncer */ "../../node_modules/sprotty/lib/base/animations/animation-frame-syncer.js");
 /**
@@ -14496,7 +15651,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.PopupModelViewer = exports.HiddenModelViewer = exports.ModelViewer = exports.PatcherProvider = exports.ModelRenderer = void 0;
 /** @jsx html */
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const snabbdom_1 = __webpack_require__(/*! snabbdom */ "../../node_modules/snabbdom/build/index.js");
 const jsx_1 = __webpack_require__(/*! ../../lib/jsx */ "../../node_modules/sprotty/lib/lib/jsx.js"); // must be html here, as we're creating a div
 const browser_1 = __webpack_require__(/*! ../../utils/browser */ "../../node_modules/sprotty/lib/utils/browser.js");
@@ -14818,7 +15973,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.FocusFixPostprocessor = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const vnode_utils_1 = __webpack_require__(/*! ./vnode-utils */ "../../node_modules/sprotty/lib/base/views/vnode-utils.js");
 let FocusFixPostprocessor = class FocusFixPostprocessor {
     decorate(vnode, element) {
@@ -14973,7 +16128,7 @@ exports.AbstractLayout = void 0;
 const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 const smodel_1 = __webpack_require__(/*! ../../base/model/smodel */ "../../node_modules/sprotty/lib/base/model/smodel.js");
 const model_1 = __webpack_require__(/*! ./model */ "../../node_modules/sprotty/lib/features/bounds/model.js");
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 let AbstractLayout = class AbstractLayout {
     layout(container, layouter) {
         const boundsData = layouter.getBoundsData(container);
@@ -15122,7 +16277,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.RequestBoundsCommand = exports.SetBoundsCommand = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const command_1 = __webpack_require__(/*! ../../base/commands/command */ "../../node_modules/sprotty/lib/base/commands/command.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
@@ -15220,7 +16375,7 @@ exports.RequestBoundsCommand = RequestBoundsCommand = __decorate([
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const bounds_manipulation_1 = __webpack_require__(/*! ./bounds-manipulation */ "../../node_modules/sprotty/lib/features/bounds/bounds-manipulation.js");
 const hidden_bounds_updater_1 = __webpack_require__(/*! ./hidden-bounds-updater */ "../../node_modules/sprotty/lib/features/bounds/hidden-bounds-updater.js");
@@ -15276,7 +16431,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.HBoxLayouter = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 const abstract_layout_1 = __webpack_require__(/*! ./abstract-layout */ "../../node_modules/sprotty/lib/features/bounds/abstract-layout.js");
 const model_1 = __webpack_require__(/*! ./model */ "../../node_modules/sprotty/lib/features/bounds/model.js");
@@ -15381,7 +16536,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ATTR_BBOX_ELEMENT = exports.HiddenBoundsUpdater = exports.BoundsData = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 const browser_1 = __webpack_require__(/*! ../../utils/browser */ "../../node_modules/sprotty/lib/utils/browser.js");
@@ -15581,7 +16736,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.configureLayout = exports.StatefulLayouter = exports.Layouter = exports.LayoutRegistry = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const registry_1 = __webpack_require__(/*! ../../utils/registry */ "../../node_modules/sprotty/lib/utils/registry.js");
@@ -15975,7 +17130,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.StackLayouter = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 const abstract_layout_1 = __webpack_require__(/*! ./abstract-layout */ "../../node_modules/sprotty/lib/features/bounds/abstract-layout.js");
 const model_1 = __webpack_require__(/*! ./model */ "../../node_modules/sprotty/lib/features/bounds/model.js");
@@ -16067,7 +17222,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.VBoxLayouter = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 const abstract_layout_1 = __webpack_require__(/*! ./abstract-layout */ "../../node_modules/sprotty/lib/features/bounds/abstract-layout.js");
 const model_1 = __webpack_require__(/*! ./model */ "../../node_modules/sprotty/lib/features/bounds/model.js");
@@ -16169,7 +17324,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ShapeView = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 const model_1 = __webpack_require__(/*! ./model */ "../../node_modules/sprotty/lib/features/bounds/model.js");
 let ShapeView = class ShapeView {
@@ -16240,7 +17395,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.configureButtonHandler = exports.ButtonHandlerRegistry = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const registry_1 = __webpack_require__(/*! ../../utils/registry */ "../../node_modules/sprotty/lib/utils/registry.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const inversify_2 = __webpack_require__(/*! ../../utils/inversify */ "../../node_modules/sprotty/lib/utils/inversify.js");
@@ -16303,7 +17458,7 @@ exports.configureButtonHandler = configureButtonHandler;
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const button_handler_1 = __webpack_require__(/*! ./button-handler */ "../../node_modules/sprotty/lib/features/button/button-handler.js");
 const buttonModule = new inversify_1.ContainerModule(bind => {
     bind(button_handler_1.ButtonHandlerRegistry).toSelf().inSingletonScope();
@@ -16389,7 +17544,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.RevealNamedElementActionProvider = exports.CommandPaletteActionProviderRegistry = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const action_1 = __webpack_require__(/*! ../../base/actions/action */ "../../node_modules/sprotty/lib/base/actions/action.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
@@ -16459,7 +17614,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var CommandPalette_1;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CommandPaletteKeyListener = exports.CommandPalette = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const action_1 = __webpack_require__(/*! ../../base/actions/action */ "../../node_modules/sprotty/lib/base/actions/action.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
@@ -16719,7 +17874,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const action_providers_1 = __webpack_require__(/*! ./action-providers */ "../../node_modules/sprotty/lib/features/command-palette/action-providers.js");
 const command_palette_1 = __webpack_require__(/*! ./command-palette */ "../../node_modules/sprotty/lib/features/command-palette/command-palette.js");
@@ -16778,7 +17933,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const menu_providers_1 = __webpack_require__(/*! ./menu-providers */ "../../node_modules/sprotty/lib/features/context-menu/menu-providers.js");
 const mouse_listener_1 = __webpack_require__(/*! ./mouse-listener */ "../../node_modules/sprotty/lib/features/context-menu/mouse-listener.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
@@ -16841,7 +17996,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.DeleteContextMenuItemProvider = exports.ContextMenuProviderRegistry = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const delete_1 = __webpack_require__(/*! ../edit/delete */ "../../node_modules/sprotty/lib/features/edit/delete.js");
 const model_1 = __webpack_require__(/*! ../select/model */ "../../node_modules/sprotty/lib/features/select/model.js");
@@ -16948,7 +18103,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ContextMenuMouseListener = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const smodel_utils_1 = __webpack_require__(/*! ../../base/model/smodel-utils */ "../../node_modules/sprotty/lib/base/model/smodel-utils.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
@@ -17046,7 +18201,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.DecorationPlacer = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const smodel_1 = __webpack_require__(/*! ../../base/model/smodel */ "../../node_modules/sprotty/lib/base/model/smodel.js");
 const model_1 = __webpack_require__(/*! ./model */ "../../node_modules/sprotty/lib/features/decoration/model.js");
 const vnode_utils_1 = __webpack_require__(/*! ../../base/views/vnode-utils */ "../../node_modules/sprotty/lib/base/views/vnode-utils.js");
@@ -17127,7 +18282,7 @@ exports.DecorationPlacer = DecorationPlacer = __decorate([
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const view_1 = __webpack_require__(/*! ../../base/views/view */ "../../node_modules/sprotty/lib/base/views/view.js");
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const model_1 = __webpack_require__(/*! ./model */ "../../node_modules/sprotty/lib/features/decoration/model.js");
 const views_1 = __webpack_require__(/*! ./views */ "../../node_modules/sprotty/lib/features/decoration/views.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
@@ -17227,7 +18382,7 @@ exports.IssueMarkerView = void 0;
 /** @jsx svg */
 const jsx_1 = __webpack_require__(/*! ../../lib/jsx */ "../../node_modules/sprotty/lib/lib/jsx.js");
 const vnode_utils_1 = __webpack_require__(/*! ../../base/views/vnode-utils */ "../../node_modules/sprotty/lib/base/views/vnode-utils.js");
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 let IssueMarkerView = class IssueMarkerView {
     render(marker, context) {
         const scale = 16 / 1792;
@@ -17291,7 +18446,7 @@ exports.IssueMarkerView = IssueMarkerView = __decorate([
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const intersection_finder_1 = __webpack_require__(/*! ../edge-intersection/intersection-finder */ "../../node_modules/sprotty/lib/features/edge-intersection/intersection-finder.js");
 const edgeIntersectionModule = new inversify_1.ContainerModule(bind => {
@@ -17337,7 +18492,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.IntersectionFinder = exports.BY_DESCENDING_X_THEN_DESCENDING_Y = exports.BY_X_THEN_DESCENDING_Y = exports.BY_DESCENDING_X_THEN_Y = exports.BY_X_THEN_Y = exports.isIntersectingRoutedPoint = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const tinyqueue_1 = __importDefault(__webpack_require__(/*! tinyqueue */ "../../node_modules/tinyqueue/index.js"));
 const sweepline_1 = __webpack_require__(/*! ./sweepline */ "../../node_modules/sprotty/lib/features/edge-intersection/sweepline.js");
 function isIntersectingRoutedPoint(routedPoint) {
@@ -17659,7 +18814,7 @@ exports.intersectionOfSegments = intersectionOfSegments;
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const junction_finder_1 = __webpack_require__(/*! ./junction-finder */ "../../node_modules/sprotty/lib/features/edge-junction/junction-finder.js");
 const junction_postprocessor_1 = __webpack_require__(/*! ./junction-postprocessor */ "../../node_modules/sprotty/lib/features/edge-junction/junction-postprocessor.js");
@@ -17706,7 +18861,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.JunctionFinder = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const sgraph_1 = __webpack_require__(/*! ../../graph/sgraph */ "../../node_modules/sprotty/lib/graph/sgraph.js");
 /**
  * Finds junction points in the edge routes. A junction point is a point where two or more edges split.
@@ -17951,7 +19106,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.JunctionPostProcessor = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const sprotty_protocol_1 = __webpack_require__(/*! sprotty-protocol */ "../../node_modules/sprotty-protocol/lib/index.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const model_source_1 = __webpack_require__(/*! ../../model-source/model-source */ "../../node_modules/sprotty/lib/model-source/model-source.js");
@@ -18044,7 +19199,7 @@ exports.JunctionPostProcessor = JunctionPostProcessor = __decorate([
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const edge_layout_1 = __webpack_require__(/*! ./edge-layout */ "../../node_modules/sprotty/lib/features/edge-layout/edge-layout.js");
 const edgeLayoutModule = new inversify_1.ContainerModule(bind => {
@@ -18091,7 +19246,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.EdgeLayoutPostprocessor = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 const smodel_1 = __webpack_require__(/*! ../../base/model/smodel */ "../../node_modules/sprotty/lib/base/model/smodel.js");
 const vnode_utils_1 = __webpack_require__(/*! ../../base/views/vnode-utils */ "../../node_modules/sprotty/lib/base/views/vnode-utils.js");
@@ -18472,7 +19627,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CreateElementCommand = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const command_1 = __webpack_require__(/*! ../../base/commands/command */ "../../node_modules/sprotty/lib/base/commands/command.js");
 const smodel_1 = __webpack_require__(/*! ../../base/model/smodel */ "../../node_modules/sprotty/lib/base/model/smodel.js");
@@ -18548,7 +19703,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.DeleteElementCommand = exports.ResolvedDelete = exports.isDeletable = exports.deletableFeature = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const command_1 = __webpack_require__(/*! ../../base/commands/command */ "../../node_modules/sprotty/lib/base/commands/command.js");
 const smodel_1 = __webpack_require__(/*! ../../base/model/smodel */ "../../node_modules/sprotty/lib/base/model/smodel.js");
@@ -18625,7 +19780,7 @@ exports.DeleteElementCommand = DeleteElementCommand = __decorate([
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.labelEditUiModule = exports.labelEditModule = exports.edgeEditModule = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const command_registration_1 = __webpack_require__(/*! ../../base/commands/command-registration */ "../../node_modules/sprotty/lib/base/commands/command-registration.js");
 const action_handler_1 = __webpack_require__(/*! ../../base/actions/action-handler */ "../../node_modules/sprotty/lib/base/actions/action-handler.js");
@@ -18696,7 +19851,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var EditLabelUI_1;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.EditLabelUI = exports.EditLabelActionHandler = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const ui_extension_1 = __webpack_require__(/*! ../../base/ui-extensions/ui-extension */ "../../node_modules/sprotty/lib/base/ui-extensions/ui-extension.js");
@@ -18983,7 +20138,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getEditableLabel = exports.EditLabelKeyListener = exports.EditLabelMouseListener = exports.ApplyLabelEditCommand = exports.ResolvedLabelEdit = exports.isApplyLabelEditAction = exports.isEditLabelAction = exports.EditLabelAction = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const command_1 = __webpack_require__(/*! ../../base/commands/command */ "../../node_modules/sprotty/lib/base/commands/command.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
@@ -19123,7 +20278,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.SwitchEditModeCommand = exports.SwitchEditModeAction = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const command_1 = __webpack_require__(/*! ../../base/commands/command */ "../../node_modules/sprotty/lib/base/commands/command.js");
 const smodel_1 = __webpack_require__(/*! ../../base/model/smodel */ "../../node_modules/sprotty/lib/base/model/smodel.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
@@ -19333,7 +20488,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ReconnectCommand = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const command_1 = __webpack_require__(/*! ../../base/commands/command */ "../../node_modules/sprotty/lib/base/commands/command.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
@@ -19417,7 +20572,7 @@ exports.ReconnectCommand = ReconnectCommand = __decorate([
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const button_handler_1 = __webpack_require__(/*! ../button/button-handler */ "../../node_modules/sprotty/lib/features/button/button-handler.js");
 const expand_1 = __webpack_require__(/*! ./expand */ "../../node_modules/sprotty/lib/features/expand/expand.js");
 const expandModule = new inversify_1.ContainerModule((bind, _unbind, isBound) => {
@@ -19459,7 +20614,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ExpandButtonHandler = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const smodel_utils_1 = __webpack_require__(/*! ../../base/model/smodel-utils */ "../../node_modules/sprotty/lib/base/model/smodel-utils.js");
 const model_1 = __webpack_require__(/*! ./model */ "../../node_modules/sprotty/lib/features/expand/model.js");
@@ -19555,7 +20710,7 @@ exports.ExpandButtonView = void 0;
 const jsx_1 = __webpack_require__(/*! ../../lib/jsx */ "../../node_modules/sprotty/lib/lib/jsx.js");
 const model_1 = __webpack_require__(/*! ./model */ "../../node_modules/sprotty/lib/features/expand/model.js");
 const smodel_utils_1 = __webpack_require__(/*! ../../base/model/smodel-utils */ "../../node_modules/sprotty/lib/base/model/smodel-utils.js");
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 let ExpandButtonView = class ExpandButtonView {
     render(button, context) {
         const expandable = (0, smodel_utils_1.findParentByFeature)(button, model_1.isExpandable);
@@ -19599,7 +20754,7 @@ exports.ExpandButtonView = ExpandButtonView = __decorate([
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const export_1 = __webpack_require__(/*! ./export */ "../../node_modules/sprotty/lib/features/export/export.js");
 const svg_exporter_1 = __webpack_require__(/*! ./svg-exporter */ "../../node_modules/sprotty/lib/features/export/svg-exporter.js");
@@ -19654,7 +20809,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ExportSvgPostprocessor = exports.ExportSvgCommand = exports.RequestExportSvgAction = exports.ExportSvgKeyListener = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const command_1 = __webpack_require__(/*! ../../base/commands/command */ "../../node_modules/sprotty/lib/base/commands/command.js");
 const model_1 = __webpack_require__(/*! ../select/model */ "../../node_modules/sprotty/lib/features/select/model.js");
@@ -19848,7 +21003,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.SvgExporter = exports.ExportSvgAction = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 const action_dispatcher_1 = __webpack_require__(/*! ../../base/actions/action-dispatcher */ "../../node_modules/sprotty/lib/base/actions/action-dispatcher.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
@@ -20002,7 +21157,7 @@ exports.SvgExporter = SvgExporter = __decorate([
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const fade_1 = __webpack_require__(/*! ./fade */ "../../node_modules/sprotty/lib/features/fade/fade.js");
 const fadeModule = new inversify_1.ContainerModule(bind => {
@@ -20045,7 +21200,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ElementFader = exports.FadeAnimation = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const animation_1 = __webpack_require__(/*! ../../base/animations/animation */ "../../node_modules/sprotty/lib/base/animations/animation.js");
 const smodel_1 = __webpack_require__(/*! ../../base/model/smodel */ "../../node_modules/sprotty/lib/base/model/smodel.js");
 const vnode_utils_1 = __webpack_require__(/*! ../../base/views/vnode-utils */ "../../node_modules/sprotty/lib/base/views/vnode-utils.js");
@@ -20150,7 +21305,7 @@ exports.isFadeable = isFadeable;
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const hover_1 = __webpack_require__(/*! ./hover */ "../../node_modules/sprotty/lib/features/hover/hover.js");
 const popup_position_updater_1 = __webpack_require__(/*! ./popup-position-updater */ "../../node_modules/sprotty/lib/features/hover/popup-position-updater.js");
@@ -20226,7 +21381,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ClosePopupActionHandler = exports.HoverKeyListener = exports.PopupHoverMouseListener = exports.HoverMouseListener = exports.AbstractHoverMouseListener = exports.SetPopupModelCommand = exports.HoverFeedbackCommand = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 const keyboard_1 = __webpack_require__(/*! ../../utils/keyboard */ "../../node_modules/sprotty/lib/utils/keyboard.js");
@@ -20580,7 +21735,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.PopupPositionUpdater = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 let PopupPositionUpdater = class PopupPositionUpdater {
     decorate(vnode, element) {
@@ -20641,7 +21796,7 @@ exports.PopupPositionUpdater = PopupPositionUpdater = __decorate([
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const move_1 = __webpack_require__(/*! ./move */ "../../node_modules/sprotty/lib/features/move/move.js");
 const command_registration_1 = __webpack_require__(/*! ../../base/commands/command-registration */ "../../node_modules/sprotty/lib/base/commands/command-registration.js");
@@ -20735,7 +21890,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 var MoveCommand_1;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.LocationPostprocessor = exports.MoveMouseListener = exports.MorphEdgesAnimation = exports.MoveAnimation = exports.MoveCommand = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const animation_1 = __webpack_require__(/*! ../../base/animations/animation */ "../../node_modules/sprotty/lib/base/animations/animation.js");
@@ -21385,7 +22540,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CenterGridSnapper = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const model_1 = __webpack_require__(/*! ../bounds/model */ "../../node_modules/sprotty/lib/features/bounds/model.js");
 /**
  * A simple snapper that snaps the center of nodes and routing points to a grid.
@@ -21485,7 +22640,7 @@ exports.name = name;
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const open_1 = __webpack_require__(/*! ./open */ "../../node_modules/sprotty/lib/features/open/open.js");
 const openModule = new inversify_1.ContainerModule(bind => {
@@ -21748,7 +22903,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ProjectedViewportView = void 0;
 /** @jsx html */
 const jsx_1 = __webpack_require__(/*! ../../lib/jsx */ "../../node_modules/sprotty/lib/lib/jsx.js");
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const snabbdom_1 = __webpack_require__(/*! snabbdom */ "../../node_modules/snabbdom/build/index.js");
 const vnode_utils_1 = __webpack_require__(/*! ../../base/views/vnode-utils */ "../../node_modules/sprotty/lib/base/views/vnode-utils.js");
 const model_1 = __webpack_require__(/*! ./model */ "../../node_modules/sprotty/lib/features/projection/model.js");
@@ -21904,7 +23059,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AbstractEdgeRouter = exports.DefaultAnchors = exports.Side = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 const smodel_utils_1 = __webpack_require__(/*! ../../base/model/smodel-utils */ "../../node_modules/sprotty/lib/base/model/smodel-utils.js");
 const model_1 = __webpack_require__(/*! ./model */ "../../node_modules/sprotty/lib/features/routing/model.js");
@@ -22330,7 +23485,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AnchorComputerRegistry = exports.RECTANGULAR_ANCHOR_KIND = exports.ELLIPTIC_ANCHOR_KIND = exports.DIAMOND_ANCHOR_KIND = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const registry_1 = __webpack_require__(/*! ../../utils/registry */ "../../node_modules/sprotty/lib/utils/registry.js");
 exports.DIAMOND_ANCHOR_KIND = 'diamond';
@@ -22390,7 +23545,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.BezierDiamondAnchor = exports.BezierRectangleAnchor = exports.BezierEllipseAnchor = void 0;
 const anchor_1 = __webpack_require__(/*! ./anchor */ "../../node_modules/sprotty/lib/features/routing/anchor.js");
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const polyline_anchors_1 = __webpack_require__(/*! ./polyline-anchors */ "../../node_modules/sprotty/lib/features/routing/polyline-anchors.js");
 const bezier_edge_router_1 = __webpack_require__(/*! ./bezier-edge-router */ "../../node_modules/sprotty/lib/features/routing/bezier-edge-router.js");
 let BezierEllipseAnchor = class BezierEllipseAnchor extends polyline_anchors_1.EllipseAnchor {
@@ -22462,7 +23617,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 var BezierEdgeRouter_1;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AddRemoveBezierSegmentCommand = exports.AddRemoveBezierSegmentAction = exports.BezierMouseListener = exports.BezierEdgeRouter = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 const model_1 = __webpack_require__(/*! ./model */ "../../node_modules/sprotty/lib/features/routing/model.js");
 const routing_1 = __webpack_require__(/*! ./routing */ "../../node_modules/sprotty/lib/features/routing/routing.js");
@@ -22836,7 +23991,7 @@ exports.AddRemoveBezierSegmentCommand = AddRemoveBezierSegmentCommand = __decora
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const manhattan_edge_router_1 = __webpack_require__(/*! ./manhattan-edge-router */ "../../node_modules/sprotty/lib/features/routing/manhattan-edge-router.js");
 const polyline_edge_router_1 = __webpack_require__(/*! ./polyline-edge-router */ "../../node_modules/sprotty/lib/features/routing/polyline-edge-router.js");
@@ -22917,7 +24072,7 @@ const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry *
 const geometry_2 = __webpack_require__(/*! ../../utils/geometry */ "../../node_modules/sprotty/lib/utils/geometry.js");
 const anchor_1 = __webpack_require__(/*! ./anchor */ "../../node_modules/sprotty/lib/features/routing/anchor.js");
 const manhattan_edge_router_1 = __webpack_require__(/*! ./manhattan-edge-router */ "../../node_modules/sprotty/lib/features/routing/manhattan-edge-router.js");
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 let ManhattanRectangularAnchor = ManhattanRectangularAnchor_1 = class ManhattanRectangularAnchor {
     get kind() {
         return ManhattanRectangularAnchor_1.KIND;
@@ -23767,7 +24922,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.DiamondAnchor = exports.RectangleAnchor = exports.EllipseAnchor = void 0;
 const anchor_1 = __webpack_require__(/*! ./anchor */ "../../node_modules/sprotty/lib/features/routing/anchor.js");
 const geometry_1 = __webpack_require__(/*! ../../utils/geometry */ "../../node_modules/sprotty/lib/utils/geometry.js");
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const polyline_edge_router_1 = __webpack_require__(/*! ./polyline-edge-router */ "../../node_modules/sprotty/lib/features/routing/polyline-edge-router.js");
 const geometry_2 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 let EllipseAnchor = class EllipseAnchor {
@@ -23911,7 +25066,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var PolylineEdgeRouter_1;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.PolylineEdgeRouter = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 const model_1 = __webpack_require__(/*! ./model */ "../../node_modules/sprotty/lib/features/routing/model.js");
 const anchor_1 = __webpack_require__(/*! ./anchor */ "../../node_modules/sprotty/lib/features/routing/anchor.js");
@@ -24090,7 +25245,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.EdgeRouting = exports.EdgeRouterRegistry = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const smodel_1 = __webpack_require__(/*! ../../base/model/smodel */ "../../node_modules/sprotty/lib/base/model/smodel.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const view_1 = __webpack_require__(/*! ../../base/views/view */ "../../node_modules/sprotty/lib/base/views/view.js");
@@ -24249,7 +25404,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.RoutableView = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const model_1 = __webpack_require__(/*! ./model */ "../../node_modules/sprotty/lib/features/routing/model.js");
 let RoutableView = class RoutableView {
     /**
@@ -24306,7 +25461,7 @@ exports.RoutableView = RoutableView = __decorate([
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const select_1 = __webpack_require__(/*! ./select */ "../../node_modules/sprotty/lib/features/select/select.js");
 const command_registration_1 = __webpack_require__(/*! ../../base/commands/command-registration */ "../../node_modules/sprotty/lib/base/commands/command-registration.js");
@@ -24399,7 +25554,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.SelectKeyboardListener = exports.GetSelectionCommand = exports.SelectMouseListener = exports.SelectAllCommand = exports.SelectCommand = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const command_1 = __webpack_require__(/*! ../../base/commands/command */ "../../node_modules/sprotty/lib/base/commands/command.js");
 const request_command_1 = __webpack_require__(/*! ../../base/commands/request-command */ "../../node_modules/sprotty/lib/base/commands/request-command.js");
@@ -24686,7 +25841,7 @@ exports.SelectKeyboardListener = SelectKeyboardListener;
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const undo_redo_1 = __webpack_require__(/*! ./undo-redo */ "../../node_modules/sprotty/lib/features/undo-redo/undo-redo.js");
 const undoRedoModule = new inversify_1.ContainerModule(bind => {
@@ -24765,7 +25920,7 @@ exports.UndoRedoKeyListener = UndoRedoKeyListener;
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const command_registration_1 = __webpack_require__(/*! ../../base/commands/command-registration */ "../../node_modules/sprotty/lib/base/commands/command-registration.js");
 const update_model_1 = __webpack_require__(/*! ./update-model */ "../../node_modules/sprotty/lib/features/update/update-model.js");
 const updateModule = new inversify_1.ContainerModule((bind, _unbind, isBound) => {
@@ -24932,7 +26087,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UpdateModelCommand = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 const animation_1 = __webpack_require__(/*! ../../base/animations/animation */ "../../node_modules/sprotty/lib/base/animations/animation.js");
@@ -25247,7 +26402,7 @@ const model_1 = __webpack_require__(/*! ../bounds/model */ "../../node_modules/s
 const model_2 = __webpack_require__(/*! ../select/model */ "../../node_modules/sprotty/lib/features/select/model.js");
 const viewport_1 = __webpack_require__(/*! ./viewport */ "../../node_modules/sprotty/lib/features/viewport/viewport.js");
 const model_3 = __webpack_require__(/*! ./model */ "../../node_modules/sprotty/lib/features/viewport/model.js");
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 let BoundsAwareViewportCommand = class BoundsAwareViewportCommand extends command_1.Command {
     constructor(animate) {
@@ -25452,7 +26607,7 @@ exports.CenterKeyboardListener = CenterKeyboardListener;
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const center_fit_1 = __webpack_require__(/*! ./center-fit */ "../../node_modules/sprotty/lib/features/viewport/center-fit.js");
 const viewport_1 = __webpack_require__(/*! ./viewport */ "../../node_modules/sprotty/lib/features/viewport/viewport.js");
@@ -25597,7 +26752,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.findViewportScrollbar = exports.ScrollMouseListener = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 const smodel_1 = __webpack_require__(/*! ../../base/model/smodel */ "../../node_modules/sprotty/lib/base/model/smodel.js");
@@ -25941,7 +27096,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 var SetViewportCommand_1;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ViewportAnimation = exports.GetViewportCommand = exports.SetViewportCommand = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 const command_1 = __webpack_require__(/*! ../../base/commands/command */ "../../node_modules/sprotty/lib/base/commands/command.js");
@@ -26087,7 +27242,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ZoomMouseListener = exports.getZoom = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 const smodel_utils_1 = __webpack_require__(/*! ../../base/model/smodel-utils */ "../../node_modules/sprotty/lib/base/model/smodel-utils.js");
@@ -26198,7 +27353,7 @@ __decorate([
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const command_registration_1 = __webpack_require__(/*! ../../base/commands/command-registration */ "../../node_modules/sprotty/lib/base/commands/command-registration.js");
 const zorder_1 = __webpack_require__(/*! ./zorder */ "../../node_modules/sprotty/lib/features/zorder/zorder.js");
 const zorderModule = new inversify_1.ContainerModule((bind, _unbind, isBound) => {
@@ -26246,7 +27401,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.BringToFrontCommand = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const types_1 = __webpack_require__(/*! ../../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const smodel_1 = __webpack_require__(/*! ../../base/model/smodel */ "../../node_modules/sprotty/lib/base/model/smodel.js");
@@ -26607,7 +27762,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.SBezierControlHandleView = exports.SBezierCreateHandleView = exports.SCompartmentView = exports.SLabelView = exports.SRoutingHandleView = exports.BezierCurveEdgeView = exports.PolylineEdgeViewWithGapsOnIntersections = exports.JumpingPolylineEdgeView = exports.PolylineEdgeView = exports.SGraphView = void 0;
 /** @jsx svg */
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const geometry_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/geometry */ "../../node_modules/sprotty-protocol/lib/utils/geometry.js");
 const model_utils_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/model-utils */ "../../node_modules/sprotty-protocol/lib/utils/model-utils.js");
 const vnode_utils_1 = __webpack_require__(/*! ../base/views/vnode-utils */ "../../node_modules/sprotty/lib/base/views/vnode-utils.js");
@@ -27342,7 +28497,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ForeignObjectView = exports.PreRenderedView = void 0;
 /** @jsx svg */
 const jsx_1 = __webpack_require__(/*! ./jsx */ "../../node_modules/sprotty/lib/lib/jsx.js");
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const virtualize_1 = __importDefault(__webpack_require__(/*! ./virtualize */ "../../node_modules/sprotty/lib/lib/virtualize.js"));
 const vnode_utils_1 = __webpack_require__(/*! ../base/views/vnode-utils */ "../../node_modules/sprotty/lib/base/views/vnode-utils.js");
 const views_1 = __webpack_require__(/*! ../features/bounds/views */ "../../node_modules/sprotty/lib/features/bounds/views.js");
@@ -27425,7 +28580,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.HtmlRootView = void 0;
 /** @jsx html */
 const jsx_1 = __webpack_require__(/*! ./jsx */ "../../node_modules/sprotty/lib/lib/jsx.js");
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const vnode_utils_1 = __webpack_require__(/*! ../base/views/vnode-utils */ "../../node_modules/sprotty/lib/base/views/vnode-utils.js");
 /**
  * View for `HtmlRoot` elements. Typically this is used in hover popup boxes.
@@ -27808,7 +28963,7 @@ const jsx_1 = __webpack_require__(/*! ./jsx */ "../../node_modules/sprotty/lib/l
 const sgraph_1 = __webpack_require__(/*! ../graph/sgraph */ "../../node_modules/sprotty/lib/graph/sgraph.js");
 const views_1 = __webpack_require__(/*! ../features/bounds/views */ "../../node_modules/sprotty/lib/features/bounds/views.js");
 const geometry_1 = __webpack_require__(/*! ../utils/geometry */ "../../node_modules/sprotty/lib/utils/geometry.js");
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 let SvgViewportView = class SvgViewportView {
     render(model, context, args) {
         const transform = `scale(${model.zoom}) translate(${-model.scroll.x},${-model.scroll.y})`;
@@ -28149,7 +29304,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CommitModelCommand = exports.CommitModelAction = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const command_1 = __webpack_require__(/*! ../base/commands/command */ "../../node_modules/sprotty/lib/base/commands/command.js");
 const types_1 = __webpack_require__(/*! ../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const model_source_1 = __webpack_require__(/*! ./model-source */ "../../node_modules/sprotty/lib/model-source/model-source.js");
@@ -28233,7 +29388,7 @@ exports.CommitModelCommand = CommitModelCommand = __decorate([
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const command_registration_1 = __webpack_require__(/*! ../base/commands/command-registration */ "../../node_modules/sprotty/lib/base/commands/command-registration.js");
 const types_1 = __webpack_require__(/*! ../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 const commit_model_1 = __webpack_require__(/*! ./commit-model */ "../../node_modules/sprotty/lib/model-source/commit-model.js");
@@ -28295,7 +29450,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.DiagramServerProxy = exports.ServerStatusAction = void 0;
 const file_saver_1 = __webpack_require__(/*! file-saver */ "../../node_modules/file-saver/dist/FileSaver.min.js");
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const set_model_1 = __webpack_require__(/*! ../base/features/set-model */ "../../node_modules/sprotty/lib/base/features/set-model.js");
 const types_1 = __webpack_require__(/*! ../base/types */ "../../node_modules/sprotty/lib/base/types.js");
@@ -28505,7 +29660,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.LocalModelSource = void 0;
 const file_saver_1 = __webpack_require__(/*! file-saver */ "../../node_modules/file-saver/dist/FileSaver.min.js");
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const sprotty_protocol_1 = __webpack_require__(/*! sprotty-protocol */ "../../node_modules/sprotty-protocol/lib/index.js");
 const model_utils_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/model-utils */ "../../node_modules/sprotty-protocol/lib/utils/model-utils.js");
@@ -28791,7 +29946,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ForwardingLogger = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const logging_1 = __webpack_require__(/*! ../utils/logging */ "../../node_modules/sprotty/lib/utils/logging.js");
 const types_1 = __webpack_require__(/*! ../base/types */ "../../node_modules/sprotty/lib/base/types.js");
@@ -28893,7 +30048,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ComputedBoundsApplicator = exports.ModelSource = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const actions_1 = __webpack_require__(/*! sprotty-protocol/lib/actions */ "../../node_modules/sprotty-protocol/lib/actions.js");
 const model_utils_1 = __webpack_require__(/*! sprotty-protocol/lib/utils/model-utils */ "../../node_modules/sprotty-protocol/lib/utils/model-utils.js");
 const types_1 = __webpack_require__(/*! ../base/types */ "../../node_modules/sprotty/lib/base/types.js");
@@ -29002,7 +30157,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.WebSocketDiagramServerProxy = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const diagram_server_1 = __webpack_require__(/*! ./diagram-server */ "../../node_modules/sprotty/lib/model-source/diagram-server.js");
 /**
  * An external ModelSource that connects to the model provider using a websocket.
@@ -29486,21 +30641,6 @@ exports.limit = limit;
 
 "use strict";
 
-/********************************************************************************
- * Copyright (c) 2019-2021 TypeFox and others.
- *
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v. 2.0 which is available at
- * http://www.eclipse.org/legal/epl-2.0.
- *
- * This Source Code may also be made available under the following Secondary
- * Licenses when the conditions for such availability set forth in the Eclipse
- * Public License v. 2.0 are satisfied: GNU General Public License, version 2
- * with the GNU Classpath Exception which is available at
- * https://www.gnu.org/software/classpath/license.html.
- *
- * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
- ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.isInjectable = void 0;
 function isInjectable(constr) {
@@ -29889,7 +31029,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ConsoleLogger = exports.NullLogger = exports.LogLevel = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const types_1 = __webpack_require__(/*! ../base/types */ "../../node_modules/sprotty/lib/base/types.js");
 var LogLevel;
 (function (LogLevel) {
@@ -30002,7 +31142,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.MultiInstanceRegistry = exports.InstanceRegistry = exports.FactoryRegistry = exports.ProviderRegistry = void 0;
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 let ProviderRegistry = class ProviderRegistry {
     constructor() {
         this.elements = new Map;
@@ -39004,9 +40144,7 @@ var options = {};
 
 options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
 options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
-
-      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
-    
+options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
 options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
 options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
 
@@ -39085,7 +40223,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createStateDiagramContainer = void 0;
 __webpack_require__(/*! ../css/diagram.css */ "./css/diagram.css");
 __webpack_require__(/*! sprotty/css/sprotty.css */ "../../node_modules/sprotty/css/sprotty.css");
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const sprotty_1 = __webpack_require__(/*! sprotty */ "../../node_modules/sprotty/lib/index.js");
 const custom_edge_router_1 = __webpack_require__(/*! ./custom-edge-router */ "./src/custom-edge-router.ts");
 const model_1 = __webpack_require__(/*! ./model */ "./src/model.ts");
@@ -39169,7 +40307,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.PaletteButtonView = void 0;
 /** @jsx html */
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const sprotty_1 = __webpack_require__(/*! sprotty */ "../../node_modules/sprotty/lib/index.js");
 let PaletteButtonView = class PaletteButtonView {
     render(button, context) {
@@ -39283,7 +40421,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.TriangleButtonView = exports.PolylineArrowEdgeView = void 0;
 /** @jsx svg */
-const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/es/inversify.js");
+const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const sprotty_1 = __webpack_require__(/*! sprotty */ "../../node_modules/sprotty/lib/index.js");
 const sprotty_protocol_1 = __webpack_require__(/*! sprotty-protocol */ "../../node_modules/sprotty-protocol/lib/index.js");
 let PolylineArrowEdgeView = class PolylineArrowEdgeView extends sprotty_1.PolylineEdgeView {
