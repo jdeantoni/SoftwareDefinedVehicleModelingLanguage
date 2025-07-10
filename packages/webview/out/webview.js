@@ -4477,7 +4477,7 @@ class Request {
     childRequests;
     target;
     requestScope;
-    constructor(serviceIdentifier, parentContext, parentRequest,
+    constructor(serviceIdentifier, parentContext, parentRequest, 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     bindings, target) {
         this.id = (0, id_1.id)();
@@ -5377,7 +5377,7 @@ class BindingWhenSyntax {
             if (request === null) {
                 return false;
             }
-            const targetIsDefault =
+            const targetIsDefault = 
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             request.target !== null &&
                 !request.target.isNamed() &&
@@ -8869,8 +8869,7 @@ function vnode(sel, data, children, text, elm) {
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2021 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -8939,8 +8938,7 @@ exports.ServerActionHandlerRegistry = ServerActionHandlerRegistry;
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2021 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -9434,8 +9432,7 @@ var ReconnectAction;
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2021 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -9691,8 +9688,7 @@ exports.DiagramServer = DiagramServer;
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2021 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -9720,8 +9716,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2021 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -10213,8 +10208,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2021 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -10482,8 +10476,7 @@ exports.ActionNotification = { method: 'ActionMessage' };
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2020 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -10526,8 +10519,7 @@ __exportStar(__webpack_require__(/*! ./handshake */ "../../node_modules/sprotty-
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2020 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -10719,15 +10711,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _css_loader_dist_cjs_js_sprotty_vscode_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../css-loader/dist/cjs.js!./sprotty-vscode.css */ "../../node_modules/css-loader/dist/cjs.js!../../node_modules/sprotty-vscode-webview/css/sprotty-vscode.css");
 
-
-
-
-
-
-
-
-
-
+      
+      
+      
+      
+      
+      
+      
+      
+      
 
 var options = {};
 
@@ -10756,8 +10748,7 @@ var update = _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMP
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2020 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -10807,8 +10798,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CodeActionContextMenuProvider = exports.PaletteMouseListener = exports.PaletteButton = exports.CodeActionPopupPaletteProvider = void 0;
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2020 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -10972,8 +10962,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CodeActionProvider = void 0;
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2020 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -11194,8 +11183,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.EditDiagramLocker = void 0;
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2020 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -11426,8 +11414,7 @@ exports.SprottyLspEditStarter = SprottyLspEditStarter;
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2020 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -11567,8 +11554,7 @@ exports.VscodeLspEditDiagramServer = VscodeLspEditDiagramServer;
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2020 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -11629,8 +11615,7 @@ exports.VsCodeMessenger = Symbol('VsCodeMessenger');
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2018-2022 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -11733,8 +11718,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.VscodeDiagramServer = void 0;
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2018-2022 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -11984,15 +11968,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _css_loader_dist_cjs_js_sprotty_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../css-loader/dist/cjs.js!./sprotty.css */ "../../node_modules/css-loader/dist/cjs.js!../../node_modules/sprotty/css/sprotty.css");
 
-
-
-
-
-
-
-
-
-
+      
+      
+      
+      
+      
+      
+      
+      
+      
 
 var options = {};
 
@@ -17326,8 +17310,7 @@ exports.VBoxLayouter = VBoxLayouter = __decorate([
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2020 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -22763,8 +22746,7 @@ exports.OpenMouseListener = OpenMouseListener;
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2021 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -23548,8 +23530,7 @@ exports.AnchorComputerRegistry = AnchorComputerRegistry = __decorate([
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2021 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -23615,8 +23596,7 @@ exports.BezierDiamondAnchor = BezierDiamondAnchor = __decorate([
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2021 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -25410,8 +25390,7 @@ exports.EdgeRouting = EdgeRouting;
 "use strict";
 
 /********************************************************************************
- * Copyright (c) 2025 Université Côte d'Azur and others.
-
+ * Copyright (c) 2020 TypeFox and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -40159,15 +40138,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _node_modules_css_loader_dist_cjs_js_diagram_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js!./diagram.css */ "../../node_modules/css-loader/dist/cjs.js!./css/diagram.css");
 
-
-
-
-
-
-
-
-
-
+      
+      
+      
+      
+      
+      
+      
+      
+      
 
 var options = {};
 
@@ -40522,7 +40501,7 @@ exports.TopTriangleButtonView = TopTriangleButtonView = __decorate([
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/
+/******/ 	
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -40536,14 +40515,14 @@ exports.TopTriangleButtonView = TopTriangleButtonView = __decorate([
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
-/******/
+/******/ 	
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
+/******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
+/******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
@@ -40556,7 +40535,7 @@ exports.TopTriangleButtonView = TopTriangleButtonView = __decorate([
 /******/ 			return getter;
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -40568,7 +40547,7 @@ exports.TopTriangleButtonView = TopTriangleButtonView = __decorate([
 /******/ 			}
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/global */
 /******/ 	(() => {
 /******/ 		__webpack_require__.g = (function() {
@@ -40580,12 +40559,12 @@ exports.TopTriangleButtonView = TopTriangleButtonView = __decorate([
 /******/ 			}
 /******/ 		})();
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -40596,12 +40575,12 @@ exports.TopTriangleButtonView = TopTriangleButtonView = __decorate([
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/nonce */
 /******/ 	(() => {
 /******/ 		__webpack_require__.nc = undefined;
 /******/ 	})();
-/******/
+/******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry needs to be wrapped in an IIFE because it needs to be in strict mode.

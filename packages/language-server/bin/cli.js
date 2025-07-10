@@ -1,4 +1,4 @@
 #!/usr/bin/env node
 
-import main from '../out/cli/main.js';
-main();
+import * as cliModule from '../../extension/pack/language-server/src/cli/main.cjs';
+cliModule.main(); // ✅ This should work

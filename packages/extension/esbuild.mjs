@@ -27,11 +27,12 @@ const plugins = [
 const nodeContext = await esbuild.context({
     entryPoints: [
         'src/sdvml-extension.ts',
-        '../language-server/src/main.ts'
+        '../language-server/src/main.ts',
+        '../language-server/src/cli/main.ts'
     ],
     outdir: 'pack',
     bundle: true,
-    target: 'es6',
+    target: 'es2022',
     format: 'cjs',
     loader: { '.ts': 'ts' },
     outExtension: {

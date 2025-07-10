@@ -14,6 +14,6 @@
     "declarationMap": false
   },
   "include": [
-    "src/cli"
+    "src/cli/main.ts"
   ]
 }
