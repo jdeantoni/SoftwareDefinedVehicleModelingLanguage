@@ -23,12 +23,13 @@ import {
     HtmlRootView, LogLevel, ManhattanEdgeRouter, overrideViewerOptions, PreRenderedElementImpl,
     PreRenderedView, RectangularNodeView, SGraphView, SLabelView, SModelRootImpl,
     SRoutingHandleImpl, SRoutingHandleView, TYPES, loadDefaultModules, SGraphImpl, SLabelImpl,
-    hoverFeedbackFeature, popupFeature, creatingOnDragFeature, editLabelFeature, labelEditUiModule,
-    moveFeature, editFeature
+    hoverFeedbackFeature, popupFeature, /*creatingOnDragFeature,*/ editLabelFeature, labelEditUiModule,
+    moveFeature, editFeature,
+    RectangularPort
 } from 'sprotty';
 import { CustomRouter } from './custom-edge-router';
-import { CreateTransitionPort, SdvmlEdge, SdvmlNode } from './model';
-import { PolylineArrowEdgeView, TriangleButtonView } from './views';
+import { SdvmlEdge, SdvmlNode } from './model';
+import { DownTriangleButtonView, PolylineArrowEdgeView, TopTriangleButtonView, TriangleButtonView } from './views';
 
 const sdvmlDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
@@ -56,9 +57,9 @@ const sdvmlDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) =
     configureModelElement(context, 'palette', SModelRootImpl, HtmlRootView);
     configureModelElement(context, 'routing-point', SRoutingHandleImpl, SRoutingHandleView);
     configureModelElement(context, 'volatile-routing-point', SRoutingHandleImpl, SRoutingHandleView);
-    configureModelElement(context, 'port', CreateTransitionPort, TriangleButtonView, {
-        enable: [popupFeature, creatingOnDragFeature]
-    });
+    configureModelElement(context, 'port', RectangularPort, TriangleButtonView);
+     configureModelElement(context, 'actuator-port', RectangularPort, DownTriangleButtonView);
+     configureModelElement(context, 'sensor-port', RectangularPort, TopTriangleButtonView);
 
     configureCommand(context, CreateElementCommand);
 });

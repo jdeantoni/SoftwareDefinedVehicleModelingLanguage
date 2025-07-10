@@ -30,16 +30,27 @@ export class SdvmlLayoutConfigurator extends DefaultLayoutConfigurator {
 
     protected override nodeOptions(snode: SNode, index: SModelIndex): LayoutOptions {
         return {
-            'org.eclipse.elk.portAlignment.default': 'CENTER',
-            'org.eclipse.elk.portConstraints': 'FIXED_SIDE'
+            'org.eclipse.elk.algorithm': 'org.eclipse.elk.layered',
+            'org.eclipse.elk.portConstraints': 'FIXED_SIDE',
+            'org.eclipse.elk.portAlignment.north': 'CENTER',
+            'org.eclipse.elk.portAlignment.default': 'CENTER' // optional fallback
         };
     }
+
+    portSideMap = new Map<string, 'WEST' | 'EAST' | 'NORTH' | 'SOUTH'>([
+    ['input', 'WEST'],
+    ['output', 'EAST'],
+    ['vss', 'NORTH']
+    ]);
 
     protected override portOptions(sport: SPort, index: SModelIndex): LayoutOptions {
+        let side = this.portSideMap.get((sport as any).direction);
+        if (side === undefined){
+            side = 'SOUTH'
+        }
         return {
-            'org.eclipse.elk.port.side': 'EAST',
-            'org.eclipse.elk.port.borderOffset': '3.0'
+            'org.eclipse.elk.port.side': side,
+            'org.eclipse.elk.port.borderOffset': '-3.0'
         };
     }
-
 }

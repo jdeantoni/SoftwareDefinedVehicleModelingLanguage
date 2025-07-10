@@ -15,8 +15,8 @@
  ********************************************************************************/
 
 import { GeneratorContext, LangiumDiagramGenerator } from 'langium-sprotty';
-import { /*SEdge,*/ SLabel, SModelRoot, SNode, SPort/*, EdgeLayoutable*/ } from 'sprotty-protocol';
-import { Signal, Component, Model } from './generated/ast.js';
+import { /*SEdge,*/ EdgeLayoutable, SEdge, SLabel, SModelRoot, SNode, SPort/*, EdgeLayoutable*/ } from 'sprotty-protocol';
+import { Signal, Component, Model, isSensor } from './generated/ast.js';
 
 export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
 
@@ -27,9 +27,9 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
             type: 'graph',
             id: sdvmlModel.name ?? 'root',
             children: [
-                ...sdvmlModel.components.map(s => this.generateComponent(s, args)),
+                ...sdvmlModel.components.map(c => this.generateComponent(c, args)),
                 ...sdvmlModel.signals.map(s => this.generateSignal(s, args)),
-                // ...sm.states.flatMap(s => s.transitions).map(t => this.generateEdge(t, args))
+                 ...sdvmlModel.components.flatMap(c => this.generateEdge(c, args))
             ]
         };
         this.traceProvider.trace(graph, sdvmlModel);
@@ -47,12 +47,8 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                     type: 'label',
                     id: idCache.uniqueId(nodeId + '.label'),
                     text: comp.name
-                },
-                <SPort>{
-                    type: 'port',
-                    id: idCache.uniqueId(nodeId + '.newTransition')
                 }
-            ],
+            ] as (SLabel | SPort)[],
             layout: 'stack',
             layoutOptions: {
                 paddingTop: 10.0,
@@ -61,6 +57,42 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                 paddingRight: 10.0
             }
         };
+        for (let pub of comp.publishers){
+            const pubId = idCache.uniqueId(pub.name, pub);
+            node.children.push(
+                <SPort>{
+                    type: 'port',
+                    id: pubId,
+                    // children: [
+                    //     <SLabel>{
+                    //         type: 'label',
+                    //         id: idCache.uniqueId(pubId + '.label'),
+                    //         text: pub.name
+                    //     }
+                    // ],
+                    direction : 'output'
+                }
+            )
+        }
+
+        for (let sub of comp.subscribers){
+            const subId = idCache.uniqueId(sub.name, sub);
+            node.children.push(
+                <SPort>{
+                    type: 'port',
+                    id: subId,
+                    // children: [
+                    //     <SLabel>{
+                    //         type: 'label',
+                    //         id: idCache.uniqueId(subId + '.label'),
+                    //         text: sub.name
+                    //     }
+                    // ],
+                    direction : 'input'
+                }
+            )
+        }
+
         this.traceProvider.trace(node, comp);
         this.markerProvider.addDiagnosticMarker(node, comp, ctx);
         return node;
@@ -69,6 +101,7 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
      protected generateSignal(sig: Signal, ctx: GeneratorContext<Model>): SNode {
         const { idCache } = ctx;
         const nodeId = idCache.uniqueId(sig.name, sig);
+        const sigType = isSensor(sig)? "sensor-port" : "actuator-port";
         const node = {
             type: 'node',
             id: nodeId,
@@ -79,8 +112,9 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                     text: sig.name
                 },
                 <SPort>{
-                    type: 'port',
-                    id: idCache.uniqueId(nodeId + '.newTransition')
+                    type: sigType,
+                    id: idCache.uniqueId(nodeId + '.port'),
+                    direction: "vss"
                 }
             ],
             layout: 'stack',
@@ -96,27 +130,60 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
         return node;
     }
 
-    // protected generateEdge(transition: Transition, ctx: GeneratorContext<StateMachine>): SEdge {
-    //     const { idCache } = ctx;
-    //     const sourceId = idCache.getId(transition.$container);
-    //     const targetId = idCache.getId(transition.state?.ref);
-    //     const edgeId = idCache.uniqueId(`${sourceId}:${transition.event?.ref?.name}:${targetId}`, transition);
-    //     const edge = {
-    //         type: 'edge',
-    //         id: edgeId,
-    //         sourceId: sourceId!,
-    //         targetId: targetId!,
-    //         children: [
-    //             <SLabel & EdgeLayoutable>{
-    //                 type: 'label:xref',
-    //                 id: idCache.uniqueId(edgeId + '.label'),
-    //                 text: transition.event?.ref?.name
-    //             }
-    //         ]
-    //     };
-    //     this.traceProvider.trace(edge, transition);
-    //     this.markerProvider.addDiagnosticMarker(edge, transition, ctx);
-    //     return edge;
-    // }
+    protected generateEdge(comp: Component, ctx: GeneratorContext<Model>): SEdge[] {
+        const { idCache } = ctx;
+        const res: SEdge[] = []
+        for (let sub of comp.subscribers){
+            const targetId = idCache.getId(sub);
+
+            const sourceSig = comp.$container.signals.filter(s => s.name == sub.name)[0]
+            const sourceId = idCache.getId(sourceSig);
+            console.error(`~~~~ sourceId=${sourceId}     targetId=${targetId}`)
+            const edgeId = idCache.uniqueId(`${sourceId}_to_${targetId}`, undefined);
+            const edge = {
+                type: 'edge',
+                id: edgeId,
+                sourceId: sourceId!,
+                targetId: targetId!,
+                children: [
+                    <SLabel & EdgeLayoutable>{
+                        type: 'label:xref',
+                        id: idCache.uniqueId(edgeId + '.label'),
+                        text: sub.name
+                    }
+                ]
+            };
+            this.traceProvider.trace(edge, sub);
+            this.markerProvider.addDiagnosticMarker(edge, sub, ctx);
+            res.push(edge);
+        }
+
+        for (let pub of comp.publishers){
+            const sourceId = idCache.getId(pub);
+
+            const targetSig = comp.$container.signals.filter(s => s.name == pub.name)[0]
+            const targetId = idCache.getId(targetSig);
+            console.error(`~~~~ sourceId=${sourceId}     targetId=${targetId}`)
+            const edgeId = idCache.uniqueId(`${sourceId}_to_${targetId}`, undefined);
+            const edge = {
+                type: 'edge',
+                id: edgeId,
+                sourceId: sourceId!,
+                targetId: targetId!,
+                children: [
+                    <SLabel & EdgeLayoutable>{
+                        type: 'label:xref',
+                        id: idCache.uniqueId(edgeId + '.label'),
+                        text: pub.name
+                    }
+                ]
+            };
+            this.traceProvider.trace(edge, pub);
+            this.markerProvider.addDiagnosticMarker(edge, pub, ctx);
+            res.push(edge);
+        }
+
+        return res;
+    }
 
 }

@@ -15,10 +15,10 @@
  ********************************************************************************/
 
 import {
-    CreatingOnDrag, EdgePlacement, ManhattanEdgeRouter, RectangularNode, RectangularPort,
+    ManhattanEdgeRouter, RectangularNode,
     SEdgeImpl, SLabelImpl, SRoutableElementImpl
 } from 'sprotty';
-import { Action, CreateElementAction, SEdge } from 'sprotty-protocol';
+import { EdgePlacement } from 'sprotty-protocol';
 
 export class SdvmlEdge extends SEdgeImpl {
     override routerKind = ManhattanEdgeRouter.KIND;
@@ -38,14 +38,14 @@ export class SdvmlNode extends RectangularNode {
     }
 }
 
-export class CreateTransitionPort extends RectangularPort implements CreatingOnDrag {
-    createAction(id: string): Action {
-        const edge: SEdge = {
-            id,
-            type: 'edge',
-            sourceId: this.parent.id,
-            targetId: this.id
-        };
-        return CreateElementAction.create(edge, { containerId: this.root.id });
-    }
-}
+// export class CreateTransitionPort extends RectangularPort implements CreatingOnDrag {
+//     createAction(id: string): Action {
+//         const edge: SEdge = {
+//             id,
+//             type: 'edge',
+//             sourceId: this.parent.id,
+//             targetId: this.id
+//         };
+//         return CreateElementAction.create(edge, { containerId: this.root.id });
+//     }
+// }

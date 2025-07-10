@@ -40,7 +40,20 @@ export class PolylineArrowEdgeView extends PolylineEdgeView {
 @injectable()
 export class TriangleButtonView implements IView {
     render(model: SPortImpl, context: RenderingContext): VNode {
-        return <path class-sprotty-button={true} d='M 0,0 L 8,4 L 0,8 Z' />;
+        return <path d='M 0,0 L 8,4 L 0,8 Z' />;
     }
 }
 
+@injectable()
+export class DownTriangleButtonView implements IView {
+    render(model: SPortImpl, context: RenderingContext): VNode {
+        return <path d='M 0,0 L 4,8 L 8,0 Z' />;
+    }
+}
+
+@injectable()
+export class TopTriangleButtonView implements IView {
+    render(model: SPortImpl, context: RenderingContext): VNode {
+        return <path d='M 0,8 L 4,0 L 8,8 Z' />;
+    }
+}

@@ -35,6 +35,7 @@ export type SdvmlAddedServices = {
         ElkFactory: ElkFactory,
         ElementFilter: IElementFilter,
         LayoutConfigurator: ILayoutConfigurator
+
     }
 };
 

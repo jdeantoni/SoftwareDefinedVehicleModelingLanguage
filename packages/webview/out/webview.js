@@ -1794,7 +1794,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.sprotty-node {
 
 .sprotty-label {
     fill: var(--vscode-button-foreground);
-    stroke-width: 0;
+    stroke-width: 10;
 }
 
 .sprotty-button {
@@ -1842,7 +1842,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.sprotty-node {
     width: 0px;
     height: 0px;
 }
-`, "",{"version":3,"sources":["webpack://./css/diagram.css"],"names":[],"mappings":"AAAA;IACI;AACJ;;AAEA;IACI,eAAe;IACf,gDAAgD;AACpD;;AAEA;IACI,qCAAqC;IACrC,eAAe;AACnB;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,SAAS;IACT,uDAAuD;IACvD,iBAAiB;AACrB;;AAEA;IACI,oDAAoD;AACxD;;AAEA;IACI,8CAA8C;IAC9C,YAAY;IACZ,aAAa;AACjB;;AAEA;IACI,aAAa;AACjB;;AAEA;IACI,uDAAuD;AAC3D;;AAEA;IACI,sDAAsD;IACtD,eAAe;AACnB;;AAEA;IACI,iBAAiB;AACrB;;AAEA;IACI,UAAU;IACV,WAAW;AACf","sourcesContent":[".sprotty-node {\n    fill: var(--vscode-button-background)\n}\n\n.sprotty-node.selected {\n    stroke-width: 2;\n    stroke: var(--vscode-button-secondaryForeground);\n}\n\n.sprotty-label {\n    fill: var(--vscode-button-foreground);\n    stroke-width: 0;\n}\n\n.sprotty-button {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge .sprotty-label {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge {\n    fill:none;\n    stroke: var(--vscode-editorActiveLineNumber-foreground);\n    stroke-width: 2px;\n}\n\n.sprotty-edge-arrow {\n    fill:var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge > .sprotty-routing-handle {\n    fill: var(--vscode-editor-selectionBackground);\n    stroke: none;\n    z-index: 1000;\n}\n\n.sprotty-edge > .sprotty-routing-handle[data-kind='line'] {\n    opacity: 0.35;\n}\n\n.sprotty-edge > .sprotty-routing-handle.selected {\n    fill: var(--vscode-editor-selectionHighlightBackground);\n}\n\n.sprotty-edge > .sprotty-routing-handle.mouseover {\n    stroke: var(--vscode-editor-symbolHighlightBackground);\n    stroke-width: 1;\n}\n\n.sprotty-edge.mouseover:not(.selected) {\n    stroke-width: 3px;\n}\n\n.sprotty-hidden {\n    width: 0px;\n    height: 0px;\n}\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./css/diagram.css"],"names":[],"mappings":"AAAA;IACI;AACJ;;AAEA;IACI,eAAe;IACf,gDAAgD;AACpD;;AAEA;IACI,qCAAqC;IACrC,gBAAgB;AACpB;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,SAAS;IACT,uDAAuD;IACvD,iBAAiB;AACrB;;AAEA;IACI,oDAAoD;AACxD;;AAEA;IACI,8CAA8C;IAC9C,YAAY;IACZ,aAAa;AACjB;;AAEA;IACI,aAAa;AACjB;;AAEA;IACI,uDAAuD;AAC3D;;AAEA;IACI,sDAAsD;IACtD,eAAe;AACnB;;AAEA;IACI,iBAAiB;AACrB;;AAEA;IACI,UAAU;IACV,WAAW;AACf","sourcesContent":[".sprotty-node {\n    fill: var(--vscode-button-background)\n}\n\n.sprotty-node.selected {\n    stroke-width: 2;\n    stroke: var(--vscode-button-secondaryForeground);\n}\n\n.sprotty-label {\n    fill: var(--vscode-button-foreground);\n    stroke-width: 10;\n}\n\n.sprotty-button {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge .sprotty-label {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge {\n    fill:none;\n    stroke: var(--vscode-editorActiveLineNumber-foreground);\n    stroke-width: 2px;\n}\n\n.sprotty-edge-arrow {\n    fill:var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge > .sprotty-routing-handle {\n    fill: var(--vscode-editor-selectionBackground);\n    stroke: none;\n    z-index: 1000;\n}\n\n.sprotty-edge > .sprotty-routing-handle[data-kind='line'] {\n    opacity: 0.35;\n}\n\n.sprotty-edge > .sprotty-routing-handle.selected {\n    fill: var(--vscode-editor-selectionHighlightBackground);\n}\n\n.sprotty-edge > .sprotty-routing-handle.mouseover {\n    stroke: var(--vscode-editor-symbolHighlightBackground);\n    stroke-width: 1;\n}\n\n.sprotty-edge.mouseover:not(.selected) {\n    stroke-width: 3px;\n}\n\n.sprotty-hidden {\n    width: 0px;\n    height: 0px;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -40253,9 +40253,9 @@ const sdvmlDiagramModule = new inversify_1.ContainerModule((bind, unbind, isBoun
     (0, sprotty_1.configureModelElement)(context, 'palette', sprotty_1.SModelRootImpl, sprotty_1.HtmlRootView);
     (0, sprotty_1.configureModelElement)(context, 'routing-point', sprotty_1.SRoutingHandleImpl, sprotty_1.SRoutingHandleView);
     (0, sprotty_1.configureModelElement)(context, 'volatile-routing-point', sprotty_1.SRoutingHandleImpl, sprotty_1.SRoutingHandleView);
-    (0, sprotty_1.configureModelElement)(context, 'port', model_1.CreateTransitionPort, views_1.TriangleButtonView, {
-        enable: [sprotty_1.popupFeature, sprotty_1.creatingOnDragFeature]
-    });
+    (0, sprotty_1.configureModelElement)(context, 'port', sprotty_1.RectangularPort, views_1.TriangleButtonView);
+    (0, sprotty_1.configureModelElement)(context, 'actuator-port', sprotty_1.RectangularPort, views_1.DownTriangleButtonView);
+    (0, sprotty_1.configureModelElement)(context, 'sensor-port', sprotty_1.RectangularPort, views_1.TopTriangleButtonView);
     (0, sprotty_1.configureCommand)(context, sprotty_1.CreateElementCommand);
 });
 function createStateDiagramContainer(widgetId) {
@@ -40346,9 +40346,8 @@ exports.PaletteButtonView = PaletteButtonView = __decorate([
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.CreateTransitionPort = exports.SdvmlNode = exports.SdvmlEdgeLabel = exports.SdvmlEdge = void 0;
+exports.SdvmlNode = exports.SdvmlEdgeLabel = exports.SdvmlEdge = void 0;
 const sprotty_1 = __webpack_require__(/*! sprotty */ "../../node_modules/sprotty/lib/index.js");
-const sprotty_protocol_1 = __webpack_require__(/*! sprotty-protocol */ "../../node_modules/sprotty-protocol/lib/index.js");
 class SdvmlEdge extends sprotty_1.SEdgeImpl {
     constructor() {
         super(...arguments);
@@ -40373,18 +40372,17 @@ class SdvmlNode extends sprotty_1.RectangularNode {
     }
 }
 exports.SdvmlNode = SdvmlNode;
-class CreateTransitionPort extends sprotty_1.RectangularPort {
-    createAction(id) {
-        const edge = {
-            id,
-            type: 'edge',
-            sourceId: this.parent.id,
-            targetId: this.id
-        };
-        return sprotty_protocol_1.CreateElementAction.create(edge, { containerId: this.root.id });
-    }
-}
-exports.CreateTransitionPort = CreateTransitionPort;
+// export class CreateTransitionPort extends RectangularPort implements CreatingOnDrag {
+//     createAction(id: string): Action {
+//         const edge: SEdge = {
+//             id,
+//             type: 'edge',
+//             sourceId: this.parent.id,
+//             targetId: this.id
+//         };
+//         return CreateElementAction.create(edge, { containerId: this.root.id });
+//     }
+// }
 
 
 /***/ }),
@@ -40419,7 +40417,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.TriangleButtonView = exports.PolylineArrowEdgeView = void 0;
+exports.TopTriangleButtonView = exports.DownTriangleButtonView = exports.TriangleButtonView = exports.PolylineArrowEdgeView = void 0;
 /** @jsx svg */
 const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const sprotty_1 = __webpack_require__(/*! sprotty */ "../../node_modules/sprotty/lib/index.js");
@@ -40442,13 +40440,31 @@ exports.PolylineArrowEdgeView = PolylineArrowEdgeView = __decorate([
 ], PolylineArrowEdgeView);
 let TriangleButtonView = class TriangleButtonView {
     render(model, context) {
-        return (0, sprotty_1.svg)("path", { "class-sprotty-button": true, d: 'M 0,0 L 8,4 L 0,8 Z' });
+        return (0, sprotty_1.svg)("path", { d: 'M 0,0 L 8,4 L 0,8 Z' });
     }
 };
 exports.TriangleButtonView = TriangleButtonView;
 exports.TriangleButtonView = TriangleButtonView = __decorate([
     (0, inversify_1.injectable)()
 ], TriangleButtonView);
+let DownTriangleButtonView = class DownTriangleButtonView {
+    render(model, context) {
+        return (0, sprotty_1.svg)("path", { d: 'M 0,0 L 4,8 L 8,0 Z' });
+    }
+};
+exports.DownTriangleButtonView = DownTriangleButtonView;
+exports.DownTriangleButtonView = DownTriangleButtonView = __decorate([
+    (0, inversify_1.injectable)()
+], DownTriangleButtonView);
+let TopTriangleButtonView = class TopTriangleButtonView {
+    render(model, context) {
+        return (0, sprotty_1.svg)("path", { d: 'M 0,8 L 4,0 L 8,8 Z' });
+    }
+};
+exports.TopTriangleButtonView = TopTriangleButtonView;
+exports.TopTriangleButtonView = TopTriangleButtonView = __decorate([
+    (0, inversify_1.injectable)()
+], TopTriangleButtonView);
 
 
 /***/ })
