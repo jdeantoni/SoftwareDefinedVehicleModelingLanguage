@@ -1,0 +1,196 @@
+{
+    "name": "sdvml-extension-langium",
+    "displayName": "SDVML (Software Defined Vehicle Modeling Language)",
+    "description": "language for timing analysis of Software Defined Vehicles",
+    "private": true,
+    "author": {
+        "name": "Eclipse Sprotty"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/TODO",
+        "directory": "packages/extension"
+    },
+    "version": "0.6.0",
+    "engines": {
+        "vscode": "^1.46.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "icon": "icon.png",
+    "contributes": {
+        "languages": [
+            {
+                "id": "sdvml",
+                "aliases": [
+                    "sdvml",
+                    "Sdvml"                ],
+                "extensions": [
+                    ".sdvml"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "sdvml",
+                "scopeName": "source.sdvml",
+                "path": "./syntaxes/sdvml.tmLanguage.json"
+            }
+        ],
+        "customEditors": [
+            {
+                "viewType": "sdvml",
+                "displayName": "Sdvml Editor",
+                "selector": [
+                    {
+                        "filenamePattern": "*.sdvml"
+                    }
+                ],
+                "priority": "option"
+            }
+        ],
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "sdvml-container",
+                    "title": "Sdvml",
+                    "icon": "$(symbol-structure)"
+                }
+            ]
+        },
+        "views": {
+            "sdvml-container": [
+                {
+                    "id": "sdvml",
+                    "type": "webview",
+                    "name": "SDVML Software Architecture"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "sdvml.diagram.open",
+                "title": "Open in Diagram",
+                "icon": "$(symbol-structure)",
+                "category": "Sdvml Diagram"
+            },
+            {
+                "command": "sdvml.diagram.fit",
+                "title": "Fit to Screen",
+                "category": "Sdvml Diagram"
+            },
+            {
+                "command": "sdvml.diagram.center",
+                "title": "Center selection",
+                "category": "Sdvml Diagram"
+            },
+            {
+                "command": "sdvml.diagram.delete",
+                "title": "Delete selected element",
+                "category": "Sdvml Diagram"
+            },
+            {
+                "command": "sdvml.diagram.export",
+                "title": "Export diagram to SVG",
+                "category": "Sdvml Diagram"
+            }
+        ],
+        "menus": {
+            "commandPalette": [
+                {
+                    "command": "sdvml.diagram.open",
+                    "when": "editorLangId == 'sdvml'"
+                },
+                {
+                    "command": "sdvml.diagram.fit",
+                    "when": "sdvml-diagram-focused"
+                },
+                {
+                    "command": "sdvml.diagram.center",
+                    "when": "sdvml-diagram-focused"
+                },
+                {
+                    "command": "sdvml.diagram.delete",
+                    "when": "sdvml-diagram-focused"
+                },
+                {
+                    "command": "sdvml.diagram.export",
+                    "when": "sdvml-diagram-focused"
+                }
+            ],
+            "editor/context": [
+                {
+                    "command": "sdvml.diagram.open",
+                    "when": "editorLangId == 'sdvml'",
+                    "group": "navigation"
+                }
+            ],
+            "editor/title": [
+                {
+                    "command": "sdvml.diagram.open",
+                    "when": "editorLangId == 'sdvml'",
+                    "group": "navigation"
+                }
+            ],
+            "explorer/context": [
+                {
+                    "command": "sdvml.diagram.open",
+                    "when": "resourceExtname == '.sdvml'",
+                    "group": "navigation"
+                }
+            ]
+        },
+        "keybindings": [
+            {
+                "key": "alt+f",
+                "mac": "alt+f",
+                "command": "sdvml.diagram.fit",
+                "when": "sdvml-diagram-focused"
+            },
+            {
+                "key": "alt+c",
+                "mac": "alt+c",
+                "command": "sdvml.diagram.center",
+                "when": "sdvml-diagram-focused"
+            },
+            {
+                "key": "alt+e",
+                "mac": "alt+e",
+                "command": "sdvml.diagram.export",
+                "when": "sdvml-diagram-focused"
+            },
+            {
+                "key": "delete",
+                "mac": "delete",
+                "command": "sdvml.diagram.delete",
+                "when": "sdvml-diagram-focused"
+            }
+        ]
+    },
+    "activationEvents": [
+        "onWebviewPanel:sdvml"
+    ],
+    "files": [
+        "lib",
+        "extension",
+        "server",
+        "syntaxes",
+        "webview"
+    ],
+    "main": "./pack/extension/src/sdvml-extension.cjs",
+    "devDependencies": {
+        "@types/node": "^24.0.12",
+        "@types/vscode": "1.101.0",
+        "esbuild": "^0.25.6",
+        "sprotty-vscode": "file:../../../sprotty-vscode/packages/sprotty-vscode",
+        "vscode-languageclient": "^9.0.1"
+    },
+    "scripts": {
+        "prepare": "yarn run clean && yarn run build",
+        "clean": "shx rm -fr pack",
+        "build": "node esbuild.mjs",
+        "watch": "node esbuild.mjs --watch"
+    }
+}

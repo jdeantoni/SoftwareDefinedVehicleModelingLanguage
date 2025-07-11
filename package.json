@@ -1,0 +1,31 @@
+{
+  "private": true,
+  "scripts": {
+    "prepare": "lerna run prepare",
+    "clean": "lerna run clean",
+    "build": "lerna run build",
+    "lint": "lerna run lint",
+    "publish:prepare": "lerna version --ignore-scripts --yes --no-push",
+    "publish:latest": "lerna publish from-git --no-verify-access --yes --no-push",
+    "publish:next": "SHA=$(git rev-parse --short HEAD) && lerna publish preminor --exact --canary --preid next.${SHA} --dist-tag next --no-git-reset --no-git-tag-version --no-push --ignore-scripts --yes --no-verify-access"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.36.0",
+    "@typescript-eslint/parser": "^8.36.0",
+    "eslint": "^9.30.1",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-header": "^3.1.1",
+    "eslint-plugin-no-null": "^1.0.2",
+    "lerna": "8.2.3",
+    "shx": "^0.4.0",
+    "typescript": "~5.2.2"
+  },
+  "resolutions": {
+    "**/sprotty": "1.4.0"
+  },
+  "workspaces": [
+    "packages/extension",
+    "packages/language-server",
+    "packages/webview"
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "name": "sdvml-webview",
+  "version": "0.6.0",
+  "description": "Example of a Sprotty diagram in a VS Code extensions (WebView part)",
+  "private": true,
+  "license": "(EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0)",
+  "keywords": [
+    "vscode",
+    "graph",
+    "diagram",
+    "layout",
+    "sprotty"
+  ],
+  "homepage": "TODO",
+  "bugs": "https://github.com/TODO/issues",
+  "engines": {
+    "vscode": "^1.46.0"
+  },
+  "author": {
+    "name": "Julien Deantoni"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TODO",
+    "directory": "packages/webview"
+  },
+  "files": [
+    "lib",
+    "src",
+    "css"
+  ],
+  "dependencies": {
+    "reflect-metadata": "^0.2.2",
+    "sprotty": "^1.4.0",
+    "sprotty-vscode-webview": "file:../../../sprotty-vscode/packages/sprotty-vscode-webview"
+  },
+  "devDependencies": {
+    "css-loader": "^7.1.2",
+    "file-loader": "^6.2.0",
+    "source-map-loader": "^5.0.0",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.2",
+    "webpack": "^5.100.0",
+    "webpack-cli": "^6.0.1"
+  },
+  "scripts": {
+    "prepare": "yarn run clean && yarn run build",
+    "clean": "shx rm -fr out",
+    "build": "webpack --mode=development",
+    "watch": "webpack --mode=development --watch"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "version": "independent",
+  "npmClient": "yarn",
+  "command": {
+    "run": {
+      "stream": true
+    }
+  }
+}
