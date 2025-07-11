@@ -1,0 +1,14 @@
+{
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/lib": true,
+        "**/coverage": true
+    },
+    "editor.insertSpaces": true,
+    "files.trimTrailingWhitespace": true,
+    "[typescript]": {
+        "editor.tabSize": 4
+    },
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+}
