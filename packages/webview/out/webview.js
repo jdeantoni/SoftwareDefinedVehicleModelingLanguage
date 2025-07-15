@@ -1784,7 +1784,9 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `.sprotty-node {
-    fill: var(--vscode-button-background)
+    fill: rgb(136, 136, 255);
+    stroke-width: 1;
+    stroke: rgb(15, 0, 100);
 }
 
 .sprotty-node.selected {
@@ -1793,7 +1795,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.sprotty-node {
 }
 
 .sprotty-label {
-    fill: var(--vscode-button-foreground);
+    fill: darkslategrey;
     stroke-width: 0;
 }
 
@@ -1844,13 +1846,28 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.sprotty-node {
 }
 
 .vss-node{
-    fill: aliceblue;
+    fill: rgb(255, 231, 98);
     stroke-width: 1;
+    stroke: coral;
 }
 
-.vss-node .sprotty-label{
+/* .vss-node .sprotty-label{
     fill:darkslategrey
-}`, "",{"version":3,"sources":["webpack://./css/diagram.css"],"names":[],"mappings":"AAAA;IACI;AACJ;;AAEA;IACI,eAAe;IACf,gDAAgD;AACpD;;AAEA;IACI,qCAAqC;IACrC,eAAe;AACnB;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,SAAS;IACT,uDAAuD;IACvD,iBAAiB;AACrB;;AAEA;IACI,oDAAoD;AACxD;;AAEA;IACI,8CAA8C;IAC9C,YAAY;IACZ,aAAa;AACjB;;AAEA;IACI,aAAa;AACjB;;AAEA;IACI,uDAAuD;AAC3D;;AAEA;IACI,sDAAsD;IACtD,eAAe;AACnB;;AAEA;IACI,iBAAiB;AACrB;;AAEA;IACI,UAAU;IACV,WAAW;AACf;;AAEA;IACI,eAAe;IACf,eAAe;AACnB;;AAEA;IACI;AACJ","sourcesContent":[".sprotty-node {\n    fill: var(--vscode-button-background)\n}\n\n.sprotty-node.selected {\n    stroke-width: 2;\n    stroke: var(--vscode-button-secondaryForeground);\n}\n\n.sprotty-label {\n    fill: var(--vscode-button-foreground);\n    stroke-width: 0;\n}\n\n.sprotty-button {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge .sprotty-label {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge {\n    fill:none;\n    stroke: var(--vscode-editorActiveLineNumber-foreground);\n    stroke-width: 2px;\n}\n\n.sprotty-edge-arrow {\n    fill:var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge > .sprotty-routing-handle {\n    fill: var(--vscode-editor-selectionBackground);\n    stroke: none;\n    z-index: 1000;\n}\n\n.sprotty-edge > .sprotty-routing-handle[data-kind='line'] {\n    opacity: 0.35;\n}\n\n.sprotty-edge > .sprotty-routing-handle.selected {\n    fill: var(--vscode-editor-selectionHighlightBackground);\n}\n\n.sprotty-edge > .sprotty-routing-handle.mouseover {\n    stroke: var(--vscode-editor-symbolHighlightBackground);\n    stroke-width: 1;\n}\n\n.sprotty-edge.mouseover:not(.selected) {\n    stroke-width: 3px;\n}\n\n.sprotty-hidden {\n    width: 0px;\n    height: 0px;\n}\n\n.vss-node{\n    fill: aliceblue;\n    stroke-width: 1;\n}\n\n.vss-node .sprotty-label{\n    fill:darkslategrey\n}"],"sourceRoot":""}]);
+} */
+
+.sprotty-port{
+    fill:rgb(15, 0, 100)
+}
+
+.vss-node .sprotty-port{
+    fill:rgb(100, 0, 0)
+}
+
+.vss-container{
+    fill: rgb(255, 255, 255);
+    stroke-width: 1;
+    stroke: rgb(218, 218, 218);
+}`, "",{"version":3,"sources":["webpack://./css/diagram.css"],"names":[],"mappings":"AAAA;IACI,wBAAwB;IACxB,eAAe;IACf,uBAAuB;AAC3B;;AAEA;IACI,eAAe;IACf,gDAAgD;AACpD;;AAEA;IACI,mBAAmB;IACnB,eAAe;AACnB;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,SAAS;IACT,uDAAuD;IACvD,iBAAiB;AACrB;;AAEA;IACI,oDAAoD;AACxD;;AAEA;IACI,8CAA8C;IAC9C,YAAY;IACZ,aAAa;AACjB;;AAEA;IACI,aAAa;AACjB;;AAEA;IACI,uDAAuD;AAC3D;;AAEA;IACI,sDAAsD;IACtD,eAAe;AACnB;;AAEA;IACI,iBAAiB;AACrB;;AAEA;IACI,UAAU;IACV,WAAW;AACf;;AAEA;IACI,uBAAuB;IACvB,eAAe;IACf,aAAa;AACjB;;AAEA;;GAEG;;AAEH;IACI;AACJ;;AAEA;IACI;AACJ;;AAEA;IACI,wBAAwB;IACxB,eAAe;IACf,0BAA0B;AAC9B","sourcesContent":[".sprotty-node {\n    fill: rgb(136, 136, 255);\n    stroke-width: 1;\n    stroke: rgb(15, 0, 100);\n}\n\n.sprotty-node.selected {\n    stroke-width: 2;\n    stroke: var(--vscode-button-secondaryForeground);\n}\n\n.sprotty-label {\n    fill: darkslategrey;\n    stroke-width: 0;\n}\n\n.sprotty-button {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge .sprotty-label {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge {\n    fill:none;\n    stroke: var(--vscode-editorActiveLineNumber-foreground);\n    stroke-width: 2px;\n}\n\n.sprotty-edge-arrow {\n    fill:var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge > .sprotty-routing-handle {\n    fill: var(--vscode-editor-selectionBackground);\n    stroke: none;\n    z-index: 1000;\n}\n\n.sprotty-edge > .sprotty-routing-handle[data-kind='line'] {\n    opacity: 0.35;\n}\n\n.sprotty-edge > .sprotty-routing-handle.selected {\n    fill: var(--vscode-editor-selectionHighlightBackground);\n}\n\n.sprotty-edge > .sprotty-routing-handle.mouseover {\n    stroke: var(--vscode-editor-symbolHighlightBackground);\n    stroke-width: 1;\n}\n\n.sprotty-edge.mouseover:not(.selected) {\n    stroke-width: 3px;\n}\n\n.sprotty-hidden {\n    width: 0px;\n    height: 0px;\n}\n\n.vss-node{\n    fill: rgb(255, 231, 98);\n    stroke-width: 1;\n    stroke: coral;\n}\n\n/* .vss-node .sprotty-label{\n    fill:darkslategrey\n} */\n\n.sprotty-port{\n    fill:rgb(15, 0, 100)\n}\n\n.vss-node .sprotty-port{\n    fill:rgb(100, 0, 0)\n}\n\n.vss-container{\n    fill: rgb(255, 255, 255);\n    stroke-width: 1;\n    stroke: rgb(218, 218, 218);\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -40246,16 +40263,17 @@ const sdvmlDiagramModule = new inversify_1.ContainerModule((bind, unbind, isBoun
     (0, sprotty_1.configureModelElement)(context, 'graph', sprotty_1.SGraphImpl, sprotty_1.SGraphView, {
         enable: [sprotty_1.hoverFeedbackFeature, sprotty_1.popupFeature]
     });
-    (0, sprotty_1.configureModelElement)(context, 'node', model_1.SdvmlNode, sprotty_1.RectangularNodeView, {
-        disable: [sprotty_1.moveFeature]
-    });
+    (0, sprotty_1.configureModelElement)(context, 'node', model_1.SdvmlNode, sprotty_1.RectangularNodeView);
+    // , {
+    //     disable: [moveFeature]
+    // });
     (0, sprotty_1.configureModelElement)(context, 'label', sprotty_1.SLabelImpl, sprotty_1.SLabelView, {
         enable: [sprotty_1.editLabelFeature]
     });
     (0, sprotty_1.configureModelElement)(context, 'label:xref', sprotty_1.SLabelImpl, sprotty_1.SLabelView, {
         enable: [sprotty_1.editLabelFeature]
     });
-    (0, sprotty_1.configureModelElement)(context, 'edge', model_1.SdvmlEdge, views_1.PolylineArrowEdgeView, {
+    (0, sprotty_1.configureModelElement)(context, 'edge', model_1.SdvmlEdge, sprotty_1.JumpingPolylineEdgeView, {
         enable: [sprotty_1.editFeature]
     });
     (0, sprotty_1.configureModelElement)(context, 'html', sprotty_1.HtmlRootImpl, sprotty_1.HtmlRootView);
@@ -40266,7 +40284,8 @@ const sdvmlDiagramModule = new inversify_1.ContainerModule((bind, unbind, isBoun
     (0, sprotty_1.configureModelElement)(context, 'port', sprotty_1.RectangularPort, views_1.TriangleButtonView);
     (0, sprotty_1.configureModelElement)(context, 'actuator-port', sprotty_1.RectangularPort, views_1.DownTriangleButtonView);
     (0, sprotty_1.configureModelElement)(context, 'sensor-port', sprotty_1.RectangularPort, views_1.TopTriangleButtonView);
-    (0, sprotty_1.configureModelElement)(context, 'node:vss-node', model_1.SdvmlNode, views_1.SdvmlNodeView);
+    (0, sprotty_1.configureModelElement)(context, 'node:vss-node', model_1.SdvmlNode, views_1.SdvmlSignalNodeView);
+    // configureModelElement(context, 'node:vss-container', SdvmlNode, SdvmlVSSNodeView);
     (0, sprotty_1.configureCommand)(context, sprotty_1.CreateElementCommand);
 });
 function createStateDiagramContainer(widgetId) {
@@ -40431,28 +40450,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.TopTriangleButtonView = exports.DownTriangleButtonView = exports.TriangleButtonView = exports.SdvmlNodeView = exports.PolylineArrowEdgeView = void 0;
+exports.TopTriangleButtonView = exports.DownTriangleButtonView = exports.TriangleButtonView = exports.SdvmlVSSNodeView = exports.SdvmlSignalNodeView = void 0;
 /** @jsx svg */
 const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const sprotty_1 = __webpack_require__(/*! sprotty */ "../../node_modules/sprotty/lib/index.js");
-const sprotty_protocol_1 = __webpack_require__(/*! sprotty-protocol */ "../../node_modules/sprotty-protocol/lib/index.js");
-let PolylineArrowEdgeView = class PolylineArrowEdgeView extends sprotty_1.PolylineEdgeView {
-    renderAdditionals(edge, segments, context) {
-        const p1 = segments[segments.length - 2];
-        const p2 = segments[segments.length - 1];
-        return [
-            (0, sprotty_1.svg)("path", { "class-sprotty-edge-arrow": true, d: 'M 6,-3 L 0,0 L 6,3 Z', transform: `rotate(${this.angle(p2, p1)} ${p2.x} ${p2.y}) translate(${p2.x} ${p2.y})` })
-        ];
-    }
-    angle(x0, x1) {
-        return (0, sprotty_protocol_1.toDegrees)(Math.atan2(x1.y - x0.y, x1.x - x0.x));
-    }
-};
-exports.PolylineArrowEdgeView = PolylineArrowEdgeView;
-exports.PolylineArrowEdgeView = PolylineArrowEdgeView = __decorate([
-    (0, inversify_1.injectable)()
-], PolylineArrowEdgeView);
-let SdvmlNodeView = class SdvmlNodeView extends sprotty_1.RectangularNodeView {
+// @injectable()
+// export class PolylineArrowEdgeView extends PolylineEdgeView {
+//     protected override renderAdditionals(edge: SEdgeImpl, segments: Point[], context: RenderingContext): VNode[] {
+//         const p1 = segments[segments.length - 2];
+//         const p2 = segments[segments.length - 1];
+//         return [
+//             <path class-sprotty-edge-arrow={true} d='M 6,-3 L 0,0 L 6,3 Z'
+//                   transform={`rotate(${this.angle(p2, p1)} ${p2.x} ${p2.y}) translate(${p2.x} ${p2.y})`}/>
+//         ];
+//     }
+//     angle(x0: Point, x1: Point): number {
+//         return toDegrees(Math.atan2(x1.y - x0.y, x1.x - x0.x));
+//     }
+// }
+let SdvmlSignalNodeView = class SdvmlSignalNodeView extends sprotty_1.RectangularNodeView {
     render(node, context, args) {
         if (!this.isVisible(node, context)) {
             return undefined;
@@ -40462,13 +40478,27 @@ let SdvmlNodeView = class SdvmlNodeView extends sprotty_1.RectangularNodeView {
             context.renderChildren(node));
     }
 };
-exports.SdvmlNodeView = SdvmlNodeView;
-exports.SdvmlNodeView = SdvmlNodeView = __decorate([
+exports.SdvmlSignalNodeView = SdvmlSignalNodeView;
+exports.SdvmlSignalNodeView = SdvmlSignalNodeView = __decorate([
     (0, inversify_1.injectable)()
-], SdvmlNodeView);
+], SdvmlSignalNodeView);
+let SdvmlVSSNodeView = class SdvmlVSSNodeView extends sprotty_1.RectangularNodeView {
+    render(node, context, args) {
+        if (!this.isVisible(node, context)) {
+            return undefined;
+        }
+        return (0, sprotty_1.svg)("g", null,
+            (0, sprotty_1.svg)("rect", { "class-sprotty-node": node instanceof sprotty_1.SNodeImpl, "class-sprotty-port": node instanceof sprotty_1.SPortImpl, "class-mouseover": node.hoverFeedback, "class-selected": node.selected, "class-vss-container": node instanceof sprotty_1.SNodeImpl, x: "0", y: "0", width: Math.max(node.size.width, 0), height: Math.max(node.size.height, 0) }),
+            context.renderChildren(node));
+    }
+};
+exports.SdvmlVSSNodeView = SdvmlVSSNodeView;
+exports.SdvmlVSSNodeView = SdvmlVSSNodeView = __decorate([
+    (0, inversify_1.injectable)()
+], SdvmlVSSNodeView);
 let TriangleButtonView = class TriangleButtonView {
     render(model, context) {
-        return (0, sprotty_1.svg)("path", { d: 'M 0,0 L 8,4 L 0,8 Z' });
+        return (0, sprotty_1.svg)("path", { d: 'M 0,0 L 8,4 L 0,8 Z', "class-sprotty-port": model instanceof sprotty_1.SPortImpl, "class-selected": model.selected });
     }
 };
 exports.TriangleButtonView = TriangleButtonView;

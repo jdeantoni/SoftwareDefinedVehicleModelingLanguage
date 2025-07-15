@@ -1,5 +1,7 @@
 .sprotty-node {
-    fill: var(--vscode-button-background)
+    fill: rgb(136, 136, 255);
+    stroke-width: 1;
+    stroke: rgb(15, 0, 100);
 }
 
 .sprotty-node.selected {
@@ -8,7 +10,7 @@
 }
 
 .sprotty-label {
-    fill: var(--vscode-button-foreground);
+    fill: darkslategrey;
     stroke-width: 0;
 }
 
@@ -59,10 +61,25 @@
 }
 
 .vss-node{
-    fill: aliceblue;
+    fill: rgb(255, 231, 98);
     stroke-width: 1;
+    stroke: coral;
 }
 
-.vss-node .sprotty-label{
+/* .vss-node .sprotty-label{
     fill:darkslategrey
+} */
+
+.sprotty-port{
+    fill:rgb(15, 0, 100)
+}
+
+.vss-node .sprotty-port{
+    fill:rgb(100, 0, 0)
+}
+
+.vss-container{
+    fill: rgb(255, 255, 255);
+    stroke-width: 1;
+    stroke: rgb(218, 218, 218);
 }

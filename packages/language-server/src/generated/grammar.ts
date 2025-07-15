@@ -604,6 +604,14 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
                     "value": "to"
                   },
                   {
+                    "$type": "Keyword",
+                    "value": "VSS"
+                  },
+                  {
+                    "$type": "Keyword",
+                    "value": "signal"
+                  },
+                  {
                     "$type": "Assignment",
                     "feature": "sigRef",
                     "operator": "=",
@@ -665,6 +673,10 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
             "cardinality": "?"
           },
           {
+            "$type": "Keyword",
+            "value": "to"
+          },
+          {
             "$type": "Alternatives",
             "elements": [
               {
@@ -684,7 +696,11 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
                 "elements": [
                   {
                     "$type": "Keyword",
-                    "value": "to"
+                    "value": "VSS"
+                  },
+                  {
+                    "$type": "Keyword",
+                    "value": "signal"
                   },
                   {
                     "$type": "Assignment",

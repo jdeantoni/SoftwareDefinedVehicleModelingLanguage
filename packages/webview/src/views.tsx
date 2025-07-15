@@ -18,28 +18,28 @@
 /** @jsx svg */
 import { injectable } from 'inversify';
 import { VNode } from 'snabbdom';
-import { PolylineEdgeView, RenderingContext, SEdgeImpl, svg, IView, SPortImpl, RectangularNodeView, IViewArgs, SNodeImpl, SShapeElementImpl } from 'sprotty';
-import { Hoverable, Point, Selectable, toDegrees } from 'sprotty-protocol';
+import { RenderingContext, svg, IView, SPortImpl, RectangularNodeView, IViewArgs, SNodeImpl, SShapeElementImpl } from 'sprotty';
+import { Hoverable, Selectable } from 'sprotty-protocol';
+
+// @injectable()
+// export class PolylineArrowEdgeView extends PolylineEdgeView {
+
+//     protected override renderAdditionals(edge: SEdgeImpl, segments: Point[], context: RenderingContext): VNode[] {
+//         const p1 = segments[segments.length - 2];
+//         const p2 = segments[segments.length - 1];
+//         return [
+//             <path class-sprotty-edge-arrow={true} d='M 6,-3 L 0,0 L 6,3 Z'
+//                   transform={`rotate(${this.angle(p2, p1)} ${p2.x} ${p2.y}) translate(${p2.x} ${p2.y})`}/>
+//         ];
+//     }
+
+//     angle(x0: Point, x1: Point): number {
+//         return toDegrees(Math.atan2(x1.y - x0.y, x1.x - x0.x));
+//     }
+// }
 
 @injectable()
-export class PolylineArrowEdgeView extends PolylineEdgeView {
-
-    protected override renderAdditionals(edge: SEdgeImpl, segments: Point[], context: RenderingContext): VNode[] {
-        const p1 = segments[segments.length - 2];
-        const p2 = segments[segments.length - 1];
-        return [
-            <path class-sprotty-edge-arrow={true} d='M 6,-3 L 0,0 L 6,3 Z'
-                  transform={`rotate(${this.angle(p2, p1)} ${p2.x} ${p2.y}) translate(${p2.x} ${p2.y})`}/>
-        ];
-    }
-
-    angle(x0: Point, x1: Point): number {
-        return toDegrees(Math.atan2(x1.y - x0.y, x1.x - x0.x));
-    }
-}
-
-@injectable()
-export class SdvmlNodeView extends RectangularNodeView{
+export class SdvmlSignalNodeView extends RectangularNodeView{
     public override render(node: Readonly<SShapeElementImpl & Hoverable & Selectable>, context: RenderingContext, args?: IViewArgs): VNode | undefined {
         if (!this.isVisible(node, context)) {
             return undefined;
@@ -47,6 +47,22 @@ export class SdvmlNodeView extends RectangularNodeView{
         return <g>
             <rect class-sprotty-node={node instanceof SNodeImpl} class-sprotty-port={node instanceof SPortImpl}
                   class-mouseover={node.hoverFeedback} class-selected={node.selected} class-vss-node= {node instanceof SNodeImpl}
+                  x="0" y="0" width={Math.max(node.size.width, 0)} height={Math.max(node.size.height, 0)}
+                  ></rect>
+            {context.renderChildren(node)}
+        </g>;
+    }
+}
+
+@injectable()
+export class SdvmlVSSNodeView extends RectangularNodeView{
+    public override render(node: Readonly<SShapeElementImpl & Hoverable & Selectable>, context: RenderingContext, args?: IViewArgs): VNode | undefined {
+        if (!this.isVisible(node, context)) {
+            return undefined;
+        }
+        return <g>
+            <rect class-sprotty-node={node instanceof SNodeImpl} class-sprotty-port={node instanceof SPortImpl}
+                  class-mouseover={node.hoverFeedback} class-selected={node.selected} class-vss-container= {node instanceof SNodeImpl}
                   x="0" y="0" width={Math.max(node.size.width, 0)} height={Math.max(node.size.height, 0)}></rect>
             {context.renderChildren(node)}
         </g>;
@@ -56,7 +72,10 @@ export class SdvmlNodeView extends RectangularNodeView{
 @injectable()
 export class TriangleButtonView implements IView {
     render(model: SPortImpl, context: RenderingContext): VNode {
-        return <path d='M 0,0 L 8,4 L 0,8 Z' />;
+        return <path d='M 0,0 L 8,4 L 0,8 Z'
+            class-sprotty-port={model instanceof SPortImpl}
+            class-selected={model.selected}
+            />;
     }
 }
 

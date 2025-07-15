@@ -38,6 +38,7 @@ export type SdvmlKeywordNames =
     | "periodic"
     | "publish"
     | "service"
+    | "signal"
     | "subscribe"
     | "to"
     | "triggered";

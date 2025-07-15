@@ -66,8 +66,8 @@ export const SdvmlModule: Module<SdvmlServices, PartialLangiumServices & Sprotty
     },
     layout: {
         ElkFactory: () => () => new ElkConstructor({ algorithms: ['layered'] }),
-        ElementFilter: () => new DefaultElementFilter,
-        LayoutConfigurator: () => new SdvmlLayoutConfigurator
+        ElementFilter: () => new DefaultElementFilter(),
+        LayoutConfigurator: () => new SdvmlLayoutConfigurator()
     },
     references: {
         ScopeProvider: (services) => new SdvmlScopeProvider(services)

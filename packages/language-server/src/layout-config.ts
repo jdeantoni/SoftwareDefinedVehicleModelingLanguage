@@ -24,14 +24,14 @@ export class SdvmlLayoutConfigurator extends DefaultLayoutConfigurator {
     protected override graphOptions(sgraph: SGraph, index: SModelIndex): LayoutOptions {
         return {
             'org.eclipse.elk.direction': 'RIGHT',
-            'org.eclipse.elk.spacing.nodeNode': '30.0',
-            'org.eclipse.elk.layered.spacing.edgeNodeBetweenLayers': '30.0'
+            'org.eclipse.elk.spacing.nodeNode': '40.0',
+            'org.eclipse.elk.layered.spacing.edgeNodeBetweenLayers': '60.0',
+            "org.eclipse.elk.spacing.componentComponent": "40.0"
         };
     }
 
     protected override nodeOptions(snode: SNode, index: SModelIndex): LayoutOptions {
         return {
-            'org.eclipse.elk.algorithm': 'org.eclipse.elk.layered',
             'org.eclipse.elk.portConstraints': 'FIXED_SIDE',
             'org.eclipse.elk.portAlignment.north': 'CENTER',
             'org.eclipse.elk.portAlignment.default': 'CENTER' // optional fallback
@@ -51,7 +51,7 @@ export class SdvmlLayoutConfigurator extends DefaultLayoutConfigurator {
         }
         return {
             'org.eclipse.elk.port.side': side,
-            'org.eclipse.elk.port.borderOffset': '-3.0'
+            'org.eclipse.elk.port.borderOffset': '-4.0'
         };
     }
 }

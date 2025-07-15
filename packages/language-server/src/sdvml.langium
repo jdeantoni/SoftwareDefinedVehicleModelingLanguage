@@ -59,10 +59,10 @@ Actuator:
     "Actuator" "Signal" name=ID '(' trigRule=TriggeringRule',''AD'':'ad=RandomVar'ms'')';
 
 Publisher:
-    'publish'('('name=ID')')? (sigName=ID | "to" sigRef=[Actuator]) ;//('type' msgType=STRING)? 'message' msg=STRING;
+    'publish'('('name=ID')')? (sigName=ID | "to" "VSS" "signal" sigRef=[Actuator]) ;//('type' msgType=STRING)? 'message' msg=STRING;
 
 Subscriber:
-    'subscribe'('('name=ID')')? (sigName=ID | "to" sigRef=[Sensor]) ;// ('type' msgType=STRING)? msg=STRING;
+    'subscribe'('('name=ID')')? "to" (sigName=ID | "VSS" "signal" sigRef=[Sensor]) ;// ('type' msgType=STRING)? msg=STRING;
 
 Service:
     'service' name=ID":"

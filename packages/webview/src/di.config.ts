@@ -26,11 +26,12 @@ import {
     SRoutingHandleImpl, SRoutingHandleView, TYPES, loadDefaultModules, SGraphImpl, SLabelImpl,
     hoverFeedbackFeature, popupFeature, /*creatingOnDragFeature,*/ editLabelFeature, labelEditUiModule,
     moveFeature, editFeature,
-    RectangularPort
+    RectangularPort,
+    JumpingPolylineEdgeView
 } from 'sprotty';
 import { CustomRouter } from './custom-edge-router';
 import { SdvmlEdge, SdvmlNode } from './model';
-import { DownTriangleButtonView, PolylineArrowEdgeView, SdvmlNodeView, TopTriangleButtonView, TriangleButtonView } from './views';
+import { DownTriangleButtonView, SdvmlSignalNodeView, /*SdvmlVSSNodeView,*/ TopTriangleButtonView, TriangleButtonView } from './views';
 
 const sdvmlDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
@@ -41,16 +42,17 @@ const sdvmlDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) =
     configureModelElement(context, 'graph', SGraphImpl, SGraphView, {
         enable: [hoverFeedbackFeature, popupFeature]
     });
-    configureModelElement(context, 'node', SdvmlNode, RectangularNodeView, {
-        disable: [moveFeature]
-    });
+    configureModelElement(context, 'node', SdvmlNode, RectangularNodeView);
+    // , {
+    //     disable: [moveFeature]
+    // });
     configureModelElement(context, 'label', SLabelImpl, SLabelView, {
         enable: [editLabelFeature]
     });
     configureModelElement(context, 'label:xref', SLabelImpl, SLabelView, {
         enable: [editLabelFeature]
     });
-    configureModelElement(context, 'edge', SdvmlEdge, PolylineArrowEdgeView, {
+    configureModelElement(context, 'edge', SdvmlEdge, JumpingPolylineEdgeView, {
         enable: [editFeature]
     });
     configureModelElement(context, 'html', HtmlRootImpl, HtmlRootView);
@@ -61,7 +63,8 @@ const sdvmlDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) =
     configureModelElement(context, 'port', RectangularPort, TriangleButtonView);
     configureModelElement(context, 'actuator-port', RectangularPort, DownTriangleButtonView);
     configureModelElement(context, 'sensor-port', RectangularPort, TopTriangleButtonView);
-    configureModelElement(context, 'node:vss-node', SdvmlNode, SdvmlNodeView);
+    configureModelElement(context, 'node:vss-node', SdvmlNode, SdvmlSignalNodeView);
+    // configureModelElement(context, 'node:vss-container', SdvmlNode, SdvmlVSSNodeView);
 
 
     configureCommand(context, CreateElementCommand);
