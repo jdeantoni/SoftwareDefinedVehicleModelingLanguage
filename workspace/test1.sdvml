@@ -1,7 +1,7 @@
 SDV test1:
 VSS :
     Sensor Signal Camera (SSP:10+/-2ms, DL: 5+/-2ms)
-    Sensor Signal Lidar (SSP:10+/-2ms, DL: 5+/-2ms)
+    Sensor Signal Lidar (SSP:10+/-2ms, DL: 5+/-2ms) 
 
     Actuator Signal FrontBrake (periodic 10+/-2ms, AD: 5+/-2ms)
     Actuator Signal RearBrake (periodic 10+/-2ms, AD: 5+/-2ms)
@@ -18,8 +18,11 @@ App :
             ExecTime 3+/-1ms
 
     Component Test 
-        subscribe to Alarm
+        subscribe (Al) to Alarm
         publish to VSS signal RearBrake
         service s1:
             periodic 10+/-1ms
+            ExecTime 3+/-1ms
+        service s2:
+            triggered on Al
             ExecTime 3+/-1ms

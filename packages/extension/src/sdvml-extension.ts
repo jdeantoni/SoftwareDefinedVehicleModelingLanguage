@@ -24,8 +24,18 @@ import { LspSprottyEditorProvider, LspSprottyViewProvider, LspWebviewPanelManage
 import * as vscode from 'vscode';
 import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from 'vscode-languageclient/node';
 import { Messenger } from 'vscode-messenger';
+import {GetImageRequest} from './sdvml-messages.js'
+
 
 let languageClient: LanguageClient;
+
+
+// const GetImageRequest = new RequestType<
+//     { elementId: string; position: { x: number; y: number } }, // request
+//     { image: string; position: { x: number; y: number } },     // response
+//     void                                                      // error (not used)
+// >('get-image');
+
 
 export function activate(context: vscode.ExtensionContext) {
     const diagramMode = process.env.DIAGRAM_MODE || 'panel';
@@ -36,13 +46,41 @@ export function activate(context: vscode.ExtensionContext) {
     languageClient = createLanguageClient(context);
     const extensionPath = context.extensionUri.fsPath;
     const localResourceRoots = [createFileUri(extensionPath, 'pack', 'diagram')];
-    const createWebviewHtml = (identifier: SprottyDiagramIdentifier, container: WebviewContainer) => doCreateWebviewHtml(identifier, container, {
+
+
+function sdvmlCreateWebviewHtml(identifier: SprottyDiagramIdentifier, container: WebviewContainer,
+    options: { scriptUri: vscode.Uri, cssUri?: vscode.Uri, title?: string; }): string {
+    const transformUri = (uri: vscode.Uri) => container.webview.asWebviewUri(uri).toString();
+    return `<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, height=device-height">
+        ${options.title ? `<title>${options.title}</title>` : ''}
+        ${options.cssUri ? `<link rel="stylesheet" type="text/css" href="${transformUri(options.cssUri)}" />` : ''}
+        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; script-src ${container.webview.cspSource}; style-src 'unsafe-inline' ${container.webview.cspSource};">
+    </head>
+    <body>
+        <div id="${identifier.clientId}_container" style="height: 100%;"></div>
+        <script src="${transformUri(options.scriptUri)}"></script>
+    </body>
+</html>`;
+}
+
+
+
+
+    const createWebviewHtml = (identifier: SprottyDiagramIdentifier, container: WebviewContainer) =>
+        sdvmlCreateWebviewHtml(identifier, container, {
         scriptUri: createFileUri(extensionPath, 'pack', 'diagram', 'main.js'),
         cssUri: createFileUri(extensionPath, 'pack', 'diagram', 'main.css')
     });
 
+
+
     if (diagramMode === 'panel') {
         // Set up webview panel manager for freestyle webviews
+        // console.error("~~~~> packages/extension/src/sdvml-extension.ts:Panel mode")
         const webviewPanelManager = new LspWebviewPanelManager({
             extensionUri: context.extensionUri,
             defaultDiagramType: 'sdvml',
@@ -51,12 +89,27 @@ export function activate(context: vscode.ExtensionContext) {
             localResourceRoots,
             createWebviewHtml
         });
+
+        webviewPanelManager.options.createWebviewHtml
+        webviewPanelManager.messenger.onRequest(
+            GetImageRequest,
+            async (message: { elementId: string; position: { x: number; y: number } }) => {
+                // console.error("~~~~> packages/extension/src/sdvml-extension.ts:"+message.elementId)
+                const image = await getImageForElement(message.elementId);
+                return {
+                    image,
+                    position: message.position
+                };
+            }
+        );
+
         registerDefaultCommands(webviewPanelManager, context, { extensionPrefix: 'sdvml' });
         registerLspEditCommands(webviewPanelManager, context, { extensionPrefix: 'sdvml' });
     }
 
     if (diagramMode === 'editor') {
         // Set up webview editor associated with file type
+        console.error("~~~~> packages/extension/src/sdvml-extension.ts:Editor mode")
         const webviewEditorProvider = new LspSprottyEditorProvider({
             extensionUri: context.extensionUri,
             viewType: 'sdvml',
@@ -65,6 +118,20 @@ export function activate(context: vscode.ExtensionContext) {
             localResourceRoots,
             createWebviewHtml
         });
+
+        webviewEditorProvider.messenger.onRequest(
+            GetImageRequest,
+            async (message: { elementId: string; position: { x: number; y: number } }) => {
+                console.error("~~~~> packages/extension/src/sdvml-extension.ts:"+message.elementId)
+                const image = await getImageForElement(message.elementId);
+                return {
+                    image,
+                    position: message.position
+                };
+            }
+        );
+
+
         context.subscriptions.push(
             vscode.window.registerCustomEditorProvider('sdvml', webviewEditorProvider, {
                 webviewOptions: { retainContextWhenHidden: true }
@@ -77,6 +144,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     if (diagramMode === 'view') {
         // Set up webview view shown in the side panel
+        console.error("~~~~> packages/extension/src/sdvml-extension.ts:View mode")
         const webviewViewProvider = new LspSprottyViewProvider({
             extensionUri: context.extensionUri,
             viewType: 'sdvml',
@@ -87,6 +155,20 @@ export function activate(context: vscode.ExtensionContext) {
             localResourceRoots,
             createWebviewHtml
         });
+
+        webviewViewProvider.messenger.onRequest(
+            GetImageRequest,
+            async (message: { elementId: string; position: { x: number; y: number } }) => {
+                console.error("~~~~> packages/extension/src/sdvml-extension.ts:"+message.elementId)
+                const img = await getImageForElement(message.elementId);
+                return {
+                    image: img,
+                    position: message.position
+                };
+            }
+        );
+
+
         context.subscriptions.push(
             vscode.window.registerWebviewViewProvider('sdvml', webviewViewProvider, {
                 webviewOptions: { retainContextWhenHidden: true }
@@ -141,3 +223,15 @@ export async function deactivate(): Promise<void> {
         await languageClient.stop();
     }
 }
+
+
+import * as fs from 'fs';
+
+function getImageForElement(elementId: any): Promise<string> {
+    const imagePath = path.join(__dirname, '../media', '', 'icon.png'); // adjust since should retrieve images computed by Pavlo and Irman
+    const imageBuffer = fs.readFileSync(imagePath);
+    const base64Image = imageBuffer.toString('base64');
+    // console.log("here it is :-/ "+base64Image)
+    return Promise.resolve(`data:image/png;base64,${base64Image}`);
+}
+

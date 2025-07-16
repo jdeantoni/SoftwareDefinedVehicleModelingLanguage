@@ -1,9 +1,9 @@
 {
-    "search.exclude": {
-        "**/node_modules": true,
-        "**/lib": true,
-        "**/coverage": true
-    },
+    // "search.exclude": {
+    //     "**/node_modules": false,
+    //     "**/lib": false,
+    //     "**/coverage": true
+    // },
     "editor.insertSpaces": true,
     "files.trimTrailingWhitespace": true,
     "[typescript]": {

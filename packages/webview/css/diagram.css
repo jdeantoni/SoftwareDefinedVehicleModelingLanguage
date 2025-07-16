@@ -1,7 +1,18 @@
 .sprotty-node {
-    fill: rgb(136, 136, 255);
+    fill: rgb(169, 208, 250);
     stroke-width: 1;
-    stroke: rgb(15, 0, 100);
+    stroke: rgb(113, 182, 255);
+}
+.node-label {
+    fill: rgb(169, 208, 250);
+    stroke-width: 0;
+    text-align: center;
+}
+
+.node-service {
+    fill: rgb(217, 234, 252);
+    stroke-width: 0;
+    text-align: left;
 }
 
 .sprotty-node.selected {
@@ -12,6 +23,18 @@
 .sprotty-label {
     fill: darkslategrey;
     stroke-width: 0;
+}
+
+.sprotty-label {
+    fill: darkslategrey;
+    stroke-width: 0;
+}
+
+.values{
+   font-style: italic;
+   font-size: 70%;
+   fill: rgb(122, 121, 121);
+   stroke-width: 0;
 }
 
 .sprotty-button {

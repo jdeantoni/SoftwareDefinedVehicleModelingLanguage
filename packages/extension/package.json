@@ -18,14 +18,15 @@
     "categories": [
         "Programming Languages"
     ],
-    "icon": "icon.png",
+    "icon": "media/icon.png",
     "contributes": {
         "languages": [
             {
                 "id": "sdvml",
                 "aliases": [
                     "sdvml",
-                    "Sdvml"                ],
+                    "Sdvml"
+                ],
                 "extensions": [
                     ".sdvml"
                 ],
@@ -188,7 +189,7 @@
         "vscode-languageclient": "^9.0.1"
     },
     "scripts": {
-        "prepare": "yarn run clean && yarn run build",
+        "prepare": "yarn run clean && yarn run build && shx cp -R ./media ./pack/extension/media ",
         "clean": "shx rm -fr pack",
         "build": "node esbuild.mjs",
         "watch": "node esbuild.mjs --watch"
