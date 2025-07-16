@@ -40677,7 +40677,7 @@ exports.SdvmlSprottyStarter = SdvmlSprottyStarter;
 let sdvmlSprottyStarter = new SdvmlSprottyStarter();
 sdvmlSprottyStarter.start();
 const tooltip = document.createElement('div');
-tooltip.innerHTML = "zaza";
+tooltip.innerHTML = "innerHTML";
 tooltip.style.position = 'fixed';
 tooltip.style.display = 'none';
 tooltip.style.zIndex = '1000';
@@ -40689,8 +40689,8 @@ tooltip.style.boxShadow = '0px 0px 6px rgba(0,0,0,0.2)';
 document.body.appendChild(tooltip);
 window.addEventListener('message', event => {
     const msg = event.data;
-    console.error("~~~~> packages/webview/src/main.ts: message=" + JSON.stringify(msg));
-    console.error("\t1:received image" + msg.result.image);
+    // console.error("~~~~> packages/webview/src/main.ts: message="+JSON.stringify(msg))
+    // console.error("\t1:received image"+msg.result.image)
     if (msg.result != undefined) { //'image-result') {
         tooltip.innerHTML = `<img src=${msg.result.image} width="200" />`; //../picts/stats.png
         tooltip.style.left = `${msg.result.position.x + 10}px`;
@@ -40705,7 +40705,7 @@ const sdvml_messages_1 = __webpack_require__(/*! ./sdvml-messages */ "./src/sdvm
 class CustomHoverListener extends sprotty_1.HoverMouseListener {
     mouseOver(target, event) {
         // Send message to VS Code extension (via the webview)
-        console.error("~~~~> packages/webview/src/main.ts:" + event + "   " + target.id);
+        // console.error("~~~~> packages/webview/src/main.ts:"+event+"   "+target.id)
         sdvmlSprottyStarter.messenger.sendRequest(sdvml_messages_1.GetImageRequest, { type: 'extension' }, {
             elementId: target.id,
             position: { x: event.clientX, y: event.clientY }

@@ -80,7 +80,7 @@ function sdvmlCreateWebviewHtml(identifier: SprottyDiagramIdentifier, container:
 
     if (diagramMode === 'panel') {
         // Set up webview panel manager for freestyle webviews
-        console.error("~~~~> packages/extension/src/sdvml-extension.ts:Panel mode")
+        // console.error("~~~~> packages/extension/src/sdvml-extension.ts:Panel mode")
         const webviewPanelManager = new LspWebviewPanelManager({
             extensionUri: context.extensionUri,
             defaultDiagramType: 'sdvml',
@@ -94,7 +94,7 @@ function sdvmlCreateWebviewHtml(identifier: SprottyDiagramIdentifier, container:
         webviewPanelManager.messenger.onRequest(
             GetImageRequest,
             async (message: { elementId: string; position: { x: number; y: number } }) => {
-                console.error("~~~~> packages/extension/src/sdvml-extension.ts:"+message.elementId)
+                // console.error("~~~~> packages/extension/src/sdvml-extension.ts:"+message.elementId)
                 const image = await getImageForElement(message.elementId);
                 return {
                     image,
@@ -231,7 +231,7 @@ function getImageForElement(elementId: any): Promise<string> {
     const imagePath = path.join(__dirname, '../media', '', 'icon.png'); // adjust since should retrieve images computed by Pavlo and Irman
     const imageBuffer = fs.readFileSync(imagePath);
     const base64Image = imageBuffer.toString('base64');
-    console.log("here it is :-/ "+base64Image)
+    // console.log("here it is :-/ "+base64Image)
     return Promise.resolve(`data:image/png;base64,${base64Image}`);
 }
 

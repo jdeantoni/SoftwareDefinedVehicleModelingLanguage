@@ -48,7 +48,7 @@ sdvmlSprottyStarter.start();
 
 
 const tooltip = document.createElement('div');
-tooltip.innerHTML = "zaza"
+tooltip.innerHTML = "innerHTML"
 tooltip.style.position = 'fixed';
 tooltip.style.display = 'none';
 tooltip.style.zIndex = '1000';
@@ -61,8 +61,8 @@ document.body.appendChild(tooltip);
 
 window.addEventListener('message', event => {
     const msg = event.data;
-    console.error("~~~~> packages/webview/src/main.ts: message="+JSON.stringify(msg))
-    console.error("\t1:received image"+msg.result.image)
+    // console.error("~~~~> packages/webview/src/main.ts: message="+JSON.stringify(msg))
+    // console.error("\t1:received image"+msg.result.image)
     if (msg.result != undefined){//'image-result') {
         tooltip.innerHTML = `<img src=${msg.result.image} width="200" />`; //../picts/stats.png
         tooltip.style.left = `${msg.result.position.x + 10}px`;
@@ -78,7 +78,7 @@ import { GetImageRequest } from './sdvml-messages'
 export class CustomHoverListener extends HoverMouseListener {
     override mouseOver(target: SModelElementImpl, event: MouseEvent): (Action | Promise<Action>)[] {
          // Send message to VS Code extension (via the webview)
-    console.error("~~~~> packages/webview/src/main.ts:"+event+"   "+target.id)
+    // console.error("~~~~> packages/webview/src/main.ts:"+event+"   "+target.id)
     sdvmlSprottyStarter.messenger.sendRequest<{ elementId: string; position: { x: number; y: number } },  // Params
                                               { image: string; position: { x: number; y: number } }>       // Response
         (GetImageRequest,
