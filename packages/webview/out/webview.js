@@ -40247,7 +40247,7 @@ exports.CustomRouter = CustomRouter;
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createStateDiagramContainer = void 0;
+exports.createSdvmlDiagramContainer = void 0;
 __webpack_require__(/*! ../css/diagram.css */ "./css/diagram.css");
 __webpack_require__(/*! sprotty/css/sprotty.css */ "../../node_modules/sprotty/css/sprotty.css");
 const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
@@ -40255,42 +40255,44 @@ const sprotty_1 = __webpack_require__(/*! sprotty */ "../../node_modules/sprotty
 const custom_edge_router_1 = __webpack_require__(/*! ./custom-edge-router */ "./src/custom-edge-router.ts");
 const model_1 = __webpack_require__(/*! ./model */ "./src/model.ts");
 const views_1 = __webpack_require__(/*! ./views */ "./src/views.tsx");
-const sdvmlDiagramModule = new inversify_1.ContainerModule((bind, unbind, isBound, rebind) => {
-    rebind(sprotty_1.TYPES.ILogger).to(sprotty_1.ConsoleLogger).inSingletonScope();
-    rebind(sprotty_1.TYPES.LogLevel).toConstantValue(sprotty_1.LogLevel.warn);
-    rebind(sprotty_1.ManhattanEdgeRouter).to(custom_edge_router_1.CustomRouter).inSingletonScope();
-    const context = { bind, unbind, isBound, rebind };
-    (0, sprotty_1.configureModelElement)(context, 'graph', sprotty_1.SGraphImpl, sprotty_1.SGraphView, {
-        enable: [sprotty_1.hoverFeedbackFeature, sprotty_1.popupFeature]
-    });
-    (0, sprotty_1.configureModelElement)(context, 'node', model_1.SdvmlNode, sprotty_1.RectangularNodeView);
-    // , {
-    //     disable: [moveFeature]
-    // });
-    (0, sprotty_1.configureModelElement)(context, 'label', sprotty_1.SLabelImpl, sprotty_1.SLabelView, {
-        enable: [sprotty_1.editLabelFeature]
-    });
-    (0, sprotty_1.configureModelElement)(context, 'label:xref', sprotty_1.SLabelImpl, sprotty_1.SLabelView, {
-        enable: [sprotty_1.editLabelFeature]
-    });
-    (0, sprotty_1.configureModelElement)(context, 'edge', model_1.SdvmlEdge, sprotty_1.JumpingPolylineEdgeView, {
-        enable: [sprotty_1.editFeature]
-    });
-    (0, sprotty_1.configureModelElement)(context, 'html', sprotty_1.HtmlRootImpl, sprotty_1.HtmlRootView);
-    (0, sprotty_1.configureModelElement)(context, 'pre-rendered', sprotty_1.PreRenderedElementImpl, sprotty_1.PreRenderedView);
-    (0, sprotty_1.configureModelElement)(context, 'palette', sprotty_1.SModelRootImpl, sprotty_1.HtmlRootView);
-    (0, sprotty_1.configureModelElement)(context, 'routing-point', sprotty_1.SRoutingHandleImpl, sprotty_1.SRoutingHandleView);
-    (0, sprotty_1.configureModelElement)(context, 'volatile-routing-point', sprotty_1.SRoutingHandleImpl, sprotty_1.SRoutingHandleView);
-    (0, sprotty_1.configureModelElement)(context, 'port', sprotty_1.RectangularPort, views_1.TriangleButtonView);
-    (0, sprotty_1.configureModelElement)(context, 'actuator-port', sprotty_1.RectangularPort, views_1.DownTriangleButtonView);
-    (0, sprotty_1.configureModelElement)(context, 'sensor-port', sprotty_1.RectangularPort, views_1.TopTriangleButtonView);
-    (0, sprotty_1.configureModelElement)(context, 'node:vss-node', model_1.SdvmlNode, views_1.SdvmlSignalNodeView);
-    // configureModelElement(context, 'node:vss-container', SdvmlNode, SdvmlVSSNodeView);
-    (0, sprotty_1.configureCommand)(context, sprotty_1.CreateElementCommand);
-});
-function createStateDiagramContainer(widgetId) {
+const sprotty_2 = __webpack_require__(/*! sprotty */ "../../node_modules/sprotty/lib/index.js");
+function createSdvmlDiagramContainer(widgetId, customHoverListener) {
     const container = new inversify_1.Container();
     (0, sprotty_1.loadDefaultModules)(container, { exclude: [sprotty_1.labelEditUiModule] });
+    const sdvmlDiagramModule = new inversify_1.ContainerModule((bind, unbind, isBound, rebind) => {
+        rebind(sprotty_1.TYPES.ILogger).to(sprotty_1.ConsoleLogger).inSingletonScope();
+        rebind(sprotty_1.TYPES.LogLevel).toConstantValue(sprotty_1.LogLevel.warn);
+        rebind(sprotty_1.ManhattanEdgeRouter).to(custom_edge_router_1.CustomRouter).inSingletonScope();
+        rebind(sprotty_2.HoverMouseListener).to(customHoverListener).inSingletonScope();
+        const context = { bind, unbind, isBound, rebind };
+        (0, sprotty_1.configureModelElement)(context, 'graph', sprotty_1.SGraphImpl, sprotty_1.SGraphView, {
+            enable: [sprotty_1.hoverFeedbackFeature, sprotty_1.popupFeature]
+        });
+        (0, sprotty_1.configureModelElement)(context, 'node', model_1.SdvmlNode, sprotty_1.RectangularNodeView);
+        // , {
+        //     disable: [moveFeature]
+        // });
+        (0, sprotty_1.configureModelElement)(context, 'label', sprotty_1.SLabelImpl, sprotty_1.SLabelView, {
+            enable: [sprotty_1.editLabelFeature]
+        });
+        (0, sprotty_1.configureModelElement)(context, 'label:xref', sprotty_1.SLabelImpl, sprotty_1.SLabelView, {
+            enable: [sprotty_1.editLabelFeature]
+        });
+        (0, sprotty_1.configureModelElement)(context, 'edge', model_1.SdvmlEdge, sprotty_1.JumpingPolylineEdgeView, {
+            enable: [sprotty_1.editFeature]
+        });
+        (0, sprotty_1.configureModelElement)(context, 'html', sprotty_1.HtmlRootImpl, sprotty_1.HtmlRootView);
+        (0, sprotty_1.configureModelElement)(context, 'pre-rendered', sprotty_1.PreRenderedElementImpl, sprotty_1.PreRenderedView);
+        (0, sprotty_1.configureModelElement)(context, 'palette', sprotty_1.SModelRootImpl, sprotty_1.HtmlRootView);
+        (0, sprotty_1.configureModelElement)(context, 'routing-point', sprotty_1.SRoutingHandleImpl, sprotty_1.SRoutingHandleView);
+        (0, sprotty_1.configureModelElement)(context, 'volatile-routing-point', sprotty_1.SRoutingHandleImpl, sprotty_1.SRoutingHandleView);
+        (0, sprotty_1.configureModelElement)(context, 'port', sprotty_1.RectangularPort, views_1.TriangleButtonView);
+        (0, sprotty_1.configureModelElement)(context, 'actuator-port', sprotty_1.RectangularPort, views_1.DownTriangleButtonView);
+        (0, sprotty_1.configureModelElement)(context, 'sensor-port', sprotty_1.RectangularPort, views_1.TopTriangleButtonView);
+        (0, sprotty_1.configureModelElement)(context, 'node:vss-node', model_1.SdvmlNode, views_1.SdvmlSignalNodeView);
+        // configureModelElement(context, 'node:vss-container', SdvmlNode, SdvmlVSSNodeView);
+        (0, sprotty_1.configureCommand)(context, sprotty_1.CreateElementCommand);
+    });
     container.load(sdvmlDiagramModule);
     (0, sprotty_1.overrideViewerOptions)(container, {
         needsClientLayout: true,
@@ -40300,7 +40302,7 @@ function createStateDiagramContainer(widgetId) {
     });
     return container;
 }
-exports.createStateDiagramContainer = createStateDiagramContainer;
+exports.createSdvmlDiagramContainer = createSdvmlDiagramContainer;
 
 
 /***/ }),
@@ -40415,6 +40417,22 @@ exports.SdvmlNode = SdvmlNode;
 //         return CreateElementAction.create(edge, { containerId: this.root.id });
 //     }
 // }
+
+
+/***/ }),
+
+/***/ "./src/sdvml-messages.ts":
+/*!*******************************!*\
+  !*** ./src/sdvml-messages.ts ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.GetImageRequest = void 0;
+const vscode_jsonrpc_1 = __webpack_require__(/*! vscode-jsonrpc */ "../../node_modules/vscode-jsonrpc/lib/browser/main.js");
+exports.GetImageRequest = new vscode_jsonrpc_1.RequestType('get-image');
 
 
 /***/ }),
@@ -40622,7 +40640,7 @@ var exports = __webpack_exports__;
   \*********************/
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.SdvmlSprottyStarter = void 0;
+exports.CustomHoverListener = exports.SdvmlSprottyStarter = void 0;
 /********************************************************************************
  * Copyright (c) 2025 Université Côte d'Azur and others.
 
@@ -40648,7 +40666,7 @@ const html_views_1 = __webpack_require__(/*! ./html-views */ "./src/html-views.t
 const editing_2 = __webpack_require__(/*! sprotty-vscode-webview/lib/lsp/editing */ "../../node_modules/sprotty-vscode-webview/lib/lsp/editing/index.js");
 class SdvmlSprottyStarter extends editing_1.SprottyLspEditStarter {
     createContainer(diagramIdentifier) {
-        return (0, di_config_1.createStateDiagramContainer)(diagramIdentifier.clientId);
+        return (0, di_config_1.createSdvmlDiagramContainer)(diagramIdentifier.clientId, CustomHoverListener);
     }
     addVscodeBindings(container, diagramIdentifier) {
         super.addVscodeBindings(container, diagramIdentifier);
@@ -40656,7 +40674,72 @@ class SdvmlSprottyStarter extends editing_1.SprottyLspEditStarter {
     }
 }
 exports.SdvmlSprottyStarter = SdvmlSprottyStarter;
-new SdvmlSprottyStarter().start();
+let sdvmlSprottyStarter = new SdvmlSprottyStarter();
+sdvmlSprottyStarter.start();
+const tooltip = document.createElement('div');
+tooltip.innerHTML = "zaza";
+tooltip.style.position = 'fixed';
+tooltip.style.display = 'none';
+tooltip.style.zIndex = '1000';
+tooltip.style.pointerEvents = 'none';
+tooltip.style.background = 'white';
+tooltip.style.border = '1px solid #ccc';
+tooltip.style.padding = '4px';
+tooltip.style.boxShadow = '0px 0px 6px rgba(0,0,0,0.2)';
+document.body.appendChild(tooltip);
+window.addEventListener('message', event => {
+    const msg = event.data;
+    console.error("~~~~> packages/webview/src/main.ts: message=" + JSON.stringify(msg));
+    console.error("\t1:received image" + msg.result.image);
+    if (msg.result != undefined) { //'image-result') {
+        tooltip.innerHTML = `<img src=${msg.result.image} width="200" />`; //../picts/stats.png
+        tooltip.style.left = `${msg.result.position.x + 10}px`;
+        tooltip.style.top = `${msg.result.position.y + 10}px`;
+        tooltip.style.display = 'block';
+    }
+    else if (msg.type === 'hide-image') {
+        tooltip.style.display = 'none';
+    }
+});
+const sdvml_messages_1 = __webpack_require__(/*! ./sdvml-messages */ "./src/sdvml-messages.ts");
+class CustomHoverListener extends sprotty_1.HoverMouseListener {
+    mouseOver(target, event) {
+        // Send message to VS Code extension (via the webview)
+        console.error("~~~~> packages/webview/src/main.ts:" + event + "   " + target.id);
+        sdvmlSprottyStarter.messenger.sendRequest(sdvml_messages_1.GetImageRequest, { type: 'extension' }, {
+            elementId: target.id,
+            position: { x: event.clientX, y: event.clientY }
+        }).then(response => {
+            const { image, position } = response;
+            tooltip.innerHTML = `<img src="${image}" width="200" />`;
+            tooltip.style.left = `${position.x + 10}px`;
+            tooltip.style.top = `${position.y + 10}px`;
+            tooltip.style.display = 'block';
+        });
+        return [];
+    }
+    // // Send request
+    // sdvmlSprottyStarter.vscodeApi.postMessage({
+    //     id: 'some-unique-id26081980',
+    //     type: 'get-image',
+    //     payload: {
+    //         elementId: target.id,
+    //         position: {
+    //             x: event.clientX,
+    //             y: event.clientY
+    //         }
+    //     }
+    // });
+    // return [];
+    // }
+    mouseOut(target, event) {
+        // window.parent.postMessage({
+        //     type: 'hide-image'
+        // }, '*');
+        return [];
+    }
+}
+exports.CustomHoverListener = CustomHoverListener;
 
 })();
 

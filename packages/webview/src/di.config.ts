@@ -25,7 +25,7 @@ import {
     PreRenderedView, RectangularNodeView, SGraphView, SLabelView, SModelRootImpl,
     SRoutingHandleImpl, SRoutingHandleView, TYPES, loadDefaultModules, SGraphImpl, SLabelImpl,
     hoverFeedbackFeature, popupFeature, /*creatingOnDragFeature,*/ editLabelFeature, labelEditUiModule,
-    moveFeature, editFeature,
+    editFeature,
     RectangularPort,
     JumpingPolylineEdgeView
 } from 'sprotty';
@@ -33,46 +33,57 @@ import { CustomRouter } from './custom-edge-router';
 import { SdvmlEdge, SdvmlNode } from './model';
 import { DownTriangleButtonView, SdvmlSignalNodeView, /*SdvmlVSSNodeView,*/ TopTriangleButtonView, TriangleButtonView } from './views';
 
-const sdvmlDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
-    rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
-    rebind(TYPES.LogLevel).toConstantValue(LogLevel.warn);
-    rebind(ManhattanEdgeRouter).to(CustomRouter).inSingletonScope();
-
-    const context = { bind, unbind, isBound, rebind };
-    configureModelElement(context, 'graph', SGraphImpl, SGraphView, {
-        enable: [hoverFeedbackFeature, popupFeature]
-    });
-    configureModelElement(context, 'node', SdvmlNode, RectangularNodeView);
-    // , {
-    //     disable: [moveFeature]
-    // });
-    configureModelElement(context, 'label', SLabelImpl, SLabelView, {
-        enable: [editLabelFeature]
-    });
-    configureModelElement(context, 'label:xref', SLabelImpl, SLabelView, {
-        enable: [editLabelFeature]
-    });
-    configureModelElement(context, 'edge', SdvmlEdge, JumpingPolylineEdgeView, {
-        enable: [editFeature]
-    });
-    configureModelElement(context, 'html', HtmlRootImpl, HtmlRootView);
-    configureModelElement(context, 'pre-rendered', PreRenderedElementImpl, PreRenderedView);
-    configureModelElement(context, 'palette', SModelRootImpl, HtmlRootView);
-    configureModelElement(context, 'routing-point', SRoutingHandleImpl, SRoutingHandleView);
-    configureModelElement(context, 'volatile-routing-point', SRoutingHandleImpl, SRoutingHandleView);
-    configureModelElement(context, 'port', RectangularPort, TriangleButtonView);
-    configureModelElement(context, 'actuator-port', RectangularPort, DownTriangleButtonView);
-    configureModelElement(context, 'sensor-port', RectangularPort, TopTriangleButtonView);
-    configureModelElement(context, 'node:vss-node', SdvmlNode, SdvmlSignalNodeView);
-    // configureModelElement(context, 'node:vss-container', SdvmlNode, SdvmlVSSNodeView);
+import { HoverMouseListener } from 'sprotty';
+import { CustomHoverListener } from './main';
 
 
-    configureCommand(context, CreateElementCommand);
-});
 
-export function createStateDiagramContainer(widgetId: string): Container {
+type CustomHoverListenerType = new () => CustomHoverListener;
+
+export function createSdvmlDiagramContainer(widgetId: string, customHoverListener:CustomHoverListenerType): Container {
     const container = new Container();
     loadDefaultModules(container, { exclude: [ labelEditUiModule ] });
+
+        const sdvmlDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
+        rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
+        rebind(TYPES.LogLevel).toConstantValue(LogLevel.warn);
+        rebind(ManhattanEdgeRouter).to(CustomRouter).inSingletonScope();
+        rebind(HoverMouseListener).to(customHoverListener).inSingletonScope();
+
+
+        const context = { bind, unbind, isBound, rebind };
+        configureModelElement(context, 'graph', SGraphImpl, SGraphView, {
+            enable: [hoverFeedbackFeature, popupFeature]
+        });
+        configureModelElement(context, 'node', SdvmlNode, RectangularNodeView);
+        // , {
+        //     disable: [moveFeature]
+        // });
+        configureModelElement(context, 'label', SLabelImpl, SLabelView, {
+            enable: [editLabelFeature]
+        });
+        configureModelElement(context, 'label:xref', SLabelImpl, SLabelView, {
+            enable: [editLabelFeature]
+        });
+        configureModelElement(context, 'edge', SdvmlEdge, JumpingPolylineEdgeView, {
+            enable: [editFeature]
+        });
+        configureModelElement(context, 'html', HtmlRootImpl, HtmlRootView);
+        configureModelElement(context, 'pre-rendered', PreRenderedElementImpl, PreRenderedView);
+        configureModelElement(context, 'palette', SModelRootImpl, HtmlRootView);
+        configureModelElement(context, 'routing-point', SRoutingHandleImpl, SRoutingHandleView);
+        configureModelElement(context, 'volatile-routing-point', SRoutingHandleImpl, SRoutingHandleView);
+        configureModelElement(context, 'port', RectangularPort, TriangleButtonView);
+        configureModelElement(context, 'actuator-port', RectangularPort, DownTriangleButtonView);
+        configureModelElement(context, 'sensor-port', RectangularPort, TopTriangleButtonView);
+        configureModelElement(context, 'node:vss-node', SdvmlNode, SdvmlSignalNodeView);
+        // configureModelElement(context, 'node:vss-container', SdvmlNode, SdvmlVSSNodeView);
+
+
+        configureCommand(context, CreateElementCommand);
+    });
+
+
     container.load(sdvmlDiagramModule);
     overrideViewerOptions(container, {
         needsClientLayout: true,

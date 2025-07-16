@@ -18,17 +18,19 @@ import 'reflect-metadata';
 import 'sprotty-vscode-webview/css/sprotty-vscode.css';
 
 import { Container } from 'inversify';
-import { configureModelElement } from 'sprotty';
+import { HoverMouseListener, SModelElementImpl, configureModelElement } from 'sprotty';
 import { SprottyDiagramIdentifier } from 'sprotty-vscode-webview';
 import { SprottyLspEditStarter } from 'sprotty-vscode-webview/lib/lsp/editing';
-import { createStateDiagramContainer } from './di.config';
+import { createSdvmlDiagramContainer } from './di.config';
 import { PaletteButtonView } from './html-views';
 import { PaletteButton } from 'sprotty-vscode-webview/lib/lsp/editing';
+import { Action} from 'sprotty-protocol/lib/actions';
+
 
 export class SdvmlSprottyStarter extends SprottyLspEditStarter {
 
     protected override createContainer(diagramIdentifier: SprottyDiagramIdentifier) {
-        return createStateDiagramContainer(diagramIdentifier.clientId);
+        return createSdvmlDiagramContainer(diagramIdentifier.clientId, CustomHoverListener);
     }
 
     protected override addVscodeBindings(container: Container, diagramIdentifier: SprottyDiagramIdentifier): void {
@@ -37,4 +39,85 @@ export class SdvmlSprottyStarter extends SprottyLspEditStarter {
     }
 }
 
-new SdvmlSprottyStarter().start();
+let sdvmlSprottyStarter = new SdvmlSprottyStarter();
+sdvmlSprottyStarter.start();
+
+
+
+
+
+
+const tooltip = document.createElement('div');
+tooltip.innerHTML = "zaza"
+tooltip.style.position = 'fixed';
+tooltip.style.display = 'none';
+tooltip.style.zIndex = '1000';
+tooltip.style.pointerEvents = 'none';
+tooltip.style.background = 'white';
+tooltip.style.border = '1px solid #ccc';
+tooltip.style.padding = '4px';
+tooltip.style.boxShadow = '0px 0px 6px rgba(0,0,0,0.2)';
+document.body.appendChild(tooltip);
+
+window.addEventListener('message', event => {
+    const msg = event.data;
+    console.error("~~~~> packages/webview/src/main.ts: message="+JSON.stringify(msg))
+    console.error("\t1:received image"+msg.result.image)
+    if (msg.result != undefined){//'image-result') {
+        tooltip.innerHTML = `<img src=${msg.result.image} width="200" />`; //../picts/stats.png
+        tooltip.style.left = `${msg.result.position.x + 10}px`;
+        tooltip.style.top = `${msg.result.position.y + 10}px`;
+        tooltip.style.display = 'block';
+     } else if (msg.type === 'hide-image') {
+         tooltip.style.display = 'none';
+    }
+});
+
+import { GetImageRequest } from './sdvml-messages'
+
+export class CustomHoverListener extends HoverMouseListener {
+    override mouseOver(target: SModelElementImpl, event: MouseEvent): (Action | Promise<Action>)[] {
+         // Send message to VS Code extension (via the webview)
+    console.error("~~~~> packages/webview/src/main.ts:"+event+"   "+target.id)
+    sdvmlSprottyStarter.messenger.sendRequest<{ elementId: string; position: { x: number; y: number } },  // Params
+                                              { image: string; position: { x: number; y: number } }>       // Response
+        (GetImageRequest,
+        { type: 'extension' }    ,
+        {
+            elementId: target.id,
+            position: { x: event.clientX, y: event.clientY }
+        }).then(response => {
+            const { image, position } = response;
+            tooltip.innerHTML = `<img src="${image}" width="200" />`;
+            tooltip.style.left = `${position.x + 10}px`;
+            tooltip.style.top = `${position.y + 10}px`;
+            tooltip.style.display = 'block';
+        });
+        return [];
+    }
+
+
+    // // Send request
+    // sdvmlSprottyStarter.vscodeApi.postMessage({
+    //     id: 'some-unique-id26081980',
+    //     type: 'get-image',
+    //     payload: {
+    //         elementId: target.id,
+    //         position: {
+    //             x: event.clientX,
+    //             y: event.clientY
+    //         }
+    //     }
+    // });
+    // return [];
+
+    // }
+
+    override mouseOut(target: SModelElementImpl, event: MouseEvent): (Action | Promise<Action>)[] {
+        // window.parent.postMessage({
+        //     type: 'hide-image'
+        // }, '*');
+        return [];
+    }
+}
+

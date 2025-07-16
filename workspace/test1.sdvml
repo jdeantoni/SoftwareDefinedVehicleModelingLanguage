@@ -1,7 +1,7 @@
 SDV test1:
 VSS :
     Sensor Signal Camera (SSP:10+/-2ms, DL: 5+/-2ms)
-    Sensor Signal Lidar (SSP:10+/-2ms, DL: 5+/-2ms)
+    Sensor Signal Lidar (SSP:10+/-2ms, DL: 5+/-2ms) 
 
     Actuator Signal FrontBrake (periodic 10+/-2ms, AD: 5+/-2ms)
     Actuator Signal RearBrake (periodic 10+/-2ms, AD: 5+/-2ms)
