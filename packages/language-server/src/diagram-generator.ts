@@ -16,8 +16,15 @@
  ********************************************************************************/
 
 import { GeneratorContext, LangiumDiagramGenerator } from 'langium-sprotty';
-import { /*SEdge,*/ EdgeLayoutable, SCompartment, SEdge, SLabel, SModelRoot, SNode, SPort/*, EdgeLayoutable*/ } from 'sprotty-protocol';
-import { Signal, Component, Model, isSensor, VSS } from './generated/ast.js';
+import { /*SEdge,*/ EdgeLayoutable, SCompartment, SEdge, SLabel, SModelRoot, SNode, SPort, SModelElement/*, EdgeLayoutable*/ } from 'sprotty-protocol';
+import { Signal, Component, Model, isSensor, VSS, Sensor, Actuator, isPeriodicTriggering, Service } from './generated/ast.js';
+
+// export interface ExpandableNode extends SNode {
+//     type: 'expandable-node'
+//     expanded: boolean
+//     children?: SNode[]
+// }
+
 
 export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
 
@@ -45,20 +52,61 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
             type: 'node',
             id: nodeId,
             children: [
-                <SLabel>{
-                    type: 'label',
+               <SNode>{
+                    type: 'node:node-label',
                     id: idCache.uniqueId(nodeId + '.label'),
-                    text: comp.name
+                    children: [<SLabel>{
+                        type: 'label',
+                        id: idCache.uniqueId(nodeId + '.label.label'),
+                        text: comp.name
+                    }],
+                    layout: "vbox",
+                    layoutOptions: {
+                        innerHeight: 100,
+                        paddingTop: 10.0,
+                        paddingBottom: 10.0,
+                        paddingLeft: 10.0,
+                        paddingRight: 10.0
+                    }
                 }
-            ] as (SLabel | SPort)[],
-            layout: "stack",
+            ] as (SLabel | SPort | SNode)[],
+            layout: "vbox",
             layoutOptions: {
+                innerHeight: 100,
                 paddingTop: 10.0,
                 paddingBottom: 10.0,
                 paddingLeft: 10.0,
                 paddingRight: 10.0
             }
         };
+        console.error("service length:"+comp.services.length)
+        for (let service of comp.services){
+            console.error("service name:"+service.name)
+            const serId = idCache.uniqueId(nodeId + '.service')
+            let serNode = <SNode>{
+                    type: "node:node-service",
+                    id: serId,
+                    children: [
+                        <SLabel>{
+                        type: 'label',
+                        id: idCache.uniqueId(serId + '.label'),
+                        text: service.name
+                    }],
+                    layout: "vbox",
+                    layoutOptions: {
+                        innerHeight: 100,
+                        paddingTop: 10.0,
+                        paddingBottom: 10.0,
+                        paddingLeft: 10.0,
+                        paddingRight: 10.0
+                    }
+            };
+            serNode.children = [...serNode.children?serNode.children:[],...this.getServiceLabel(service,serId,ctx)];
+
+            node.children.push(serNode);
+            console.error("children length:"+node.children.length)
+        }
+
         for (let pub of comp.publishers){
             const pubId = idCache.uniqueId((pub.sigName != undefined)? pub.sigName : ((pub.sigRef != undefined)&&(pub.sigRef.ref != undefined)? pub.sigRef?.ref?.name:"undefined"), pub);
             node.children.push(
@@ -166,13 +214,75 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
         return [nodeSensor,nodeActuator];
     }
 
+protected getSensorLabel(sig:Sensor, nodeId:string, ctx: GeneratorContext<Model>):SLabel[]{
+        const { idCache } = ctx;
+        let res:SLabel[] = [
+            <SLabel>{
+                    type: "label:values",
+                    id: idCache.uniqueId(nodeId + '.values1'),
+                    text:"DL:"+sig.dl.mean+"+/-"+sig.dl.stdDev+"ms"
+                },
+            <SLabel>{
+                    type: "label:values",
+                    id: idCache.uniqueId(nodeId + '.values2'),
+                    text:"SSP:"+sig.ssp.mean+"+/-"+sig.ssp.stdDev+"ms"
+                }
+        ];
+        return res;
+    }
+
+protected getActuatorLabel(sig:Actuator, nodeId:string, ctx: GeneratorContext<Model>):SLabel[]{
+        const { idCache } = ctx;
+        let res:SLabel[] = [
+            <SLabel>{
+                    type: "label:values",
+                    id: idCache.uniqueId(nodeId + '.values1'),
+                    text:"DL:"+sig.ad.mean+"+/-"+sig.ad.stdDev+"ms"
+                }
+            ];
+        if (isPeriodicTriggering(sig.trigRule)){
+            res.push(<SLabel>{
+                    type: "label:values",
+                    id: idCache.uniqueId(nodeId + '.values2'),
+                    text:"AP:"+sig.trigRule.period.mean+"+/-"+sig.trigRule.period.stdDev+"ms"
+                });
+        }
+
+        return res;
+    }
+
+protected getServiceLabel(service:Service, nodeId:string, ctx: GeneratorContext<Model>):SModelElement[]{
+        const { idCache } = ctx;
+        let res:SLabel[] = [
+            <SLabel>{
+                    type: "label:values",
+                    id: idCache.uniqueId(nodeId + '.values1'),
+                    text:"ET:"+service.execTime.mean+"+/-"+service.execTime.stdDev+"ms"
+                }
+            ]
+            if (isPeriodicTriggering(service.trigRule)){
+                res.push(<SLabel>{
+                    type: "label:values",
+                    id: idCache.uniqueId(nodeId + '.values2'),
+                    text:"AP:"+service.trigRule.period.mean+"+/-"+service.trigRule.period.stdDev+"ms"
+                });
+            }else{
+                res.push(<SLabel>{
+                    type: "label:values",
+                    id: idCache.uniqueId(nodeId + '.values2'),
+                    text:"triggered on:"+(service.trigRule.trigger.ref?.sigName?service.trigRule.trigger.ref?.sigName:service.trigRule.trigger.ref?.sigRef?.ref?.name)
+                });
+            }
+        return res;
+    }
 
      protected generateSignal(sig: Signal, ctx: GeneratorContext<Model>): SNode {
         const { idCache } = ctx;
         const nodeId = idCache.uniqueId(sig.name, sig);
         // console.error(`#############  ${sig.name}:${nodeId}   -- ${idCache.getId(sig)}`)
+                                            //  :"(AD:"+sig.ad.mean+"+/-"+sig.ad.stdDev+"ms\n:"+sig.trigRule.$type+")";
         const sigType = isSensor(sig)? "output" : "input";
-        const node = {
+        const node = <SNode>{
             type: 'node:vss-node',
             id: nodeId,
             children: [
@@ -194,7 +304,7 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                     }
                 }
             ],
-            layout: "stack",
+            layout: "vbox",
             layoutOptions: {
                 paddingTop: 10.0,
                 paddingBottom: 10.0,
@@ -202,6 +312,11 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                 paddingRight: 10.0
             }
         };
+        if(isSensor(sig)){
+            node.children = [...node.children?node.children:[],...this.getSensorLabel(sig,nodeId,ctx)]
+        }else{
+            node.children = [...node.children?node.children:[],...this.getActuatorLabel(sig,nodeId,ctx)]
+        }
         this.traceProvider.trace(node, sig);
         this.markerProvider.addDiagnosticMarker(node, sig, ctx);
         return node;

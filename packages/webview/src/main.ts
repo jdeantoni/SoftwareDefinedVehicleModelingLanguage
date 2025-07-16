@@ -63,7 +63,7 @@ window.addEventListener('message', event => {
     const msg = event.data;
     // console.error("~~~~> packages/webview/src/main.ts: message="+JSON.stringify(msg))
     // console.error("\t1:received image"+msg.result.image)
-    if (msg.result != undefined){//'image-result') {
+    if (msg.result != undefined && msg.result.image != undefined){//'image-result') {
         tooltip.innerHTML = `<img src=${msg.result.image} width="200" />`; //../picts/stats.png
         tooltip.style.left = `${msg.result.position.x + 10}px`;
         tooltip.style.top = `${msg.result.position.y + 10}px`;
@@ -87,11 +87,15 @@ export class CustomHoverListener extends HoverMouseListener {
             elementId: target.id,
             position: { x: event.clientX, y: event.clientY }
         }).then(response => {
-            const { image, position } = response;
-            tooltip.innerHTML = `<img src="${image}" width="200" />`;
-            tooltip.style.left = `${position.x + 10}px`;
-            tooltip.style.top = `${position.y + 10}px`;
-            tooltip.style.display = 'block';
+            if(response.image){
+                const { image, position } = response;
+                tooltip.innerHTML = `<img src="${image}" width="200" />`;
+                tooltip.style.left = `${position.x + 10}px`;
+                tooltip.style.top = `${position.y + 10}px`;
+                tooltip.style.display = 'block';
+            }else{
+                tooltip.style.display = 'none';
+            }
         });
         return [];
     }

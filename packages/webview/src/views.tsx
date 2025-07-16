@@ -18,7 +18,7 @@
 /** @jsx svg */
 import { injectable } from 'inversify';
 import { VNode } from 'snabbdom';
-import { RenderingContext, svg, IView, SPortImpl, RectangularNodeView, IViewArgs, SNodeImpl, SShapeElementImpl } from 'sprotty';
+import { RenderingContext, svg, IView, SPortImpl, RectangularNodeView, IViewArgs, SNodeImpl, SShapeElementImpl /*SLabelView, SLabelImpl, isEdgeLayoutable*/ } from 'sprotty';
 import { Hoverable, Selectable } from 'sprotty-protocol';
 
 // @injectable()
@@ -38,6 +38,57 @@ import { Hoverable, Selectable } from 'sprotty-protocol';
 //     }
 // }
 
+// @injectable()
+// export class ExpandableNodeView implements SElementView {
+//     render(node: ExpandableNode, context: RenderingContext): VNode {
+//         const isExpanded = node.expanded
+
+//         return h('g', {}, [
+//             h('rect', { x: 0, y: 0, width: 120, height: isExpanded ? 80 : 40, class: 'expandable-node' }),
+//             h('text', { x: 10, y: 20 }, node.label || ''),
+//             h('text', {
+//                 x: 100, y: 20, class: 'toggle-button', onclick: () =>
+//                     context.root.context.actions.dispatch(new ToggleExpandAction(node.id))
+//             }, isExpanded ? '-' : '+'),
+
+//             // Only render children when expanded
+//             ...(isExpanded && node.children
+//                 ? node.children.map(child => context.renderElement(child))
+//                 : [])
+//         ])
+//     }
+// }
+
+// @injectable()
+// export class SLabelValuesView extends SLabelView{
+
+//     public override render(label: Readonly<SLabelImpl>, context: RenderingContext): VNode | undefined {
+//         if (!isEdgeLayoutable(label) && !this.isVisible(label, context)) {
+//             return undefined;
+//         }
+//         const vnode = <text class-sprotty-label={true}>{label.text}</text>;
+//         const subType = getSubType(label);
+//         if (subType) {
+//             setAttr(vnode, 'class', subType);
+//         }
+//         return vnode;
+//     }
+
+//     public override render(node: Readonly<SShapeElementImpl & Hoverable & Selectable>, context: RenderingContext, args?: IViewArgs): VNode | undefined {
+//         if (!this.isVisible(node, context)) {
+//             return undefined;
+//         }
+//         return <g>
+//             <rect class-sprotty-node={node instanceof SNodeImpl} class-sprotty-port={node instanceof SPortImpl}
+//                   class-mouseover={node.hoverFeedback} class-selected={node.selected} class-vss-node= {node instanceof SNodeImpl}
+//                   x="0" y="0" width={Math.max(node.size.width, 0)} height={Math.max(node.size.height, 0)}
+//                   ></rect>
+//             {context.renderChildren(node)}
+//         </g>;
+//     }
+// }
+
+
 @injectable()
 export class SdvmlSignalNodeView extends RectangularNodeView{
     public override render(node: Readonly<SShapeElementImpl & Hoverable & Selectable>, context: RenderingContext, args?: IViewArgs): VNode | undefined {
@@ -48,6 +99,42 @@ export class SdvmlSignalNodeView extends RectangularNodeView{
             <rect class-sprotty-node={node instanceof SNodeImpl} class-sprotty-port={node instanceof SPortImpl}
                   class-mouseover={node.hoverFeedback} class-selected={node.selected} class-vss-node= {node instanceof SNodeImpl}
                   x="0" y="0" width={Math.max(node.size.width, 0)} height={Math.max(node.size.height, 0)}
+                  ></rect>
+            {context.renderChildren(node)}
+        </g>;
+    }
+}
+
+@injectable()
+export class SdvmlServiceNodeView extends RectangularNodeView{
+    public override render(node: Readonly<SShapeElementImpl & Hoverable & Selectable>, context: RenderingContext, args?: IViewArgs): VNode | undefined {
+        if (!this.isVisible(node, context)) {
+            return undefined;
+        }
+        const parent = node.parent as SShapeElementImpl | undefined;
+        const width = parent?.size?.width ?? 100;
+        return <g>
+            <rect class-sprotty-node={node instanceof SNodeImpl} class-sprotty-port={node instanceof SPortImpl}
+                  class-mouseover={node.hoverFeedback} class-selected={node.selected} class-node-service= {node instanceof SNodeImpl}
+                  x="0" y="0" width={width-12*2} height={Math.max(node.size.height, 0)}
+                  ></rect>
+            {context.renderChildren(node)}
+        </g>;
+    }
+}
+
+@injectable()
+export class SdvmlLabelNodeView extends RectangularNodeView{
+    public override render(node: Readonly<SShapeElementImpl & Hoverable & Selectable>, context: RenderingContext, args?: IViewArgs): VNode | undefined {
+        if (!this.isVisible(node, context)) {
+            return undefined;
+        }
+        const parent = node.parent as SShapeElementImpl | undefined;
+        const width = parent?.size?.width ?? 100;
+        return <g>
+            <rect class-sprotty-node={node instanceof SNodeImpl} class-sprotty-port={node instanceof SPortImpl}
+                  class-mouseover={node.hoverFeedback} class-selected={node.selected} class-node-label= {node instanceof SNodeImpl}
+                  x="0" y="0" width={width-12*2} height={Math.max(node.size.height, 0)}
                   ></rect>
             {context.renderChildren(node)}
         </g>;

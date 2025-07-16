@@ -1784,9 +1784,20 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `.sprotty-node {
-    fill: rgb(136, 136, 255);
+    fill: rgb(169, 208, 250);
     stroke-width: 1;
-    stroke: rgb(15, 0, 100);
+    stroke: rgb(113, 182, 255);
+}
+.node-label {
+    fill: rgb(169, 208, 250);
+    stroke-width: 0;
+    text-align: center;
+}
+
+.node-service {
+    fill: rgb(217, 234, 252);
+    stroke-width: 0;
+    text-align: left;
 }
 
 .sprotty-node.selected {
@@ -1797,6 +1808,18 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.sprotty-node {
 .sprotty-label {
     fill: darkslategrey;
     stroke-width: 0;
+}
+
+.sprotty-label {
+    fill: darkslategrey;
+    stroke-width: 0;
+}
+
+.values{
+   font-style: italic;
+   font-size: 70%;
+   fill: rgb(122, 121, 121);
+   stroke-width: 0;
 }
 
 .sprotty-button {
@@ -1867,7 +1890,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.sprotty-node {
     fill: rgb(255, 255, 255);
     stroke-width: 1;
     stroke: rgb(218, 218, 218);
-}`, "",{"version":3,"sources":["webpack://./css/diagram.css"],"names":[],"mappings":"AAAA;IACI,wBAAwB;IACxB,eAAe;IACf,uBAAuB;AAC3B;;AAEA;IACI,eAAe;IACf,gDAAgD;AACpD;;AAEA;IACI,mBAAmB;IACnB,eAAe;AACnB;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,SAAS;IACT,uDAAuD;IACvD,iBAAiB;AACrB;;AAEA;IACI,oDAAoD;AACxD;;AAEA;IACI,8CAA8C;IAC9C,YAAY;IACZ,aAAa;AACjB;;AAEA;IACI,aAAa;AACjB;;AAEA;IACI,uDAAuD;AAC3D;;AAEA;IACI,sDAAsD;IACtD,eAAe;AACnB;;AAEA;IACI,iBAAiB;AACrB;;AAEA;IACI,UAAU;IACV,WAAW;AACf;;AAEA;IACI,uBAAuB;IACvB,eAAe;IACf,aAAa;AACjB;;AAEA;;GAEG;;AAEH;IACI;AACJ;;AAEA;IACI;AACJ;;AAEA;IACI,wBAAwB;IACxB,eAAe;IACf,0BAA0B;AAC9B","sourcesContent":[".sprotty-node {\n    fill: rgb(136, 136, 255);\n    stroke-width: 1;\n    stroke: rgb(15, 0, 100);\n}\n\n.sprotty-node.selected {\n    stroke-width: 2;\n    stroke: var(--vscode-button-secondaryForeground);\n}\n\n.sprotty-label {\n    fill: darkslategrey;\n    stroke-width: 0;\n}\n\n.sprotty-button {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge .sprotty-label {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge {\n    fill:none;\n    stroke: var(--vscode-editorActiveLineNumber-foreground);\n    stroke-width: 2px;\n}\n\n.sprotty-edge-arrow {\n    fill:var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge > .sprotty-routing-handle {\n    fill: var(--vscode-editor-selectionBackground);\n    stroke: none;\n    z-index: 1000;\n}\n\n.sprotty-edge > .sprotty-routing-handle[data-kind='line'] {\n    opacity: 0.35;\n}\n\n.sprotty-edge > .sprotty-routing-handle.selected {\n    fill: var(--vscode-editor-selectionHighlightBackground);\n}\n\n.sprotty-edge > .sprotty-routing-handle.mouseover {\n    stroke: var(--vscode-editor-symbolHighlightBackground);\n    stroke-width: 1;\n}\n\n.sprotty-edge.mouseover:not(.selected) {\n    stroke-width: 3px;\n}\n\n.sprotty-hidden {\n    width: 0px;\n    height: 0px;\n}\n\n.vss-node{\n    fill: rgb(255, 231, 98);\n    stroke-width: 1;\n    stroke: coral;\n}\n\n/* .vss-node .sprotty-label{\n    fill:darkslategrey\n} */\n\n.sprotty-port{\n    fill:rgb(15, 0, 100)\n}\n\n.vss-node .sprotty-port{\n    fill:rgb(100, 0, 0)\n}\n\n.vss-container{\n    fill: rgb(255, 255, 255);\n    stroke-width: 1;\n    stroke: rgb(218, 218, 218);\n}"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./css/diagram.css"],"names":[],"mappings":"AAAA;IACI,wBAAwB;IACxB,eAAe;IACf,0BAA0B;AAC9B;AACA;IACI,wBAAwB;IACxB,eAAe;IACf,kBAAkB;AACtB;;AAEA;IACI,wBAAwB;IACxB,eAAe;IACf,gBAAgB;AACpB;;AAEA;IACI,eAAe;IACf,gDAAgD;AACpD;;AAEA;IACI,mBAAmB;IACnB,eAAe;AACnB;;AAEA;IACI,mBAAmB;IACnB,eAAe;AACnB;;AAEA;GACG,kBAAkB;GAClB,cAAc;GACd,wBAAwB;GACxB,eAAe;AAClB;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,SAAS;IACT,uDAAuD;IACvD,iBAAiB;AACrB;;AAEA;IACI,oDAAoD;AACxD;;AAEA;IACI,8CAA8C;IAC9C,YAAY;IACZ,aAAa;AACjB;;AAEA;IACI,aAAa;AACjB;;AAEA;IACI,uDAAuD;AAC3D;;AAEA;IACI,sDAAsD;IACtD,eAAe;AACnB;;AAEA;IACI,iBAAiB;AACrB;;AAEA;IACI,UAAU;IACV,WAAW;AACf;;AAEA;IACI,uBAAuB;IACvB,eAAe;IACf,aAAa;AACjB;;AAEA;;GAEG;;AAEH;IACI;AACJ;;AAEA;IACI;AACJ;;AAEA;IACI,wBAAwB;IACxB,eAAe;IACf,0BAA0B;AAC9B","sourcesContent":[".sprotty-node {\n    fill: rgb(169, 208, 250);\n    stroke-width: 1;\n    stroke: rgb(113, 182, 255);\n}\n.node-label {\n    fill: rgb(169, 208, 250);\n    stroke-width: 0;\n    text-align: center;\n}\n\n.node-service {\n    fill: rgb(217, 234, 252);\n    stroke-width: 0;\n    text-align: left;\n}\n\n.sprotty-node.selected {\n    stroke-width: 2;\n    stroke: var(--vscode-button-secondaryForeground);\n}\n\n.sprotty-label {\n    fill: darkslategrey;\n    stroke-width: 0;\n}\n\n.sprotty-label {\n    fill: darkslategrey;\n    stroke-width: 0;\n}\n\n.values{\n   font-style: italic;\n   font-size: 70%;\n   fill: rgb(122, 121, 121);\n   stroke-width: 0;\n}\n\n.sprotty-button {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge .sprotty-label {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge {\n    fill:none;\n    stroke: var(--vscode-editorActiveLineNumber-foreground);\n    stroke-width: 2px;\n}\n\n.sprotty-edge-arrow {\n    fill:var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge > .sprotty-routing-handle {\n    fill: var(--vscode-editor-selectionBackground);\n    stroke: none;\n    z-index: 1000;\n}\n\n.sprotty-edge > .sprotty-routing-handle[data-kind='line'] {\n    opacity: 0.35;\n}\n\n.sprotty-edge > .sprotty-routing-handle.selected {\n    fill: var(--vscode-editor-selectionHighlightBackground);\n}\n\n.sprotty-edge > .sprotty-routing-handle.mouseover {\n    stroke: var(--vscode-editor-symbolHighlightBackground);\n    stroke-width: 1;\n}\n\n.sprotty-edge.mouseover:not(.selected) {\n    stroke-width: 3px;\n}\n\n.sprotty-hidden {\n    width: 0px;\n    height: 0px;\n}\n\n.vss-node{\n    fill: rgb(255, 231, 98);\n    stroke-width: 1;\n    stroke: coral;\n}\n\n/* .vss-node .sprotty-label{\n    fill:darkslategrey\n} */\n\n.sprotty-port{\n    fill:rgb(15, 0, 100)\n}\n\n.vss-node .sprotty-port{\n    fill:rgb(100, 0, 0)\n}\n\n.vss-container{\n    fill: rgb(255, 255, 255);\n    stroke-width: 1;\n    stroke: rgb(218, 218, 218);\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -40269,12 +40292,12 @@ function createSdvmlDiagramContainer(widgetId, customHoverListener) {
             enable: [sprotty_1.hoverFeedbackFeature, sprotty_1.popupFeature]
         });
         (0, sprotty_1.configureModelElement)(context, 'node', model_1.SdvmlNode, sprotty_1.RectangularNodeView);
-        // , {
-        //     disable: [moveFeature]
-        // });
+        (0, sprotty_1.configureModelElement)(context, 'node:node-label', model_1.SdvmlNode, views_1.SdvmlLabelNodeView);
+        (0, sprotty_1.configureModelElement)(context, 'node:node-service', model_1.SdvmlNode, views_1.SdvmlServiceNodeView);
         (0, sprotty_1.configureModelElement)(context, 'label', sprotty_1.SLabelImpl, sprotty_1.SLabelView, {
             enable: [sprotty_1.editLabelFeature]
         });
+        (0, sprotty_1.configureModelElement)(context, 'label:values', sprotty_1.SLabelImpl, sprotty_1.SLabelView);
         (0, sprotty_1.configureModelElement)(context, 'label:xref', sprotty_1.SLabelImpl, sprotty_1.SLabelView, {
             enable: [sprotty_1.editLabelFeature]
         });
@@ -40468,7 +40491,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.TopTriangleButtonView = exports.DownTriangleButtonView = exports.TriangleButtonView = exports.SdvmlVSSNodeView = exports.SdvmlSignalNodeView = void 0;
+exports.TopTriangleButtonView = exports.DownTriangleButtonView = exports.TriangleButtonView = exports.SdvmlVSSNodeView = exports.SdvmlLabelNodeView = exports.SdvmlServiceNodeView = exports.SdvmlSignalNodeView = void 0;
 /** @jsx svg */
 const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const sprotty_1 = __webpack_require__(/*! sprotty */ "../../node_modules/sprotty/lib/index.js");
@@ -40486,6 +40509,50 @@ const sprotty_1 = __webpack_require__(/*! sprotty */ "../../node_modules/sprotty
 //         return toDegrees(Math.atan2(x1.y - x0.y, x1.x - x0.x));
 //     }
 // }
+// @injectable()
+// export class ExpandableNodeView implements SElementView {
+//     render(node: ExpandableNode, context: RenderingContext): VNode {
+//         const isExpanded = node.expanded
+//         return h('g', {}, [
+//             h('rect', { x: 0, y: 0, width: 120, height: isExpanded ? 80 : 40, class: 'expandable-node' }),
+//             h('text', { x: 10, y: 20 }, node.label || ''),
+//             h('text', {
+//                 x: 100, y: 20, class: 'toggle-button', onclick: () =>
+//                     context.root.context.actions.dispatch(new ToggleExpandAction(node.id))
+//             }, isExpanded ? '-' : '+'),
+//             // Only render children when expanded
+//             ...(isExpanded && node.children
+//                 ? node.children.map(child => context.renderElement(child))
+//                 : [])
+//         ])
+//     }
+// }
+// @injectable()
+// export class SLabelValuesView extends SLabelView{
+//     public override render(label: Readonly<SLabelImpl>, context: RenderingContext): VNode | undefined {
+//         if (!isEdgeLayoutable(label) && !this.isVisible(label, context)) {
+//             return undefined;
+//         }
+//         const vnode = <text class-sprotty-label={true}>{label.text}</text>;
+//         const subType = getSubType(label);
+//         if (subType) {
+//             setAttr(vnode, 'class', subType);
+//         }
+//         return vnode;
+//     }
+//     public override render(node: Readonly<SShapeElementImpl & Hoverable & Selectable>, context: RenderingContext, args?: IViewArgs): VNode | undefined {
+//         if (!this.isVisible(node, context)) {
+//             return undefined;
+//         }
+//         return <g>
+//             <rect class-sprotty-node={node instanceof SNodeImpl} class-sprotty-port={node instanceof SPortImpl}
+//                   class-mouseover={node.hoverFeedback} class-selected={node.selected} class-vss-node= {node instanceof SNodeImpl}
+//                   x="0" y="0" width={Math.max(node.size.width, 0)} height={Math.max(node.size.height, 0)}
+//                   ></rect>
+//             {context.renderChildren(node)}
+//         </g>;
+//     }
+// }
 let SdvmlSignalNodeView = class SdvmlSignalNodeView extends sprotty_1.RectangularNodeView {
     render(node, context, args) {
         if (!this.isVisible(node, context)) {
@@ -40500,6 +40567,40 @@ exports.SdvmlSignalNodeView = SdvmlSignalNodeView;
 exports.SdvmlSignalNodeView = SdvmlSignalNodeView = __decorate([
     (0, inversify_1.injectable)()
 ], SdvmlSignalNodeView);
+let SdvmlServiceNodeView = class SdvmlServiceNodeView extends sprotty_1.RectangularNodeView {
+    render(node, context, args) {
+        var _a, _b;
+        if (!this.isVisible(node, context)) {
+            return undefined;
+        }
+        const parent = node.parent;
+        const width = (_b = (_a = parent === null || parent === void 0 ? void 0 : parent.size) === null || _a === void 0 ? void 0 : _a.width) !== null && _b !== void 0 ? _b : 100;
+        return (0, sprotty_1.svg)("g", null,
+            (0, sprotty_1.svg)("rect", { "class-sprotty-node": node instanceof sprotty_1.SNodeImpl, "class-sprotty-port": node instanceof sprotty_1.SPortImpl, "class-mouseover": node.hoverFeedback, "class-selected": node.selected, "class-node-service": node instanceof sprotty_1.SNodeImpl, x: "0", y: "0", width: width - 12 * 2, height: Math.max(node.size.height, 0) }),
+            context.renderChildren(node));
+    }
+};
+exports.SdvmlServiceNodeView = SdvmlServiceNodeView;
+exports.SdvmlServiceNodeView = SdvmlServiceNodeView = __decorate([
+    (0, inversify_1.injectable)()
+], SdvmlServiceNodeView);
+let SdvmlLabelNodeView = class SdvmlLabelNodeView extends sprotty_1.RectangularNodeView {
+    render(node, context, args) {
+        var _a, _b;
+        if (!this.isVisible(node, context)) {
+            return undefined;
+        }
+        const parent = node.parent;
+        const width = (_b = (_a = parent === null || parent === void 0 ? void 0 : parent.size) === null || _a === void 0 ? void 0 : _a.width) !== null && _b !== void 0 ? _b : 100;
+        return (0, sprotty_1.svg)("g", null,
+            (0, sprotty_1.svg)("rect", { "class-sprotty-node": node instanceof sprotty_1.SNodeImpl, "class-sprotty-port": node instanceof sprotty_1.SPortImpl, "class-mouseover": node.hoverFeedback, "class-selected": node.selected, "class-node-label": node instanceof sprotty_1.SNodeImpl, x: "0", y: "0", width: width - 12 * 2, height: Math.max(node.size.height, 0) }),
+            context.renderChildren(node));
+    }
+};
+exports.SdvmlLabelNodeView = SdvmlLabelNodeView;
+exports.SdvmlLabelNodeView = SdvmlLabelNodeView = __decorate([
+    (0, inversify_1.injectable)()
+], SdvmlLabelNodeView);
 let SdvmlVSSNodeView = class SdvmlVSSNodeView extends sprotty_1.RectangularNodeView {
     render(node, context, args) {
         if (!this.isVisible(node, context)) {
@@ -40691,7 +40792,7 @@ window.addEventListener('message', event => {
     const msg = event.data;
     // console.error("~~~~> packages/webview/src/main.ts: message="+JSON.stringify(msg))
     // console.error("\t1:received image"+msg.result.image)
-    if (msg.result != undefined) { //'image-result') {
+    if (msg.result != undefined && msg.result.image != undefined) { //'image-result') {
         tooltip.innerHTML = `<img src=${msg.result.image} width="200" />`; //../picts/stats.png
         tooltip.style.left = `${msg.result.position.x + 10}px`;
         tooltip.style.top = `${msg.result.position.y + 10}px`;
@@ -40710,11 +40811,16 @@ class CustomHoverListener extends sprotty_1.HoverMouseListener {
             elementId: target.id,
             position: { x: event.clientX, y: event.clientY }
         }).then(response => {
-            const { image, position } = response;
-            tooltip.innerHTML = `<img src="${image}" width="200" />`;
-            tooltip.style.left = `${position.x + 10}px`;
-            tooltip.style.top = `${position.y + 10}px`;
-            tooltip.style.display = 'block';
+            if (response.image) {
+                const { image, position } = response;
+                tooltip.innerHTML = `<img src="${image}" width="200" />`;
+                tooltip.style.left = `${position.x + 10}px`;
+                tooltip.style.top = `${position.y + 10}px`;
+                tooltip.style.display = 'block';
+            }
+            else {
+                tooltip.style.display = 'none';
+            }
         });
         return [];
     }

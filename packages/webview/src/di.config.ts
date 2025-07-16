@@ -31,7 +31,7 @@ import {
 } from 'sprotty';
 import { CustomRouter } from './custom-edge-router';
 import { SdvmlEdge, SdvmlNode } from './model';
-import { DownTriangleButtonView, SdvmlSignalNodeView, /*SdvmlVSSNodeView,*/ TopTriangleButtonView, TriangleButtonView } from './views';
+import { DownTriangleButtonView, SdvmlLabelNodeView, SdvmlServiceNodeView, SdvmlSignalNodeView, /*SdvmlVSSNodeView,*/ TopTriangleButtonView, TriangleButtonView } from './views';
 
 import { HoverMouseListener } from 'sprotty';
 import { CustomHoverListener } from './main';
@@ -56,12 +56,12 @@ export function createSdvmlDiagramContainer(widgetId: string, customHoverListene
             enable: [hoverFeedbackFeature, popupFeature]
         });
         configureModelElement(context, 'node', SdvmlNode, RectangularNodeView);
-        // , {
-        //     disable: [moveFeature]
-        // });
+        configureModelElement(context, 'node:node-label', SdvmlNode, SdvmlLabelNodeView);
+        configureModelElement(context, 'node:node-service', SdvmlNode, SdvmlServiceNodeView);
         configureModelElement(context, 'label', SLabelImpl, SLabelView, {
             enable: [editLabelFeature]
         });
+        configureModelElement(context, 'label:values', SLabelImpl, SLabelView);
         configureModelElement(context, 'label:xref', SLabelImpl, SLabelView, {
             enable: [editLabelFeature]
         });
