@@ -176,7 +176,7 @@ export class DownTriangleButtonView implements IView {
 @injectable()
 export class InvisibleTriangleView implements IView {
   render(model: SPortImpl, context: RenderingContext): VNode {
-    return <path d="M 0,8 L 4,0 L 8,8 Z" />;
+    return <path d="M 0,0 L 0,0 L 0,0 Z" />;
   }
 }
 

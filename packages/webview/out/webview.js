@@ -40595,7 +40595,7 @@ exports.DownTriangleButtonView = DownTriangleButtonView = __decorate([
 ], DownTriangleButtonView);
 let InvisibleTriangleView = class InvisibleTriangleView {
     render(model, context) {
-        return (0, sprotty_1.svg)("path", { d: "M 0,8 L 4,0 L 8,8 Z" });
+        return (0, sprotty_1.svg)("path", { d: "M 0,0 L 0,0 L 0,0 Z" });
     }
 };
 exports.InvisibleTriangleView = InvisibleTriangleView;
