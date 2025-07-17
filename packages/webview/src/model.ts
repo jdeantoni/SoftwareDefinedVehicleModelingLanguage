@@ -16,13 +16,20 @@
  ********************************************************************************/
 
 import {
-    ManhattanEdgeRouter, RectangularNode,
-    SEdgeImpl, SLabelImpl, SRoutableElementImpl
+    /*ManhattanEdgeRouter, */PolylineEdgeRouter, RectangularNode,
+    SEdgeImpl, SLabelImpl, SNodeImpl, SRoutableElementImpl
 } from 'sprotty';
 import { EdgePlacement } from 'sprotty-protocol';
 
+// import type { Point } from 'sprotty-protocol';
+
 export class SdvmlEdge extends SEdgeImpl {
-    override routerKind = ManhattanEdgeRouter.KIND;
+    override routerKind = PolylineEdgeRouter.KIND;
+    override targetAnchorCorrection = Math.sqrt(5);
+}
+
+export class SdvmlFCEdge extends SEdgeImpl {
+    override routerKind = PolylineEdgeRouter.KIND;
     override targetAnchorCorrection = Math.sqrt(5);
 }
 
@@ -31,6 +38,19 @@ export class SdvmlEdgeLabel extends SLabelImpl {
         rotate: true,
         position: 0
     };
+}
+
+export class ConnectableNode extends SNodeImpl {
+//   override canConnect(routable: SRoutableElementImpl, role: string) {
+//         return true;
+//     }
+
+//  public getAnchor(referencePoint: Point, refId?: string): Point {
+//     return {
+//       x: this.position.x + this.size.width / 2,
+//       y: this.position.y + this.size.height / 2
+//     };
+//   }
 }
 
 export class SdvmlNode extends RectangularNode {

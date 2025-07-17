@@ -21,18 +21,22 @@ export type SdvmlKeywordNames =
     | ")"
     | "+/-"
     | ","
+    | "->"
     | ":"
     | "AD"
     | "Actuator"
     | "App"
+    | "Chains"
     | "Component"
     | "DL"
     | "ExecTime"
+    | "Functional"
     | "SDV"
     | "SSP"
     | "Sensor"
     | "Signal"
     | "VSS"
+    | "chain"
     | "ms"
     | "on"
     | "periodic"
@@ -44,6 +48,14 @@ export type SdvmlKeywordNames =
     | "triggered";
 
 export type SdvmlTokenNames = SdvmlTerminalNames | SdvmlKeywordNames;
+
+export type FCParticipant = Actuator | Publisher | Sensor | Service | Subscriber;
+
+export const FCParticipant = 'FCParticipant';
+
+export function isFCParticipant(item: unknown): item is FCParticipant {
+    return reflection.isInstance(item, FCParticipant);
+}
 
 export type Signal = Actuator | Sensor;
 
@@ -102,8 +114,21 @@ export function isEventTriggering(item: unknown): item is EventTriggering {
     return reflection.isInstance(item, EventTriggering);
 }
 
+export interface FunctionalChain extends langium.AstNode {
+    readonly $container: Model;
+    readonly $type: 'FunctionalChain';
+    participants: Array<langium.Reference<FCParticipant>>;
+}
+
+export const FunctionalChain = 'FunctionalChain';
+
+export function isFunctionalChain(item: unknown): item is FunctionalChain {
+    return reflection.isInstance(item, FunctionalChain);
+}
+
 export interface Model extends langium.AstNode {
     readonly $type: 'Model';
+    chains: Array<FunctionalChain>;
     components: Array<Component>;
     name: string;
     vss: VSS;
@@ -212,6 +237,8 @@ export type SdvmlAstType = {
     Actuator: Actuator
     Component: Component
     EventTriggering: EventTriggering
+    FCParticipant: FCParticipant
+    FunctionalChain: FunctionalChain
     Model: Model
     PeriodicTriggering: PeriodicTriggering
     Publisher: Publisher
@@ -227,18 +254,23 @@ export type SdvmlAstType = {
 export class SdvmlAstReflection extends langium.AbstractAstReflection {
 
     getAllTypes(): string[] {
-        return [Actuator, Component, EventTriggering, Model, PeriodicTriggering, Publisher, RandomVar, Sensor, Service, Signal, Subscriber, TriggeringRule, VSS];
+        return [Actuator, Component, EventTriggering, FCParticipant, FunctionalChain, Model, PeriodicTriggering, Publisher, RandomVar, Sensor, Service, Signal, Subscriber, TriggeringRule, VSS];
     }
 
     protected override computeIsSubtype(subtype: string, supertype: string): boolean {
         switch (subtype) {
             case Actuator:
             case Sensor: {
-                return this.isSubtype(Signal, supertype);
+                return this.isSubtype(FCParticipant, supertype) || this.isSubtype(Signal, supertype);
             }
             case EventTriggering:
             case PeriodicTriggering: {
                 return this.isSubtype(TriggeringRule, supertype);
+            }
+            case Publisher:
+            case Service:
+            case Subscriber: {
+                return this.isSubtype(FCParticipant, supertype);
             }
             default: {
                 return false;
@@ -251,6 +283,9 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
         switch (referenceId) {
             case 'EventTriggering:trigger': {
                 return Subscriber;
+            }
+            case 'FunctionalChain:participants': {
+                return FCParticipant;
             }
             case 'Publisher:sigRef': {
                 return Actuator;
@@ -295,10 +330,19 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                     ]
                 };
             }
+            case FunctionalChain: {
+                return {
+                    name: FunctionalChain,
+                    properties: [
+                        { name: 'participants', defaultValue: [] }
+                    ]
+                };
+            }
             case Model: {
                 return {
                     name: Model,
                     properties: [
+                        { name: 'chains', defaultValue: [] },
                         { name: 'components', defaultValue: [] },
                         { name: 'name' },
                         { name: 'vss' }
