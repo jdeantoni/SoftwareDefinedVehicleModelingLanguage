@@ -16,4 +16,4 @@ Some minimal examples can be found under the [workspace](../workspace/) folder. 
 It will compiled a network of communicating timed automata in the IF folder.
 
 
-![alt text](image-1.png)
+![alt text](image-2.png)

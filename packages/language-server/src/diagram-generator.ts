@@ -17,13 +17,15 @@
 
 import { GeneratorContext, LangiumDiagramGenerator } from 'langium-sprotty';
 import { /*SEdge,*/ EdgeLayoutable, SCompartment, SEdge, SLabel, SModelRoot, SNode, SPort, SModelElement/*, EdgeLayoutable*/ } from 'sprotty-protocol';
-import { Signal, Component, Model, isSensor, VSS, Sensor, Actuator, isPeriodicTriggering, Service } from './generated/ast.js';
+import { Signal, Component, Model, isSensor, VSS, Sensor, Actuator, isPeriodicTriggering, Service, FunctionalChain, isService } from './generated/ast.js';
 
 // export interface ExpandableNode extends SNode {
 //     type: 'expandable-node'
 //     expanded: boolean
 //     children?: SNode[]
 // }
+
+
 
 
 export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
@@ -38,7 +40,8 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                 ...sdvmlModel.components.map(c => this.generateComponent(c, args)),
                 // ...this.generateVSS(sdvmlModel.vss, args),
                 ...sdvmlModel.vss.signals.flatMap(s => this.generateSignal(s, args)),
-                ...sdvmlModel.components.flatMap(c => this.generateEdge(c, args))
+                ...sdvmlModel.components.flatMap(c => this.generateEdge(c, args)),
+                ...sdvmlModel.chains.flatMap(c => this.generateFCEdge(c, args))
             ]
         };
         this.traceProvider.trace(graph, sdvmlModel);
@@ -79,22 +82,32 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                 paddingRight: 10.0
             }
         };
-        console.error("service length:"+comp.services.length)
+        // console.error("service length:"+comp.services.length)
         for (let service of comp.services){
-            console.error("service name:"+service.name)
-            const serId = idCache.uniqueId(nodeId + '.service')
+            // console.error("service name:"+service.name)
+            const serId = idCache.uniqueId(nodeId + '.service',service)
             let serNode = <SNode>{
                     type: "node:node-service",
                     id: serId,
                     children: [
                         <SLabel>{
-                        type: 'label',
-                        id: idCache.uniqueId(serId + '.label'),
-                        text: service.name
-                    }],
+                            type: 'label',
+                            id: idCache.uniqueId(serId + '.label'),
+                            text: service.name
+                        },
+                         <SPort>{
+                            type: 'port:fake-port',
+                            id: serId + '.input',
+                            direction : 'input'
+                        },
+                         <SPort>{
+                            type: 'port:fake-port',
+                            id: serId + '.output',
+                            direction : 'output'
+                        }
+                    ],
                     layout: "vbox",
                     layoutOptions: {
-                        innerHeight: 100,
                         paddingTop: 10.0,
                         paddingBottom: 10.0,
                         paddingLeft: 10.0,
@@ -104,7 +117,7 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
             serNode.children = [...serNode.children?serNode.children:[],...this.getServiceLabel(service,serId,ctx)];
 
             node.children.push(serNode);
-            console.error("children length:"+node.children.length)
+            // console.error("children length:"+node.children.length)
         }
 
         for (let pub of comp.publishers){
@@ -384,6 +397,50 @@ protected getServiceLabel(service:Service, nodeId:string, ctx: GeneratorContext<
                 res.push(edge);
             }
         }
+
+        return res;
+    }
+
+
+     protected generateFCEdge(fc: FunctionalChain, ctx: GeneratorContext<Model>): SEdge[] {
+        const { idCache } = ctx;
+        const res: SEdge[] = []
+        let prevParticipant = fc.participants[0];
+        if (prevParticipant.ref == undefined){
+                console.error("in creation of functional chain diagram, a participant is badly referenced");
+                return res;
+            }
+        for (let participant of fc.participants.slice(1)){
+            if (participant.ref == undefined){
+                console.error("in creation of functional chain diagram, a participant is badly referenced");
+                return res;
+            }
+            let sourceId = idCache.getId(prevParticipant.ref);
+            let targetId = idCache.getId(participant.ref);
+
+            if (isService(prevParticipant.ref)){
+                sourceId = sourceId+".output"
+            }
+
+            if (isService(participant.ref)){
+                targetId = targetId+".input"
+            }
+
+            // console.error(`#~~~~~~~~ from ${prevParticipant.ref?.name}  -> target = ${participant.ref.name}`)
+            const edgeId = idCache.uniqueId(`${sourceId}_to_${targetId}`, undefined);
+            const edge = {
+                type: 'edge:fc-edge',
+                id: edgeId,
+                sourceId: sourceId!,
+                targetId: targetId!,
+                layout: "stack"
+            };
+            this.traceProvider.trace(edge, participant.ref);
+            this.markerProvider.addDiagnosticMarker(edge, participant.ref, ctx);
+            res.push(edge);
+            prevParticipant = participant
+        }
+
 
         return res;
     }

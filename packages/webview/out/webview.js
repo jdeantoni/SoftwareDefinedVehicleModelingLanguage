@@ -1836,6 +1836,12 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.sprotty-node {
     stroke-width: 2px;
 }
 
+.fc-edge{
+    fill:none;
+    stroke: aquamarine;
+    stroke-width: 4px;
+}
+
 .sprotty-edge-arrow {
     fill:var(--vscode-editorActiveLineNumber-foreground);
 }
@@ -1890,7 +1896,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.sprotty-node {
     fill: rgb(255, 255, 255);
     stroke-width: 1;
     stroke: rgb(218, 218, 218);
-}`, "",{"version":3,"sources":["webpack://./css/diagram.css"],"names":[],"mappings":"AAAA;IACI,wBAAwB;IACxB,eAAe;IACf,0BAA0B;AAC9B;AACA;IACI,wBAAwB;IACxB,eAAe;IACf,kBAAkB;AACtB;;AAEA;IACI,wBAAwB;IACxB,eAAe;IACf,gBAAgB;AACpB;;AAEA;IACI,eAAe;IACf,gDAAgD;AACpD;;AAEA;IACI,mBAAmB;IACnB,eAAe;AACnB;;AAEA;IACI,mBAAmB;IACnB,eAAe;AACnB;;AAEA;GACG,kBAAkB;GAClB,cAAc;GACd,wBAAwB;GACxB,eAAe;AAClB;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,SAAS;IACT,uDAAuD;IACvD,iBAAiB;AACrB;;AAEA;IACI,oDAAoD;AACxD;;AAEA;IACI,8CAA8C;IAC9C,YAAY;IACZ,aAAa;AACjB;;AAEA;IACI,aAAa;AACjB;;AAEA;IACI,uDAAuD;AAC3D;;AAEA;IACI,sDAAsD;IACtD,eAAe;AACnB;;AAEA;IACI,iBAAiB;AACrB;;AAEA;IACI,UAAU;IACV,WAAW;AACf;;AAEA;IACI,uBAAuB;IACvB,eAAe;IACf,aAAa;AACjB;;AAEA;;GAEG;;AAEH;IACI;AACJ;;AAEA;IACI;AACJ;;AAEA;IACI,wBAAwB;IACxB,eAAe;IACf,0BAA0B;AAC9B","sourcesContent":[".sprotty-node {\n    fill: rgb(169, 208, 250);\n    stroke-width: 1;\n    stroke: rgb(113, 182, 255);\n}\n.node-label {\n    fill: rgb(169, 208, 250);\n    stroke-width: 0;\n    text-align: center;\n}\n\n.node-service {\n    fill: rgb(217, 234, 252);\n    stroke-width: 0;\n    text-align: left;\n}\n\n.sprotty-node.selected {\n    stroke-width: 2;\n    stroke: var(--vscode-button-secondaryForeground);\n}\n\n.sprotty-label {\n    fill: darkslategrey;\n    stroke-width: 0;\n}\n\n.sprotty-label {\n    fill: darkslategrey;\n    stroke-width: 0;\n}\n\n.values{\n   font-style: italic;\n   font-size: 70%;\n   fill: rgb(122, 121, 121);\n   stroke-width: 0;\n}\n\n.sprotty-button {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge .sprotty-label {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge {\n    fill:none;\n    stroke: var(--vscode-editorActiveLineNumber-foreground);\n    stroke-width: 2px;\n}\n\n.sprotty-edge-arrow {\n    fill:var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge > .sprotty-routing-handle {\n    fill: var(--vscode-editor-selectionBackground);\n    stroke: none;\n    z-index: 1000;\n}\n\n.sprotty-edge > .sprotty-routing-handle[data-kind='line'] {\n    opacity: 0.35;\n}\n\n.sprotty-edge > .sprotty-routing-handle.selected {\n    fill: var(--vscode-editor-selectionHighlightBackground);\n}\n\n.sprotty-edge > .sprotty-routing-handle.mouseover {\n    stroke: var(--vscode-editor-symbolHighlightBackground);\n    stroke-width: 1;\n}\n\n.sprotty-edge.mouseover:not(.selected) {\n    stroke-width: 3px;\n}\n\n.sprotty-hidden {\n    width: 0px;\n    height: 0px;\n}\n\n.vss-node{\n    fill: rgb(255, 231, 98);\n    stroke-width: 1;\n    stroke: coral;\n}\n\n/* .vss-node .sprotty-label{\n    fill:darkslategrey\n} */\n\n.sprotty-port{\n    fill:rgb(15, 0, 100)\n}\n\n.vss-node .sprotty-port{\n    fill:rgb(100, 0, 0)\n}\n\n.vss-container{\n    fill: rgb(255, 255, 255);\n    stroke-width: 1;\n    stroke: rgb(218, 218, 218);\n}"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./css/diagram.css"],"names":[],"mappings":"AAAA;IACI,wBAAwB;IACxB,eAAe;IACf,0BAA0B;AAC9B;AACA;IACI,wBAAwB;IACxB,eAAe;IACf,kBAAkB;AACtB;;AAEA;IACI,wBAAwB;IACxB,eAAe;IACf,gBAAgB;AACpB;;AAEA;IACI,eAAe;IACf,gDAAgD;AACpD;;AAEA;IACI,mBAAmB;IACnB,eAAe;AACnB;;AAEA;IACI,mBAAmB;IACnB,eAAe;AACnB;;AAEA;GACG,kBAAkB;GAClB,cAAc;GACd,wBAAwB;GACxB,eAAe;AAClB;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,SAAS;IACT,uDAAuD;IACvD,iBAAiB;AACrB;;AAEA;IACI,SAAS;IACT,kBAAkB;IAClB,iBAAiB;AACrB;;AAEA;IACI,oDAAoD;AACxD;;AAEA;IACI,8CAA8C;IAC9C,YAAY;IACZ,aAAa;AACjB;;AAEA;IACI,aAAa;AACjB;;AAEA;IACI,uDAAuD;AAC3D;;AAEA;IACI,sDAAsD;IACtD,eAAe;AACnB;;AAEA;IACI,iBAAiB;AACrB;;AAEA;IACI,UAAU;IACV,WAAW;AACf;;AAEA;IACI,uBAAuB;IACvB,eAAe;IACf,aAAa;AACjB;;AAEA;;GAEG;;AAEH;IACI;AACJ;;AAEA;IACI;AACJ;;AAEA;IACI,wBAAwB;IACxB,eAAe;IACf,0BAA0B;AAC9B","sourcesContent":[".sprotty-node {\n    fill: rgb(169, 208, 250);\n    stroke-width: 1;\n    stroke: rgb(113, 182, 255);\n}\n.node-label {\n    fill: rgb(169, 208, 250);\n    stroke-width: 0;\n    text-align: center;\n}\n\n.node-service {\n    fill: rgb(217, 234, 252);\n    stroke-width: 0;\n    text-align: left;\n}\n\n.sprotty-node.selected {\n    stroke-width: 2;\n    stroke: var(--vscode-button-secondaryForeground);\n}\n\n.sprotty-label {\n    fill: darkslategrey;\n    stroke-width: 0;\n}\n\n.sprotty-label {\n    fill: darkslategrey;\n    stroke-width: 0;\n}\n\n.values{\n   font-style: italic;\n   font-size: 70%;\n   fill: rgb(122, 121, 121);\n   stroke-width: 0;\n}\n\n.sprotty-button {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge .sprotty-label {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge {\n    fill:none;\n    stroke: var(--vscode-editorActiveLineNumber-foreground);\n    stroke-width: 2px;\n}\n\n.fc-edge{\n    fill:none;\n    stroke: aquamarine;\n    stroke-width: 4px;\n}\n\n.sprotty-edge-arrow {\n    fill:var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge > .sprotty-routing-handle {\n    fill: var(--vscode-editor-selectionBackground);\n    stroke: none;\n    z-index: 1000;\n}\n\n.sprotty-edge > .sprotty-routing-handle[data-kind='line'] {\n    opacity: 0.35;\n}\n\n.sprotty-edge > .sprotty-routing-handle.selected {\n    fill: var(--vscode-editor-selectionHighlightBackground);\n}\n\n.sprotty-edge > .sprotty-routing-handle.mouseover {\n    stroke: var(--vscode-editor-symbolHighlightBackground);\n    stroke-width: 1;\n}\n\n.sprotty-edge.mouseover:not(.selected) {\n    stroke-width: 3px;\n}\n\n.sprotty-hidden {\n    width: 0px;\n    height: 0px;\n}\n\n.vss-node{\n    fill: rgb(255, 231, 98);\n    stroke-width: 1;\n    stroke: coral;\n}\n\n/* .vss-node .sprotty-label{\n    fill:darkslategrey\n} */\n\n.sprotty-port{\n    fill:rgb(15, 0, 100)\n}\n\n.vss-node .sprotty-port{\n    fill:rgb(100, 0, 0)\n}\n\n.vss-container{\n    fill: rgb(255, 255, 255);\n    stroke-width: 1;\n    stroke: rgb(218, 218, 218);\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -40287,13 +40293,14 @@ function createSdvmlDiagramContainer(widgetId, customHoverListener) {
         rebind(sprotty_1.TYPES.LogLevel).toConstantValue(sprotty_1.LogLevel.warn);
         rebind(sprotty_1.ManhattanEdgeRouter).to(custom_edge_router_1.CustomRouter).inSingletonScope();
         rebind(sprotty_2.HoverMouseListener).to(customHoverListener).inSingletonScope();
+        bind(sprotty_1.SNodeImpl).to(model_1.ConnectableNode).whenTargetNamed('node:node-service');
         const context = { bind, unbind, isBound, rebind };
         (0, sprotty_1.configureModelElement)(context, 'graph', sprotty_1.SGraphImpl, sprotty_1.SGraphView, {
             enable: [sprotty_1.hoverFeedbackFeature, sprotty_1.popupFeature]
         });
         (0, sprotty_1.configureModelElement)(context, 'node', model_1.SdvmlNode, sprotty_1.RectangularNodeView);
         (0, sprotty_1.configureModelElement)(context, 'node:node-label', model_1.SdvmlNode, views_1.SdvmlLabelNodeView);
-        (0, sprotty_1.configureModelElement)(context, 'node:node-service', model_1.SdvmlNode, views_1.SdvmlServiceNodeView);
+        (0, sprotty_1.configureModelElement)(context, 'node:node-service', model_1.ConnectableNode, views_1.SdvmlServiceNodeView);
         (0, sprotty_1.configureModelElement)(context, 'label', sprotty_1.SLabelImpl, sprotty_1.SLabelView, {
             enable: [sprotty_1.editLabelFeature]
         });
@@ -40301,15 +40308,15 @@ function createSdvmlDiagramContainer(widgetId, customHoverListener) {
         (0, sprotty_1.configureModelElement)(context, 'label:xref', sprotty_1.SLabelImpl, sprotty_1.SLabelView, {
             enable: [sprotty_1.editLabelFeature]
         });
-        (0, sprotty_1.configureModelElement)(context, 'edge', model_1.SdvmlEdge, sprotty_1.JumpingPolylineEdgeView, {
-            enable: [sprotty_1.editFeature]
-        });
+        (0, sprotty_1.configureModelElement)(context, 'edge', model_1.SdvmlEdge, sprotty_1.JumpingPolylineEdgeView);
+        (0, sprotty_1.configureModelElement)(context, 'edge:fc-edge', model_1.SdvmlFCEdge, views_1.StraightEdgeView);
         (0, sprotty_1.configureModelElement)(context, 'html', sprotty_1.HtmlRootImpl, sprotty_1.HtmlRootView);
         (0, sprotty_1.configureModelElement)(context, 'pre-rendered', sprotty_1.PreRenderedElementImpl, sprotty_1.PreRenderedView);
         (0, sprotty_1.configureModelElement)(context, 'palette', sprotty_1.SModelRootImpl, sprotty_1.HtmlRootView);
         (0, sprotty_1.configureModelElement)(context, 'routing-point', sprotty_1.SRoutingHandleImpl, sprotty_1.SRoutingHandleView);
         (0, sprotty_1.configureModelElement)(context, 'volatile-routing-point', sprotty_1.SRoutingHandleImpl, sprotty_1.SRoutingHandleView);
         (0, sprotty_1.configureModelElement)(context, 'port', sprotty_1.RectangularPort, views_1.TriangleButtonView);
+        (0, sprotty_1.configureModelElement)(context, 'port:fake-port', sprotty_1.RectangularPort, views_1.InvisibleTriangleView);
         (0, sprotty_1.configureModelElement)(context, 'actuator-port', sprotty_1.RectangularPort, views_1.DownTriangleButtonView);
         (0, sprotty_1.configureModelElement)(context, 'sensor-port', sprotty_1.RectangularPort, views_1.TopTriangleButtonView);
         (0, sprotty_1.configureModelElement)(context, 'node:vss-node', model_1.SdvmlNode, views_1.SdvmlSignalNodeView);
@@ -40403,16 +40410,25 @@ exports.PaletteButtonView = PaletteButtonView = __decorate([
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.SdvmlNode = exports.SdvmlEdgeLabel = exports.SdvmlEdge = void 0;
+exports.SdvmlNode = exports.ConnectableNode = exports.SdvmlEdgeLabel = exports.SdvmlFCEdge = exports.SdvmlEdge = void 0;
 const sprotty_1 = __webpack_require__(/*! sprotty */ "../../node_modules/sprotty/lib/index.js");
+// import type { Point } from 'sprotty-protocol';
 class SdvmlEdge extends sprotty_1.SEdgeImpl {
     constructor() {
         super(...arguments);
-        this.routerKind = sprotty_1.ManhattanEdgeRouter.KIND;
+        this.routerKind = sprotty_1.PolylineEdgeRouter.KIND;
         this.targetAnchorCorrection = Math.sqrt(5);
     }
 }
 exports.SdvmlEdge = SdvmlEdge;
+class SdvmlFCEdge extends sprotty_1.SEdgeImpl {
+    constructor() {
+        super(...arguments);
+        this.routerKind = sprotty_1.PolylineEdgeRouter.KIND;
+        this.targetAnchorCorrection = Math.sqrt(5);
+    }
+}
+exports.SdvmlFCEdge = SdvmlFCEdge;
 class SdvmlEdgeLabel extends sprotty_1.SLabelImpl {
     constructor() {
         super(...arguments);
@@ -40423,6 +40439,9 @@ class SdvmlEdgeLabel extends sprotty_1.SLabelImpl {
     }
 }
 exports.SdvmlEdgeLabel = SdvmlEdgeLabel;
+class ConnectableNode extends sprotty_1.SNodeImpl {
+}
+exports.ConnectableNode = ConnectableNode;
 class SdvmlNode extends sprotty_1.RectangularNode {
     canConnect(routable, role) {
         return true;
@@ -40491,76 +40510,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.TopTriangleButtonView = exports.DownTriangleButtonView = exports.TriangleButtonView = exports.SdvmlVSSNodeView = exports.SdvmlLabelNodeView = exports.SdvmlServiceNodeView = exports.SdvmlSignalNodeView = void 0;
+exports.StraightEdgeView = exports.TopTriangleButtonView = exports.InvisibleTriangleView = exports.DownTriangleButtonView = exports.TriangleButtonView = exports.SdvmlVSSNodeView = exports.SdvmlLabelNodeView = exports.SdvmlServiceNodeView = exports.SdvmlSignalNodeView = void 0;
 /** @jsx svg */
 const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const sprotty_1 = __webpack_require__(/*! sprotty */ "../../node_modules/sprotty/lib/index.js");
-// @injectable()
-// export class PolylineArrowEdgeView extends PolylineEdgeView {
-//     protected override renderAdditionals(edge: SEdgeImpl, segments: Point[], context: RenderingContext): VNode[] {
-//         const p1 = segments[segments.length - 2];
-//         const p2 = segments[segments.length - 1];
-//         return [
-//             <path class-sprotty-edge-arrow={true} d='M 6,-3 L 0,0 L 6,3 Z'
-//                   transform={`rotate(${this.angle(p2, p1)} ${p2.x} ${p2.y}) translate(${p2.x} ${p2.y})`}/>
-//         ];
-//     }
-//     angle(x0: Point, x1: Point): number {
-//         return toDegrees(Math.atan2(x1.y - x0.y, x1.x - x0.x));
-//     }
-// }
-// @injectable()
-// export class ExpandableNodeView implements SElementView {
-//     render(node: ExpandableNode, context: RenderingContext): VNode {
-//         const isExpanded = node.expanded
-//         return h('g', {}, [
-//             h('rect', { x: 0, y: 0, width: 120, height: isExpanded ? 80 : 40, class: 'expandable-node' }),
-//             h('text', { x: 10, y: 20 }, node.label || ''),
-//             h('text', {
-//                 x: 100, y: 20, class: 'toggle-button', onclick: () =>
-//                     context.root.context.actions.dispatch(new ToggleExpandAction(node.id))
-//             }, isExpanded ? '-' : '+'),
-//             // Only render children when expanded
-//             ...(isExpanded && node.children
-//                 ? node.children.map(child => context.renderElement(child))
-//                 : [])
-//         ])
-//     }
-// }
-// @injectable()
-// export class SLabelValuesView extends SLabelView{
-//     public override render(label: Readonly<SLabelImpl>, context: RenderingContext): VNode | undefined {
-//         if (!isEdgeLayoutable(label) && !this.isVisible(label, context)) {
-//             return undefined;
-//         }
-//         const vnode = <text class-sprotty-label={true}>{label.text}</text>;
-//         const subType = getSubType(label);
-//         if (subType) {
-//             setAttr(vnode, 'class', subType);
-//         }
-//         return vnode;
-//     }
-//     public override render(node: Readonly<SShapeElementImpl & Hoverable & Selectable>, context: RenderingContext, args?: IViewArgs): VNode | undefined {
-//         if (!this.isVisible(node, context)) {
-//             return undefined;
-//         }
-//         return <g>
-//             <rect class-sprotty-node={node instanceof SNodeImpl} class-sprotty-port={node instanceof SPortImpl}
-//                   class-mouseover={node.hoverFeedback} class-selected={node.selected} class-vss-node= {node instanceof SNodeImpl}
-//                   x="0" y="0" width={Math.max(node.size.width, 0)} height={Math.max(node.size.height, 0)}
-//                   ></rect>
-//             {context.renderChildren(node)}
-//         </g>;
-//     }
-// }
 let SdvmlSignalNodeView = class SdvmlSignalNodeView extends sprotty_1.RectangularNodeView {
     render(node, context, args) {
         if (!this.isVisible(node, context)) {
             return undefined;
         }
-        return (0, sprotty_1.svg)("g", null,
+        return ((0, sprotty_1.svg)("g", null,
             (0, sprotty_1.svg)("rect", { "class-sprotty-node": node instanceof sprotty_1.SNodeImpl, "class-sprotty-port": node instanceof sprotty_1.SPortImpl, "class-mouseover": node.hoverFeedback, "class-selected": node.selected, "class-vss-node": node instanceof sprotty_1.SNodeImpl, x: "0", y: "0", width: Math.max(node.size.width, 0), height: Math.max(node.size.height, 0) }),
-            context.renderChildren(node));
+            context.renderChildren(node)));
     }
 };
 exports.SdvmlSignalNodeView = SdvmlSignalNodeView;
@@ -40569,15 +40530,14 @@ exports.SdvmlSignalNodeView = SdvmlSignalNodeView = __decorate([
 ], SdvmlSignalNodeView);
 let SdvmlServiceNodeView = class SdvmlServiceNodeView extends sprotty_1.RectangularNodeView {
     render(node, context, args) {
-        var _a, _b;
         if (!this.isVisible(node, context)) {
             return undefined;
         }
-        const parent = node.parent;
-        const width = (_b = (_a = parent === null || parent === void 0 ? void 0 : parent.size) === null || _a === void 0 ? void 0 : _a.width) !== null && _b !== void 0 ? _b : 100;
-        return (0, sprotty_1.svg)("g", null,
-            (0, sprotty_1.svg)("rect", { "class-sprotty-node": node instanceof sprotty_1.SNodeImpl, "class-sprotty-port": node instanceof sprotty_1.SPortImpl, "class-mouseover": node.hoverFeedback, "class-selected": node.selected, "class-node-service": node instanceof sprotty_1.SNodeImpl, x: "0", y: "0", width: width - 12 * 2, height: Math.max(node.size.height, 0) }),
-            context.renderChildren(node));
+        // const parent = node.parent as SShapeElementImpl | undefined;
+        // const width = parent?.size?.width ?? 100;
+        return ((0, sprotty_1.svg)("g", null,
+            (0, sprotty_1.svg)("rect", { "class-sprotty-node": node instanceof sprotty_1.SNodeImpl, "class-sprotty-port": node instanceof sprotty_1.SPortImpl, "class-mouseover": node.hoverFeedback, "class-selected": node.selected, "class-node-service": node instanceof sprotty_1.SNodeImpl, x: "0", y: "0", width: Math.max(node.size.width, 0), height: Math.max(node.size.height, 0) }),
+            context.renderChildren(node)));
     }
 };
 exports.SdvmlServiceNodeView = SdvmlServiceNodeView;
@@ -40592,9 +40552,9 @@ let SdvmlLabelNodeView = class SdvmlLabelNodeView extends sprotty_1.RectangularN
         }
         const parent = node.parent;
         const width = (_b = (_a = parent === null || parent === void 0 ? void 0 : parent.size) === null || _a === void 0 ? void 0 : _a.width) !== null && _b !== void 0 ? _b : 100;
-        return (0, sprotty_1.svg)("g", null,
-            (0, sprotty_1.svg)("rect", { "class-sprotty-node": node instanceof sprotty_1.SNodeImpl, "class-sprotty-port": node instanceof sprotty_1.SPortImpl, "class-mouseover": node.hoverFeedback, "class-selected": node.selected, "class-node-label": node instanceof sprotty_1.SNodeImpl, x: "0", y: "0", width: width - 12 * 2, height: Math.max(node.size.height, 0) }),
-            context.renderChildren(node));
+        return ((0, sprotty_1.svg)("g", null,
+            (0, sprotty_1.svg)("rect", { "class-sprotty-node": node instanceof sprotty_1.SNodeImpl, "class-sprotty-port": node instanceof sprotty_1.SPortImpl, "class-mouseover": node.hoverFeedback, "class-selected": node.selected, "class-node-label": node instanceof sprotty_1.SNodeImpl, x: "0", y: "0", width: Math.max(width - 12 * 2, 0), height: Math.max(node.size.height, 0) }),
+            context.renderChildren(node)));
     }
 };
 exports.SdvmlLabelNodeView = SdvmlLabelNodeView;
@@ -40606,9 +40566,9 @@ let SdvmlVSSNodeView = class SdvmlVSSNodeView extends sprotty_1.RectangularNodeV
         if (!this.isVisible(node, context)) {
             return undefined;
         }
-        return (0, sprotty_1.svg)("g", null,
+        return ((0, sprotty_1.svg)("g", null,
             (0, sprotty_1.svg)("rect", { "class-sprotty-node": node instanceof sprotty_1.SNodeImpl, "class-sprotty-port": node instanceof sprotty_1.SPortImpl, "class-mouseover": node.hoverFeedback, "class-selected": node.selected, "class-vss-container": node instanceof sprotty_1.SNodeImpl, x: "0", y: "0", width: Math.max(node.size.width, 0), height: Math.max(node.size.height, 0) }),
-            context.renderChildren(node));
+            context.renderChildren(node)));
     }
 };
 exports.SdvmlVSSNodeView = SdvmlVSSNodeView;
@@ -40617,7 +40577,7 @@ exports.SdvmlVSSNodeView = SdvmlVSSNodeView = __decorate([
 ], SdvmlVSSNodeView);
 let TriangleButtonView = class TriangleButtonView {
     render(model, context) {
-        return (0, sprotty_1.svg)("path", { d: 'M 0,0 L 8,4 L 0,8 Z', "class-sprotty-port": model instanceof sprotty_1.SPortImpl, "class-selected": model.selected });
+        return ((0, sprotty_1.svg)("path", { d: "M 0,0 L 8,4 L 0,8 Z", "class-sprotty-port": model instanceof sprotty_1.SPortImpl, "class-selected": model.selected }));
     }
 };
 exports.TriangleButtonView = TriangleButtonView;
@@ -40626,22 +40586,45 @@ exports.TriangleButtonView = TriangleButtonView = __decorate([
 ], TriangleButtonView);
 let DownTriangleButtonView = class DownTriangleButtonView {
     render(model, context) {
-        return (0, sprotty_1.svg)("path", { d: 'M 0,0 L 4,8 L 8,0 Z' });
+        return (0, sprotty_1.svg)("path", { d: "M 0,0 L 4,8 L 8,0 Z" });
     }
 };
 exports.DownTriangleButtonView = DownTriangleButtonView;
 exports.DownTriangleButtonView = DownTriangleButtonView = __decorate([
     (0, inversify_1.injectable)()
 ], DownTriangleButtonView);
+let InvisibleTriangleView = class InvisibleTriangleView {
+    render(model, context) {
+        return (0, sprotty_1.svg)("path", { d: "M 0,0 L 0,0 L 0,0 Z" });
+    }
+};
+exports.InvisibleTriangleView = InvisibleTriangleView;
+exports.InvisibleTriangleView = InvisibleTriangleView = __decorate([
+    (0, inversify_1.injectable)()
+], InvisibleTriangleView);
 let TopTriangleButtonView = class TopTriangleButtonView {
     render(model, context) {
-        return (0, sprotty_1.svg)("path", { d: 'M 0,8 L 4,0 L 8,8 Z' });
+        return (0, sprotty_1.svg)("path", { d: "M 0,8 L 4,0 L 8,8 Z" });
     }
 };
 exports.TopTriangleButtonView = TopTriangleButtonView;
 exports.TopTriangleButtonView = TopTriangleButtonView = __decorate([
     (0, inversify_1.injectable)()
 ], TopTriangleButtonView);
+class StraightEdgeView extends sprotty_1.PolylineEdgeView {
+    render(edge, context) {
+        if (edge.routerKind === 'manhattan')
+            return super.render(edge, context); // optional fallback
+        const route = this.edgeRouterRegistry.route(edge);
+        if (!route || route.length < 2)
+            return undefined;
+        const start = route[0];
+        const end = route[route.length - 1];
+        return (0, sprotty_1.svg)("g", { "class-sprotty-edge": true, "class-fc-edge": true },
+            (0, sprotty_1.svg)("line", { x1: start.x, y1: start.y, x2: end.x, y2: end.y }));
+    }
+}
+exports.StraightEdgeView = StraightEdgeView;
 
 
 /***/ })
@@ -40788,32 +40771,34 @@ tooltip.style.border = '1px solid #ccc';
 tooltip.style.padding = '4px';
 tooltip.style.boxShadow = '0px 0px 6px rgba(0,0,0,0.2)';
 document.body.appendChild(tooltip);
-window.addEventListener('message', event => {
-    const msg = event.data;
-    // console.error("~~~~> packages/webview/src/main.ts: message="+JSON.stringify(msg))
-    // console.error("\t1:received image"+msg.result.image)
-    if (msg.result != undefined && msg.result.image != undefined) { //'image-result') {
-        tooltip.innerHTML = `<img src=${msg.result.image} width="200" />`; //../picts/stats.png
-        tooltip.style.left = `${msg.result.position.x + 10}px`;
-        tooltip.style.top = `${msg.result.position.y + 10}px`;
-        tooltip.style.display = 'block';
-    }
-    else if (msg.type === 'hide-image') {
-        tooltip.style.display = 'none';
-    }
-});
+// window.addEventListener('message', event => {
+//     const msg = event.data;
+//     // console.error("~~~~> packages/webview/src/main.ts: message="+JSON.stringify(msg))
+//     // console.error("\t1:received image"+msg.result.image)
+//     if (msg.result != undefined && msg.result.image != undefined){//'image-result') {
+//         tooltip.innerHTML = `<img src=${msg.result.image} width="200" />`; //../picts/stats.png
+//         tooltip.style.left = `${msg.result.position.x + 10}px`;
+//         tooltip.style.top = `${msg.result.position.y + 10}px`;
+//         tooltip.style.display = 'block';
+//      } else if (msg.type === 'hide-image') {
+//          tooltip.style.display = 'none';
+//     }
+// });
 const sdvml_messages_1 = __webpack_require__(/*! ./sdvml-messages */ "./src/sdvml-messages.ts");
 class CustomHoverListener extends sprotty_1.HoverMouseListener {
     mouseOver(target, event) {
         // Send message to VS Code extension (via the webview)
-        // console.error("~~~~> packages/webview/src/main.ts:"+event+"   "+target.id)
+        // console.error("~~~~> packages/webview/src/main.ts:"+event+"   "+target.root.id)
+        if (target.id == target.root.id) {
+            return [];
+        }
         sdvmlSprottyStarter.messenger.sendRequest(sdvml_messages_1.GetImageRequest, { type: 'extension' }, {
             elementId: target.id,
             position: { x: event.clientX, y: event.clientY }
         }).then(response => {
             if (response.image) {
                 const { image, position } = response;
-                tooltip.innerHTML = `<img src="${image}" width="200" />`;
+                tooltip.innerHTML = `<img src="${image}" width="50" />`;
                 tooltip.style.left = `${position.x + 10}px`;
                 tooltip.style.top = `${position.y + 10}px`;
                 tooltip.style.display = 'block';
@@ -40839,9 +40824,7 @@ class CustomHoverListener extends sprotty_1.HoverMouseListener {
     // return [];
     // }
     mouseOut(target, event) {
-        // window.parent.postMessage({
-        //     type: 'hide-image'
-        // }, '*');
+        tooltip.style.display = 'none';
         return [];
     }
 }

@@ -59,44 +59,47 @@ tooltip.style.padding = '4px';
 tooltip.style.boxShadow = '0px 0px 6px rgba(0,0,0,0.2)';
 document.body.appendChild(tooltip);
 
-window.addEventListener('message', event => {
-    const msg = event.data;
-    // console.error("~~~~> packages/webview/src/main.ts: message="+JSON.stringify(msg))
-    // console.error("\t1:received image"+msg.result.image)
-    if (msg.result != undefined && msg.result.image != undefined){//'image-result') {
-        tooltip.innerHTML = `<img src=${msg.result.image} width="200" />`; //../picts/stats.png
-        tooltip.style.left = `${msg.result.position.x + 10}px`;
-        tooltip.style.top = `${msg.result.position.y + 10}px`;
-        tooltip.style.display = 'block';
-     } else if (msg.type === 'hide-image') {
-         tooltip.style.display = 'none';
-    }
-});
+// window.addEventListener('message', event => {
+//     const msg = event.data;
+//     // console.error("~~~~> packages/webview/src/main.ts: message="+JSON.stringify(msg))
+//     // console.error("\t1:received image"+msg.result.image)
+//     if (msg.result != undefined && msg.result.image != undefined){//'image-result') {
+//         tooltip.innerHTML = `<img src=${msg.result.image} width="200" />`; //../picts/stats.png
+//         tooltip.style.left = `${msg.result.position.x + 10}px`;
+//         tooltip.style.top = `${msg.result.position.y + 10}px`;
+//         tooltip.style.display = 'block';
+//      } else if (msg.type === 'hide-image') {
+//          tooltip.style.display = 'none';
+//     }
+// });
 
 import { GetImageRequest } from './sdvml-messages'
 
 export class CustomHoverListener extends HoverMouseListener {
     override mouseOver(target: SModelElementImpl, event: MouseEvent): (Action | Promise<Action>)[] {
-         // Send message to VS Code extension (via the webview)
-    // console.error("~~~~> packages/webview/src/main.ts:"+event+"   "+target.id)
-    sdvmlSprottyStarter.messenger.sendRequest<{ elementId: string; position: { x: number; y: number } },  // Params
-                                              { image: string; position: { x: number; y: number } }>       // Response
-        (GetImageRequest,
-        { type: 'extension' }    ,
-        {
-            elementId: target.id,
-            position: { x: event.clientX, y: event.clientY }
-        }).then(response => {
-            if(response.image){
-                const { image, position } = response;
-                tooltip.innerHTML = `<img src="${image}" width="200" />`;
-                tooltip.style.left = `${position.x + 10}px`;
-                tooltip.style.top = `${position.y + 10}px`;
-                tooltip.style.display = 'block';
-            }else{
-                tooltip.style.display = 'none';
-            }
-        });
+        // Send message to VS Code extension (via the webview)
+        // console.error("~~~~> packages/webview/src/main.ts:"+event+"   "+target.root.id)
+        if (target.id == target.root.id){
+            return []
+        }
+        sdvmlSprottyStarter.messenger.sendRequest<{ elementId: string; position: { x: number; y: number } },  // Params
+                                                { image: string; position: { x: number; y: number } }>       // Response
+            (GetImageRequest,
+            { type: 'extension' }    ,
+            {
+                elementId: target.id,
+                position: { x: event.clientX, y: event.clientY }
+            }).then(response => {
+                if(response.image){
+                    const { image, position } = response;
+                    tooltip.innerHTML = `<img src="${image}" width="50" />`;
+                    tooltip.style.left = `${position.x + 10}px`;
+                    tooltip.style.top = `${position.y + 10}px`;
+                    tooltip.style.display = 'block';
+                }else{
+                    tooltip.style.display = 'none';
+                }
+            });
         return [];
     }
 
@@ -118,9 +121,7 @@ export class CustomHoverListener extends HoverMouseListener {
     // }
 
     override mouseOut(target: SModelElementImpl, event: MouseEvent): (Action | Promise<Action>)[] {
-        // window.parent.postMessage({
-        //     type: 'hide-image'
-        // }, '*');
+        tooltip.style.display = 'none';
         return [];
     }
 }

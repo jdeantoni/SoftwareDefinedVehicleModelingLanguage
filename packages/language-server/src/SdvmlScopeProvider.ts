@@ -23,7 +23,7 @@ import {
     Scope
 } from 'langium';
 import { injectable } from 'inversify';
-import { Model, isSubscriber, isPublisher, isModel, isActuator, isSensor} from './generated/ast.js';
+import { Model, isSubscriber, isPublisher, isModel, isActuator, isSensor, isFunctionalChain} from './generated/ast.js';
 
 @injectable()
 export class SdvmlScopeProvider extends DefaultScopeProvider {
@@ -45,6 +45,19 @@ export class SdvmlScopeProvider extends DefaultScopeProvider {
 
             const sensors = model.vss.signals.filter(isSensor);
             return this.createScopeForNodes(sensors);
+        }
+
+        if (isFunctionalChain(container)){
+            const model = this.findRootModel(container);
+            if (!model?.vss) return EMPTY_SCOPE;
+
+            const fcParticipants = [
+                ...model.vss.signals,
+                ...model.components.flatMap(c => c.publishers),
+                ...model.components.flatMap(c => c.subscribers),
+                ...model.components.flatMap(c => c.services),
+            ]
+            return this.createScopeForNodes(fcParticipants);
         }
 
         return super.getScope(context);

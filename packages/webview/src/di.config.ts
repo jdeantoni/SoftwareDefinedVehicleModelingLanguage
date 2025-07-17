@@ -25,13 +25,15 @@ import {
     PreRenderedView, RectangularNodeView, SGraphView, SLabelView, SModelRootImpl,
     SRoutingHandleImpl, SRoutingHandleView, TYPES, loadDefaultModules, SGraphImpl, SLabelImpl,
     hoverFeedbackFeature, popupFeature, /*creatingOnDragFeature,*/ editLabelFeature, labelEditUiModule,
-    editFeature,
+    // editFeature,
     RectangularPort,
-    JumpingPolylineEdgeView
+    JumpingPolylineEdgeView,
+    /*BezierCurveEdgeView,*/
+    SNodeImpl
 } from 'sprotty';
 import { CustomRouter } from './custom-edge-router';
-import { SdvmlEdge, SdvmlNode } from './model';
-import { DownTriangleButtonView, SdvmlLabelNodeView, SdvmlServiceNodeView, SdvmlSignalNodeView, /*SdvmlVSSNodeView,*/ TopTriangleButtonView, TriangleButtonView } from './views';
+import { ConnectableNode, SdvmlEdge, SdvmlFCEdge, SdvmlNode } from './model';
+import { DownTriangleButtonView, InvisibleTriangleView, SdvmlLabelNodeView, SdvmlServiceNodeView, SdvmlSignalNodeView, StraightEdgeView, /*SdvmlVSSNodeView,*/ TopTriangleButtonView, TriangleButtonView } from './views';
 
 import { HoverMouseListener } from 'sprotty';
 import { CustomHoverListener } from './main';
@@ -50,6 +52,7 @@ export function createSdvmlDiagramContainer(widgetId: string, customHoverListene
         rebind(ManhattanEdgeRouter).to(CustomRouter).inSingletonScope();
         rebind(HoverMouseListener).to(customHoverListener).inSingletonScope();
 
+        bind(SNodeImpl).to(ConnectableNode).whenTargetNamed('node:node-service');
 
         const context = { bind, unbind, isBound, rebind };
         configureModelElement(context, 'graph', SGraphImpl, SGraphView, {
@@ -57,7 +60,7 @@ export function createSdvmlDiagramContainer(widgetId: string, customHoverListene
         });
         configureModelElement(context, 'node', SdvmlNode, RectangularNodeView);
         configureModelElement(context, 'node:node-label', SdvmlNode, SdvmlLabelNodeView);
-        configureModelElement(context, 'node:node-service', SdvmlNode, SdvmlServiceNodeView);
+        configureModelElement(context, 'node:node-service', ConnectableNode, SdvmlServiceNodeView);
         configureModelElement(context, 'label', SLabelImpl, SLabelView, {
             enable: [editLabelFeature]
         });
@@ -65,15 +68,15 @@ export function createSdvmlDiagramContainer(widgetId: string, customHoverListene
         configureModelElement(context, 'label:xref', SLabelImpl, SLabelView, {
             enable: [editLabelFeature]
         });
-        configureModelElement(context, 'edge', SdvmlEdge, JumpingPolylineEdgeView, {
-            enable: [editFeature]
-        });
+        configureModelElement(context, 'edge', SdvmlEdge, JumpingPolylineEdgeView);
+        configureModelElement(context, 'edge:fc-edge', SdvmlFCEdge, StraightEdgeView);
         configureModelElement(context, 'html', HtmlRootImpl, HtmlRootView);
         configureModelElement(context, 'pre-rendered', PreRenderedElementImpl, PreRenderedView);
         configureModelElement(context, 'palette', SModelRootImpl, HtmlRootView);
         configureModelElement(context, 'routing-point', SRoutingHandleImpl, SRoutingHandleView);
         configureModelElement(context, 'volatile-routing-point', SRoutingHandleImpl, SRoutingHandleView);
         configureModelElement(context, 'port', RectangularPort, TriangleButtonView);
+        configureModelElement(context, 'port:fake-port', RectangularPort, InvisibleTriangleView);
         configureModelElement(context, 'actuator-port', RectangularPort, DownTriangleButtonView);
         configureModelElement(context, 'sensor-port', RectangularPort, TopTriangleButtonView);
         configureModelElement(context, 'node:vss-node', SdvmlNode, SdvmlSignalNodeView);

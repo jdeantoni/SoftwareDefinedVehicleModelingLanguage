@@ -8,21 +8,24 @@ VSS :
  
 App :
     Component AEBS_controler 
-        subscribe (Rad) to VSS signal Camera 
-        subscribe to VSS signal Lidar 
-
-        publish to VSS signal FrontBrake
+        subscribe to VSS signal Camera  
+        subscribe to VSS signal Lidar (Rad)
+ 
+        publish to VSS signal FrontBrake (FB)
         publish Alarm
         service s1:
             triggered on Rad 
             ExecTime 3+/-1ms
 
-    Component Test 
-        subscribe (Al) to Alarm
-        publish to VSS signal RearBrake
-        service s1:
+    Component SecondControler 
+        subscribe to Alarm (Al)
+        publish to VSS signal RearBrake 
+        service s2:
             periodic 10+/-1ms
             ExecTime 3+/-1ms
-        service s2:
+        service s3:
             triggered on Al
             ExecTime 3+/-1ms
+
+Functional Chains:
+ chain : Lidar -> Rad -> s1 -> FB -> FrontBrake 

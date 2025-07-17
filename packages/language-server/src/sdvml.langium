@@ -20,9 +20,21 @@ grammar Sdvml
 entry Model:
     "SDV" name=ID":"
         vss=VSS
+
         "App" ":"
-        components+=Component*
+            components+=Component*
+
+        ("Functional" "Chains" ":"
+            (chains+=FunctionalChain)*
+        )?
     ;
+
+FunctionalChain:
+    "chain" ":"
+        participants+=[FCParticipant:ID] ("->" participants+=[FCParticipant:ID])* ;
+
+
+type FCParticipant = Sensor | Subscriber | Service | Publisher | Actuator;
 
 VSS:
     "VSS" ":"
@@ -59,10 +71,10 @@ Actuator:
     "Actuator" "Signal" name=ID '(' trigRule=TriggeringRule',''AD'':'ad=RandomVar'ms'')';
 
 Publisher:
-    'publish'('('name=ID')')? (sigName=ID | "to" "VSS" "signal" sigRef=[Actuator]) ;//('type' msgType=STRING)? 'message' msg=STRING;
+    'publish' (sigName=ID | "to" "VSS" "signal" sigRef=[Actuator]) ('('name=ID')')?;//('type' msgType=STRING)? 'message' msg=STRING;
 
 Subscriber:
-    'subscribe'('('name=ID')')? "to" (sigName=ID | "VSS" "signal" sigRef=[Sensor]) ;// ('type' msgType=STRING)? msg=STRING;
+    'subscribe' "to" (sigName=ID | "VSS" "signal" sigRef=[Sensor]) ('('name=ID')')?;// ('type' msgType=STRING)? msg=STRING;
 
 Service:
     'service' name=ID":"
