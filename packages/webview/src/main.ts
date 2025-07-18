@@ -84,7 +84,7 @@ export class CustomHoverListener extends HoverMouseListener {
         }
         sdvmlSprottyStarter.messenger.sendRequest<{ elementId: string; position: { x: number; y: number } },  // Params
                                                 { image: string; position: { x: number; y: number } }>       // Response
-            (GetImageRequest,
+            (GetImageRequest ,
             { type: 'extension' }    ,
             {
                 elementId: target.id,

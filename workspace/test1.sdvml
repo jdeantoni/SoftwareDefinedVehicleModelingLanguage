@@ -15,7 +15,7 @@ App :
         publish Alarm
         service s1:
             triggered on Rad 
-            ExecTime 3+/-1ms
+            ExecTime 3+/-1ms 
 
     Component SecondControler 
         subscribe to Alarm (Al)

@@ -185,7 +185,7 @@
         "@types/node": "^24.0.12",
         "@types/vscode": "1.101.0",
         "esbuild": "^0.25.6",
-        "sprotty-vscode": "file:../../../sprotty-vscode/packages/sprotty-vscode",
+        "sprotty-vscode": "^1.1.0",
         "vscode-languageclient": "^9.0.1"
     },
     "scripts": {

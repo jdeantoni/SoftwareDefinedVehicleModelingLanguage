@@ -32,7 +32,8 @@
   "dependencies": {
     "reflect-metadata": "^0.2.2",
     "sprotty": "^1.4.0",
-    "sprotty-vscode-webview": "file:../../../sprotty-vscode/packages/sprotty-vscode-webview"
+    "sprotty-vscode-webview": "^1.1.0",
+    "vscode-languageserver-protocol": "^3.17.5"
   },
   "devDependencies": {
     "css-loader": "^7.1.2",

@@ -39797,6 +39797,94 @@ var Is;
 
 /***/ }),
 
+/***/ "../../node_modules/vscode-messenger-common/lib/cancellation.js":
+/*!**********************************************************************!*\
+  !*** ../../node_modules/vscode-messenger-common/lib/cancellation.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+/******************************************************************************
+ * Copyright 2024 TypeFox GmbH
+ * This program and the accompanying materials are made available under the
+ * terms of the MIT License, which is available in the project root.
+ ******************************************************************************/
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.CancellationTokenImpl = exports.Deferred = void 0;
+exports.isCancelRequestNotification = isCancelRequestNotification;
+exports.createCancelRequestMessage = createCancelRequestMessage;
+const messages_1 = __webpack_require__(/*! ./messages */ "../../node_modules/vscode-messenger-common/lib/messages.js");
+/**
+ *  Deferred promise that can be resolved or rejected later.
+*/
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+class Deferred {
+    constructor() {
+        this.result = new Promise((resolve, reject) => {
+            this.resolve = (arg) => resolve(arg);
+            this.reject = (err) => reject(err);
+        });
+    }
+}
+exports.Deferred = Deferred;
+/**
+* Implementation of the CancellationToken interface.
+* Allows to trigger cancellation.
+*/
+class CancellationTokenImpl {
+    constructor() {
+        this.canceled = false;
+        this.listeners = [];
+    }
+    cancel(reason) {
+        if (this.canceled) {
+            throw new Error('Request was already canceled.');
+        }
+        this.canceled = true;
+        this.listeners.forEach(callback => callback(reason));
+        this.listeners = [];
+    }
+    get isCancellationRequested() {
+        return this.canceled;
+    }
+    onCancellationRequested(callback) {
+        this.listeners.push(callback);
+        const listeners = this.listeners;
+        return {
+            dispose() {
+                listeners.splice(listeners.indexOf(callback), 1);
+            }
+        };
+    }
+}
+exports.CancellationTokenImpl = CancellationTokenImpl;
+const cancelRequestMethod = '$/cancelRequest';
+/**
+ * Checks if the given message is a cancel request.
+ * @param msg  message to check
+ * @returns  true if the message is a cancel request
+ */
+function isCancelRequestNotification(msg) {
+    return (0, messages_1.isNotificationMessage)(msg) && msg.method === cancelRequestMethod;
+}
+/**
+ * Creates a cancel request message.
+ * @param receiver receiver of the cancel request
+ * @param params id of the request to cancel
+ * @returns  new cancel request message
+ */
+function createCancelRequestMessage(receiver, params) {
+    return {
+        method: cancelRequestMethod,
+        receiver,
+        params: { msgId: params.msgId }
+    };
+}
+
+
+/***/ }),
+
 /***/ "../../node_modules/vscode-messenger-common/lib/index.js":
 /*!***************************************************************!*\
   !*** ../../node_modules/vscode-messenger-common/lib/index.js ***!
@@ -39826,6 +39914,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 __exportStar(__webpack_require__(/*! ./messages */ "../../node_modules/vscode-messenger-common/lib/messages.js"), exports);
+__exportStar(__webpack_require__(/*! ./cancellation */ "../../node_modules/vscode-messenger-common/lib/cancellation.js"), exports);
 
 
 /***/ }),
@@ -39844,16 +39933,21 @@ __exportStar(__webpack_require__(/*! ./messages */ "../../node_modules/vscode-me
  * terms of the MIT License, which is available in the project root.
  ******************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.isNotificationMessage = exports.isResponseMessage = exports.isRequestMessage = exports.isMessage = exports.equalParticipants = exports.BROADCAST = exports.isWebviewTypeMessageParticipant = exports.isWebviewIdMessageParticipant = exports.HOST_EXTENSION = void 0;
+exports.BROADCAST = exports.HOST_EXTENSION = void 0;
+exports.isWebviewIdMessageParticipant = isWebviewIdMessageParticipant;
+exports.isWebviewTypeMessageParticipant = isWebviewTypeMessageParticipant;
+exports.equalParticipants = equalParticipants;
+exports.isMessage = isMessage;
+exports.isRequestMessage = isRequestMessage;
+exports.isResponseMessage = isResponseMessage;
+exports.isNotificationMessage = isNotificationMessage;
 exports.HOST_EXTENSION = { type: 'extension' };
 function isWebviewIdMessageParticipant(participant) {
     return participant.type === 'webview' && typeof participant.webviewId === 'string';
 }
-exports.isWebviewIdMessageParticipant = isWebviewIdMessageParticipant;
 function isWebviewTypeMessageParticipant(participant) {
     return participant.type === 'webview' && typeof participant.webviewType === 'string';
 }
-exports.isWebviewTypeMessageParticipant = isWebviewTypeMessageParticipant;
 exports.BROADCAST = { type: 'broadcast' };
 function equalParticipants(p1, p2) {
     if (p1.type === 'extension' && p2.type === 'extension') {
@@ -39869,23 +39963,18 @@ function equalParticipants(p1, p2) {
     }
     return p1.type === p2.type;
 }
-exports.equalParticipants = equalParticipants;
 function isMessage(obj) {
     return typeof obj === 'object' && obj !== null && typeof obj.receiver === 'object';
 }
-exports.isMessage = isMessage;
 function isRequestMessage(msg) {
     return !!msg.id && !!msg.method;
 }
-exports.isRequestMessage = isRequestMessage;
 function isResponseMessage(msg) {
     return !!msg.id && !msg.method;
 }
-exports.isResponseMessage = isResponseMessage;
 function isNotificationMessage(msg) {
     return !msg.id && !!msg.method;
 }
-exports.isNotificationMessage = isNotificationMessage;
 
 
 /***/ }),
@@ -39939,12 +40028,15 @@ __exportStar(__webpack_require__(/*! ./vscode-api */ "../../node_modules/vscode-
  ******************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Messenger = void 0;
+exports.createCancellationToken = createCancellationToken;
 const vscode_messenger_common_1 = __webpack_require__(/*! vscode-messenger-common */ "../../node_modules/vscode-messenger-common/lib/index.js");
 const vscode_api_1 = __webpack_require__(/*! ./vscode-api */ "../../node_modules/vscode-messenger-webview/lib/vscode-api.js");
 class Messenger {
     constructor(vscode, options) {
         this.handlerRegistry = new Map();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this.requests = new Map();
+        this.pendingHandlers = new Map();
         this.started = false;
         this.nextMsgId = 0;
         this.vscode = vscode !== null && vscode !== void 0 ? vscode : (0, vscode_api_1.acquireVsCodeApi)();
@@ -39979,67 +40071,96 @@ class Messenger {
             return;
         }
         if ((0, vscode_messenger_common_1.isRequestMessage)(msg)) {
-            this.log(`View received Request message: ${msg.method} (id ${msg.id})`);
-            const handler = this.handlerRegistry.get(msg.method);
-            if (handler) {
-                try {
-                    const result = await handler(msg.params, msg.sender);
-                    const response = {
-                        id: msg.id,
-                        receiver: msg.sender,
-                        result: result
-                    };
-                    this.vscode.postMessage(response);
-                }
-                catch (error) {
-                    const response = {
-                        id: msg.id,
-                        receiver: msg.sender,
-                        error: this.createResponseError(error)
-                    };
-                    this.vscode.postMessage(response);
-                }
-            }
-            else {
-                this.log(`Received request with unknown method: ${msg.method}`, 'warn');
-                const response = {
-                    id: msg.id,
-                    receiver: msg.sender,
-                    error: {
-                        message: `Unknown method: ${msg.method}`
-                    }
-                };
-                this.vscode.postMessage(response);
-            }
+            await this.processRequestMessage(msg);
         }
         else if ((0, vscode_messenger_common_1.isNotificationMessage)(msg)) {
-            this.log(`View received Notification message: ${msg.method}`);
+            await this.processNotificationMessage(msg);
+        }
+        else if ((0, vscode_messenger_common_1.isResponseMessage)(msg)) {
+            await this.processResponseMessage(msg);
+        }
+        else {
+            this.log(`Invalid message: ${JSON.stringify(msg)}`, 'error');
+        }
+    }
+    async processResponseMessage(msg) {
+        this.log(`View received Response message: ${msg.id}`);
+        const request = this.requests.get(msg.id);
+        if (request) {
+            if (msg.error) {
+                request.reject(msg.error);
+            }
+            else {
+                request.resolve(msg.result);
+            }
+            this.requests.delete(msg.id);
+        }
+        else {
+            this.log(`Received response for untracked message id: ${msg.id} (sender: ${participantToString(msg.sender)})`, 'warn');
+        }
+    }
+    async processNotificationMessage(msg) {
+        this.log(`View received Notification message: ${msg.method}`);
+        if ((0, vscode_messenger_common_1.isCancelRequestNotification)(msg)) {
+            const cancelable = this.pendingHandlers.get(msg.params.msgId);
+            if (cancelable) {
+                cancelable.cancel(`Request ${msg.params} was canceled by the sender.`);
+            }
+            else {
+                this.log(`Received cancel notification for missing cancelable. ${msg.params}`, 'warn');
+            }
+        }
+        else {
             const handler = this.handlerRegistry.get(msg.method);
             if (handler) {
-                handler(msg.params, msg.sender);
+                handler(msg.params, msg.sender, new vscode_messenger_common_1.CancellationTokenImpl());
             }
             else if (msg.receiver.type !== 'broadcast') {
                 this.log(`Received notification with unknown method: ${msg.method}`, 'warn');
             }
         }
-        else if ((0, vscode_messenger_common_1.isResponseMessage)(msg)) {
-            this.log(`View received Response message: ${msg.id}`);
-            const request = this.requests.get(msg.id);
-            if (request) {
-                if (msg.error) {
-                    request.reject(msg.error);
-                }
-                else {
-                    request.resolve(msg.result);
-                }
-                this.requests.delete(msg.id);
+    }
+    async processRequestMessage(msg) {
+        this.log(`View received Request message: ${msg.method} (id ${msg.id})`);
+        const handler = this.handlerRegistry.get(msg.method);
+        if (handler) {
+            const cancelable = new vscode_messenger_common_1.CancellationTokenImpl();
+            try {
+                this.pendingHandlers.set(msg.id, cancelable);
+                const result = await handler(msg.params, msg.sender, cancelable);
+                const response = {
+                    id: msg.id,
+                    receiver: msg.sender,
+                    result: result
+                };
+                this.vscode.postMessage(response);
             }
-            else {
-                this.log(`Received response for untracked message id: ${msg.id} (sender: ${participantToString(msg.sender)})`, 'warn');
+            catch (error) {
+                if (cancelable.isCancellationRequested) {
+                    // Don't report the error if request was canceled.
+                    return;
+                }
+                const response = {
+                    id: msg.id,
+                    receiver: msg.sender,
+                    error: this.createResponseError(error)
+                };
+                this.vscode.postMessage(response);
+            }
+            finally {
+                this.pendingHandlers.delete(msg.id);
             }
         }
         else {
-            this.log(`Invalid message: ${JSON.stringify(msg)}`, 'error');
+            this.log(`Received request with unknown method: ${msg.method}`, 'warn');
+            const response = {
+                id: msg.id,
+                receiver: msg.sender,
+                error: {
+                    message: `Unknown method: ${msg.method}`
+                }
+            };
+            this.vscode.postMessage(response);
         }
     }
     createResponseError(error) {
@@ -40053,14 +40174,25 @@ class Messenger {
             return { message: String(error) };
         }
     }
-    sendRequest(type, receiver, params) {
+    sendRequest(type, receiver, params, cancelable) {
         if (receiver.type === 'broadcast') {
             throw new Error('Only notification messages are allowed for broadcast.');
         }
         const msgId = this.createMsgId();
-        const result = new Promise((resolve, reject) => {
-            this.requests.set(msgId, { resolve: resolve, reject });
-        });
+        const pending = new vscode_messenger_common_1.Deferred();
+        this.requests.set(msgId, pending);
+        if (cancelable) {
+            const listener = cancelable.onCancellationRequested((reason) => {
+                // Send cancel message for pending request
+                this.vscode.postMessage((0, vscode_messenger_common_1.createCancelRequestMessage)(receiver, { msgId }));
+                pending.reject(new Error(reason));
+                this.requests.delete(msgId);
+            });
+            pending.result.finally(() => {
+                // Request finished, remove the listener
+                listener.dispose();
+            }).catch((err) => this.log(`Pending request rejected: ${String(err)}`));
+        }
         const message = {
             id: msgId,
             method: type.method,
@@ -40069,7 +40201,7 @@ class Messenger {
             params: params
         };
         this.vscode.postMessage(message);
-        return result;
+        return pending.result;
     }
     sendNotification(type, receiver, params) {
         const message = {
@@ -40086,6 +40218,11 @@ class Messenger {
         const rand = Array.from(cryptoRand).map(b => b.toString(16)).join('');
         return 'req_' + this.nextMsgId++ + '_' + rand;
     }
+    /**
+     * Log a message to the console.
+     * @param text The message to log.
+     * @param level The log level. Defaults to 'debug'.
+     */
     log(text, level = 'debug') {
         switch (level) {
             case 'debug': {
@@ -40106,6 +40243,26 @@ class Messenger {
     }
 }
 exports.Messenger = Messenger;
+/**
+ * Create a CancellationToken that is linked to the given signal.
+ *
+ * @param signal An AbortSignal to create a CancellationToken for.
+ * @returns A CancellationToken that is linked to the given signal.
+ */
+function createCancellationToken(signal) {
+    return {
+        get isCancellationRequested() {
+            return signal.aborted;
+        },
+        onCancellationRequested: (callback) => {
+            const listener = () => callback(String(signal.reason));
+            signal.addEventListener('abort', listener);
+            return {
+                dispose: () => signal.removeEventListener('abort', listener)
+            };
+        }
+    };
+}
 function participantToString(participant) {
     switch (participant.type) {
         case 'extension':
@@ -40474,7 +40631,7 @@ exports.SdvmlNode = SdvmlNode;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.GetImageRequest = void 0;
 const vscode_jsonrpc_1 = __webpack_require__(/*! vscode-jsonrpc */ "../../node_modules/vscode-jsonrpc/lib/browser/main.js");
-exports.GetImageRequest = new vscode_jsonrpc_1.RequestType('get-image');
+exports.GetImageRequest = new vscode_jsonrpc_1.RequestType('getImage');
 
 
 /***/ }),
