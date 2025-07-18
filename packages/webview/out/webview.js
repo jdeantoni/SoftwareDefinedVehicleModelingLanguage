@@ -40703,14 +40703,13 @@ exports.SdvmlServiceNodeView = SdvmlServiceNodeView = __decorate([
 ], SdvmlServiceNodeView);
 let SdvmlLabelNodeView = class SdvmlLabelNodeView extends sprotty_1.RectangularNodeView {
     render(node, context, args) {
-        var _a, _b;
         if (!this.isVisible(node, context)) {
             return undefined;
         }
-        const parent = node.parent;
-        const width = (_b = (_a = parent === null || parent === void 0 ? void 0 : parent.size) === null || _a === void 0 ? void 0 : _a.width) !== null && _b !== void 0 ? _b : 100;
+        // const parent = node.parent as SShapeElementImpl | undefined;
+        // const width = parent?.size?.width ?? 100;
         return ((0, sprotty_1.svg)("g", null,
-            (0, sprotty_1.svg)("rect", { "class-sprotty-node": node instanceof sprotty_1.SNodeImpl, "class-sprotty-port": node instanceof sprotty_1.SPortImpl, "class-mouseover": node.hoverFeedback, "class-selected": node.selected, "class-node-label": node instanceof sprotty_1.SNodeImpl, x: "0", y: "0", width: Math.max(width - 12 * 2, 0), height: Math.max(node.size.height, 0) }),
+            (0, sprotty_1.svg)("rect", { "class-sprotty-node": node instanceof sprotty_1.SNodeImpl, "class-sprotty-port": node instanceof sprotty_1.SPortImpl, "class-mouseover": node.hoverFeedback, "class-selected": node.selected, "class-node-label": node instanceof sprotty_1.SNodeImpl, x: "0", y: "0", width: Math.max(node.size.width, 0), height: Math.max(node.size.height, 0) }),
             context.renderChildren(node)));
     }
 };

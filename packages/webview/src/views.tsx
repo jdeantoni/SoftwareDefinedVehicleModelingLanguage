@@ -103,8 +103,8 @@ export class SdvmlLabelNodeView extends RectangularNodeView {
     if (!this.isVisible(node, context)) {
       return undefined;
     }
-    const parent = node.parent as SShapeElementImpl | undefined;
-    const width = parent?.size?.width ?? 100;
+    // const parent = node.parent as SShapeElementImpl | undefined;
+    // const width = parent?.size?.width ?? 100;
     return (
       <g>
         <rect
@@ -115,7 +115,7 @@ export class SdvmlLabelNodeView extends RectangularNodeView {
           class-node-label={node instanceof SNodeImpl}
           x="0"
           y="0"
-          width={Math.max(width - 12 * 2, 0)}
+          width={Math.max(node.size.width, 0)}
           height={Math.max(node.size.height, 0)}
         ></rect>
         {context.renderChildren(node)}

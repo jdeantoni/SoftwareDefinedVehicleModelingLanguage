@@ -58,28 +58,30 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                <SNode>{
                     type: 'node:node-label',
                     id: idCache.uniqueId(nodeId + '.label'),
-                    children: [<SLabel>{
+                    children: [
+                        <SLabel>{
                         type: 'label',
                         id: idCache.uniqueId(nodeId + '.label.label'),
                         text: comp.name
                     }],
                     layout: "vbox",
                     layoutOptions: {
-                        innerHeight: 100,
                         paddingTop: 10.0,
                         paddingBottom: 10.0,
                         paddingLeft: 10.0,
-                        paddingRight: 10.0
+                        paddingRight: 10.0,
+                        resizeContainer: true,
+                        hAlign: 'center'
                     }
                 }
             ] as (SLabel | SPort | SNode)[],
             layout: "vbox",
             layoutOptions: {
-                innerHeight: 100,
                 paddingTop: 10.0,
                 paddingBottom: 10.0,
                 paddingLeft: 10.0,
-                paddingRight: 10.0
+                paddingRight: 10.0,
+                resizeContainer: true
             }
         };
         // console.error("service length:"+comp.services.length)
@@ -111,7 +113,9 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                         paddingTop: 10.0,
                         paddingBottom: 10.0,
                         paddingLeft: 10.0,
-                        paddingRight: 10.0
+                        paddingRight: 10.0,
+                        resizeContainer: true,
+                        hAlign: 'center'
                     }
             };
             serNode.children = [...serNode.children?serNode.children:[],...this.getServiceLabel(service,serId,ctx)];
