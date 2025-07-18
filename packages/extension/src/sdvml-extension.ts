@@ -17,14 +17,14 @@
 
 import * as path from 'path';
 import {
-    SprottyDiagramIdentifier, WebviewContainer, createFileUri, createWebviewHtml as doCreateWebviewHtml,
+    SprottyDiagramIdentifier, WebviewContainer, createFileUri,
     registerDefaultCommands, registerLspEditCommands, registerTextEditorSync
 } from 'sprotty-vscode';
 import { LspSprottyEditorProvider, LspSprottyViewProvider, LspWebviewPanelManager } from 'sprotty-vscode/lib/lsp';
 import * as vscode from 'vscode';
 import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from 'vscode-languageclient/node';
 import { Messenger } from 'vscode-messenger';
-import {GetImageRequest} from './sdvml-messages.js'
+import { GetImageRequest } from './sdvml-messages.js'
 
 
 let languageClient: LanguageClient;
@@ -35,17 +35,6 @@ let languageClient: LanguageClient;
 //     { image: string; position: { x: number; y: number } },     // response
 //     void                                                      // error (not used)
 // >('get-image');
-
-
-export function activate(context: vscode.ExtensionContext) {
-    const diagramMode = process.env.DIAGRAM_MODE || 'panel';
-    if (!['panel', 'editor', 'view'].includes(diagramMode)) {
-        throw new Error("The environment variable 'DIAGRAM_MODE' must be set to 'panel', 'editor' or 'view'.");
-    }
-
-    languageClient = createLanguageClient(context);
-    const extensionPath = context.extensionUri.fsPath;
-    const localResourceRoots = [createFileUri(extensionPath, 'pack', 'diagram')];
 
 
 function sdvmlCreateWebviewHtml(identifier: SprottyDiagramIdentifier, container: WebviewContainer,
@@ -67,14 +56,25 @@ function sdvmlCreateWebviewHtml(identifier: SprottyDiagramIdentifier, container:
 </html>`;
 }
 
+export function activate(context: vscode.ExtensionContext) {
+    const cliPath = context.asAbsolutePath('pack/language-server/src/cli/main.cjs');
+    const { generateAction,GenerateOptions } = require(cliPath);
 
 
+    const diagramMode = process.env.DIAGRAM_MODE || 'panel';
+    if (!['panel', 'editor', 'view'].includes(diagramMode)) {
+        throw new Error("The environment variable 'DIAGRAM_MODE' must be set to 'panel', 'editor' or 'view'.");
+    }
+
+    languageClient = createLanguageClient(context);
+    const extensionPath = context.extensionUri.fsPath;
+    const localResourceRoots = [createFileUri(extensionPath, 'pack', 'diagram')];
 
     const createWebviewHtml = (identifier: SprottyDiagramIdentifier, container: WebviewContainer) =>
         sdvmlCreateWebviewHtml(identifier, container, {
-        scriptUri: createFileUri(extensionPath, 'pack', 'diagram', 'main.js'),
-        cssUri: createFileUri(extensionPath, 'pack', 'diagram', 'main.css')
-    });
+            scriptUri: createFileUri(extensionPath, 'pack', 'diagram', 'main.js'),
+            cssUri: createFileUri(extensionPath, 'pack', 'diagram', 'main.css')
+        });
 
 
 
@@ -122,7 +122,7 @@ function sdvmlCreateWebviewHtml(identifier: SprottyDiagramIdentifier, container:
         webviewEditorProvider.messenger.onRequest(
             GetImageRequest,
             async (message: { elementId: string; position: { x: number; y: number } }) => {
-                console.error("~~~~> packages/extension/src/sdvml-extension.ts:"+message.elementId)
+                console.error("~~~~> packages/extension/src/sdvml-extension.ts:" + message.elementId)
                 const image = await getImageForElement(message.elementId);
                 return {
                     image,
@@ -151,7 +151,7 @@ function sdvmlCreateWebviewHtml(identifier: SprottyDiagramIdentifier, container:
             languageClient,
             supportedFileExtensions: ['.sdvml'],
             openActiveEditor: true,
-            messenger: new Messenger({ignoreHiddenViews: false}),
+            messenger: new Messenger({ ignoreHiddenViews: false }),
             localResourceRoots,
             createWebviewHtml
         });
@@ -159,7 +159,7 @@ function sdvmlCreateWebviewHtml(identifier: SprottyDiagramIdentifier, container:
         webviewViewProvider.messenger.onRequest(
             GetImageRequest,
             async (message: { elementId: string; position: { x: number; y: number } }) => {
-                console.error("~~~~> packages/extension/src/sdvml-extension.ts:"+message.elementId)
+                console.error("~~~~> packages/extension/src/sdvml-extension.ts:" + message.elementId)
                 const img = await getImageForElement(message.elementId);
                 return {
                     image: img,
@@ -167,7 +167,6 @@ function sdvmlCreateWebviewHtml(identifier: SprottyDiagramIdentifier, container:
                 };
             }
         );
-
 
         context.subscriptions.push(
             vscode.window.registerWebviewViewProvider('sdvml', webviewViewProvider, {
@@ -177,6 +176,27 @@ function sdvmlCreateWebviewHtml(identifier: SprottyDiagramIdentifier, container:
         registerDefaultCommands(webviewViewProvider, context, { extensionPrefix: 'sdvml' });
         registerTextEditorSync(webviewViewProvider, context);
     }
+
+    const disposable = vscode.commands.registerCommand('sdvml.generateCode', () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            vscode.window.showErrorMessage('No active SDVML file.');
+            return;
+        }
+
+        const document = editor.document;
+        const filePath = document.uri.fsPath;
+
+        let opts = {
+            destination : filePath.slice(0, filePath.lastIndexOf('/'))+"/generated/"
+        }
+        console.error("~~~~~~~> generate path",opts.destination)
+        generateAction(filePath,opts)
+
+        vscode.window.showInformationMessage(`SDVML code generation complete! Output at: ${opts.destination}`);
+    });
+
+    context.subscriptions.push(disposable);
 }
 
 function createLanguageClient(context: vscode.ExtensionContext): LanguageClient {

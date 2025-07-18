@@ -23,9 +23,9 @@ App :
         service s2:
             periodic 10+/-1ms
             ExecTime 3+/-1ms
-        service s3:
-            triggered on Al
-            ExecTime 3+/-1ms
+        // service s3:
+        //     triggered on Al
+        //     ExecTime 3+/-1ms
 
 Functional Chains:
  chain : Lidar -> Rad -> s1 -> FB -> FrontBrake 
