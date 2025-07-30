@@ -51,6 +51,7 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
     protected generateComponent(comp: Component, ctx: GeneratorContext<Model>): SNode {
         const { idCache } = ctx;
         const nodeId = idCache.uniqueId(comp.name, comp);
+
         const node = {
             type: 'node',
             id: nodeId,
@@ -85,6 +86,8 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
             }
         };
         // console.error("service length:"+comp.services.length)
+        var serToSerNode = new Map<Service,SNode>()
+
         for (let service of comp.services){
             // console.error("service name:"+service.name)
             const serId = idCache.uniqueId(nodeId + '.service',service)
@@ -97,16 +100,16 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                             id: idCache.uniqueId(serId + '.label'),
                             text: service.name
                         },
-                         <SPort>{
-                            type: 'port:fake-port',
-                            id: serId + '.input',
-                            direction : 'input'
-                        },
-                         <SPort>{
-                            type: 'port:fake-port',
-                            id: serId + '.output',
-                            direction : 'output'
-                        }
+                        //  <SPort>{
+                        //     type: 'port:fake-port',
+                        //     id: serId + '.input',
+                        //     direction : 'input'
+                        // },
+                        //  <SPort>{
+                        //     type: 'port:fake-port',
+                        //     id: serId + '.output',
+                        //     direction : 'output'
+                        // }
                     ],
                     layout: "vbox",
                     layoutOptions: {
@@ -119,59 +122,76 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                     }
             };
             serNode.children = [...serNode.children?serNode.children:[],...this.getServiceLabel(service,serId,ctx)];
-
+            serToSerNode.set(service,serNode)
             node.children.push(serNode);
             // console.error("children length:"+node.children.length)
         }
 
-        for (let pub of comp.publishers){
-            const pubId = idCache.uniqueId((pub.sigName != undefined)? pub.sigName : ((pub.sigRef != undefined)&&(pub.sigRef.ref != undefined)? pub.sigRef?.ref?.name:"undefined"), pub);
-            node.children.push(
-                <SPort>{
-                    type: 'port',
-                    id: pubId,
-                    // children: [
-                    //     <SLabel>{
-                    //         type: 'label',
-                    //         id: idCache.uniqueId(pubId + '.label'),
-                    //         text: pub.name
-                    //     }
-                    // ],
-                    direction : 'output',
-                    layout: "stack",
-                    layoutOptions: {
-                        paddingTop: 10.0,
-                        paddingBottom: 10.0,
-                        paddingLeft: 10.0,
-                        paddingRight: 10.0
+        for (let s of comp.services){
+            for (let pub of s.publishers){
+                const pubId = idCache.uniqueId((pub.sigName != undefined)? pub.sigName : ((pub.sigRef != undefined)&&(pub.sigRef.ref != undefined)? pub.sigRef?.ref?.name:"undefined"), pub);
+                node.children.push(
+                    <SPort>{
+                        type: 'port',
+                        id: pubId,
+                        direction : 'output',
+                        layout: "stack",
+                        layoutOptions: {
+                            paddingTop: 10.0,
+                            paddingBottom: 10.0,
+                            paddingLeft: 10.0,
+                            paddingRight: 10.0
+                        }
                     }
-                }
-            )
+                )
+                serToSerNode.get(s)?.children?.push(
+                    <SPort>{
+                        type: 'port',
+                        id: pubId+"_in",
+                        direction : 'output',
+                        layout: "stack",
+                        layoutOptions: {
+                            paddingTop: 10.0,
+                            paddingBottom: 10.0,
+                            paddingLeft: 10.0,
+                            paddingRight: 10.0
+                        }
+                    }
+                )
+            }
         }
-
-        for (let sub of comp.subscribers){
-            const subId = idCache.uniqueId((sub.sigName != undefined)? sub.sigName : (sub.sigRef != undefined)&&(sub.sigRef.ref != undefined)? sub.sigRef?.ref?.name:"undefined", sub);
-            node.children.push(
-                <SPort>{
-                    type: 'port',
-                    id: subId,
-                    // children: [
-                    //     <SLabel>{
-                    //         type: 'label',
-                    //         id: idCache.uniqueId(subId + '.label'),
-                    //         text: sub.name
-                    //     }
-                    // ],
-                    direction : 'input',
-                    layout: "stack",
-                    layoutOptions: {
-                        paddingTop: 10.0,
-                        paddingBottom: 10.0,
-                        paddingLeft: 10.0,
-                        paddingRight: 10.0
+        for (let s of comp.services){
+            for (let sub of s.subscribers){
+                const subId = idCache.uniqueId((sub.sigName != undefined)? sub.sigName : (sub.sigRef != undefined)&&(sub.sigRef.ref != undefined)? sub.sigRef?.ref?.name:"undefined", sub);
+                node.children.push(
+                    <SPort>{
+                        type: 'port',
+                        id: subId,
+                        direction : 'input',
+                        layout: "stack",
+                        layoutOptions: {
+                            paddingTop: 10.0,
+                            paddingBottom: 10.0,
+                            paddingLeft: 10.0,
+                            paddingRight: 10.0
+                        }
                     }
-                }
-            )
+                )
+                serToSerNode.get(s)?.children?.push(
+                        <SPort>{
+                            type: 'port',
+                        id: subId+'_in',
+                        direction : 'input',
+                        layout: "stack",
+                        layoutOptions: {
+                            paddingTop: 10.0,
+                            paddingBottom: 10.0,
+                            paddingLeft: 10.0,
+                            paddingRight: 10.0
+                        }
+                    }
+                )
+            }
         }
 
         this.traceProvider.trace(node, comp);
@@ -342,12 +362,12 @@ protected getServiceLabel(service:Service, nodeId:string, ctx: GeneratorContext<
     protected generateEdge(comp: Component, ctx: GeneratorContext<Model>): SEdge[] {
         const { idCache } = ctx;
         const res: SEdge[] = []
-        for (let sub of comp.subscribers){
+        for (let sub of comp.services.flatMap(s => s.subscribers)){
             const targetId = idCache.getId(sub);
 
             // console.error(`#   #   # ${sub.sigName}: ${comp.$container.components.flatMap(c => c.publishers).filter(p => p.sigName == sub.sigName).flatMap( s => s.sigName).join(',')}: ${sub.sigRef?.ref?.name}`)
             let sourceSig = (sub.sigName != undefined)
-                                    ? comp.$container.components.flatMap(c => c.publishers).filter(p => p.sigName == sub.sigName)[0]
+                                    ? comp.$container.components.flatMap(c => c.services.flatMap(s => s.publishers)).filter(p => p.sigName == sub.sigName)[0]
                                     : sub.sigRef?.ref
 
             const sourceId = idCache.getId(sourceSig);
@@ -372,7 +392,7 @@ protected getServiceLabel(service:Service, nodeId:string, ctx: GeneratorContext<
             res.push(edge);
         }
 
-        for (let pub of comp.publishers){
+        for (let pub of comp.services.flatMap(s => s.publishers)){
             const sourceId = idCache.getId(pub);
             if (pub.sigName == undefined){
                 let targetSig = pub.sigRef?.ref
@@ -423,11 +443,11 @@ protected getServiceLabel(service:Service, nodeId:string, ctx: GeneratorContext<
             let targetId = idCache.getId(participant.ref);
 
             if (isService(prevParticipant.ref)){
-                sourceId = sourceId+".output"
+                sourceId = idCache.getId(participant.ref)+"_in";
             }
 
             if (isService(participant.ref)){
-                targetId = targetId+".input"
+                targetId = idCache.getId(prevParticipant.ref)+"_in";
             }
 
             // console.error(`#~~~~~~~~ from ${prevParticipant.ref?.name}  -> target = ${participant.ref.name}`)

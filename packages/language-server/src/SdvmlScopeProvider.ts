@@ -53,8 +53,8 @@ export class SdvmlScopeProvider extends DefaultScopeProvider {
 
             const fcParticipants = [
                 ...model.vss.signals,
-                ...model.components.flatMap(c => c.publishers),
-                ...model.components.flatMap(c => c.subscribers),
+                ...model.components.flatMap(c => c.services.flatMap(s => s.publishers)),
+                ...model.components.flatMap(c => c.services.flatMap(s => s.subscribers)),
                 ...model.components.flatMap(c => c.services),
             ]
             return this.createScopeForNodes(fcParticipants);

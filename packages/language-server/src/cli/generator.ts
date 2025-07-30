@@ -7,6 +7,7 @@ import {
     PeriodicTriggering,
     Sensor,
     type Model,
+    Service,
 } from '../generated/ast.js';
 import { CompositeGeneratorNode, toString } from 'langium/generate';
 import * as fs from 'node:fs';
@@ -52,7 +53,9 @@ export function generateIFScript(
     }
 
     for(var c of model.components){
-        prettyPrintPeriodiComponent(c, ifContent);
+        for (var s of c.services){
+            prettyPrintPeriodiComponent(s, ifContent);
+        }
 
     }
 
@@ -63,14 +66,13 @@ export function generateIFScript(
 }
 
 
-function prettyPrintPeriodiComponent(c: Component, ifContent: CompositeGeneratorNode) {
-    for (var s of c.services) {
-        var servID: string = c.name + "_" + s.name;
+function prettyPrintPeriodiComponent(s: Service, ifContent: CompositeGeneratorNode) {
+        var servID: string = (s.$container as Component).name + "_" + s.name;
         ifContent.append("process " + servID + "(1);\n");
         ifContent.append("\tvar x clock;\n");
         ifContent.append(`
     state wait #start ;
-        input ${c.subscribers[0]?.name}();
+        input ${s.subscribers[0]?.name}();
             informal "${servID}_START";
             set x := 0;
             nextstate processing;
@@ -79,13 +81,12 @@ function prettyPrintPeriodiComponent(c: Component, ifContent: CompositeGenerator
         deadline delayable;
         when x >= ${s.execTime.mean - 2 * s.execTime.stdDev} and x <= ${s.execTime.mean + 2 * s.execTime.stdDev};
             informal "${servID}_FINISH";
-            output ${c.publishers[0]?.name}() to {TODO}0;
+            output ${s.publishers[0]?.name}() to {TODO}0;
             reset x;
             nextstate wait;
     endstate;\n`);
         ifContent.append("endprocess;\n");
     }
-}
 
 function prettyPrintSensorSignal(sig: Sensor, ifContent: CompositeGeneratorNode, sigName: string) {
     var ssp = sig.ssp;
