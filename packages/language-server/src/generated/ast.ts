@@ -91,9 +91,7 @@ export interface Component extends langium.AstNode {
     readonly $container: Model;
     readonly $type: 'Component';
     name: string;
-    publishers: Array<Publisher>;
     services: Array<Service>;
-    subscribers: Array<Subscriber>;
 }
 
 export const Component = 'Component';
@@ -153,7 +151,7 @@ export function isPeriodicTriggering(item: unknown): item is PeriodicTriggering 
 }
 
 export interface Publisher extends langium.AstNode {
-    readonly $container: Component;
+    readonly $container: Service;
     readonly $type: 'Publisher';
     name?: string;
     sigName?: string;
@@ -198,6 +196,8 @@ export interface Service extends langium.AstNode {
     readonly $type: 'Service';
     execTime: RandomVar;
     name: string;
+    publishers: Array<Publisher>;
+    subscribers: Array<Subscriber>;
     trigRule: TriggeringRule;
 }
 
@@ -208,7 +208,7 @@ export function isService(item: unknown): item is Service {
 }
 
 export interface Subscriber extends langium.AstNode {
-    readonly $container: Component;
+    readonly $container: Service;
     readonly $type: 'Subscriber';
     name?: string;
     sigName?: string;
@@ -316,9 +316,7 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                     name: Component,
                     properties: [
                         { name: 'name' },
-                        { name: 'publishers', defaultValue: [] },
-                        { name: 'services', defaultValue: [] },
-                        { name: 'subscribers', defaultValue: [] }
+                        { name: 'services', defaultValue: [] }
                     ]
                 };
             }
@@ -392,6 +390,8 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                     properties: [
                         { name: 'execTime' },
                         { name: 'name' },
+                        { name: 'publishers', defaultValue: [] },
+                        { name: 'subscribers', defaultValue: [] },
                         { name: 'trigRule' }
                     ]
                 };

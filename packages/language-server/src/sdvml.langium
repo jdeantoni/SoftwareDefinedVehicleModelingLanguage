@@ -56,10 +56,8 @@ EventTriggering:
 Component:
     'Component' name=ID
     (
-        publishers+=Publisher |
-        subscribers+=Subscriber |
         services+=Service
-    )*;
+    )+;
 
 Signal:
     Sensor | Actuator;
@@ -78,6 +76,10 @@ Subscriber:
 
 Service:
     'service' name=ID":"
+        (
+            publishers+=Publisher |
+            subscribers+=Subscriber
+        )+
         trigRule=TriggeringRule
         'ExecTime' execTime=RandomVar 'ms'; //('type' srvType=STRING)?;
 

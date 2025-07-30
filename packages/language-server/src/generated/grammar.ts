@@ -390,46 +390,17 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
             }
           },
           {
-            "$type": "Alternatives",
-            "elements": [
-              {
-                "$type": "Assignment",
-                "feature": "publishers",
-                "operator": "+=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@11"
-                  },
-                  "arguments": []
-                }
+            "$type": "Assignment",
+            "feature": "services",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@13"
               },
-              {
-                "$type": "Assignment",
-                "feature": "subscribers",
-                "operator": "+=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@12"
-                  },
-                  "arguments": []
-                }
-              },
-              {
-                "$type": "Assignment",
-                "feature": "services",
-                "operator": "+=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@13"
-                  },
-                  "arguments": []
-                }
-              }
-            ],
-            "cardinality": "*"
+              "arguments": []
+            },
+            "cardinality": "+"
           }
         ]
       },
@@ -854,6 +825,36 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
           {
             "$type": "Keyword",
             "value": ":"
+          },
+          {
+            "$type": "Alternatives",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "publishers",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@11"
+                  },
+                  "arguments": []
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "subscribers",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@12"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "+"
           },
           {
             "$type": "Assignment",
