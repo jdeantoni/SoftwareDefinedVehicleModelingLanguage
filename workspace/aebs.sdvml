@@ -8,7 +8,7 @@ VSS :
     Actuator Signal Alarm (triggered on event, AD: 1+/-0ms)
 App :
     Component Fusion
-        service S1:
+        service S3:
             subscribe to VSS signal Camera (Camera)
             subscribe to VSS signal Lidar (Lidar)
             subscribe to VSS signal Radar (Radar)
@@ -24,4 +24,4 @@ App :
             ExecTime 1+/-0ms
 
 Functional Chains:
-    chain : Camera -> S1 -> S2 -> Brake
+    chain : Camera -> S3 -> S2 -> Brake

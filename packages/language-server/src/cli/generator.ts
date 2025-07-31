@@ -35,43 +35,44 @@ export function generateIFScript(
     }
     let compPubTargets = new Map<string, string[]>();
     for (var co of model.components){
-        if (co.services.length > 1 || co.services.length <= 0){
-            console.error("components must have one and only one services so far")
-        }
-        var tmpSensors: string[] = [];
-        for (var cosub of co.services[0].subscribers) {
-            tmpSensors.push(cosub.name!);
-            var tmpNewComps: string[] = [];
-            if (sigComps.get(cosub.name!) == undefined) {
-                sigComps.set(cosub.name!, tmpNewComps);
-            }
-            var tmpComps: string[] = [];
-            for (var com of sigComps.get(cosub.name!)!) {
-                tmpComps.push(com);
-            }
-            tmpComps.push(co.name);
-            sigComps.set(cosub.name!, tmpComps);
-        }
-        compSensors.set(co.name, tmpSensors)
-        for (var copub of co.services[0].publishers) {
-            if (copub.sigName != undefined) {
-                appSignals.push(copub.sigName!);
-                var tmpTargets: string[] = [];
-                var keyCompSub = co.name + ";" + copub.sigName;
-                if (compPubTargets.get(keyCompSub) == undefined) {
-                    compPubTargets.set(keyCompSub, tmpTargets);
+        for (var serv of co.services) {
+            var tmpSensors: string[] = [];
+            for (var cosub of serv.subscribers) {
+                tmpSensors.push(cosub.name!);
+                var tmpNewComps: string[] = [];
+                if (sigComps.get(cosub.name!) == undefined) {
+                    sigComps.set(cosub.name!, tmpNewComps);
                 }
-                var tmpNewTargets: string[] = [];
-                for (var newco of model.components) {
-                    for (var cosub of newco.services[0].subscribers) {
-                        if (cosub.sigName != undefined) {
-                            if (cosub.sigName == copub.sigName) {
-                                tmpNewTargets.push(newco.name)
+                var tmpComps: string[] = [];
+                for (var com of sigComps.get(cosub.name!)!) {
+                    tmpComps.push(com);
+                }
+                tmpComps.push(co.name + "_" + serv.name);
+                sigComps.set(cosub.name!, tmpComps);
+            }
+            compSensors.set(co.name, tmpSensors)
+            for (var copub of serv.publishers) {
+                if (copub.sigName != undefined) {
+                    appSignals.push(copub.sigName!);
+                    var tmpTargets: string[] = [];
+                    var keyCompSub = co.name + ";" + serv.name + ";" + copub.sigName;
+                    if (compPubTargets.get(keyCompSub) == undefined) {
+                        compPubTargets.set(keyCompSub, tmpTargets);
+                    }
+                    var tmpNewTargets: string[] = [];
+                    for (var newco of model.components) {
+                        for (var servnewco of newco.services) {
+                            for (var cosub of servnewco.subscribers) {
+                                if (cosub.sigName != undefined) {
+                                    if (cosub.sigName == copub.sigName) {
+                                        tmpNewTargets.push(newco.name + "_" + servnewco.name)
+                                    }
+                                }
                             }
                         }
                     }
+                    compPubTargets.set(keyCompSub, tmpNewTargets);
                 }
-                compPubTargets.set(keyCompSub, tmpNewTargets);
             }
         }
     }
@@ -116,28 +117,29 @@ export function generateIFScript(
 
 
 function prettyPrintComponent(c: Component, ifContent: CompositeGeneratorNode, compSensors: Map<string, string[]>, compPubTargets: Map<string, string[]>) {
-    var publines = "";
-    for (var pub of c.services[0].publishers) {
-        if (pub.name != undefined) {
-            publines += `\n\t\t\toutput ${pub.name}() to {${pub.name}}0;`;
-        }
-        if (pub.sigName != undefined) {
-            for (var compPubTarget of compPubTargets.get(c.name + ";" + pub.sigName)!) {
-                publines += `\n\t\t\toutput ${pub.sigName}() to {${compPubTarget}}0;`;
+    for (var s of c.services) {
+        var publines = "";
+        for (var pub of s.publishers) {
+            if (pub.name != undefined) {
+                publines += `\n\t\t\toutput ${pub.name}() to {${pub.name}}0;`;
+            }
+            if (pub.sigName != undefined) {
+                for (var compPubTarget of compPubTargets.get(c.name + ";" + s.name + ";" + pub.sigName)!) {
+                    publines += `\n\t\t\toutput ${pub.sigName}() to {${compPubTarget}}0;`;
+                }
             }
         }
-    }
-    var inpData:string[] = ["", "", "", "", ""];
-    var inpNxtState:string[] = ["first", "jitter", "processing1", "processing2", "wait"];
-    var idxState = 0;
-    for (var nxtState of inpNxtState) {
-        for (var senName of compSensors.get(c.name)!) {
-            inpData[idxState] += `\n\t\tinput ${senName}();\n\t\t\ttask nbData := nbData + 1;\n\t\t\tnextstate ${nxtState};`;
+        var inpData:string[] = ["", "", "", "", ""];
+        var inpNxtState:string[] = ["first", "jitter", "processing1", "processing2", "wait"];
+        var idxState = 0;
+        for (var nxtState of inpNxtState) {
+            for (var senName of compSensors.get(c.name)!) {
+                inpData[idxState] += `\n\t\tinput ${senName}();\n\t\t\ttask nbData := nbData + 1;\n\t\t\tnextstate ${nxtState};`;
+            }
+            idxState++;
         }
-        idxState++;
-    }
-    for (var s of c.services) {
-        var servID: string = c.name;
+
+        var servID: string = c.name + "_" + s.name;
         ifContent.append("process " + servID + "(1);\n");
         if (isPeriodicTriggering(s.trigRule)) {
             var CP = (s.trigRule as PeriodicTriggering).period;
@@ -193,8 +195,8 @@ function prettyPrintComponent(c: Component, ifContent: CompositeGeneratorNode, c
     endstate;\n`);
         } else {
             var tmpSigInput = c.name;
-            if ((c.services[0].trigRule as EventTriggering).trigger?.ref?.name != undefined) {
-                tmpSigInput = (c.services[0].trigRule as EventTriggering).trigger?.ref?.name!;
+            if ((s.trigRule as EventTriggering).trigger?.ref?.name != undefined) {
+                tmpSigInput = (s.trigRule as EventTriggering).trigger?.ref?.name!;
             }
             ifContent.append("\tvar e clock;");
         ifContent.append(`
