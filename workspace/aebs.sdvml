@@ -1,0 +1,27 @@
+SDV aebs:
+
+VSS :
+    Sensor Signal Camera (SSP:5+/-0ms, DL: 1+/-0ms)
+    Sensor Signal Lidar (SSP:5+/-0ms, DL: 1+/-0ms)
+    Sensor Signal Radar (SSP:5+/-0ms, DL: 1+/-0ms)
+    Actuator Signal Brake (periodic 5+/-0ms, AD: 1+/-0ms)    
+    Actuator Signal Alarm (triggered on event, AD: 1+/-0ms)
+App :
+    Component Fusion
+        service S1:
+            subscribe to VSS signal Camera (Camera)
+            subscribe to VSS signal Lidar (Lidar)
+            subscribe to VSS signal Radar (Radar)
+            publish Fusion_data
+            periodic 5+/-0ms
+            ExecTime 1+/-0ms
+    Component AEB_controler
+        service S2:
+            subscribe to Fusion_data (Fusion_data)
+            publish to VSS signal Alarm (Alarm)
+            publish to VSS signal Brake (Brake)
+            triggered on Fusion_data
+            ExecTime 1+/-0ms
+
+Functional Chains:
+    chain : Camera -> S1 -> S2 -> Brake

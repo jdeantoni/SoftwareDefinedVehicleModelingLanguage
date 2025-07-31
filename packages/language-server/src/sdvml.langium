@@ -51,7 +51,7 @@ PeriodicTriggering:
     'periodic' period=RandomVar 'ms';
 
 EventTriggering:
-    'triggered' 'on' trigger=[Subscriber:ID];
+    'triggered' 'on' (trigger=[Subscriber:ID] | 'event');
 
 Component:
     'Component' name=ID
