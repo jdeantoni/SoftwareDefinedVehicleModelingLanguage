@@ -31,7 +31,9 @@ export function generateIFScript(
     }
     let compSensors = new Map<string, string[]>();
     for(var comp of model.components){
-        compSensors.set(comp.name, []);
+        for (var compservtemp of comp.services) {
+            compSensors.set(comp.name + ";" + compservtemp.name, []);
+        }
     }
     let compPubTargets = new Map<string, string[]>();
     for (var co of model.components){
@@ -50,7 +52,7 @@ export function generateIFScript(
                 tmpComps.push(co.name + "_" + serv.name);
                 sigComps.set(cosub.name!, tmpComps);
             }
-            compSensors.set(co.name, tmpSensors)
+            compSensors.set(co.name + ";" + serv.name, tmpSensors)
             for (var copub of serv.publishers) {
                 if (copub.sigName != undefined) {
                     appSignals.push(copub.sigName!);
@@ -133,7 +135,7 @@ function prettyPrintComponent(c: Component, ifContent: CompositeGeneratorNode, c
         var inpNxtState:string[] = ["first", "jitter", "processing1", "processing2", "wait"];
         var idxState = 0;
         for (var nxtState of inpNxtState) {
-            for (var senName of compSensors.get(c.name)!) {
+            for (var senName of compSensors.get(c.name + ";" + s.name)!) {
                 inpData[idxState] += `\n\t\tinput ${senName}();\n\t\t\ttask nbData := nbData + 1;\n\t\t\tnextstate ${nxtState};`;
             }
             idxState++;
