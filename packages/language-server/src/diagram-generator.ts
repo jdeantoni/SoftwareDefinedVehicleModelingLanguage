@@ -304,11 +304,13 @@ protected getServiceLabel(service:Service, nodeId:string, ctx: GeneratorContext<
                     text:"AP:"+service.trigRule.period.mean+"+/-"+service.trigRule.period.stdDev+"ms"
                 });
             }else{
-                res.push(<SLabel>{
-                    type: "label:values",
-                    id: idCache.uniqueId(nodeId + '.values2'),
-                    text:"triggered on:"+(service.trigRule.trigger.ref?.sigName?service.trigRule.trigger.ref?.sigName:service.trigRule.trigger.ref?.sigRef?.ref?.name)
-                });
+                if (service.trigRule.trigger != undefined) {
+                    res.push(<SLabel>{
+                        type: "label:values",
+                        id: idCache.uniqueId(nodeId + '.values2'),
+                        text:"triggered on:"+(service.trigRule.trigger.ref?.sigName?service.trigRule.trigger.ref?.sigName:service.trigRule.trigger.ref?.sigRef?.ref?.name)
+                    });
+                }
             }
         return res;
     }
