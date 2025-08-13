@@ -3,12 +3,13 @@ import chalk from 'chalk';
 import { Command } from 'commander';
 import { SdvmlLanguageMetaData } from '../generated/module.js';
 import { createSdvmlServices } from '../sdvml-module.js';
-import { extractAstNode } from './cli-util.js';
-import { generateIFScript } from './generator.js';
+import { extractAstNode, extractDestinationAndName } from './cli-util.js';
+import { generateIFScript, makeContext } from './generator.js';
 import { NodeFileSystem } from 'langium/node';
 // import * as url from 'node:url';
-import * as fs from 'node:fs/promises';
+import * as fsAsync from 'node:fs/promises';
 import * as path from 'node:path';
+import * as fs from 'node:fs';
 
 
 
@@ -26,15 +27,26 @@ export const generateAction = async (
     opts: GenerateOptions
 ): Promise<void> => {
     const services = createSdvmlServices(NodeFileSystem).sdvml;
-    extractAstNode<Model>(fileName, services).then(model =>{
-    const generatedFilePath = generateIFScript(
-        model,
-        fileName,
-        opts.destination
-    );
-    console.log(
-        chalk.green(`IF code generated successfully: ${generatedFilePath}`)
-    );
+    extractAstNode<Model>(fileName, services).then(model => {
+        const data = extractDestinationAndName(fileName, opts.destination);
+        const resPath = path.join(data.destination, 'IF')
+        fs.mkdirSync(resPath, { recursive: true });
+        const generatedFilePath = `${path.join(resPath, data.name)}.if`;
+
+        const context = makeContext(model);
+        const generatedModel = generateIFScript(
+            model, context
+        );
+
+        fs.writeFileSync(generatedFilePath, generatedModel);
+
+        console.log(
+            context
+        );
+
+        console.log(
+            chalk.green(`IF code generated successfully: ${generatedFilePath}`)
+        );
     });
 };
 
@@ -44,7 +56,7 @@ export type GenerateOptions = {
 
 export function main(): void {
     const program = new Command();
-    fs.readFile(packagePath, 'utf-8').then(packageContent =>{
+    fsAsync.readFile(packagePath, 'utf-8').then(packageContent => {
         program.version(JSON.parse(packageContent).version);
     });
     const fileExtensions = SdvmlLanguageMetaData.fileExtensions.join(', ');

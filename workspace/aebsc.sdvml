@@ -1,38 +1,41 @@
 SDV aebsc:
 
 VSS :
-    Sensor Signal Camera (SSP:5+/-0ms, DL: 1+/-0ms)
-    Sensor Signal Lidar (SSP:5+/-0ms, DL: 1+/-0ms)
-    Sensor Signal Radar (SSP:5+/-0ms, DL: 1+/-0ms)
-    Actuator Signal Brake (periodic 5+/-0ms, AD: 1+/-0ms)    
-    Actuator Signal Alarm (triggered on event, AD: 1+/-0ms)
+    Sensor Signal Camera (SSP:5ms+/-0ms, DL: 1ms +/-0ms)
+    Sensor Signal Lidar (SSP:5ms +/-0ms, DL: 1ms+/-0ms)
+    Sensor Signal Radar (SSP:5ms +/-0ms, DL: 1ms+/-0ms)
+    Actuator Signal Brake (periodic 5ms+/-0ms, AD: 1ms+/-0ms)    
+    Actuator Signal Alarm (triggered on event, AD: 1ms+/-0ms)
 App :
-    Component Data_hub
-        service Fuse_detection:
-            subscribe to VSS signal Lidar (Lidar)
-            subscribe to VSS signal Radar (Radar)
+    Component Data_hub :
+        Signal Detection_data
+        Signal Reaction_data
+        Service Fuse_detection:
+            subscribe to VSS signal Lidar
+            subscribe to VSS signal Radar
             publish Detection_data
-            periodic 5+/-0ms
-            ExecTime 1+/-0ms
-        service Fuse_camera:
-            subscribe to VSS signal Camera (Camera)
-            subscribe to Processed_detection (Processed_detection)
-            publish to VSS signal Alarm (Alarm)
+            periodic 5ms+/-0ms
+            execution 1ms+/-0ms
+        Service Fuse_camera:
+            subscribe to VSS signal Camera
+            subscribe to Processed_detection
+            publish to VSS signal Alarm
             publish Reaction_data
-            periodic 5+/-0ms
-            ExecTime 1+/-0ms
-    Component AEB_controler
-        service Compute_detection:
-            subscribe to Detection_data (Detection_data)
+            periodic 5ms+/-0ms
+            execution 1ms+/-0ms
+    Component AEB_controler :
+        Signal Processed_detection
+        Service Compute_detection:
+            subscribe to Detection_data
             publish Processed_detection
             triggered on Detection_data
-            ExecTime 1+/-0ms
-        service Compute_reaction:
-            subscribe to Reaction_data (Reaction_data)
-            publish to VSS signal Alarm (Alarm)
-            publish to VSS signal Brake (Brake)
+            execution 1ms+/-0ms
+        Service Compute_reaction:
+            subscribe to Reaction_data
+            publish to VSS signal Alarm
+            publish to VSS signal Brake
             triggered on Reaction_data
-            ExecTime 1+/-0ms
+            execution 1ms+/-0ms
 
 Functional Chains:
     chain :

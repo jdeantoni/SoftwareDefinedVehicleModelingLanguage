@@ -29,27 +29,32 @@ export type SdvmlKeywordNames =
     | "Chains"
     | "Component"
     | "DL"
-    | "ExecTime"
     | "Functional"
     | "SDV"
     | "SSP"
     | "Sensor"
+    | "Service"
     | "Signal"
     | "VSS"
+    | "["
+    | "]"
     | "chain"
+    | "event"
+    | "execution"
     | "ms"
+    | "normal"
     | "on"
     | "periodic"
     | "publish"
-    | "service"
     | "signal"
     | "subscribe"
     | "to"
-    | "triggered";
+    | "triggered"
+    | "~";
 
 export type SdvmlTokenNames = SdvmlTerminalNames | SdvmlKeywordNames;
 
-export type FCParticipant = Actuator | Publisher | Sensor | Service | Subscriber;
+export type FCParticipant = Actuator | AppSignal | Sensor | Service;
 
 export const FCParticipant = 'FCParticipant';
 
@@ -87,11 +92,24 @@ export function isActuator(item: unknown): item is Actuator {
     return reflection.isInstance(item, Actuator);
 }
 
+export interface AppSignal extends langium.AstNode {
+    readonly $container: Component;
+    readonly $type: 'AppSignal';
+    name: string;
+}
+
+export const AppSignal = 'AppSignal';
+
+export function isAppSignal(item: unknown): item is AppSignal {
+    return reflection.isInstance(item, AppSignal);
+}
+
 export interface Component extends langium.AstNode {
     readonly $container: Model;
     readonly $type: 'Component';
     name: string;
     services: Array<Service>;
+    signals: Array<AppSignal>;
 }
 
 export const Component = 'Component';
@@ -100,10 +118,22 @@ export function isComponent(item: unknown): item is Component {
     return reflection.isInstance(item, Component);
 }
 
+export interface DURATION extends langium.AstNode {
+    readonly $container: RandomVar;
+    readonly $type: 'DURATION';
+    value: number;
+}
+
+export const DURATION = 'DURATION';
+
+export function isDURATION(item: unknown): item is DURATION {
+    return reflection.isInstance(item, DURATION);
+}
+
 export interface EventTriggering extends langium.AstNode {
     readonly $container: Actuator | Service;
     readonly $type: 'EventTriggering';
-    trigger: langium.Reference<Subscriber>;
+    trigger?: langium.Reference<Subscriber>;
 }
 
 export const EventTriggering = 'EventTriggering';
@@ -153,9 +183,8 @@ export function isPeriodicTriggering(item: unknown): item is PeriodicTriggering 
 export interface Publisher extends langium.AstNode {
     readonly $container: Service;
     readonly $type: 'Publisher';
-    name?: string;
-    sigName?: string;
-    sigRef?: langium.Reference<Actuator>;
+    actuatorSignal?: langium.Reference<Actuator>;
+    appSignal?: langium.Reference<AppSignal>;
 }
 
 export const Publisher = 'Publisher';
@@ -167,8 +196,10 @@ export function isPublisher(item: unknown): item is Publisher {
 export interface RandomVar extends langium.AstNode {
     readonly $container: Actuator | PeriodicTriggering | Sensor | Service;
     readonly $type: 'RandomVar';
-    mean: number;
-    stdDev: number;
+    left?: DURATION;
+    mean: DURATION;
+    right?: DURATION;
+    stdDev: DURATION;
 }
 
 export const RandomVar = 'RandomVar';
@@ -210,9 +241,8 @@ export function isService(item: unknown): item is Service {
 export interface Subscriber extends langium.AstNode {
     readonly $container: Service;
     readonly $type: 'Subscriber';
-    name?: string;
-    sigName?: string;
-    sigRef?: langium.Reference<Sensor>;
+    appSignal?: langium.Reference<AppSignal>;
+    sensorSignal?: langium.Reference<Sensor>;
 }
 
 export const Subscriber = 'Subscriber';
@@ -235,7 +265,9 @@ export function isVSS(item: unknown): item is VSS {
 
 export type SdvmlAstType = {
     Actuator: Actuator
+    AppSignal: AppSignal
     Component: Component
+    DURATION: DURATION
     EventTriggering: EventTriggering
     FCParticipant: FCParticipant
     FunctionalChain: FunctionalChain
@@ -254,7 +286,7 @@ export type SdvmlAstType = {
 export class SdvmlAstReflection extends langium.AbstractAstReflection {
 
     getAllTypes(): string[] {
-        return [Actuator, Component, EventTriggering, FCParticipant, FunctionalChain, Model, PeriodicTriggering, Publisher, RandomVar, Sensor, Service, Signal, Subscriber, TriggeringRule, VSS];
+        return [Actuator, AppSignal, Component, DURATION, EventTriggering, FCParticipant, FunctionalChain, Model, PeriodicTriggering, Publisher, RandomVar, Sensor, Service, Signal, Subscriber, TriggeringRule, VSS];
     }
 
     protected override computeIsSubtype(subtype: string, supertype: string): boolean {
@@ -263,14 +295,13 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
             case Sensor: {
                 return this.isSubtype(FCParticipant, supertype) || this.isSubtype(Signal, supertype);
             }
+            case AppSignal:
+            case Service: {
+                return this.isSubtype(FCParticipant, supertype);
+            }
             case EventTriggering:
             case PeriodicTriggering: {
                 return this.isSubtype(TriggeringRule, supertype);
-            }
-            case Publisher:
-            case Service:
-            case Subscriber: {
-                return this.isSubtype(FCParticipant, supertype);
             }
             default: {
                 return false;
@@ -287,10 +318,14 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
             case 'FunctionalChain:participants': {
                 return FCParticipant;
             }
-            case 'Publisher:sigRef': {
+            case 'Publisher:actuatorSignal': {
                 return Actuator;
             }
-            case 'Subscriber:sigRef': {
+            case 'Publisher:appSignal':
+            case 'Subscriber:appSignal': {
+                return AppSignal;
+            }
+            case 'Subscriber:sensorSignal': {
                 return Sensor;
             }
             default: {
@@ -311,12 +346,29 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                     ]
                 };
             }
+            case AppSignal: {
+                return {
+                    name: AppSignal,
+                    properties: [
+                        { name: 'name' }
+                    ]
+                };
+            }
             case Component: {
                 return {
                     name: Component,
                     properties: [
                         { name: 'name' },
-                        { name: 'services', defaultValue: [] }
+                        { name: 'services', defaultValue: [] },
+                        { name: 'signals', defaultValue: [] }
+                    ]
+                };
+            }
+            case DURATION: {
+                return {
+                    name: DURATION,
+                    properties: [
+                        { name: 'value' }
                     ]
                 };
             }
@@ -359,9 +411,8 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                 return {
                     name: Publisher,
                     properties: [
-                        { name: 'name' },
-                        { name: 'sigName' },
-                        { name: 'sigRef' }
+                        { name: 'actuatorSignal' },
+                        { name: 'appSignal' }
                     ]
                 };
             }
@@ -369,7 +420,9 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                 return {
                     name: RandomVar,
                     properties: [
+                        { name: 'left' },
                         { name: 'mean' },
+                        { name: 'right' },
                         { name: 'stdDev' }
                     ]
                 };
@@ -400,9 +453,8 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                 return {
                     name: Subscriber,
                     properties: [
-                        { name: 'name' },
-                        { name: 'sigName' },
-                        { name: 'sigRef' }
+                        { name: 'appSignal' },
+                        { name: 'sensorSignal' }
                     ]
                 };
             }

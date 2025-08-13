@@ -1,151 +1,144 @@
 import {
     Actuator,
-    Component,
-    EventTriggering,
     isActuator,
     isPeriodicTriggering,
     isSensor,
     PeriodicTriggering,
     Sensor,
+    Service,
     type Model,
+    Component,
+    Subscriber,
+    Publisher,
+    RandomVar,
 } from '../generated/ast.js';
 import { CompositeGeneratorNode, toString } from 'langium/generate';
-import * as fs from 'node:fs';
-import * as path from 'node:path';
-import {extractDestinationAndName } from './cli-util.js';
 
-export function generateIFScript(
-    model: Model,
-    filePath: string,
-    destination: string | undefined
-): string {
-    const data = extractDestinationAndName(filePath, destination);
-    const resPath= path.join(data.destination, 'IF')
-    fs.mkdirSync(resPath, { recursive: true });
-    const generatedFilePath = `${path.join(resPath, data.name)}.if`;
+function expect(msg: string): never {
+    throw new Error(msg)
+}
 
-    let appSignals: string[] = [];
-    let sigComps = new Map<string, string[]>();
-    for(var sig of model.vss.signals){
-        sigComps.set(sig.name, []);
+function makeServiceName(component: Component, service: Service): string {
+    return component.name + "_" + service.name
+}
+
+function getSubscriptionSignal(service: Service, sub: Subscriber): string {
+    return sub.appSignal?.ref?.name ?? sub.sensorSignal?.ref?.name ?? expect(`Reference to subscription signal in service "${service.name}" was not properly resolved.`);
+}
+function getPublishingSignal(service: Service, pub: Publisher): string {
+    return pub.appSignal?.ref?.name ?? pub.actuatorSignal?.ref?.name ?? expect(`Reference to publishing signal in service "${service.name}" was not properly resolved.`);
+}
+
+function randomVariableToRange(v: RandomVar, sigma: number): { left: number, right: number } {
+    console.log(`${v.mean} ${v.stdDev} ${sigma}`);
+    return { left: v.mean.value - sigma * v.stdDev.value, right: v.mean.value + sigma * v.stdDev.value };
+}
+
+type serviceKey = string;
+type signalName = string;
+
+class Context {
+    signalsToServices: Map<signalName, serviceKey[]>;
+    servicesToSignals: Map<serviceKey, signalName[]>;
+    serviceInputs: Map<serviceKey, signalName[]>;
+
+    constructor(signalsToServices: Map<signalName, serviceKey[]>, serviceInputs: Map<serviceKey, signalName[]>, servicesToSignals: Map<serviceKey, signalName[]>) {
+        this.signalsToServices = signalsToServices;
+        this.serviceInputs = serviceInputs;
+        this.servicesToSignals = servicesToSignals;
     }
-    let compSensors = new Map<string, string[]>();
-    for(var comp of model.components){
-        for (var compservtemp of comp.services) {
-            compSensors.set(comp.name + ";" + compservtemp.name, []);
+}
+
+// function printMap<K, V>(m: Map<K, V>): void {
+//     m.forEach((value, key) => {
+//         console.log(`${key}: ${value}`);
+//     });
+// }
+
+export function makeContext(model: Model): Context {
+    var signalsToServices = new Map<string, string[]>();
+    var servicesToSignals = new Map<string, string[]>();
+    var serviceInputs = new Map<string, string[]>();
+
+    for (var component of model.components) {
+        for (var service of component.services) {
+            const serviceName = makeServiceName(component, service);
+            for (var subscription of service.subscribers) {
+                const subscriptionSignal = getSubscriptionSignal(service, subscription);
+                let targetServices = signalsToServices.get(subscriptionSignal) ?? [];
+                targetServices.push(serviceName);
+                signalsToServices.set(subscriptionSignal, targetServices);
+            };
+            for (var publish of service.publishers) {
+                const publishingSignal = getPublishingSignal(service, publish);
+                let sourceServices = servicesToSignals.get(serviceName) ?? [];
+                sourceServices.push(publishingSignal);
+                servicesToSignals.set(serviceName, sourceServices);
+            };
         }
     }
-    let compPubTargets = new Map<string, string[]>();
-    for (var co of model.components){
-        for (var serv of co.services) {
-            var tmpSensors: string[] = [];
-            for (var cosub of serv.subscribers) {
-                tmpSensors.push(cosub.name!);
-                var tmpNewComps: string[] = [];
-                if (sigComps.get(cosub.name!) == undefined) {
-                    sigComps.set(cosub.name!, tmpNewComps);
-                }
-                var tmpComps: string[] = [];
-                for (var com of sigComps.get(cosub.name!)!) {
-                    tmpComps.push(com);
-                }
-                tmpComps.push(co.name + "_" + serv.name);
-                sigComps.set(cosub.name!, tmpComps);
-            }
-            compSensors.set(co.name + ";" + serv.name, tmpSensors)
-            for (var copub of serv.publishers) {
-                if (copub.sigName != undefined) {
-                    appSignals.push(copub.sigName!);
-                    var tmpTargets: string[] = [];
-                    var keyCompSub = co.name + ";" + serv.name + ";" + copub.sigName;
-                    if (compPubTargets.get(keyCompSub) == undefined) {
-                        compPubTargets.set(keyCompSub, tmpTargets);
-                    }
-                    var tmpNewTargets: string[] = [];
-                    for (var newco of model.components) {
-                        for (var servnewco of newco.services) {
-                            for (var cosub of servnewco.subscribers) {
-                                if (cosub.sigName != undefined) {
-                                    if (cosub.sigName == copub.sigName) {
-                                        tmpNewTargets.push(newco.name + "_" + servnewco.name)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    compPubTargets.set(keyCompSub, tmpNewTargets);
-                }
-            }
-        }
-    }
+    return new Context(signalsToServices, serviceInputs, servicesToSignals);
+}
 
-    const  ifContent = new CompositeGeneratorNode();
-    ifContent.append("system "+model.name+";\n");
+export function generateIFScript(model: Model, context: Context): string {
+    const sigma = 2;
+
+    const ifContent = new CompositeGeneratorNode();
+    ifContent.append("system " + model.name + ";\n");
     ifContent.append("type int = range 0 .. 255;\n");
 
-    var sigNames:string[] = [];
-    for(var sig of model.vss.signals){
-        sigNames.push(sig.name);
+    for (var signal of context.signalsToServices.keys()) {
+        ifContent.append("signal " + signal + "();\n");
     }
 
-    for(var appSig of appSignals) {
-        if (!sigNames.includes(appSig)) {
-            sigNames.push(appSig);
+    for (var sig of model.vss.signals) {
+        if (isSensor(sig)) {
+            generateIFSensor(sig, ifContent, context, sigma);
         }
-    }
-    for(var sigx of sigNames){
-        ifContent.append("signal "+sigx+"();\n");
-    }
-
-    for(var sig of model.vss.signals){
-        if (isSensor(sig)){
-            prettyPrintSensorSignal(sig, ifContent, sigComps);
-        }
-        if (isActuator(sig)){
-            prettyPrintActuatorSignal(sig, ifContent);
+        if (isActuator(sig)) {
+            generateIFActuator(sig, ifContent, sigma);
         }
     }
 
-    for(var c of model.components){
-        prettyPrintComponent(c, ifContent, compSensors, compPubTargets);
+    for (var c of model.components) {
+        for (var s of c.services) {
+            generateIFService(c, s, ifContent, context, sigma);
+        }
     }
 
     ifContent.append("endsystem;\n");
-
-    fs.writeFileSync(generatedFilePath, toString(ifContent));
-
-    return toString(generatedFilePath);
+    return toString(ifContent);
 }
 
 
-function prettyPrintComponent(c: Component, ifContent: CompositeGeneratorNode, compSensors: Map<string, string[]>, compPubTargets: Map<string, string[]>) {
-    for (var s of c.services) {
-        var publines = "";
-        for (var pub of s.publishers) {
-            if (pub.name != undefined) {
-                publines += `\n\t\t\toutput ${pub.name}() to {${pub.name}}0;`;
-            }
-            if (pub.sigName != undefined) {
-                for (var compPubTarget of compPubTargets.get(c.name + ";" + s.name + ";" + pub.sigName)!) {
-                    publines += `\n\t\t\toutput ${pub.sigName}() to {${compPubTarget}}0;`;
-                }
-            }
-        }
-        var inpData:string[] = ["", "", "", "", ""];
-        var inpNxtState:string[] = ["first", "jitter", "processing1", "processing2", "wait"];
-        var idxState = 0;
-        for (var nxtState of inpNxtState) {
-            for (var senName of compSensors.get(c.name + ";" + s.name)!) {
-                inpData[idxState] += `\n\t\tinput ${senName}();\n\t\t\ttask nbData := nbData + 1;\n\t\t\tnextstate ${nxtState};`;
-            }
-            idxState++;
-        }
+function generateIFService(component: Component, service: Service, ifContent: CompositeGeneratorNode, context: Context, sigma: number) {
+    const serviceName: string = makeServiceName(component, service);
+    var publines = "";
+    for (var pub of service.publishers) {
+        const signalName = getPublishingSignal(service, pub);
+        publines += `\n\t\t\toutput ${signalName}() to {${signalName}}0;`;
 
-        var servID: string = c.name + "_" + s.name;
-        ifContent.append("process " + servID + "(1);\n");
-        if (isPeriodicTriggering(s.trigRule)) {
-            var CP = (s.trigRule as PeriodicTriggering).period;
-            ifContent.append(`\tvar x clock;
+        for (var targetService of context.signalsToServices.get(signalName) ?? []) {
+            publines += `\n\t\t\toutput ${signalName}() to {${targetService}}0;`;
+        }
+    }
+
+    var inpData: string[] = ["", "", "", "", ""];
+    var inpNxtState: string[] = ["first", "jitter", "processing1", "processing2", "wait"];
+    var idxState = 0;
+    for (var nxtState of inpNxtState) {
+        for (var inputSignal of context.serviceInputs.get(serviceName) ?? []) {
+            inpData[idxState] += `\n\t\tinput ${inputSignal}();\n\t\t\ttask nbData := nbData + 1;\n\t\t\tnextstate ${nxtState};`;
+        }
+        idxState++;
+    }
+
+    const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(service.execTime, sigma);
+
+    ifContent.append("process " + serviceName + "(1);\n");
+    if (isPeriodicTriggering(service.trigRule)) {
+        const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(service.trigRule.period, sigma);
+        ifContent.append(`\tvar x clock;
     var e clock;
     var nbData int;
     state start #start ;
@@ -155,79 +148,77 @@ function prettyPrintComponent(c: Component, ifContent: CompositeGeneratorNode, c
     endstate;
     state first;
         deadline delayable;
-        when x <= ${CP.mean - (2 * CP.stdDev)};
+        when x <= ${left_period_bound};
             set x := 0;
             nextstate jitter;${inpData[0]}
     endstate;
     state jitter;
         deadline delayable;
-        when x <= ${CP.stdDev * 4};
+        when x <= ${right_period_bound - left_period_bound};
             set e := 0;
             nextstate preprocessing;${inpData[1]}
     endstate;
     state preprocessing;
         deadline eager;
         provided nbData =  0;
-            informal "${c.name}_USELESS_EXEC";
+            informal "${serviceName}_USELESS_EXEC";
             nextstate processing1;
         deadline eager;
         provided nbData <>  0;
-            informal "${c.name}_USEFUL_EXEC";
+            informal "${serviceName}_USEFUL_EXEC";
             task nbData := 0;
             nextstate processing2;
     endstate;
     state processing1;
         deadline delayable;
-        when e >= ${s.execTime.mean-2*s.execTime.stdDev} and e <= ${s.execTime.mean+2*s.execTime.stdDev};
-            informal "${c.name}_FINISH";
+        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+            informal "${serviceName}_FINISH";
             reset e;
             nextstate wait;${inpData[2]}
     endstate;
     state processing2;
         deadline delayable;
-        when e >= ${s.execTime.mean-2*s.execTime.stdDev} and e <= ${s.execTime.mean+2*s.execTime.stdDev};
-            informal "${c.name}_FINISH";${publines}
+        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+            informal "${serviceName}_FINISH";${publines}
             reset e;
             nextstate wait;${inpData[3]}
     endstate;
     state wait;
-        when x = ${CP.mean};
+        when x = ${service.trigRule.period.mean.value};
             set x := 0;
             nextstate jitter;${inpData[4]}
     endstate;\n`);
-        } else {
-            var tmpSigInput = c.name;
-            if ((s.trigRule as EventTriggering).trigger?.ref?.name != undefined) {
-                tmpSigInput = (s.trigRule as EventTriggering).trigger?.ref?.name!;
-            }
-            ifContent.append("\tvar e clock;");
+    } else {
+        ifContent.append("\tvar e clock;");
         ifContent.append(`
     state wait #start ;
-        input ${tmpSigInput}();
-            informal "${servID}_START";
+        input ${serviceName}();
+            informal "${serviceName}_START";
             set e := 0;
             nextstate processing;
     endstate;
     state processing;
         deadline delayable;
-        when e >= ${s.execTime.mean - (2 * s.execTime.stdDev)} and e <= ${s.execTime.mean + (2 * s.execTime.stdDev)};
-            informal "${servID}_FINISH";${publines}
+        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+            informal "${serviceName}_FINISH";${publines}
             reset e;
             nextstate wait;
     endstate;\n`);
-        }
-        ifContent.append("endprocess;\n");
     }
+    ifContent.append("endprocess;\n");
+
 }
 
-function prettyPrintSensorSignal(sig: Sensor, ifContent: CompositeGeneratorNode, sigComps: Map<string, string[]>) {
+function generateIFSensor(sig: Sensor, ifContent: CompositeGeneratorNode, context: Context, sigma: number) {
     var ssp = sig.ssp;
-    var sigName = sig.name;
+    var sensorSignal = sig.name;
     var siglines = "";
-    for (var sigline of sigComps.get(sigName)!) {
-        siglines += `\n\t\t\toutput ${sigName}() to {${sigline}}0;`;
+    for (var serviceName of context.signalsToServices.get(sensorSignal)!) {
+        siglines += `\n\t\t\toutput ${sensorSignal}() to {${serviceName}}0;`;
     }
-    ifContent.append(`process ${sigName}(1);
+    const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(sig.dl, sigma);
+    const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(ssp, sigma);
+    ifContent.append(`process ${sensorSignal}(1);
     var x clock;
     var e clock;
     state start #start ;
@@ -236,26 +227,26 @@ function prettyPrintSensorSignal(sig: Sensor, ifContent: CompositeGeneratorNode,
     endstate;
     state first ;
         deadline delayable;
-        when x <= ${ssp.mean - (2 * ssp.stdDev)};
+        when x <= ${left_period_bound};
             set x := 0;
             nextstate jitter;
     endstate;
     state jitter;
         deadline delayable;
-        when x <= ${sig.ssp.stdDev * 4} ;
-            informal "${sigName}_START";
+        when x <= ${right_period_bound - left_period_bound} ;
+            informal "${sensorSignal}_START";
             set e := 0;
             nextstate exec;
     endstate;
     state exec;
         deadline delayable;
-        when e >= ${sig.dl.mean -  (2 * sig.dl.stdDev)} and e <= ${sig.dl.mean + (2 * sig.dl.stdDev)};
-            informal "${sigName}_FINISH";
+        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+            informal "${sensorSignal}_FINISH";
             reset e;${siglines}
             nextstate wait;
     endstate;
     state wait;
-        when x = ${ssp.mean};
+        when x = ${ssp.mean.value};
             set x := 0;
             nextstate jitter;
     endstate;
@@ -264,9 +255,11 @@ endprocess;
 }
 
 
-function prettyPrintActuatorSignal(sig: Actuator, ifContent: CompositeGeneratorNode) {
+function generateIFActuator(sig: Actuator, ifContent: CompositeGeneratorNode, sigma: number) {
+    const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(sig.ad, sigma);
     ifContent.append(`process ${sig.name}(1);`)
-    if (isPeriodicTriggering(sig.trigRule)){
+    if (isPeriodicTriggering(sig.trigRule)) {
+        const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(sig.trigRule.period, sigma);
         var AP = (sig.trigRule as PeriodicTriggering).period;
         ifContent.append(`
     var x clock;
@@ -279,7 +272,7 @@ function prettyPrintActuatorSignal(sig: Actuator, ifContent: CompositeGeneratorN
     endstate;
     state first ;
         deadline delayable;
-        when x <= ${AP.mean - (2 * AP.stdDev)};
+        when x <= ${left_period_bound};
             set x := 0;
             nextstate jitter;
         input ${sig.name}();
@@ -288,7 +281,7 @@ function prettyPrintActuatorSignal(sig: Actuator, ifContent: CompositeGeneratorN
     endstate;
     state jitter;
         deadline delayable;
-        when x <= ${AP.stdDev * 4};
+        when x <= ${right_period_bound - left_period_bound};
             set e := 0;
             nextstate preprocessing;
         input ${sig.name}();
@@ -308,7 +301,7 @@ function prettyPrintActuatorSignal(sig: Actuator, ifContent: CompositeGeneratorN
     endstate;
     state processing;
         deadline delayable;
-        when e >= ${sig.ad.mean-2*sig.ad.stdDev} and e <= ${sig.ad.mean+2*sig.ad.stdDev};
+        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
             informal "${sig.name}_FINISH";
             reset e;
             nextstate wait;
@@ -317,7 +310,7 @@ function prettyPrintActuatorSignal(sig: Actuator, ifContent: CompositeGeneratorN
 			nextstate processing;
     endstate;
     state wait;
-        when x = ${AP.mean};
+        when x = ${AP.mean.value};
             set x := 0;
             nextstate jitter;
         input ${sig.name}();
@@ -336,13 +329,21 @@ function prettyPrintActuatorSignal(sig: Actuator, ifContent: CompositeGeneratorN
     endstate;
     state processing;
         deadline delayable;
-        when e >= ${sig.ad.mean - (2 * sig.ad.stdDev)} and e <= ${sig.ad.mean + (2 * sig.ad.stdDev)};
+        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
             informal "${sig.name}_FINISH";
             reset e;
             nextstate wait;
     endstate;\n`);
-        }
+    }
 
-        ifContent.append("endprocess;\n");
+    ifContent.append("endprocess;\n");
 
 }
+
+// export function generateMRTCCSLSpec(
+//     filePath: string,
+//     destination: string | undefined
+// ): string {
+//     let
+//     return ""
+// }

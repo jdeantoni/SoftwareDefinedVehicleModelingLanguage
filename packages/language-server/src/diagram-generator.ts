@@ -56,15 +56,15 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
             type: 'node',
             id: nodeId,
             children: [
-               <SNode>{
+                <SNode>{
                     type: 'node:node-label',
                     id: idCache.uniqueId(nodeId + '.label'),
                     children: [
                         <SLabel>{
-                        type: 'label',
-                        id: idCache.uniqueId(nodeId + '.label.label'),
-                        text: comp.name
-                    }],
+                            type: 'label',
+                            id: idCache.uniqueId(nodeId + '.label.label'),
+                            text: comp.name
+                        }],
                     layout: "vbox",
                     layoutOptions: {
                         paddingTop: 10.0,
@@ -86,55 +86,55 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
             }
         };
         // console.error("service length:"+comp.services.length)
-        var serToSerNode = new Map<Service,SNode>()
+        var serToSerNode = new Map<Service, SNode>()
 
-        for (let service of comp.services){
+        for (let service of comp.services) {
             // console.error("service name:"+service.name)
-            const serId = idCache.uniqueId(nodeId + '.service',service)
+            const serId = idCache.uniqueId(nodeId + '.service', service)
             let serNode = <SNode>{
-                    type: "node:node-service",
-                    id: serId,
-                    children: [
-                        <SLabel>{
-                            type: 'label',
-                            id: idCache.uniqueId(serId + '.label'),
-                            text: service.name
-                        },
-                        //  <SPort>{
-                        //     type: 'port:fake-port',
-                        //     id: serId + '.input',
-                        //     direction : 'input'
-                        // },
-                        //  <SPort>{
-                        //     type: 'port:fake-port',
-                        //     id: serId + '.output',
-                        //     direction : 'output'
-                        // }
-                    ],
-                    layout: "vbox",
-                    layoutOptions: {
-                        paddingTop: 10.0,
-                        paddingBottom: 10.0,
-                        paddingLeft: 10.0,
-                        paddingRight: 10.0,
-                        resizeContainer: true,
-                        hAlign: 'center'
-                    }
+                type: "node:node-service",
+                id: serId,
+                children: [
+                    <SLabel>{
+                        type: 'label',
+                        id: idCache.uniqueId(serId + '.label'),
+                        text: service.name
+                    },
+                    //  <SPort>{
+                    //     type: 'port:fake-port',
+                    //     id: serId + '.input',
+                    //     direction : 'input'
+                    // },
+                    //  <SPort>{
+                    //     type: 'port:fake-port',
+                    //     id: serId + '.output',
+                    //     direction : 'output'
+                    // }
+                ],
+                layout: "vbox",
+                layoutOptions: {
+                    paddingTop: 10.0,
+                    paddingBottom: 10.0,
+                    paddingLeft: 10.0,
+                    paddingRight: 10.0,
+                    resizeContainer: true,
+                    hAlign: 'center'
+                }
             };
-            serNode.children = [...serNode.children?serNode.children:[],...this.getServiceLabel(service,serId,ctx)];
-            serToSerNode.set(service,serNode)
+            serNode.children = [...serNode.children ? serNode.children : [], ...this.getServiceLabel(service, serId, ctx)];
+            serToSerNode.set(service, serNode)
             node.children.push(serNode);
             // console.error("children length:"+node.children.length)
         }
 
-        for (let s of comp.services){
-            for (let pub of s.publishers){
-                const pubId = idCache.uniqueId((pub.sigName != undefined)? pub.sigName : ((pub.sigRef != undefined)&&(pub.sigRef.ref != undefined)? pub.sigRef?.ref?.name:"undefined"), pub);
+        for (let s of comp.services) {
+            for (let pub of s.publishers) {
+                const pubId = idCache.uniqueId((pub.actuatorSignal?.ref?.name ?? pub.appSignal?.ref?.name ?? "undefined"), pub);
                 node.children.push(
                     <SPort>{
                         type: 'port',
                         id: pubId,
-                        direction : 'output',
+                        direction: 'output',
                         layout: "stack",
                         layoutOptions: {
                             paddingTop: 10.0,
@@ -147,8 +147,8 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                 serToSerNode.get(s)?.children?.push(
                     <SPort>{
                         type: 'port',
-                        id: pubId+"_in",
-                        direction : 'output',
+                        id: pubId + "_in",
+                        direction: 'output',
                         layout: "stack",
                         layoutOptions: {
                             paddingTop: 10.0,
@@ -160,14 +160,14 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                 )
             }
         }
-        for (let s of comp.services){
-            for (let sub of s.subscribers){
-                const subId = idCache.uniqueId((sub.sigName != undefined)? sub.sigName : (sub.sigRef != undefined)&&(sub.sigRef.ref != undefined)? sub.sigRef?.ref?.name:"undefined", sub);
+        for (let s of comp.services) {
+            for (let sub of s.subscribers) {
+                const subId = idCache.uniqueId(sub.sensorSignal?.ref?.name ?? sub.appSignal?.ref?.name ?? "undefined", sub);
                 node.children.push(
                     <SPort>{
                         type: 'port',
                         id: subId,
-                        direction : 'input',
+                        direction: 'input',
                         layout: "stack",
                         layoutOptions: {
                             paddingTop: 10.0,
@@ -178,10 +178,10 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                     }
                 )
                 serToSerNode.get(s)?.children?.push(
-                        <SPort>{
-                            type: 'port',
-                        id: subId+'_in',
-                        direction : 'input',
+                    <SPort>{
+                        type: 'port',
+                        id: subId + '_in',
+                        direction: 'input',
                         layout: "stack",
                         layoutOptions: {
                             paddingTop: 10.0,
@@ -200,7 +200,7 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
     }
 
 
- protected generateVSS(vss: VSS, ctx: GeneratorContext<Model>): SNode[] {
+    protected generateVSS(vss: VSS, ctx: GeneratorContext<Model>): SNode[] {
         const { idCache } = ctx;
         const nodeIdSensor = idCache.uniqueId("VSS_sensor");
         const nodeSensor = <SCompartment>{
@@ -238,89 +238,90 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                 paddingRight: 100.0
             }
         };
-        for (let sig of vss.signals){
-            if (isSensor(sig)){
-                nodeSensor.children?.push( this.generateSignal(sig,ctx))
-            }else{
-                nodeActuator.children?.push( this.generateSignal(sig,ctx))
+        for (let sig of vss.signals) {
+            if (isSensor(sig)) {
+                nodeSensor.children?.push(this.generateSignal(sig, ctx))
+            } else {
+                nodeActuator.children?.push(this.generateSignal(sig, ctx))
             }
         }
 
         this.traceProvider.trace(nodeSensor, vss);
         this.markerProvider.addDiagnosticMarker(nodeSensor, vss, ctx);
-        return [nodeSensor,nodeActuator];
+        return [nodeSensor, nodeActuator];
     }
 
-protected getSensorLabel(sig:Sensor, nodeId:string, ctx: GeneratorContext<Model>):SLabel[]{
+    protected getSensorLabel(sig: Sensor, nodeId: string, ctx: GeneratorContext<Model>): SLabel[] {
         const { idCache } = ctx;
-        let res:SLabel[] = [
+        let res: SLabel[] = [
             <SLabel>{
-                    type: "label:values",
-                    id: idCache.uniqueId(nodeId + '.values1'),
-                    text:"DL:"+sig.dl.mean+"+/-"+sig.dl.stdDev+"ms"
-                },
+                type: "label:values",
+                id: idCache.uniqueId(nodeId + '.values1'),
+                text: "DL:" + sig.dl.mean + "+/-" + sig.dl.stdDev + "ms"
+            },
             <SLabel>{
-                    type: "label:values",
-                    id: idCache.uniqueId(nodeId + '.values2'),
-                    text:"SSP:"+sig.ssp.mean+"+/-"+sig.ssp.stdDev+"ms"
-                }
+                type: "label:values",
+                id: idCache.uniqueId(nodeId + '.values2'),
+                text: "SSP:" + sig.ssp.mean + "+/-" + sig.ssp.stdDev + "ms"
+            }
         ];
         return res;
     }
 
-protected getActuatorLabel(sig:Actuator, nodeId:string, ctx: GeneratorContext<Model>):SLabel[]{
+    protected getActuatorLabel(sig: Actuator, nodeId: string, ctx: GeneratorContext<Model>): SLabel[] {
         const { idCache } = ctx;
-        let res:SLabel[] = [
+        let res: SLabel[] = [
             <SLabel>{
-                    type: "label:values",
-                    id: idCache.uniqueId(nodeId + '.values1'),
-                    text:"DL:"+sig.ad.mean+"+/-"+sig.ad.stdDev+"ms"
-                }
-            ];
-        if (isPeriodicTriggering(sig.trigRule)){
+                type: "label:values",
+                id: idCache.uniqueId(nodeId + '.values1'),
+                text: "DL:" + sig.ad.mean + "+/-" + sig.ad.stdDev + "ms"
+            }
+        ];
+        if (isPeriodicTriggering(sig.trigRule)) {
             res.push(<SLabel>{
-                    type: "label:values",
-                    id: idCache.uniqueId(nodeId + '.values2'),
-                    text:"AP:"+sig.trigRule.period.mean+"+/-"+sig.trigRule.period.stdDev+"ms"
-                });
+                type: "label:values",
+                id: idCache.uniqueId(nodeId + '.values2'),
+                text: "AP:" + sig.trigRule.period.mean + "+/-" + sig.trigRule.period.stdDev + "ms"
+            });
         }
 
         return res;
     }
 
-protected getServiceLabel(service:Service, nodeId:string, ctx: GeneratorContext<Model>):SModelElement[]{
+    protected getServiceLabel(service: Service, nodeId: string, ctx: GeneratorContext<Model>): SModelElement[] {
         const { idCache } = ctx;
-        let res:SLabel[] = [
+        let res: SLabel[] = [
             <SLabel>{
-                    type: "label:values",
-                    id: idCache.uniqueId(nodeId + '.values1'),
-                    text:"ET:"+service.execTime.mean+"+/-"+service.execTime.stdDev+"ms"
-                }
-            ]
-            if (isPeriodicTriggering(service.trigRule)){
+                type: "label:values",
+                id: idCache.uniqueId(nodeId + '.values1'),
+                text: "ET:" + service.execTime.mean + "+/-" + service.execTime.stdDev + "ms"
+            }
+        ]
+        if (isPeriodicTriggering(service.trigRule)) {
+            res.push(<SLabel>{
+                type: "label:values",
+                id: idCache.uniqueId(nodeId + '.values2'),
+                text: "AP:" + service.trigRule.period.mean + "+/-" + service.trigRule.period.stdDev + "ms"
+            });
+        } else {
+            const trigger = service.trigRule.trigger;
+            if (trigger != undefined) {
                 res.push(<SLabel>{
                     type: "label:values",
                     id: idCache.uniqueId(nodeId + '.values2'),
-                    text:"AP:"+service.trigRule.period.mean+"+/-"+service.trigRule.period.stdDev+"ms"
+                    text: "triggered on:" + (trigger.ref?.appSignal?.ref?.name ?? trigger.ref?.sensorSignal?.ref?.name)
                 });
-            }else{
-                if (service.trigRule.trigger != undefined) {
-                    res.push(<SLabel>{
-                        type: "label:values",
-                        id: idCache.uniqueId(nodeId + '.values2'),
-                        text:"triggered on:"+(service.trigRule.trigger.ref?.sigName?service.trigRule.trigger.ref?.sigName:service.trigRule.trigger.ref?.sigRef?.ref?.name)
-                    });
-                }
             }
+        }
         return res;
     }
 
-     protected generateSignal(sig: Signal, ctx: GeneratorContext<Model>): SNode {
+    protected generateSignal(sig: Signal, ctx: GeneratorContext<Model>): SNode {
         const { idCache } = ctx;
         const nodeId = idCache.uniqueId(sig.name, sig);
         // console.error(`#############  ${sig.name}:${nodeId}   -- ${idCache.getId(sig)}`)
-                                            //  :"(AD:"+sig.ad.mean+"+/-"+sig.ad.stdDev+"ms\n:"+sig.trigRule.$type+")";
-        const sigType = isSensor(sig)? "output" : "input";
+        //  :"(AD:"+sig.ad.mean+"+/-"+sig.ad.stdDev+"ms\n:"+sig.trigRule.$type+")";
+        const sigType = isSensor(sig) ? "output" : "input";
         const node = <SNode>{
             type: 'node:vss-node',
             id: nodeId,
@@ -332,7 +333,7 @@ protected getServiceLabel(service:Service, nodeId:string, ctx: GeneratorContext<
                 },
                 <SPort>{
                     type: "port",
-                    id: idCache.uniqueId(nodeId + '_port',sig),
+                    id: idCache.uniqueId(nodeId + '_port', sig),
                     direction: sigType,
                     layout: "stack",
                     layoutOptions: {
@@ -351,10 +352,10 @@ protected getServiceLabel(service:Service, nodeId:string, ctx: GeneratorContext<
                 paddingRight: 10.0
             }
         };
-        if(isSensor(sig)){
-            node.children = [...node.children?node.children:[],...this.getSensorLabel(sig,nodeId,ctx)]
-        }else{
-            node.children = [...node.children?node.children:[],...this.getActuatorLabel(sig,nodeId,ctx)]
+        if (isSensor(sig)) {
+            node.children = [...node.children ? node.children : [], ...this.getSensorLabel(sig, nodeId, ctx)]
+        } else {
+            node.children = [...node.children ? node.children : [], ...this.getActuatorLabel(sig, nodeId, ctx)]
         }
         this.traceProvider.trace(node, sig);
         this.markerProvider.addDiagnosticMarker(node, sig, ctx);
@@ -364,13 +365,11 @@ protected getServiceLabel(service:Service, nodeId:string, ctx: GeneratorContext<
     protected generateEdge(comp: Component, ctx: GeneratorContext<Model>): SEdge[] {
         const { idCache } = ctx;
         const res: SEdge[] = []
-        for (let sub of comp.services.flatMap(s => s.subscribers)){
+        for (let sub of comp.services.flatMap(s => s.subscribers)) {
             const targetId = idCache.getId(sub);
 
             // console.error(`#   #   # ${sub.sigName}: ${comp.$container.components.flatMap(c => c.publishers).filter(p => p.sigName == sub.sigName).flatMap( s => s.sigName).join(',')}: ${sub.sigRef?.ref?.name}`)
-            let sourceSig = (sub.sigName != undefined)
-                                    ? comp.$container.components.flatMap(c => c.services.flatMap(s => s.publishers)).filter(p => p.sigName == sub.sigName)[0]
-                                    : sub.sigRef?.ref
+            let sourceSig = sub.appSignal?.ref ?? sub.sensorSignal?.ref
 
             const sourceId = idCache.getId(sourceSig);
             // console.error(`#~~~~~~~~ ${sourceSig}:${sourceSig?.$type} = ${sourceId}  -> target = ${targetId}`)
@@ -384,7 +383,7 @@ protected getServiceLabel(service:Service, nodeId:string, ctx: GeneratorContext<
                     <SLabel & EdgeLayoutable>{
                         type: 'label:xref',
                         id: idCache.uniqueId(edgeId + '.label'),
-                        text: (sub.sigName != undefined)? sub.sigName : sub.sigRef?.ref?.name
+                        text: sub.appSignal?.ref?.name ?? sub.sensorSignal?.ref?.name
                     }
                 ],
                 layout: "stack"
@@ -394,62 +393,61 @@ protected getServiceLabel(service:Service, nodeId:string, ctx: GeneratorContext<
             res.push(edge);
         }
 
-        for (let pub of comp.services.flatMap(s => s.publishers)){
+        for (let pub of comp.services.flatMap(s => s.publishers)) {
             const sourceId = idCache.getId(pub);
-            if (pub.sigName == undefined){
-                let targetSig = pub.sigRef?.ref
+            let targetSignal = pub.appSignal?.ref ?? pub.actuatorSignal?.ref;
 
-                const targetId = idCache.getId(targetSig);
+            const targetId = idCache.getId(targetSignal);
 
-                // console.error(`~~~~~~~~ source = ${sourceId}  -> target = ${targetId}`)
+            // console.error(`~~~~~~~~ source = ${sourceId}  -> target = ${targetId}`)
 
-                const edgeId = idCache.uniqueId(`${sourceId}_to_${targetId}`, undefined);
-                const edge = {
-                    type: 'edge',
-                    id: edgeId,
-                    sourceId: sourceId!,
-                    targetId: targetId!,
-                    children: [
-                        <SLabel & EdgeLayoutable>{
-                            type: 'label:xref',
-                            id: idCache.uniqueId(edgeId + '.label'),
-                            text: pub.name
-                        }
-                    ],
-                    layout: "stack"
-                };
-                this.traceProvider.trace(edge, pub);
-                this.markerProvider.addDiagnosticMarker(edge, pub, ctx);
-                res.push(edge);
-            }
+            const edgeId = idCache.uniqueId(`${sourceId}_to_${targetId}`, undefined);
+            const edge = {
+                type: 'edge',
+                id: edgeId,
+                sourceId: sourceId!,
+                targetId: targetId!,
+                children: [
+                    <SLabel & EdgeLayoutable>{
+                        type: 'label:xref',
+                        id: idCache.uniqueId(edgeId + '.label'),
+                        text: targetSignal?.name
+                    }
+                ],
+                layout: "stack"
+            };
+            this.traceProvider.trace(edge, pub);
+            this.markerProvider.addDiagnosticMarker(edge, pub, ctx);
+            res.push(edge);
+
         }
 
         return res;
     }
 
 
-     protected generateFCEdge(fc: FunctionalChain, ctx: GeneratorContext<Model>): SEdge[] {
+    protected generateFCEdge(fc: FunctionalChain, ctx: GeneratorContext<Model>): SEdge[] {
         const { idCache } = ctx;
         const res: SEdge[] = []
         let prevParticipant = fc.participants[0];
-        if (prevParticipant.ref == undefined){
-                console.error("in creation of functional chain diagram, a participant is badly referenced");
-                return res;
-            }
-        for (let participant of fc.participants.slice(1)){
-            if (participant.ref == undefined){
+        if (prevParticipant.ref == undefined) {
+            console.error("in creation of functional chain diagram, a participant is badly referenced");
+            return res;
+        }
+        for (let participant of fc.participants.slice(1)) {
+            if (participant.ref == undefined) {
                 console.error("in creation of functional chain diagram, a participant is badly referenced");
                 return res;
             }
             let sourceId = idCache.getId(prevParticipant.ref);
             let targetId = idCache.getId(participant.ref);
 
-            if (isService(prevParticipant.ref)){
-                sourceId = idCache.getId(participant.ref)+"_in";
+            if (isService(prevParticipant.ref)) {
+                sourceId = idCache.getId(participant.ref) + "_in";
             }
 
-            if (isService(participant.ref)){
-                targetId = idCache.getId(prevParticipant.ref)+"_in";
+            if (isService(participant.ref)) {
+                targetId = idCache.getId(prevParticipant.ref) + "_in";
             }
 
             // console.error(`#~~~~~~~~ from ${prevParticipant.ref?.name}  -> target = ${participant.ref.name}`)
