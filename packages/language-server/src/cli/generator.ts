@@ -63,18 +63,32 @@ export function makeContext(model: Model): Context {
     for (var component of model.components) {
         for (var service of component.services) {
             const serviceName = makeServiceName(component, service);
+            const inputs = [];
             for (var subscription of service.subscribers) {
                 const subscriptionSignal = getSubscriptionSignal(service, subscription);
                 let targetServices = signalsToServices.get(subscriptionSignal) ?? [];
                 targetServices.push(serviceName);
                 signalsToServices.set(subscriptionSignal, targetServices);
+                inputs.push(subscriptionSignal);
             };
+            serviceInputs.set(serviceName, inputs);
             for (var publish of service.publishers) {
                 const publishingSignal = getPublishingSignal(service, publish);
                 let sourceServices = servicesToSignals.get(serviceName) ?? [];
                 sourceServices.push(publishingSignal);
                 servicesToSignals.set(serviceName, sourceServices);
             };
+        }
+    }
+
+    for (var vssSignal of model.vss.signals) {
+        if (isSensor(vssSignal)) {
+            servicesToSignals.set(vssSignal.name, [vssSignal.name]);
+        } else {
+            serviceInputs.set(vssSignal.name, [vssSignal.name]);
+            let receivers = signalsToServices.get(vssSignal.name) ?? [];
+            receivers.push(vssSignal.name);
+            signalsToServices.set(vssSignal.name, receivers);
         }
     }
     return new Context(signalsToServices, serviceInputs, servicesToSignals);
@@ -116,7 +130,7 @@ function generateIFService(component: Component, service: Service, ifContent: Co
     var publines = "";
     for (var pub of service.publishers) {
         const signalName = getPublishingSignal(service, pub);
-        publines += `\n\t\t\toutput ${signalName}() to {${signalName}}0;`;
+        // publines += `\n\t\t\toutput ${signalName}() to {${signalName}}0;`;
 
         for (var targetService of context.signalsToServices.get(signalName) ?? []) {
             publines += `\n\t\t\toutput ${signalName}() to {${targetService}}0;`;
@@ -189,10 +203,11 @@ function generateIFService(component: Component, service: Service, ifContent: Co
             nextstate jitter;${inpData[4]}
     endstate;\n`);
     } else {
+        const signalName = getSubscriptionSignal(service, service.trigRule.trigger?.ref!);
         ifContent.append("\tvar e clock;");
         ifContent.append(`
     state wait #start ;
-        input ${serviceName}();
+        input ${signalName}();
             informal "${serviceName}_START";
             set e := 0;
             nextstate processing;
