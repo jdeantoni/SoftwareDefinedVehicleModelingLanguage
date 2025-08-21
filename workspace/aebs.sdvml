@@ -25,4 +25,4 @@ App :
             execution 1ms+/-0ms
 
 Functional Chains:
-    chain : Camera -> S3 -> S2 -> Brake
+    chain : Camera -> S3 -> Fusion_data -> S2 -> Brake

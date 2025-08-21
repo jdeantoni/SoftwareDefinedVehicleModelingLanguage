@@ -4,7 +4,7 @@ import { Command } from 'commander';
 import { SdvmlLanguageMetaData } from '../generated/module.js';
 import { createSdvmlServices } from '../sdvml-module.js';
 import { extractAstNode, extractDestinationAndName } from './cli-util.js';
-import { generateIFScript, makeContext } from './generator.js';
+import { generateIFScript, generateMRTCCSLSpec, makeContext } from './generator.js';
 import { NodeFileSystem } from 'langium/node';
 // import * as url from 'node:url';
 import * as fsAsync from 'node:fs/promises';
@@ -28,24 +28,25 @@ export const generateAction = async (
 ): Promise<void> => {
     const services = createSdvmlServices(NodeFileSystem).sdvml;
     extractAstNode<Model>(fileName, services).then(model => {
-        const data = extractDestinationAndName(fileName, opts.destination);
-        const resPath = path.join(data.destination, 'IF')
-        fs.mkdirSync(resPath, { recursive: true });
-        const generatedFilePath = `${path.join(resPath, data.name)}.if`;
-
         const context = makeContext(model);
-        const generatedModel = generateIFScript(
-            model, context
-        );
+        const data = extractDestinationAndName(fileName, opts.destination);
 
-        fs.writeFileSync(generatedFilePath, generatedModel);
+        const resIFPath = path.join(data.destination, 'IF')
+        fs.mkdirSync(resIFPath, { recursive: true });
+        const ifFilePath = `${path.join(resIFPath, data.name)}.if`;
+
+        const generatedModel = generateIFScript(model, context);
+        fs.writeFileSync(ifFilePath, generatedModel);
+
+        const resMRTCCSLPath = path.join(data.destination, 'MRTCCSL');
+        fs.mkdirSync(resMRTCCSLPath, { recursive: true });
+        const mrtccslFilePath = `${path.join(resMRTCCSLPath, data.name)}.mrtccsl`;
+
+        const specification = generateMRTCCSLSpec(model, context);
+        fs.writeFileSync(mrtccslFilePath, specification);
 
         console.log(
-            context
-        );
-
-        console.log(
-            chalk.green(`IF code generated successfully: ${generatedFilePath}`)
+            chalk.green(`IF and MRTCCSL code generated successfully: ${ifFilePath}`)
         );
     });
 };

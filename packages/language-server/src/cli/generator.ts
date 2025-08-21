@@ -11,6 +11,8 @@ import {
     Subscriber,
     Publisher,
     RandomVar,
+    TriggeringRule,
+    isEventTriggering,
 } from '../generated/ast.js';
 import { CompositeGeneratorNode, toString } from 'langium/generate';
 
@@ -22,11 +24,11 @@ function makeServiceName(component: Component, service: Service): string {
     return component.name + "_" + service.name
 }
 
-function getSubscriptionSignal(service: Service, sub: Subscriber): string {
-    return sub.appSignal?.ref?.name ?? sub.sensorSignal?.ref?.name ?? expect(`Reference to subscription signal in service "${service.name}" was not properly resolved.`);
+function getSubscriptionSignal(serviceName: string, sub: Subscriber): string {
+    return sub.sensorSignal?.ref?.name ?? sub.appSignal?.ref?.name ?? expect(`Reference to subscription signal in service "${serviceName}" was not properly resolved.`);
 }
-function getPublishingSignal(service: Service, pub: Publisher): string {
-    return pub.appSignal?.ref?.name ?? pub.actuatorSignal?.ref?.name ?? expect(`Reference to publishing signal in service "${service.name}" was not properly resolved.`);
+function getPublishingSignal(serviceName: string, pub: Publisher): string {
+    return pub.actuatorSignal?.ref?.name ?? pub.appSignal?.ref?.name ?? expect(`Reference to publishing signal in service "${serviceName}" was not properly resolved.`);
 }
 
 function randomVariableToRange(v: RandomVar, sigma: number): { left: number, right: number } {
@@ -65,7 +67,7 @@ export function makeContext(model: Model): Context {
             const serviceName = makeServiceName(component, service);
             const inputs = [];
             for (var subscription of service.subscribers) {
-                const subscriptionSignal = getSubscriptionSignal(service, subscription);
+                const subscriptionSignal = getSubscriptionSignal(service.name, subscription);
                 let targetServices = signalsToServices.get(subscriptionSignal) ?? [];
                 targetServices.push(serviceName);
                 signalsToServices.set(subscriptionSignal, targetServices);
@@ -73,7 +75,7 @@ export function makeContext(model: Model): Context {
             };
             serviceInputs.set(serviceName, inputs);
             for (var publish of service.publishers) {
-                const publishingSignal = getPublishingSignal(service, publish);
+                const publishingSignal = getPublishingSignal(service.name, publish);
                 let sourceServices = servicesToSignals.get(serviceName) ?? [];
                 sourceServices.push(publishingSignal);
                 servicesToSignals.set(serviceName, sourceServices);
@@ -94,8 +96,9 @@ export function makeContext(model: Model): Context {
     return new Context(signalsToServices, serviceInputs, servicesToSignals);
 }
 
+const sigma = 2;
+
 export function generateIFScript(model: Model, context: Context): string {
-    const sigma = 2;
 
     const ifContent = new CompositeGeneratorNode();
     ifContent.append("system " + model.name + ";\n");
@@ -129,7 +132,7 @@ function generateIFService(component: Component, service: Service, ifContent: Co
     const serviceName: string = makeServiceName(component, service);
     var publines = "";
     for (var pub of service.publishers) {
-        const signalName = getPublishingSignal(service, pub);
+        const signalName = getPublishingSignal(service.name, pub);
         // publines += `\n\t\t\toutput ${signalName}() to {${signalName}}0;`;
 
         for (var targetService of context.signalsToServices.get(signalName) ?? []) {
@@ -203,7 +206,7 @@ function generateIFService(component: Component, service: Service, ifContent: Co
             nextstate jitter;${inpData[4]}
     endstate;\n`);
     } else {
-        const signalName = getSubscriptionSignal(service, service.trigRule.trigger?.ref!);
+        const signalName = getSubscriptionSignal(service.name, service.trigRule.trigger?.ref!);
         ifContent.append("\tvar e clock;");
         ifContent.append(`
     state wait #start ;
@@ -355,10 +358,88 @@ function generateIFActuator(sig: Actuator, ifContent: CompositeGeneratorNode, si
 
 }
 
-// export function generateMRTCCSLSpec(
-//     filePath: string,
-//     destination: string | undefined
-// ): string {
-//     let
-//     return ""
-// }
+interface EventTrigger {
+    $type: 'EventTrigger'
+    event: string
+}
+
+interface PeriodicTrigger {
+    $type: 'PeriodicTrigger'
+    period: RandomVar
+}
+
+type Trigger = EventTrigger | PeriodicTrigger;
+
+class Runnable {
+    name: string;
+    trigger: Trigger;
+    execution: RandomVar;
+}
+
+function trigRuleToTrigger(serviceName: string, rule: TriggeringRule): Trigger {
+    if (isPeriodicTriggering(rule)) {
+        return { $type: "PeriodicTrigger", period: rule.period };
+    } else {
+        return { $type: "EventTrigger", event: getSubscriptionSignal(serviceName, rule.trigger?.ref!) };
+    }
+}
+
+export function generateMRTCCSLSpec(model: Model, context: Context
+): string {
+    let runnable_vss: Runnable[] = model.vss.signals.map(s => {
+        if (isActuator(s)) {
+            if (isEventTriggering(s.trigRule)) {
+                return { name: s.name, trigger: { $type: "EventTrigger", event: s.name }, execution: s.ad };
+            } else {
+                return { name: s.name, trigger: { $type: "PeriodicTrigger", period: s.trigRule.period }, execution: s.ad };
+            }
+        } else {
+            const trigger: Trigger = { $type: "PeriodicTrigger", period: s.ssp };
+            return { name: s.name, trigger, execution: s.dl };
+        }
+    });
+    let runnable_services = model.components.flatMap(c => c.services.map(s => { return { name: makeServiceName(c, s), trigger: trigRuleToTrigger(s.name, s.trigRule), execution: s.execTime } }));
+    let [assumptions, structure] = runnable_vss.concat(runnable_services).map(r => generateMRTCCSLRunnable(r, context, sigma)).reduce(
+        (acc, v) => {
+            let [assumes, structs] = acc;
+            let [assumption, structure] = v;
+
+            return [`${assumes}${assumption}\n`, `${structs}${structure}\n`];
+        }, ["", ""]);
+    return `assume {
+    ${assumptions}
+} structure {
+    ${structure}
+}`
+}
+
+function generateMRTCCSLRunnable(r: Runnable, ctx: Context, sigma: number): [string, string] {
+    const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(r.execution, sigma);
+    let exec_duration_constr = `
+    duration : ${left_exec_bound}ms <= ${r.name}_EXEC <= ${right_exec_bound}ms;
+    continuous process ${r.name}_EXEC with normal(${r.execution.mean.value}ms, ${r.execution.stdDev.value}ms);`;
+    let exec_constr = `${r.name}_FINISH = delay ${r.name}_START by ${r.name}_EXEC;`;
+    let output_constr = ctx.servicesToSignals.get(r.name)?.reduce((acc, v) => `${acc}\n    ${r.name}_FINISH = ${v};`, "") ?? "";
+    if (r.trigger.$type === "PeriodicTrigger") {
+        const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(r.trigger.period, sigma);
+        return [`
+    duration : ${left_period_bound - r.trigger.period.mean.value}ms <= ${r.name}_PERIOD_JITTER <= ${right_period_bound - r.trigger.period.mean.value}ms;
+    continuous process ${r.name}_PERIOD_JITTER with normal(0s, ${r.trigger.period.stdDev.value}ms);
+    ${exec_duration_constr}
+        `,
+        `
+    ${r.name}_START = periodic ${r.trigger.period.mean.value}ms with jitter ${r.name}_PERIOD_JITTER;
+    ${exec_constr}
+    ${output_constr}
+        `];
+    } else {
+        return [
+            exec_duration_constr,
+            `
+    ${r.name}_START = ${r.trigger.event};
+    ${exec_constr}
+    ${output_constr}
+            `
+        ]
+    }
+}
