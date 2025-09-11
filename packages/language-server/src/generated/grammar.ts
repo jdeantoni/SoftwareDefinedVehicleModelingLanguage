@@ -118,8 +118,16 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
         "$type": "Group",
         "elements": [
           {
-            "$type": "Keyword",
-            "value": "chain"
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@16"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Keyword",
@@ -1170,12 +1178,6 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
             "$type": "SimpleType",
             "typeRef": {
               "$ref": "#/rules@11"
-            }
-          },
-          {
-            "$type": "SimpleType",
-            "typeRef": {
-              "$ref": "#/rules@8"
             }
           }
         ]

@@ -4,7 +4,7 @@ import { Command } from 'commander';
 import { SdvmlLanguageMetaData } from '../generated/module.js';
 import { createSdvmlServices } from '../sdvml-module.js';
 import { extractAstNode, extractDestinationAndName } from './cli-util.js';
-import { generateIFScript, generateMRTCCSLSpec, makeContext } from './generator.js';
+import { Context, generateFunctionalChainSpec, generateIFScript, generateMRTCCSLSpec } from './generator.js';
 import { NodeFileSystem } from 'langium/node';
 // import * as url from 'node:url';
 import * as fsAsync from 'node:fs/promises';
@@ -28,7 +28,7 @@ export const generateAction = async (
 ): Promise<void> => {
     const services = createSdvmlServices(NodeFileSystem).sdvml;
     extractAstNode<Model>(fileName, services).then(model => {
-        const context = makeContext(model);
+        const context = new Context(model);
         const data = extractDestinationAndName(fileName, opts.destination);
 
         const resIFPath = path.join(data.destination, 'IF')
@@ -45,8 +45,12 @@ export const generateAction = async (
         const specification = generateMRTCCSLSpec(model, context);
         fs.writeFileSync(mrtccslFilePath, specification);
 
+        const fcFilePath = `${path.join(resMRTCCSLPath, data.name)}.chains`;
+        const chainsString = model.chains.reduce((acc, chain) => { acc += generateFunctionalChainSpec(chain, context) + "\n"; return acc }, "");
+        fs.writeFileSync(fcFilePath, chainsString);
+
         console.log(
-            chalk.green(`IF and MRTCCSL code generated successfully: ${ifFilePath}`)
+            chalk.green(`IF, MRTCCSL and functional chain artifacts generated successfully: ${ifFilePath}`)
         );
     });
 };

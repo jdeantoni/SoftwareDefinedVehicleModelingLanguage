@@ -30,11 +30,11 @@ entry Model:
 ;
 
 FunctionalChain:
-    "chain" ":"
+    name=ID ":"
         participants+=[FCParticipant:ID] ("->" participants+=[FCParticipant:ID])*;
 
 
-type FCParticipant = Sensor | Service | Actuator | AppSignal;
+type FCParticipant = Sensor | Service | Actuator;
 
 VSS:
     "VSS" ":"

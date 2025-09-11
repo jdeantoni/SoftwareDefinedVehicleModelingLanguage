@@ -38,7 +38,6 @@ export type SdvmlKeywordNames =
     | "VSS"
     | "["
     | "]"
-    | "chain"
     | "event"
     | "execution"
     | "ms"
@@ -54,7 +53,7 @@ export type SdvmlKeywordNames =
 
 export type SdvmlTokenNames = SdvmlTerminalNames | SdvmlKeywordNames;
 
-export type FCParticipant = Actuator | AppSignal | Sensor | Service;
+export type FCParticipant = Actuator | Sensor | Service;
 
 export const FCParticipant = 'FCParticipant';
 
@@ -145,6 +144,7 @@ export function isEventTriggering(item: unknown): item is EventTriggering {
 export interface FunctionalChain extends langium.AstNode {
     readonly $container: Model;
     readonly $type: 'FunctionalChain';
+    name: string;
     participants: Array<langium.Reference<FCParticipant>>;
 }
 
@@ -295,13 +295,12 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
             case Sensor: {
                 return this.isSubtype(FCParticipant, supertype) || this.isSubtype(Signal, supertype);
             }
-            case AppSignal:
-            case Service: {
-                return this.isSubtype(FCParticipant, supertype);
-            }
             case EventTriggering:
             case PeriodicTriggering: {
                 return this.isSubtype(TriggeringRule, supertype);
+            }
+            case Service: {
+                return this.isSubtype(FCParticipant, supertype);
             }
             default: {
                 return false;
@@ -384,6 +383,7 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                 return {
                     name: FunctionalChain,
                     properties: [
+                        { name: 'name' },
                         { name: 'participants', defaultValue: [] }
                     ]
                 };

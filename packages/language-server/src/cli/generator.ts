@@ -13,6 +13,7 @@ import {
     RandomVar,
     TriggeringRule,
     isEventTriggering,
+    FunctionalChain,
 } from '../generated/ast.js';
 import { CompositeGeneratorNode, toString } from 'langium/generate';
 
@@ -20,14 +21,14 @@ function expect(msg: string): never {
     throw new Error(msg)
 }
 
-function makeServiceName(component: Component, service: Service): string {
+export function makeServiceName(component: Component, service: Service): string {
     return component.name + "_" + service.name
 }
 
-function getSubscriptionSignal(serviceName: string, sub: Subscriber): string {
+export function getSubscriptionSignal(serviceName: string, sub: Subscriber): string {
     return sub.sensorSignal?.ref?.name ?? sub.appSignal?.ref?.name ?? expect(`Reference to subscription signal in service "${serviceName}" was not properly resolved.`);
 }
-function getPublishingSignal(serviceName: string, pub: Publisher): string {
+export function getPublishingSignal(serviceName: string, pub: Publisher): string {
     return pub.actuatorSignal?.ref?.name ?? pub.appSignal?.ref?.name ?? expect(`Reference to publishing signal in service "${serviceName}" was not properly resolved.`);
 }
 
@@ -36,18 +37,66 @@ function randomVariableToRange(v: RandomVar, sigma: number): { left: number, rig
     return { left: v.mean.value - sigma * v.stdDev.value, right: v.mean.value + sigma * v.stdDev.value };
 }
 
-type serviceKey = string;
-type signalName = string;
+export type serviceKey = string;
+export type signalName = string;
 
-class Context {
+export class Context {
     signalsToServices: Map<signalName, serviceKey[]>;
     servicesToSignals: Map<serviceKey, signalName[]>;
     serviceInputs: Map<serviceKey, signalName[]>;
+    runnables: Map<serviceKey, Runnable>;
 
-    constructor(signalsToServices: Map<signalName, serviceKey[]>, serviceInputs: Map<serviceKey, signalName[]>, servicesToSignals: Map<serviceKey, signalName[]>) {
-        this.signalsToServices = signalsToServices;
-        this.serviceInputs = serviceInputs;
-        this.servicesToSignals = servicesToSignals;
+    constructor(model: Model) {
+        this.signalsToServices = new Map<string, string[]>();
+        this.servicesToSignals = new Map<string, string[]>();
+        this.serviceInputs = new Map<string, string[]>();
+
+        for (var component of model.components) {
+            for (var service of component.services) {
+                const serviceName = makeServiceName(component, service);
+                const inputs = [];
+                for (var subscription of service.subscribers) {
+                    const subscriptionSignal = getSubscriptionSignal(service.name, subscription);
+                    let targetServices = this.signalsToServices.get(subscriptionSignal) ?? [];
+                    targetServices.push(serviceName);
+                    this.signalsToServices.set(subscriptionSignal, targetServices);
+                    inputs.push(subscriptionSignal);
+                };
+                this.serviceInputs.set(serviceName, inputs);
+                for (var publish of service.publishers) {
+                    const publishingSignal = getPublishingSignal(service.name, publish);
+                    let sourceServices = this.servicesToSignals.get(serviceName) ?? [];
+                    sourceServices.push(publishingSignal);
+                    this.servicesToSignals.set(serviceName, sourceServices);
+                };
+            }
+        }
+
+        for (var vssSignal of model.vss.signals) {
+            if (isSensor(vssSignal)) {
+                this.servicesToSignals.set(vssSignal.name, [vssSignal.name]);
+            } else {
+                this.serviceInputs.set(vssSignal.name, [vssSignal.name]);
+                let receivers = this.signalsToServices.get(vssSignal.name) ?? [];
+                receivers.push(vssSignal.name);
+                this.signalsToServices.set(vssSignal.name, receivers);
+            }
+        }
+
+        let runnable_vss: [string, Runnable][] = model.vss.signals.map(s => {
+            if (isActuator(s)) {
+                if (isEventTriggering(s.trigRule)) {
+                    return [s.name, { name: s.name, trigger: { $type: "EventTrigger", event: s.name }, execution: s.ad }];
+                } else {
+                    return [s.name, { name: s.name, trigger: { $type: "PeriodicTrigger", period: s.trigRule.period }, execution: s.ad }];
+                }
+            } else {
+                const trigger: Trigger = { $type: "PeriodicTrigger", period: s.ssp };
+                return [s.name, { name: s.name, trigger, execution: s.dl }];
+            }
+        });
+        let runnable_services = model.components.flatMap(c => c.services.map(s => [s.name, { name: makeServiceName(c, s), trigger: trigRuleToTrigger(s.name, s.trigRule), execution: s.execTime }]) as [string, Runnable][]);
+        this.runnables = new Map(runnable_vss.concat(runnable_services))
     }
 }
 
@@ -56,45 +105,6 @@ class Context {
 //         console.log(`${key}: ${value}`);
 //     });
 // }
-
-export function makeContext(model: Model): Context {
-    var signalsToServices = new Map<string, string[]>();
-    var servicesToSignals = new Map<string, string[]>();
-    var serviceInputs = new Map<string, string[]>();
-
-    for (var component of model.components) {
-        for (var service of component.services) {
-            const serviceName = makeServiceName(component, service);
-            const inputs = [];
-            for (var subscription of service.subscribers) {
-                const subscriptionSignal = getSubscriptionSignal(service.name, subscription);
-                let targetServices = signalsToServices.get(subscriptionSignal) ?? [];
-                targetServices.push(serviceName);
-                signalsToServices.set(subscriptionSignal, targetServices);
-                inputs.push(subscriptionSignal);
-            };
-            serviceInputs.set(serviceName, inputs);
-            for (var publish of service.publishers) {
-                const publishingSignal = getPublishingSignal(service.name, publish);
-                let sourceServices = servicesToSignals.get(serviceName) ?? [];
-                sourceServices.push(publishingSignal);
-                servicesToSignals.set(serviceName, sourceServices);
-            };
-        }
-    }
-
-    for (var vssSignal of model.vss.signals) {
-        if (isSensor(vssSignal)) {
-            servicesToSignals.set(vssSignal.name, [vssSignal.name]);
-        } else {
-            serviceInputs.set(vssSignal.name, [vssSignal.name]);
-            let receivers = signalsToServices.get(vssSignal.name) ?? [];
-            receivers.push(vssSignal.name);
-            signalsToServices.set(vssSignal.name, receivers);
-        }
-    }
-    return new Context(signalsToServices, serviceInputs, servicesToSignals);
-}
 
 const sigma = 2;
 
@@ -386,20 +396,7 @@ function trigRuleToTrigger(serviceName: string, rule: TriggeringRule): Trigger {
 
 export function generateMRTCCSLSpec(model: Model, context: Context
 ): string {
-    let runnable_vss: Runnable[] = model.vss.signals.map(s => {
-        if (isActuator(s)) {
-            if (isEventTriggering(s.trigRule)) {
-                return { name: s.name, trigger: { $type: "EventTrigger", event: s.name }, execution: s.ad };
-            } else {
-                return { name: s.name, trigger: { $type: "PeriodicTrigger", period: s.trigRule.period }, execution: s.ad };
-            }
-        } else {
-            const trigger: Trigger = { $type: "PeriodicTrigger", period: s.ssp };
-            return { name: s.name, trigger, execution: s.dl };
-        }
-    });
-    let runnable_services = model.components.flatMap(c => c.services.map(s => { return { name: makeServiceName(c, s), trigger: trigRuleToTrigger(s.name, s.trigRule), execution: s.execTime } }));
-    let [assumptions, structure] = runnable_vss.concat(runnable_services).map(r => generateMRTCCSLRunnable(r, context, sigma)).reduce(
+    let [assumptions, structure] = Array.from(context.runnables.values()).map(r => generateMRTCCSLRunnable(r, context, sigma)).reduce(
         (acc, v) => {
             let [assumes, structs] = acc;
             let [assumption, structure] = v;
@@ -442,4 +439,18 @@ function generateMRTCCSLRunnable(r: Runnable, ctx: Context, sigma: number): [str
             `
         ]
     }
+}
+
+export function generateFunctionalChainSpec(chain: FunctionalChain, ctx: Context): string {
+    var chainString = `${chain.name}:`;
+    let first = true;
+    for (let next of chain.participants) {
+        let runnable = ctx.runnables.get(next.ref!.name) ?? expect(`chain participant with id "${next.ref?.name}" is not available.`)
+        if (!first) {
+            chainString += runnable.trigger.$type === "EventTrigger" ? "->" : "?";
+        }
+        chainString += `${runnable.name}_START->${runnable.name}_FINISH`
+        first = false;
+    }
+    return chainString;
 }

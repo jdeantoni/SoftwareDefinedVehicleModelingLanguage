@@ -18,6 +18,7 @@
 import { GeneratorContext, LangiumDiagramGenerator } from 'langium-sprotty';
 import { /*SEdge,*/ EdgeLayoutable, SCompartment, SEdge, SLabel, SModelRoot, SNode, SPort, SModelElement/*, EdgeLayoutable*/ } from 'sprotty-protocol';
 import { Signal, Component, Model, isSensor, VSS, Sensor, Actuator, isPeriodicTriggering, Service, FunctionalChain, isService } from './generated/ast.js';
+import {  Context, makeServiceName, getPublishingSignal, getSubscriptionSignal } from './cli/generator.js';
 
 // export interface ExpandableNode extends SNode {
 //     type: 'expandable-node'
@@ -26,18 +27,24 @@ import { Signal, Component, Model, isSensor, VSS, Sensor, Actuator, isPeriodicTr
 // }
 
 
-
+const defaultLayout = {
+    paddingTop: 10.0,
+    paddingBottom: 10.0,
+    paddingLeft: 10.0,
+    paddingRight: 10.0
+}
 
 export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
 
     protected generateRoot(args: GeneratorContext<Model>): SModelRoot {
         const { document } = args;
         const sdvmlModel = document.parseResult.value;
+        let context = new Context(sdvmlModel);
         const graph = {
             type: 'graph',
             id: sdvmlModel.name ?? 'root',
             children: [
-                ...sdvmlModel.components.map(c => this.generateComponent(c, args)),
+                ...sdvmlModel.components.flatMap(c => this.generateComponent(c, args, context)),
                 // ...this.generateVSS(sdvmlModel.vss, args),
                 ...sdvmlModel.vss.signals.flatMap(s => this.generateSignal(s, args)),
                 ...sdvmlModel.components.flatMap(c => this.generateEdge(c, args)),
@@ -48,11 +55,12 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
         return graph;
     }
 
-    protected generateComponent(comp: Component, ctx: GeneratorContext<Model>): SNode {
+    protected generateComponent(comp: Component, ctx: GeneratorContext<Model>, model: Context): (SNode | SEdge)[] {
         const { idCache } = ctx;
         const nodeId = idCache.uniqueId(comp.name, comp);
+        const componentName = comp.name;
 
-        const node = {
+        const componentNode = {
             type: 'node',
             id: nodeId,
             children: [
@@ -67,10 +75,7 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                         }],
                     layout: "vbox",
                     layoutOptions: {
-                        paddingTop: 10.0,
-                        paddingBottom: 10.0,
-                        paddingLeft: 10.0,
-                        paddingRight: 10.0,
+                        ...defaultLayout,
                         resizeContainer: true,
                         hAlign: 'center'
                     }
@@ -78,20 +83,97 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
             ] as (SLabel | SPort | SNode)[],
             layout: "vbox",
             layoutOptions: {
-                paddingTop: 10.0,
-                paddingBottom: 10.0,
-                paddingLeft: 10.0,
-                paddingRight: 10.0,
+                ...defaultLayout,
                 resizeContainer: true
             }
         };
-        // console.error("service length:"+comp.services.length)
-        var serToSerNode = new Map<Service, SNode>()
+        for (let local_signal of comp.signals) {
+            const componentPortID = local_signal.name;
+            componentNode.children.push(
+                <SPort>{
+                    type: 'port',
+                    id: componentPortID,
+                    direction: 'output',
+                    layout: "stack",
+                    layoutOptions: defaultLayout
+                }
+            )
+        }
 
+        const localSignals = new Map();
+        for (let s of comp.signals) {
+            localSignals.set(s.name, []);
+        }
+        const edgesToSignals = [];
+
+        const outPorts = new Set();
+        const inPorts = new Set();
         for (let service of comp.services) {
-            // console.error("service name:"+service.name)
-            const serId = idCache.uniqueId(nodeId + '.service', service)
-            let serNode = <SNode>{
+            const serviceName = makeServiceName(comp, service);
+            for (let pub of service.publishers) {
+                const signalName = getPublishingSignal(serviceName, pub);
+                if (!localSignals.has(signalName)) {
+                    outPorts.add(signalName);
+                } else {
+                    localSignals.get(signalName).push(serviceName);
+                }
+            }
+            for (let sub of service.subscribers) {
+                const signalName = getSubscriptionSignal(serviceName, sub);
+                if (!localSignals.has(signalName)) {
+                    inPorts.add(signalName);
+                }
+            }
+        }
+
+        for (let signal of outPorts) {
+            const componentPortID = componentName + "." + signal;
+            componentNode.children.push(
+                <SPort>{
+                    type: 'port',
+                    id: componentPortID,
+                    direction: 'output',
+                    layout: "stack",
+                    layoutOptions: defaultLayout
+                }
+            );
+            edgesToSignals.push(
+                <SEdge>{
+                    type: 'edge',
+                    id: `${componentPortID}_to_${signal}`,
+                    sourceId: componentPortID,
+                    targetId: signal,
+                    layout: "stack"
+                }
+            );
+        }
+
+        for (let signal of inPorts) {
+            const componentPortID = componentName + "." + signal;
+            console.error(signal);
+            componentNode.children.push(
+                <SPort>{
+                    type: 'port',
+                    id: componentPortID,
+                    direction: 'input',
+                    layout: "stack",
+                    layoutOptions: defaultLayout
+                }
+            );
+            edgesToSignals.push(
+                <SEdge>{
+                    type: 'edge',
+                    id: `${signal}_to_${componentPortID}`,
+                    sourceId: signal,
+                    targetId: componentPortID,
+                    layout: "stack"
+                }
+            );
+        }
+        for (let service of comp.services) {
+            const serviceName = makeServiceName(comp, service);
+            const serId = idCache.uniqueId(serviceName, service)
+            const serviceNode = <SNode>{
                 type: "node:node-service",
                 id: serId,
                 children: [
@@ -100,103 +182,97 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                         id: idCache.uniqueId(serId + '.label'),
                         text: service.name
                     },
-                    //  <SPort>{
-                    //     type: 'port:fake-port',
-                    //     id: serId + '.input',
-                    //     direction : 'input'
-                    // },
-                    //  <SPort>{
-                    //     type: 'port:fake-port',
-                    //     id: serId + '.output',
-                    //     direction : 'output'
-                    // }
                 ],
                 layout: "vbox",
                 layoutOptions: {
-                    paddingTop: 10.0,
-                    paddingBottom: 10.0,
-                    paddingLeft: 10.0,
-                    paddingRight: 10.0,
+                    ...defaultLayout,
                     resizeContainer: true,
                     hAlign: 'center'
                 }
             };
-            serNode.children = [...serNode.children ? serNode.children : [], ...this.getServiceLabel(service, serId, ctx)];
-            serToSerNode.set(service, serNode)
-            node.children.push(serNode);
-            // console.error("children length:"+node.children.length)
-        }
+            this.traceProvider.trace(serviceNode, service);
+            this.markerProvider.addDiagnosticMarker(serviceNode, service, ctx);
+            serviceNode.children = [...serviceNode.children ? serviceNode.children : [], ...this.getServiceLabel(service, serId, ctx)];
 
-        for (let s of comp.services) {
-            for (let pub of s.publishers) {
-                const pubId = idCache.uniqueId((pub.actuatorSignal?.ref?.name ?? pub.appSignal?.ref?.name ?? "undefined"), pub);
-                node.children.push(
+            for (let pub of service.publishers) {
+                const signalName = getPublishingSignal(serviceName, pub);
+                const servicePortID = idCache.uniqueId(serviceName + "." + signalName);
+                const componentPortID = componentName + "." + signalName;
+                serviceNode.children.push(
                     <SPort>{
                         type: 'port',
-                        id: pubId,
+                        id: servicePortID,
                         direction: 'output',
                         layout: "stack",
-                        layoutOptions: {
-                            paddingTop: 10.0,
-                            paddingBottom: 10.0,
-                            paddingLeft: 10.0,
-                            paddingRight: 10.0
-                        }
+                        layoutOptions: defaultLayout
                     }
                 )
-                serToSerNode.get(s)?.children?.push(
-                    <SPort>{
-                        type: 'port',
-                        id: pubId + "_in",
-                        direction: 'output',
-                        layout: "stack",
-                        layoutOptions: {
-                            paddingTop: 10.0,
-                            paddingBottom: 10.0,
-                            paddingLeft: 10.0,
-                            paddingRight: 10.0
+                if (localSignals.has(signalName)) {
+                    componentNode.children.push(
+                        <SEdge>{
+                            type: 'edge',
+                            id: `${servicePortID}_to_${signalName}`,
+                            sourceId: servicePortID,
+                            targetId: signalName,
+                            layout: "stack"
                         }
-                    }
-                )
+                    );
+                } else {
+                    componentNode.children.push(
+                        <SEdge>{
+                            type: 'edge',
+                            id: `${servicePortID}_to_${componentPortID}`,
+                            sourceId: servicePortID,
+                            targetId: componentPortID,
+                            layout: "stack"
+                        }
+                    );
+                }
             }
-        }
-        for (let s of comp.services) {
-            for (let sub of s.subscribers) {
-                const subId = idCache.uniqueId(sub.sensorSignal?.ref?.name ?? sub.appSignal?.ref?.name ?? "undefined", sub);
-                node.children.push(
+            for (let sub of service.subscribers) {
+                const signalName = getSubscriptionSignal(serviceName, sub);
+                const servicePortID = idCache.uniqueId(serviceName + "." + signalName);
+                const componentPortID = componentName + "." + signalName;
+                serviceNode.children.push(
                     <SPort>{
                         type: 'port',
-                        id: subId,
+                        id: servicePortID,
                         direction: 'input',
                         layout: "stack",
-                        layoutOptions: {
-                            paddingTop: 10.0,
-                            paddingBottom: 10.0,
-                            paddingLeft: 10.0,
-                            paddingRight: 10.0
-                        }
+                        layoutOptions: defaultLayout
                     }
                 )
-                serToSerNode.get(s)?.children?.push(
-                    <SPort>{
-                        type: 'port',
-                        id: subId + '_in',
-                        direction: 'input',
-                        layout: "stack",
-                        layoutOptions: {
-                            paddingTop: 10.0,
-                            paddingBottom: 10.0,
-                            paddingLeft: 10.0,
-                            paddingRight: 10.0
-                        }
+                if (localSignals.has(signalName)) {
+                    for (let provider of localSignals.get(signalName)) {
+                        componentNode.children.push(
+                            <SEdge>{
+                                type: 'edge',
+                                id: `${componentPortID}_to_${servicePortID}`,
+                                sourceId: provider + "." + signalName,
+                                targetId: servicePortID,
+                                layout: "stack"
+                            }
+                        );
                     }
-                )
+                } else {
+                    componentNode.children.push(
+                        <SEdge>{
+                            type: 'edge',
+                            id: `${componentPortID}_to_${servicePortID}`,
+                            sourceId: componentPortID,
+                            targetId: servicePortID,
+                            layout: "stack"
+                        }
+                    );
+                }
             }
+            componentNode.children.push(serviceNode);
         }
 
-        this.traceProvider.trace(node, comp);
-        this.markerProvider.addDiagnosticMarker(node, comp, ctx);
-        return node;
+        this.traceProvider.trace(componentNode, comp);
+        this.markerProvider.addDiagnosticMarker(componentNode, comp, ctx);
+
+        return [componentNode, ...edgesToSignals];
     }
 
 
@@ -220,7 +296,7 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                 paddingRight: 100.0
             }
         };
-        const nodeIdActuator = idCache.uniqueId("VSS_sensor");
+        const nodeIdActuator = idCache.uniqueId("VSS_actuator");
         const nodeActuator = <SCompartment>{
             type: 'node:vss-container',
             id: nodeIdActuator,
@@ -257,12 +333,12 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
             <SLabel>{
                 type: "label:values",
                 id: idCache.uniqueId(nodeId + '.values1'),
-                text: "DL:" + sig.dl.mean + "+/-" + sig.dl.stdDev + "ms"
+                text: "DL:" + sig.dl.mean.value + "+/-" + sig.dl.stdDev.value + "ms"
             },
             <SLabel>{
                 type: "label:values",
                 id: idCache.uniqueId(nodeId + '.values2'),
-                text: "SSP:" + sig.ssp.mean + "+/-" + sig.ssp.stdDev + "ms"
+                text: "SSP:" + sig.ssp.mean.value + "+/-" + sig.ssp.stdDev.value + "ms"
             }
         ];
         return res;
@@ -274,14 +350,14 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
             <SLabel>{
                 type: "label:values",
                 id: idCache.uniqueId(nodeId + '.values1'),
-                text: "DL:" + sig.ad.mean + "+/-" + sig.ad.stdDev + "ms"
+                text: "DL:" + sig.ad.mean.value + "+/-" + sig.ad.stdDev.value + "ms"
             }
         ];
         if (isPeriodicTriggering(sig.trigRule)) {
             res.push(<SLabel>{
                 type: "label:values",
                 id: idCache.uniqueId(nodeId + '.values2'),
-                text: "AP:" + sig.trigRule.period.mean + "+/-" + sig.trigRule.period.stdDev + "ms"
+                text: "AP:" + sig.trigRule.period.mean.value + "+/-" + sig.trigRule.period.stdDev.value + "ms"
             });
         }
 
@@ -294,14 +370,14 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
             <SLabel>{
                 type: "label:values",
                 id: idCache.uniqueId(nodeId + '.values1'),
-                text: "ET:" + service.execTime.mean + "+/-" + service.execTime.stdDev + "ms"
+                text: "ET:" + service.execTime.mean.value + "+/-" + service.execTime.stdDev.value + "ms"
             }
         ]
         if (isPeriodicTriggering(service.trigRule)) {
             res.push(<SLabel>{
                 type: "label:values",
                 id: idCache.uniqueId(nodeId + '.values2'),
-                text: "AP:" + service.trigRule.period.mean + "+/-" + service.trigRule.period.stdDev + "ms"
+                text: "AP:" + service.trigRule.period.mean.value + "+/-" + service.trigRule.period.stdDev.value + "ms"
             });
         } else {
             const trigger = service.trigRule.trigger;
@@ -324,7 +400,7 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
         const sigType = isSensor(sig) ? "output" : "input";
         const node = <SNode>{
             type: 'node:vss-node',
-            id: nodeId,
+            id: nodeId + ".container",
             children: [
                 <SLabel>{
                     type: 'label',
@@ -333,24 +409,14 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                 },
                 <SPort>{
                     type: "port",
-                    id: idCache.uniqueId(nodeId + '_port', sig),
+                    id: sig.name,
                     direction: sigType,
                     layout: "stack",
-                    layoutOptions: {
-                        paddingTop: 10.0,
-                        paddingBottom: 10.0,
-                        paddingLeft: 10.0,
-                        paddingRight: 10.0
-                    }
+                    layoutOptions: defaultLayout
                 }
             ],
             layout: "vbox",
-            layoutOptions: {
-                paddingTop: 10.0,
-                paddingBottom: 10.0,
-                paddingLeft: 10.0,
-                paddingRight: 10.0
-            }
+            layoutOptions: defaultLayout
         };
         if (isSensor(sig)) {
             node.children = [...node.children ? node.children : [], ...this.getSensorLabel(sig, nodeId, ctx)]
@@ -429,6 +495,7 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
     protected generateFCEdge(fc: FunctionalChain, ctx: GeneratorContext<Model>): SEdge[] {
         const { idCache } = ctx;
         const res: SEdge[] = []
+
         let prevParticipant = fc.participants[0];
         if (prevParticipant.ref == undefined) {
             console.error("in creation of functional chain diagram, a participant is badly referenced");
