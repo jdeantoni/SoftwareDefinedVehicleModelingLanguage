@@ -179,7 +179,18 @@
         "command": "sdvml.diagram.delete",
         "when": "sdvml-diagram-focused"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "SDV DSL",
+      "properties": {
+        "mrtccsl": {
+          "type": ["string", "null"],
+          "default": null,
+          "description": "Path to the directory with MRTCCSL switch installed. Uses global installation (calls `simulate`) by default."
+        }
+      }
+    }
   },
   "activationEvents": [
     "onCommand:sdvml.generateCode",

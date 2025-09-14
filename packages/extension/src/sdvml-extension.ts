@@ -58,7 +58,7 @@ function sdvmlCreateWebviewHtml(identifier: SprottyDiagramIdentifier, container:
 
 export function activate(context: vscode.ExtensionContext) {
     const cliPath = context.asAbsolutePath('pack/language-server/src/cli/main.cjs');
-    const { generateAction,GenerateOptions } = require(cliPath);
+    const { generateAction, GenerateOptions } = require(cliPath);
 
 
     const diagramMode = process.env.DIAGRAM_MODE || 'panel';
@@ -94,7 +94,7 @@ export function activate(context: vscode.ExtensionContext) {
         webviewPanelManager.messenger.onRequest(
             GetImageRequest,
             async (message: { elementId: string; position: { x: number; y: number } }) => {
-                // console.error("~~~~> packages/extension/src/sdvml-extension.ts:"+message.elementId)
+                // console.error("~~~~> packages/extension/src/sdvml-extension.ts:" + message.elementId)
                 const image = await getImageForElement(message.elementId);
                 return {
                     image,
@@ -122,7 +122,7 @@ export function activate(context: vscode.ExtensionContext) {
         webviewEditorProvider.messenger.onRequest(
             GetImageRequest,
             async (message: { elementId: string; position: { x: number; y: number } }) => {
-                console.error("~~~~> packages/extension/src/sdvml-extension.ts:" + message.elementId)
+                // console.error("~~~~> packages/extension/src/sdvml-extension.ts:" + message.elementId)
                 const image = await getImageForElement(message.elementId);
                 return {
                     image,
@@ -159,7 +159,7 @@ export function activate(context: vscode.ExtensionContext) {
         webviewViewProvider.messenger.onRequest(
             GetImageRequest,
             async (message: { elementId: string; position: { x: number; y: number } }) => {
-                console.error("~~~~> packages/extension/src/sdvml-extension.ts:" + message.elementId)
+                // console.error("~~~~> packages/extension/src/sdvml-extension.ts:" + message.elementId)
                 const img = await getImageForElement(message.elementId);
                 return {
                     image: img,
@@ -188,10 +188,10 @@ export function activate(context: vscode.ExtensionContext) {
         const filePath = document.uri.fsPath;
 
         let opts = {
-            destination : filePath.slice(0, filePath.lastIndexOf('/'))+"/generated/"
+            destination: filePath.slice(0, filePath.lastIndexOf('/')) + "/generated/"
         }
-        console.error("~~~~~~~> generate path",opts.destination)
-        generateAction(filePath,opts)
+        console.error("~~~~~~~> generate path", opts.destination)
+        generateAction(filePath, opts)
 
         vscode.window.showInformationMessage(`SDVML code generation complete! Output at: ${opts.destination}`);
     });

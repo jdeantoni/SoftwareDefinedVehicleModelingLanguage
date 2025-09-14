@@ -16,9 +16,13 @@
  ********************************************************************************/
 
 import { GeneratorContext, LangiumDiagramGenerator } from 'langium-sprotty';
-import { /*SEdge,*/ EdgeLayoutable, SCompartment, SEdge, SLabel, SModelRoot, SNode, SPort, SModelElement/*, EdgeLayoutable*/ } from 'sprotty-protocol';
-import { Signal, Component, Model, isSensor, VSS, Sensor, Actuator, isPeriodicTriggering, Service, FunctionalChain, isService } from './generated/ast.js';
-import {  Context, makeServiceName, getPublishingSignal, getSubscriptionSignal } from './cli/generator.js';
+import { SEdge, SLabel, SModelRoot, SNode, SPort, SModelElement } from 'sprotty-protocol';
+import { Signal, Component, Model, isSensor, Sensor, Actuator, isPeriodicTriggering, Service, FunctionalChain, FCParticipant } from './generated/ast.js';
+import { Context, makeServiceName, getPublishingSignal, getSubscriptionSignal } from './cli/generator.js';
+import path from 'path';
+import { Reference } from 'langium';
+
+import * as fs from 'fs';
 
 // export interface ExpandableNode extends SNode {
 //     type: 'expandable-node'
@@ -47,8 +51,7 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                 ...sdvmlModel.components.flatMap(c => this.generateComponent(c, args, context)),
                 // ...this.generateVSS(sdvmlModel.vss, args),
                 ...sdvmlModel.vss.signals.flatMap(s => this.generateSignal(s, args)),
-                ...sdvmlModel.components.flatMap(c => this.generateEdge(c, args)),
-                ...sdvmlModel.chains.flatMap(c => this.generateFCEdge(c, args))
+                ...sdvmlModel.chains.flatMap(c => this.generateFCEdge(c, args, context))
             ]
         };
         this.traceProvider.trace(graph, sdvmlModel);
@@ -57,20 +60,19 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
 
     protected generateComponent(comp: Component, ctx: GeneratorContext<Model>, model: Context): (SNode | SEdge)[] {
         const { idCache } = ctx;
-        const nodeId = idCache.uniqueId(comp.name, comp);
         const componentName = comp.name;
 
         const componentNode = {
             type: 'node',
-            id: nodeId,
+            id: componentName,
             children: [
                 <SNode>{
                     type: 'node:node-label',
-                    id: idCache.uniqueId(nodeId + '.label'),
+                    id: componentName + ".label",
                     children: [
                         <SLabel>{
                             type: 'label',
-                            id: idCache.uniqueId(nodeId + '.label.label'),
+                            id: idCache.uniqueId(componentName + '.label.label'),
                             text: comp.name
                         }],
                     layout: "vbox",
@@ -172,14 +174,13 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
         }
         for (let service of comp.services) {
             const serviceName = makeServiceName(comp, service);
-            const serId = idCache.uniqueId(serviceName, service)
             const serviceNode = <SNode>{
                 type: "node:node-service",
-                id: serId,
+                id: serviceName,
                 children: [
                     <SLabel>{
                         type: 'label',
-                        id: idCache.uniqueId(serId + '.label'),
+                        id: idCache.uniqueId(serviceName + '.label'),
                         text: service.name
                     },
                 ],
@@ -192,11 +193,11 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
             };
             this.traceProvider.trace(serviceNode, service);
             this.markerProvider.addDiagnosticMarker(serviceNode, service, ctx);
-            serviceNode.children = [...serviceNode.children ? serviceNode.children : [], ...this.getServiceLabel(service, serId, ctx)];
+            serviceNode.children = [...serviceNode.children ? serviceNode.children : [], ...this.getServiceLabel(service, serviceName, ctx)];
 
             for (let pub of service.publishers) {
                 const signalName = getPublishingSignal(serviceName, pub);
-                const servicePortID = idCache.uniqueId(serviceName + "." + signalName);
+                const servicePortID = serviceName + "." + signalName;
                 const componentPortID = componentName + "." + signalName;
                 serviceNode.children.push(
                     <SPort>{
@@ -231,7 +232,7 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
             }
             for (let sub of service.subscribers) {
                 const signalName = getSubscriptionSignal(serviceName, sub);
-                const servicePortID = idCache.uniqueId(serviceName + "." + signalName);
+                const servicePortID = serviceName + "." + signalName;
                 const componentPortID = componentName + "." + signalName;
                 serviceNode.children.push(
                     <SPort>{
@@ -276,56 +277,6 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
     }
 
 
-    protected generateVSS(vss: VSS, ctx: GeneratorContext<Model>): SNode[] {
-        const { idCache } = ctx;
-        const nodeIdSensor = idCache.uniqueId("VSS_sensor");
-        const nodeSensor = <SCompartment>{
-            type: 'node:vss-container',
-            id: nodeIdSensor,
-            children: [
-                <SLabel>{
-                    type: 'label',
-                    id: idCache.uniqueId(nodeIdSensor + '.label'),
-                    text: "VSS_sensors"
-                }
-            ] as (SLabel | SNode)[],
-            layoutOptions: {
-                paddingTop: 100.0,
-                paddingBottom: 100.0,
-                paddingLeft: 100.0,
-                paddingRight: 100.0
-            }
-        };
-        const nodeIdActuator = idCache.uniqueId("VSS_actuator");
-        const nodeActuator = <SCompartment>{
-            type: 'node:vss-container',
-            id: nodeIdActuator,
-            children: [
-                <SLabel>{
-                    type: 'label',
-                    id: idCache.uniqueId(nodeIdActuator + '.label'),
-                    text: "VSS_actuators"
-                }
-            ] as (SLabel | SNode)[],
-            layoutOptions: {
-                paddingTop: 100.0,
-                paddingBottom: 100.0,
-                paddingLeft: 100.0,
-                paddingRight: 100.0
-            }
-        };
-        for (let sig of vss.signals) {
-            if (isSensor(sig)) {
-                nodeSensor.children?.push(this.generateSignal(sig, ctx))
-            } else {
-                nodeActuator.children?.push(this.generateSignal(sig, ctx))
-            }
-        }
-
-        this.traceProvider.trace(nodeSensor, vss);
-        this.markerProvider.addDiagnosticMarker(nodeSensor, vss, ctx);
-        return [nodeSensor, nodeActuator];
-    }
 
     protected getSensorLabel(sig: Sensor, nodeId: string, ctx: GeneratorContext<Model>): SLabel[] {
         const { idCache } = ctx;
@@ -428,112 +379,129 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
         return node;
     }
 
-    protected generateEdge(comp: Component, ctx: GeneratorContext<Model>): SEdge[] {
-        const { idCache } = ctx;
-        const res: SEdge[] = []
-        for (let sub of comp.services.flatMap(s => s.subscribers)) {
-            const targetId = idCache.getId(sub);
+    protected generateFCEdge(fc: FunctionalChain, ctx: GeneratorContext<Model>, model: Context): SNode[] {
+        let filePath = ctx.document.uri.path.replace("vscode-webview://", "");
+        filePath = filePath.slice(filePath.indexOf("/"), filePath.lastIndexOf('/'));
+        let results = `${filePath}/generated/results/${path.basename(ctx.document.uri.path).replace(".sdvml", ".mrtccsl")}/`;
 
-            // console.error(`#   #   # ${sub.sigName}: ${comp.$container.components.flatMap(c => c.publishers).filter(p => p.sigName == sub.sigName).flatMap( s => s.sigName).join(',')}: ${sub.sigRef?.ref?.name}`)
-            let sourceSig = sub.appSignal?.ref ?? sub.sensorSignal?.ref
+        var previous: string | undefined = undefined;
+        const participantNames = fc.participants.map((participant: Reference<FCParticipant>): [string, boolean] => {
+            if (participant.ref?.$type == "Sensor" || participant.ref?.$type == "Actuator") {
+                return [participant.ref.name, true];
+            } else {
+                const service = participant.ref;
+                const component = service?.$container;
+                return [makeServiceName(component!, service!), false];
+            }
+        });
+        const pairs = participantNames.flatMap(([qualifiedName, vss]): [string, string, boolean, boolean, boolean][] => {
+            const serviceEventPairs: [string, string, boolean, boolean, boolean][] = [[qualifiedName, qualifiedName, true, false, vss]];
+            if (previous != undefined) {
+                serviceEventPairs.push([previous, qualifiedName, false, false, vss])
+            }
+            previous = qualifiedName;
+            return serviceEventPairs;
+        });
+        // Add full chain too
+        let first = participantNames[0];
+        let last = participantNames[participantNames.length - 1];
+        pairs.push([first[0], last[0], true, true, true]);
 
-            const sourceId = idCache.getId(sourceSig);
-            // console.error(`#~~~~~~~~ ${sourceSig}:${sourceSig?.$type} = ${sourceId}  -> target = ${targetId}`)
-            const edgeId = idCache.uniqueId(`${sourceId}_to_${targetId}`, undefined);
-            const edge = {
-                type: 'edge',
-                id: edgeId,
-                sourceId: sourceId!,
-                targetId: targetId!,
-                children: [
-                    <SLabel & EdgeLayoutable>{
-                        type: 'label:xref',
-                        id: idCache.uniqueId(edgeId + '.label'),
-                        text: sub.appSignal?.ref?.name ?? sub.sensorSignal?.ref?.name
+        const reactions = [];
+        const chainLinks = [];
+        const guideEdges = [];
+        console.error(pairs);
+        for (let [start, finish, runnable, wholeChain, vss] of pairs) {
+            let id = runnable ? `${fc.name}_${start}_START_${finish}_FINISH` : `${fc.name}_${start}_FINISH_${finish}_START`;;
+            let reactionId = `${id}.reaction`;
+            let chainLinkId = `${id}.highlight`;
+
+            if (!wholeChain && !runnable) {
+                chainLinks.push(
+                    <SEdge>{
+                        type: 'edge:fc-edge',
+                        id: chainLinkId,
+                        sourceId: start,
+                        targetId: finish,
+                        layout: "stack"
                     }
-                ],
-                layout: "stack"
-            };
-            this.traceProvider.trace(edge, sub);
-            this.markerProvider.addDiagnosticMarker(edge, sub, ctx);
-            res.push(edge);
-        }
+                );
+            }
+            try {
+                const imageBuffer = fs.readFileSync(path.join(results, `${id}_reaction_time_hist.csv.svg`));
+                const image = imageBuffer.toString().replace(/<svg(.|\n)*?>/gmi, "").replace(/<\?xml(.*)>/, "").replace(/<title>.*<\/title>/, "").replace(/<desc>.*<\/desc>/, "").replace("<g id=\"gnuplot_canvas\">", "").replace("<\/g>\n<\/svg>", "").replace(/xlink:href/g, "href");
 
-        for (let pub of comp.services.flatMap(s => s.publishers)) {
-            const sourceId = idCache.getId(pub);
-            let targetSignal = pub.appSignal?.ref ?? pub.actuatorSignal?.ref;
-
-            const targetId = idCache.getId(targetSignal);
-
-            // console.error(`~~~~~~~~ source = ${sourceId}  -> target = ${targetId}`)
-
-            const edgeId = idCache.uniqueId(`${sourceId}_to_${targetId}`, undefined);
-            const edge = {
-                type: 'edge',
-                id: edgeId,
-                sourceId: sourceId!,
-                targetId: targetId!,
-                children: [
-                    <SLabel & EdgeLayoutable>{
-                        type: 'label:xref',
-                        id: idCache.uniqueId(edgeId + '.label'),
-                        text: targetSignal?.name
+                reactions.push(<SNode>{
+                    type: "node",
+                    id: reactionId + ".container",
+                    size: { height: 50, width: 50 },
+                    children: [
+                        <SLabel>{
+                            type: "label",
+                            id: reactionId + ".description",
+                            text: `${start} ~> ${finish}`,
+                        },
+                        <SNode>{
+                            type: "pre-rendered",
+                            id: reactionId,
+                            code: `<g transform="scale(0.2)">${image}</g>`,
+                            size: { height: 50, width: 50 },
+                            layout: "stack",
+                            layoutOptions: {
+                                resizeContainer: false
+                            }
+                        }
+                    ]
+                });
+                if (runnable) {
+                    var signalId = (model.servicesToSignals.get(finish) ?? []).pop(); // TODO: need to pick the port that leads to next runnable
+                } else {
+                    var signalId = (model.runnableInputs.get(finish) ?? []).pop();
+                }
+                if (vss && runnable) {
+                    var portId = finish + ".container";
+                } else if (vss && !runnable) {
+                    var portId = finish;
+                }
+                else if (signalId && !wholeChain) {
+                    var portId = `${finish}.${signalId}`;
+                } else {
+                    var portId = finish; // for actuators that do not have outputs
+                }
+                guideEdges.push(
+                    <SEdge>{
+                        type: 'edge:fc-guide',
+                        id: `${reactionId}_to_${portId}`,
+                        sourceId: reactionId + ".container",
+                        targetId: portId,
+                        layout: "stack"
                     }
-                ],
-                layout: "stack"
-            };
-            this.traceProvider.trace(edge, pub);
-            this.markerProvider.addDiagnosticMarker(edge, pub, ctx);
-            res.push(edge);
-
+                );
+            } catch (e) {
+                continue
+            }
         }
 
-        return res;
+        console.log(guideEdges);
+        const chainNode = <SNode>{
+            type: "node:chain",
+            id: "chain" + fc.name,
+            layout: "hbox",
+            children: [
+                <SLabel>{
+                    type: "label",
+                    id: fc.name + ".description",
+                    text: fc.name,
+                }, ...reactions],
+            layoutOptions: {
+                ...defaultLayout,
+                hAlign: "left",
+                vAlign: "top",
+                resizeContainer: true,
+                minWidth: 2000,
+                minHeight: 60,
+            },
+        };
+        return [chainNode, ...chainLinks, ...guideEdges];
     }
-
-
-    protected generateFCEdge(fc: FunctionalChain, ctx: GeneratorContext<Model>): SEdge[] {
-        const { idCache } = ctx;
-        const res: SEdge[] = []
-
-        let prevParticipant = fc.participants[0];
-        if (prevParticipant.ref == undefined) {
-            console.error("in creation of functional chain diagram, a participant is badly referenced");
-            return res;
-        }
-        for (let participant of fc.participants.slice(1)) {
-            if (participant.ref == undefined) {
-                console.error("in creation of functional chain diagram, a participant is badly referenced");
-                return res;
-            }
-            let sourceId = idCache.getId(prevParticipant.ref);
-            let targetId = idCache.getId(participant.ref);
-
-            if (isService(prevParticipant.ref)) {
-                sourceId = idCache.getId(participant.ref) + "_in";
-            }
-
-            if (isService(participant.ref)) {
-                targetId = idCache.getId(prevParticipant.ref) + "_in";
-            }
-
-            // console.error(`#~~~~~~~~ from ${prevParticipant.ref?.name}  -> target = ${participant.ref.name}`)
-            const edgeId = idCache.uniqueId(`${sourceId}_to_${targetId}`, undefined);
-            const edge = {
-                type: 'edge:fc-edge',
-                id: edgeId,
-                sourceId: sourceId!,
-                targetId: targetId!,
-                layout: "stack"
-            };
-            this.traceProvider.trace(edge, participant.ref);
-            this.markerProvider.addDiagnosticMarker(edge, participant.ref, ctx);
-            res.push(edge);
-            prevParticipant = participant
-        }
-
-
-        return res;
-    }
-
 }

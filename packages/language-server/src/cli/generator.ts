@@ -38,18 +38,21 @@ function randomVariableToRange(v: RandomVar, sigma: number): { left: number, rig
 }
 
 export type serviceKey = string;
+export type componentKey = string;
 export type signalName = string;
 
 export class Context {
     signalsToServices: Map<signalName, serviceKey[]>;
     servicesToSignals: Map<serviceKey, signalName[]>;
-    serviceInputs: Map<serviceKey, signalName[]>;
+    runnableInputs: Map<serviceKey, signalName[]>;
     runnables: Map<serviceKey, Runnable>;
+    servicesToComponents: Map<serviceKey, componentKey[]>;
 
     constructor(model: Model) {
         this.signalsToServices = new Map<string, string[]>();
         this.servicesToSignals = new Map<string, string[]>();
-        this.serviceInputs = new Map<string, string[]>();
+        this.runnableInputs = new Map<string, string[]>();
+        this.servicesToComponents = new Map();
 
         for (var component of model.components) {
             for (var service of component.services) {
@@ -62,13 +65,16 @@ export class Context {
                     this.signalsToServices.set(subscriptionSignal, targetServices);
                     inputs.push(subscriptionSignal);
                 };
-                this.serviceInputs.set(serviceName, inputs);
+                this.runnableInputs.set(serviceName, inputs);
                 for (var publish of service.publishers) {
                     const publishingSignal = getPublishingSignal(service.name, publish);
                     let sourceServices = this.servicesToSignals.get(serviceName) ?? [];
                     sourceServices.push(publishingSignal);
                     this.servicesToSignals.set(serviceName, sourceServices);
                 };
+                const relatedComponents = this.servicesToComponents.get(service.name) ?? [];
+                relatedComponents.push(component.name);
+                this.servicesToComponents.set(service.name, relatedComponents);
             }
         }
 
@@ -76,7 +82,7 @@ export class Context {
             if (isSensor(vssSignal)) {
                 this.servicesToSignals.set(vssSignal.name, [vssSignal.name]);
             } else {
-                this.serviceInputs.set(vssSignal.name, [vssSignal.name]);
+                this.runnableInputs.set(vssSignal.name, [vssSignal.name]);
                 let receivers = this.signalsToServices.get(vssSignal.name) ?? [];
                 receivers.push(vssSignal.name);
                 this.signalsToServices.set(vssSignal.name, receivers);
@@ -154,7 +160,7 @@ function generateIFService(component: Component, service: Service, ifContent: Co
     var inpNxtState: string[] = ["first", "jitter", "processing1", "processing2", "wait"];
     var idxState = 0;
     for (var nxtState of inpNxtState) {
-        for (var inputSignal of context.serviceInputs.get(serviceName) ?? []) {
+        for (var inputSignal of context.runnableInputs.get(serviceName) ?? []) {
             inpData[idxState] += `\n\t\tinput ${inputSignal}();\n\t\t\ttask nbData := nbData + 1;\n\t\t\tnextstate ${nxtState};`;
         }
         idxState++;
@@ -443,14 +449,14 @@ function generateMRTCCSLRunnable(r: Runnable, ctx: Context, sigma: number): [str
 
 export function generateFunctionalChainSpec(chain: FunctionalChain, ctx: Context): string {
     var chainString = `${chain.name}:`;
-    let first = true;
-    for (let next of chain.participants) {
-        let runnable = ctx.runnables.get(next.ref!.name) ?? expect(`chain participant with id "${next.ref?.name}" is not available.`)
-        if (!first) {
-            chainString += runnable.trigger.$type === "EventTrigger" ? "->" : "?";
+    var previous = undefined;
+    for (let current of chain.participants) {
+        let runnable = ctx.runnables.get(current.ref!.name) ?? expect(`chain participant with id "${current.ref?.name}" is not available.`)
+        if (previous !== undefined) {
+            chainString += (runnable.trigger.$type === "EventTrigger" && ctx.servicesToSignals.get(previous)?.includes(runnable.trigger.event)) ? "->" : "?";
         }
-        chainString += `${runnable.name}_START->${runnable.name}_FINISH`
-        first = false;
+        chainString += `${runnable.name}_START->${runnable.name}_FINISH`;
+        previous = runnable.name;
     }
     return chainString;
 }

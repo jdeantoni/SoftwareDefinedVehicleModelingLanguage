@@ -28,7 +28,7 @@ import {
   SNodeImpl,
   SShapeElementImpl /*SLabelView, SLabelImpl, isEdgeLayoutable*/,
   PolylineEdgeView,
-  SEdgeImpl
+  SEdgeImpl,
 } from "sprotty";
 import { Hoverable, Selectable } from "sprotty-protocol";
 
@@ -187,7 +187,7 @@ export class TopTriangleButtonView implements IView {
   }
 }
 
-export class StraightEdgeView extends PolylineEdgeView {
+export class FCEdgeView extends PolylineEdgeView {
   override render(
     edge: Readonly<SEdgeImpl>,
     context: RenderingContext
@@ -195,18 +195,41 @@ export class StraightEdgeView extends PolylineEdgeView {
 
     if (edge.routerKind === 'manhattan') return super.render(edge, context); // optional fallback
 
-     const route = this.edgeRouterRegistry.route(edge);
+    const route = this.edgeRouterRegistry.route(edge);
     if (!route || route.length < 2) return undefined;
 
     const start = route[0];
     const end = route[route.length - 1];
     return <g class-sprotty-edge={true} class-fc-edge={true}>
-        <line
-          x1={start.x}
-          y1={start.y}
-          x2={end.x}
-          y2={end.y}
-        />
-      </g>
+      <line
+        x1={start.x}
+        y1={start.y}
+        x2={end.x}
+        y2={end.y}
+      />
+    </g>
+  }
+}
+export class GuideEdgeView extends PolylineEdgeView {
+  override render(
+    edge: Readonly<SEdgeImpl>,
+    context: RenderingContext
+  ): VNode | undefined {
+
+    if (edge.routerKind === 'manhattan') return super.render(edge, context); // optional fallback
+
+    const route = this.edgeRouterRegistry.route(edge);
+    if (!route || route.length < 2) return undefined;
+
+    const start = route[0];
+    const end = route[route.length - 1];
+    return <g class-sprotty-edge={true} class-fc-guide={true}>
+      <line
+        x1={start.x}
+        y1={start.y}
+        x2={end.x}
+        y2={end.y}
+      />
+    </g>
   }
 }

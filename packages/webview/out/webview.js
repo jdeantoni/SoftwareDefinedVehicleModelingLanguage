@@ -1838,7 +1838,12 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.sprotty-node {
 
 .fc-edge{
     fill:none;
-    stroke: aquamarine;
+    stroke: coral;
+    stroke-width: 4px;
+}
+.fc-guide{
+    fill:none;
+    stroke: aqua;
     stroke-width: 4px;
 }
 
@@ -1896,7 +1901,8 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.sprotty-node {
     fill: rgb(255, 255, 255);
     stroke-width: 1;
     stroke: rgb(218, 218, 218);
-}`, "",{"version":3,"sources":["webpack://./css/diagram.css"],"names":[],"mappings":"AAAA;IACI,wBAAwB;IACxB,eAAe;IACf,0BAA0B;AAC9B;AACA;IACI,wBAAwB;IACxB,eAAe;IACf,kBAAkB;AACtB;;AAEA;IACI,wBAAwB;IACxB,eAAe;IACf,gBAAgB;AACpB;;AAEA;IACI,eAAe;IACf,gDAAgD;AACpD;;AAEA;IACI,mBAAmB;IACnB,eAAe;AACnB;;AAEA;IACI,mBAAmB;IACnB,eAAe;AACnB;;AAEA;GACG,kBAAkB;GAClB,cAAc;GACd,wBAAwB;GACxB,eAAe;AAClB;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,SAAS;IACT,uDAAuD;IACvD,iBAAiB;AACrB;;AAEA;IACI,SAAS;IACT,kBAAkB;IAClB,iBAAiB;AACrB;;AAEA;IACI,oDAAoD;AACxD;;AAEA;IACI,8CAA8C;IAC9C,YAAY;IACZ,aAAa;AACjB;;AAEA;IACI,aAAa;AACjB;;AAEA;IACI,uDAAuD;AAC3D;;AAEA;IACI,sDAAsD;IACtD,eAAe;AACnB;;AAEA;IACI,iBAAiB;AACrB;;AAEA;IACI,UAAU;IACV,WAAW;AACf;;AAEA;IACI,uBAAuB;IACvB,eAAe;IACf,aAAa;AACjB;;AAEA;;GAEG;;AAEH;IACI;AACJ;;AAEA;IACI;AACJ;;AAEA;IACI,wBAAwB;IACxB,eAAe;IACf,0BAA0B;AAC9B","sourcesContent":[".sprotty-node {\n    fill: rgb(169, 208, 250);\n    stroke-width: 1;\n    stroke: rgb(113, 182, 255);\n}\n.node-label {\n    fill: rgb(169, 208, 250);\n    stroke-width: 0;\n    text-align: center;\n}\n\n.node-service {\n    fill: rgb(217, 234, 252);\n    stroke-width: 0;\n    text-align: left;\n}\n\n.sprotty-node.selected {\n    stroke-width: 2;\n    stroke: var(--vscode-button-secondaryForeground);\n}\n\n.sprotty-label {\n    fill: darkslategrey;\n    stroke-width: 0;\n}\n\n.sprotty-label {\n    fill: darkslategrey;\n    stroke-width: 0;\n}\n\n.values{\n   font-style: italic;\n   font-size: 70%;\n   fill: rgb(122, 121, 121);\n   stroke-width: 0;\n}\n\n.sprotty-button {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge .sprotty-label {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge {\n    fill:none;\n    stroke: var(--vscode-editorActiveLineNumber-foreground);\n    stroke-width: 2px;\n}\n\n.fc-edge{\n    fill:none;\n    stroke: aquamarine;\n    stroke-width: 4px;\n}\n\n.sprotty-edge-arrow {\n    fill:var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge > .sprotty-routing-handle {\n    fill: var(--vscode-editor-selectionBackground);\n    stroke: none;\n    z-index: 1000;\n}\n\n.sprotty-edge > .sprotty-routing-handle[data-kind='line'] {\n    opacity: 0.35;\n}\n\n.sprotty-edge > .sprotty-routing-handle.selected {\n    fill: var(--vscode-editor-selectionHighlightBackground);\n}\n\n.sprotty-edge > .sprotty-routing-handle.mouseover {\n    stroke: var(--vscode-editor-symbolHighlightBackground);\n    stroke-width: 1;\n}\n\n.sprotty-edge.mouseover:not(.selected) {\n    stroke-width: 3px;\n}\n\n.sprotty-hidden {\n    width: 0px;\n    height: 0px;\n}\n\n.vss-node{\n    fill: rgb(255, 231, 98);\n    stroke-width: 1;\n    stroke: coral;\n}\n\n/* .vss-node .sprotty-label{\n    fill:darkslategrey\n} */\n\n.sprotty-port{\n    fill:rgb(15, 0, 100)\n}\n\n.vss-node .sprotty-port{\n    fill:rgb(100, 0, 0)\n}\n\n.vss-container{\n    fill: rgb(255, 255, 255);\n    stroke-width: 1;\n    stroke: rgb(218, 218, 218);\n}"],"sourceRoot":""}]);
+}
+`, "",{"version":3,"sources":["webpack://./css/diagram.css"],"names":[],"mappings":"AAAA;IACI,wBAAwB;IACxB,eAAe;IACf,0BAA0B;AAC9B;AACA;IACI,wBAAwB;IACxB,eAAe;IACf,kBAAkB;AACtB;;AAEA;IACI,wBAAwB;IACxB,eAAe;IACf,gBAAgB;AACpB;;AAEA;IACI,eAAe;IACf,gDAAgD;AACpD;;AAEA;IACI,mBAAmB;IACnB,eAAe;AACnB;;AAEA;IACI,mBAAmB;IACnB,eAAe;AACnB;;AAEA;GACG,kBAAkB;GAClB,cAAc;GACd,wBAAwB;GACxB,eAAe;AAClB;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,SAAS;IACT,uDAAuD;IACvD,iBAAiB;AACrB;;AAEA;IACI,SAAS;IACT,aAAa;IACb,iBAAiB;AACrB;AACA;IACI,SAAS;IACT,YAAY;IACZ,iBAAiB;AACrB;;AAEA;IACI,oDAAoD;AACxD;;AAEA;IACI,8CAA8C;IAC9C,YAAY;IACZ,aAAa;AACjB;;AAEA;IACI,aAAa;AACjB;;AAEA;IACI,uDAAuD;AAC3D;;AAEA;IACI,sDAAsD;IACtD,eAAe;AACnB;;AAEA;IACI,iBAAiB;AACrB;;AAEA;IACI,UAAU;IACV,WAAW;AACf;;AAEA;IACI,uBAAuB;IACvB,eAAe;IACf,aAAa;AACjB;;AAEA;;GAEG;;AAEH;IACI;AACJ;;AAEA;IACI;AACJ;;AAEA;IACI,wBAAwB;IACxB,eAAe;IACf,0BAA0B;AAC9B","sourcesContent":[".sprotty-node {\n    fill: rgb(169, 208, 250);\n    stroke-width: 1;\n    stroke: rgb(113, 182, 255);\n}\n.node-label {\n    fill: rgb(169, 208, 250);\n    stroke-width: 0;\n    text-align: center;\n}\n\n.node-service {\n    fill: rgb(217, 234, 252);\n    stroke-width: 0;\n    text-align: left;\n}\n\n.sprotty-node.selected {\n    stroke-width: 2;\n    stroke: var(--vscode-button-secondaryForeground);\n}\n\n.sprotty-label {\n    fill: darkslategrey;\n    stroke-width: 0;\n}\n\n.sprotty-label {\n    fill: darkslategrey;\n    stroke-width: 0;\n}\n\n.values{\n   font-style: italic;\n   font-size: 70%;\n   fill: rgb(122, 121, 121);\n   stroke-width: 0;\n}\n\n.sprotty-button {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge .sprotty-label {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge {\n    fill:none;\n    stroke: var(--vscode-editorActiveLineNumber-foreground);\n    stroke-width: 2px;\n}\n\n.fc-edge{\n    fill:none;\n    stroke: coral;\n    stroke-width: 4px;\n}\n.fc-guide{\n    fill:none;\n    stroke: aqua;\n    stroke-width: 4px;\n}\n\n.sprotty-edge-arrow {\n    fill:var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge > .sprotty-routing-handle {\n    fill: var(--vscode-editor-selectionBackground);\n    stroke: none;\n    z-index: 1000;\n}\n\n.sprotty-edge > .sprotty-routing-handle[data-kind='line'] {\n    opacity: 0.35;\n}\n\n.sprotty-edge > .sprotty-routing-handle.selected {\n    fill: var(--vscode-editor-selectionHighlightBackground);\n}\n\n.sprotty-edge > .sprotty-routing-handle.mouseover {\n    stroke: var(--vscode-editor-symbolHighlightBackground);\n    stroke-width: 1;\n}\n\n.sprotty-edge.mouseover:not(.selected) {\n    stroke-width: 3px;\n}\n\n.sprotty-hidden {\n    width: 0px;\n    height: 0px;\n}\n\n.vss-node{\n    fill: rgb(255, 231, 98);\n    stroke-width: 1;\n    stroke: coral;\n}\n\n/* .vss-node .sprotty-label{\n    fill:darkslategrey\n} */\n\n.sprotty-port{\n    fill:rgb(15, 0, 100)\n}\n\n.vss-node .sprotty-port{\n    fill:rgb(100, 0, 0)\n}\n\n.vss-container{\n    fill: rgb(255, 255, 255);\n    stroke-width: 1;\n    stroke: rgb(218, 218, 218);\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -40466,7 +40472,8 @@ function createSdvmlDiagramContainer(widgetId, customHoverListener) {
             enable: [sprotty_1.editLabelFeature]
         });
         (0, sprotty_1.configureModelElement)(context, 'edge', model_1.SdvmlEdge, sprotty_1.JumpingPolylineEdgeView);
-        (0, sprotty_1.configureModelElement)(context, 'edge:fc-edge', model_1.SdvmlFCEdge, views_1.StraightEdgeView);
+        (0, sprotty_1.configureModelElement)(context, 'edge:fc-edge', model_1.SdvmlFCEdge, views_1.FCEdgeView);
+        (0, sprotty_1.configureModelElement)(context, 'edge:fc-guide', model_1.SdvmlFCEdge, views_1.GuideEdgeView);
         (0, sprotty_1.configureModelElement)(context, 'html', sprotty_1.HtmlRootImpl, sprotty_1.HtmlRootView);
         (0, sprotty_1.configureModelElement)(context, 'pre-rendered', sprotty_1.PreRenderedElementImpl, sprotty_1.PreRenderedView);
         (0, sprotty_1.configureModelElement)(context, 'palette', sprotty_1.SModelRootImpl, sprotty_1.HtmlRootView);
@@ -40477,6 +40484,7 @@ function createSdvmlDiagramContainer(widgetId, customHoverListener) {
         (0, sprotty_1.configureModelElement)(context, 'actuator-port', sprotty_1.RectangularPort, views_1.DownTriangleButtonView);
         (0, sprotty_1.configureModelElement)(context, 'sensor-port', sprotty_1.RectangularPort, views_1.TopTriangleButtonView);
         (0, sprotty_1.configureModelElement)(context, 'node:vss-node', model_1.SdvmlNode, views_1.SdvmlSignalNodeView);
+        (0, sprotty_1.configureModelElement)(context, 'node:chain', model_1.SdvmlNode, views_1.SdvmlSignalNodeView);
         // configureModelElement(context, 'node:vss-container', SdvmlNode, SdvmlVSSNodeView);
         (0, sprotty_1.configureCommand)(context, sprotty_1.CreateElementCommand);
     });
@@ -40667,7 +40675,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.StraightEdgeView = exports.TopTriangleButtonView = exports.InvisibleTriangleView = exports.DownTriangleButtonView = exports.TriangleButtonView = exports.SdvmlVSSNodeView = exports.SdvmlLabelNodeView = exports.SdvmlServiceNodeView = exports.SdvmlSignalNodeView = void 0;
+exports.GuideEdgeView = exports.FCEdgeView = exports.TopTriangleButtonView = exports.InvisibleTriangleView = exports.DownTriangleButtonView = exports.TriangleButtonView = exports.SdvmlVSSNodeView = exports.SdvmlLabelNodeView = exports.SdvmlServiceNodeView = exports.SdvmlSignalNodeView = void 0;
 /** @jsx svg */
 const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const sprotty_1 = __webpack_require__(/*! sprotty */ "../../node_modules/sprotty/lib/index.js");
@@ -40767,7 +40775,7 @@ exports.TopTriangleButtonView = TopTriangleButtonView;
 exports.TopTriangleButtonView = TopTriangleButtonView = __decorate([
     (0, inversify_1.injectable)()
 ], TopTriangleButtonView);
-class StraightEdgeView extends sprotty_1.PolylineEdgeView {
+class FCEdgeView extends sprotty_1.PolylineEdgeView {
     render(edge, context) {
         if (edge.routerKind === 'manhattan')
             return super.render(edge, context); // optional fallback
@@ -40780,7 +40788,21 @@ class StraightEdgeView extends sprotty_1.PolylineEdgeView {
             (0, sprotty_1.svg)("line", { x1: start.x, y1: start.y, x2: end.x, y2: end.y }));
     }
 }
-exports.StraightEdgeView = StraightEdgeView;
+exports.FCEdgeView = FCEdgeView;
+class GuideEdgeView extends sprotty_1.PolylineEdgeView {
+    render(edge, context) {
+        if (edge.routerKind === 'manhattan')
+            return super.render(edge, context); // optional fallback
+        const route = this.edgeRouterRegistry.route(edge);
+        if (!route || route.length < 2)
+            return undefined;
+        const start = route[0];
+        const end = route[route.length - 1];
+        return (0, sprotty_1.svg)("g", { "class-sprotty-edge": true, "class-fc-guide": true },
+            (0, sprotty_1.svg)("line", { x1: start.x, y1: start.y, x2: end.x, y2: end.y }));
+    }
+}
+exports.GuideEdgeView = GuideEdgeView;
 
 
 /***/ })

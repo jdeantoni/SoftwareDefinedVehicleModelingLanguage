@@ -33,7 +33,7 @@ import {
 } from 'sprotty';
 import { CustomRouter } from './custom-edge-router';
 import { ConnectableNode, SdvmlEdge, SdvmlFCEdge, SdvmlNode } from './model';
-import { DownTriangleButtonView, InvisibleTriangleView, SdvmlLabelNodeView, SdvmlServiceNodeView, SdvmlSignalNodeView, StraightEdgeView, /*SdvmlVSSNodeView,*/ TopTriangleButtonView, TriangleButtonView } from './views';
+import { DownTriangleButtonView, FCEdgeView, GuideEdgeView, InvisibleTriangleView, SdvmlLabelNodeView, SdvmlServiceNodeView, SdvmlSignalNodeView, TopTriangleButtonView, TriangleButtonView } from './views';
 
 import { HoverMouseListener } from 'sprotty';
 import { CustomHoverListener } from './main';
@@ -42,11 +42,11 @@ import { CustomHoverListener } from './main';
 
 type CustomHoverListenerType = new () => CustomHoverListener;
 
-export function createSdvmlDiagramContainer(widgetId: string, customHoverListener:CustomHoverListenerType): Container {
+export function createSdvmlDiagramContainer(widgetId: string, customHoverListener: CustomHoverListenerType): Container {
     const container = new Container();
-    loadDefaultModules(container, { exclude: [ labelEditUiModule ] });
+    loadDefaultModules(container, { exclude: [labelEditUiModule] });
 
-        const sdvmlDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
+    const sdvmlDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
         rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
         rebind(TYPES.LogLevel).toConstantValue(LogLevel.warn);
         rebind(ManhattanEdgeRouter).to(CustomRouter).inSingletonScope();
@@ -69,7 +69,8 @@ export function createSdvmlDiagramContainer(widgetId: string, customHoverListene
             enable: [editLabelFeature]
         });
         configureModelElement(context, 'edge', SdvmlEdge, JumpingPolylineEdgeView);
-        configureModelElement(context, 'edge:fc-edge', SdvmlFCEdge, StraightEdgeView);
+        configureModelElement(context, 'edge:fc-edge', SdvmlFCEdge, FCEdgeView);
+        configureModelElement(context, 'edge:fc-guide', SdvmlFCEdge, GuideEdgeView);
         configureModelElement(context, 'html', HtmlRootImpl, HtmlRootView);
         configureModelElement(context, 'pre-rendered', PreRenderedElementImpl, PreRenderedView);
         configureModelElement(context, 'palette', SModelRootImpl, HtmlRootView);
@@ -80,6 +81,7 @@ export function createSdvmlDiagramContainer(widgetId: string, customHoverListene
         configureModelElement(context, 'actuator-port', RectangularPort, DownTriangleButtonView);
         configureModelElement(context, 'sensor-port', RectangularPort, TopTriangleButtonView);
         configureModelElement(context, 'node:vss-node', SdvmlNode, SdvmlSignalNodeView);
+        configureModelElement(context, 'node:chain', SdvmlNode, SdvmlSignalNodeView);
         // configureModelElement(context, 'node:vss-container', SdvmlNode, SdvmlVSSNodeView);
 
 
