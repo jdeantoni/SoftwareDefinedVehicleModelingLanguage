@@ -10,7 +10,7 @@
     },
     {
       "name": "keyword.control.sdvml",
-      "match": "\\b(AD|Actuator|App|Chains|Component|DL|Functional|SDV|SSP|Sensor|Service|Signal|VSS|event|execution|ms|normal|on|periodic|publish|signal|subscribe|to|triggered)\\b"
+      "match": "\\b(AD|Actuator|App|Chains|Component|DL|Functional|SDV|SSP|Sensor|Service|Signal|VSS|event|execution|ms|normal|offset|on|periodic|publish|signal|subscribe|to|triggered|varying_offset)\\b"
     },
     {
       "name": "string.quoted.double.sdvml",

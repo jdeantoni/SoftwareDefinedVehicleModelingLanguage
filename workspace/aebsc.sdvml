@@ -40,8 +40,6 @@ App :
 Functional Chains:
     chain :
     Camera -> 
-    Fuse_detection ->
     Compute_detection ->
-    Fuse_camera ->
     Compute_reaction ->
     Brake

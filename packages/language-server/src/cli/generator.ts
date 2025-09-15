@@ -1,3 +1,4 @@
+import { integer } from 'vscode-languageserver';
 import {
     Actuator,
     isActuator,
@@ -47,12 +48,14 @@ export class Context {
     runnableInputs: Map<serviceKey, signalName[]>;
     runnables: Map<serviceKey, Runnable>;
     servicesToComponents: Map<serviceKey, componentKey[]>;
+    signalToPublishers: Map<signalName, serviceKey[]>;
 
     constructor(model: Model) {
         this.signalsToServices = new Map<string, string[]>();
         this.servicesToSignals = new Map<string, string[]>();
         this.runnableInputs = new Map<string, string[]>();
         this.servicesToComponents = new Map();
+        this.signalToPublishers = new Map<string, string[]>();
 
         for (var component of model.components) {
             for (var service of component.services) {
@@ -71,6 +74,10 @@ export class Context {
                     let sourceServices = this.servicesToSignals.get(serviceName) ?? [];
                     sourceServices.push(publishingSignal);
                     this.servicesToSignals.set(serviceName, sourceServices);
+
+                    let signalPublishers = this.signalToPublishers.get(publishingSignal) ?? [];
+                    signalPublishers.push(serviceName);
+                    this.signalToPublishers.set(publishingSignal, signalPublishers);
                 };
                 const relatedComponents = this.servicesToComponents.get(service.name) ?? [];
                 relatedComponents.push(component.name);
@@ -81,6 +88,7 @@ export class Context {
         for (var vssSignal of model.vss.signals) {
             if (isSensor(vssSignal)) {
                 this.servicesToSignals.set(vssSignal.name, [vssSignal.name]);
+                this.signalToPublishers.set(vssSignal.name, [vssSignal.name]);
             } else {
                 this.runnableInputs.set(vssSignal.name, [vssSignal.name]);
                 let receivers = this.signalsToServices.get(vssSignal.name) ?? [];
@@ -94,10 +102,10 @@ export class Context {
                 if (isEventTriggering(s.trigRule)) {
                     return [s.name, { name: s.name, trigger: { $type: "EventTrigger", event: s.name }, execution: s.ad }];
                 } else {
-                    return [s.name, { name: s.name, trigger: { $type: "PeriodicTrigger", period: s.trigRule.period }, execution: s.ad }];
+                    return [s.name, { name: s.name, trigger: { $type: "PeriodicTrigger", period: s.trigRule.period, offset: s.trigRule.offset ?? 0}, execution: s.ad }];
                 }
             } else {
-                const trigger: Trigger = { $type: "PeriodicTrigger", period: s.ssp };
+                const trigger: Trigger = { $type: "PeriodicTrigger", period: s.ssp, offset: s.offset ?? 0};
                 return [s.name, { name: s.name, trigger, execution: s.dl }];
             }
         });
@@ -149,33 +157,122 @@ function generateIFService(component: Component, service: Service, ifContent: Co
     var publines = "";
     for (var pub of service.publishers) {
         const signalName = getPublishingSignal(service.name, pub);
-        // publines += `\n\t\t\toutput ${signalName}() to {${signalName}}0;`;
-
         for (var targetService of context.signalsToServices.get(signalName) ?? []) {
             publines += `\n\t\t\toutput ${signalName}() to {${targetService}}0;`;
         }
     }
 
-    var inpData: string[] = ["", "", "", "", ""];
-    var inpNxtState: string[] = ["first", "jitter", "processing1", "processing2", "wait"];
-    var idxState = 0;
-    for (var nxtState of inpNxtState) {
-        for (var inputSignal of context.runnableInputs.get(serviceName) ?? []) {
-            inpData[idxState] += `\n\t\tinput ${inputSignal}();\n\t\t\ttask nbData := nbData + 1;\n\t\t\tnextstate ${nxtState};`;
-        }
-        idxState++;
-    }
-
     const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(service.execTime, sigma);
-
     ifContent.append("process " + serviceName + "(1);\n");
     if (isPeriodicTriggering(service.trigRule)) {
         const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(service.trigRule.period, sigma);
-        ifContent.append(`\tvar x clock;
+        if (service.trigRule.offset) {
+            const { left: left_offset_bound, right: right_offset_bound } = randomVariableToRange(service.trigRule.offset, sigma);
+            var inpData: string[] = ["", "", "", "", "", "", "", ""];
+            var inpNxtState: string[] = ["first", "processing1a", "processing1b", "wait1", "jitter", "processing2a", "processing2b", "wait2"];
+            var idxState = 0;
+            for (var nxtState of inpNxtState) {
+                for (var inputSignal of context.runnableInputs.get(serviceName) ?? []) {
+                    inpData[idxState] += `\n\t\tinput ${inputSignal}();\n\t\t\ttask nbData := true;\n\t\t\tnextstate ${nxtState};`;
+                }
+                idxState++;
+            }
+            ifContent.append(`\tvar x clock;
     var e clock;
-    var nbData int;
+    var nbData boolean;
     state start #start ;
-        task nbData := 0;
+        task nbData := false;
+        set x := 0;
+        nextstate first;
+    endstate;
+    state first;
+        deadline delayable;
+        when x >= ${left_offset_bound} and x <= ${right_offset_bound};
+            set x := 0;
+            set e := 0;
+            nextstate preprocessing1;${inpData[0]}
+    endstate;
+    state preprocessing1;
+        deadline eager;
+        provided nbData = false;
+            informal "${serviceName}_USELESS_EXEC";
+            nextstate processing1a;
+        deadline eager;
+        provided nbData = true;
+            informal "${serviceName}_USEFUL_EXEC";
+            task nbData := false;
+            nextstate processing1b;
+    endstate;
+    state processing1a;
+        deadline delayable;
+        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+            informal "${serviceName}_FINISH";${publines}
+            reset e;
+            nextstate wait1;${inpData[1]}
+    endstate;
+    state processing1b;
+        deadline delayable;
+        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+            informal "${serviceName}_FINISH";${publines}
+            reset e;
+            nextstate wait1;${inpData[2]}
+    endstate;
+    state wait1;
+        when x = ${left_period_bound};
+            set x := 0;
+            nextstate jitter;${inpData[3]}
+    endstate;
+    state jitter;
+        deadline delayable;
+        when x <= ${right_period_bound - left_period_bound};
+            set e := 0;
+            nextstate preprocessing2;${inpData[4]}
+    endstate;
+    state preprocessing2;
+        deadline eager;
+        provided nbData = false;
+            informal "${serviceName}_USELESS_EXEC";
+            nextstate processing2a;
+        deadline eager;
+        provided nbData = true;
+            informal "${serviceName}_USEFUL_EXEC";
+            task nbData := false;
+            nextstate processing2b;
+    endstate;
+    state processing2a;
+        deadline delayable;
+        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+            informal "${serviceName}_FINISH";${publines}
+            reset e;
+            nextstate wait2;${inpData[5]}
+    endstate;
+    state processing2b;
+        deadline delayable;
+        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+            informal "${serviceName}_FINISH";${publines}
+            reset e;
+            nextstate wait2;${inpData[6]}
+    endstate;
+    state wait2;
+        when x = ${service.trigRule.period.mean.value};
+            set x := 0;
+            nextstate jitter;${inpData[7]}
+    endstate;\n`);
+        } else {
+            var inpData: string[] = ["", "", "", "", ""];
+            var inpNxtState: string[] = ["first", "jitter", "processing1", "processing2", "wait"];
+            var idxState = 0;
+            for (var nxtState of inpNxtState) {
+                for (var inputSignal of context.runnableInputs.get(serviceName) ?? []) {
+                    inpData[idxState] += `\n\t\tinput ${inputSignal}();\n\t\t\ttask nbData := true;\n\t\t\tnextstate ${nxtState};`;
+                }
+                idxState++;
+            }
+            ifContent.append(`\tvar x clock;
+    var e clock;
+    var nbData boolean;
+    state start #start ;
+        task nbData := false;
         set x := 0;
         nextstate first;
     endstate;
@@ -193,19 +290,19 @@ function generateIFService(component: Component, service: Service, ifContent: Co
     endstate;
     state preprocessing;
         deadline eager;
-        provided nbData =  0;
+        provided nbData = false;
             informal "${serviceName}_USELESS_EXEC";
             nextstate processing1;
         deadline eager;
-        provided nbData <>  0;
+        provided nbData = true;
             informal "${serviceName}_USEFUL_EXEC";
-            task nbData := 0;
+            task nbData := false;
             nextstate processing2;
     endstate;
     state processing1;
         deadline delayable;
         when e >= ${left_exec_bound} and e <= ${right_exec_bound};
-            informal "${serviceName}_FINISH";
+            informal "${serviceName}_FINISH";${publines}
             reset e;
             nextstate wait;${inpData[2]}
     endstate;
@@ -221,6 +318,8 @@ function generateIFService(component: Component, service: Service, ifContent: Co
             set x := 0;
             nextstate jitter;${inpData[4]}
     endstate;\n`);
+        }
+
     } else {
         const signalName = getSubscriptionSignal(service.name, service.trigRule.trigger?.ref!);
         ifContent.append("\tvar e clock;");
@@ -240,7 +339,6 @@ function generateIFService(component: Component, service: Service, ifContent: Co
     endstate;\n`);
     }
     ifContent.append("endprocess;\n");
-
 }
 
 function generateIFSensor(sig: Sensor, ifContent: CompositeGeneratorNode, context: Context, sigma: number) {
@@ -252,14 +350,65 @@ function generateIFSensor(sig: Sensor, ifContent: CompositeGeneratorNode, contex
     }
     const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(sig.dl, sigma);
     const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(ssp, sigma);
-    ifContent.append(`process ${sensorSignal}(1);
+    if (sig.offset) {
+        const { left: left_offset_bound, right: right_offset_bound } = randomVariableToRange(sig.offset, sigma);
+        ifContent.append(`process ${sensorSignal}(1);
     var x clock;
     var e clock;
     state start #start ;
         set x := 0;
         nextstate first;
     endstate;
-    state first ;
+    state first;
+        deadline delayable;
+        when x >= ${left_offset_bound} and x <= ${right_offset_bound};
+            informal "${sensorSignal}_START";
+            set x := 0;
+            set e := 0;
+            nextstate exec1;
+    endstate;
+    state exec1;
+        deadline delayable;
+        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+            informal "${sensorSignal}_FINISH";
+            reset e;${siglines}
+            nextstate wait1;
+    endstate;
+    state wait1;
+        when x = ${left_period_bound};
+            set x := 0;
+            nextstate jitter;
+    endstate;
+    state jitter;
+        deadline delayable;
+        when x <= ${right_period_bound - left_period_bound} ;
+            informal "${sensorSignal}_START";
+            set e := 0;
+            nextstate exec2;
+    endstate;
+    state exec2;
+        deadline delayable;
+        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+            informal "${sensorSignal}_FINISH";
+            reset e;${siglines}
+            nextstate wait2;
+    endstate;
+    state wait2;
+        when x = ${ssp.mean.value};
+            set x := 0;
+            nextstate jitter;
+    endstate;
+endprocess;
+`);
+    } else {
+        ifContent.append(`process ${sensorSignal}(1);
+    var x clock;
+    var e clock;
+    state start #start ;
+        set x := 0;
+        nextstate first;
+    endstate;
+    state first;
         deadline delayable;
         when x <= ${left_period_bound};
             set x := 0;
@@ -286,6 +435,7 @@ function generateIFSensor(sig: Sensor, ifContent: CompositeGeneratorNode, contex
     endstate;
 endprocess;
 `);
+    }
 }
 
 
@@ -295,23 +445,113 @@ function generateIFActuator(sig: Actuator, ifContent: CompositeGeneratorNode, si
     if (isPeriodicTriggering(sig.trigRule)) {
         const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(sig.trigRule.period, sigma);
         var AP = (sig.trigRule as PeriodicTriggering).period;
-        ifContent.append(`
+        if (sig.trigRule.offset) {
+            const { left: left_offset_bound, right: right_offset_bound } = randomVariableToRange(sig.trigRule.offset, sigma);
+            ifContent.append(`
     var x clock;
     var e clock;
-    var nbData int;
+    var nbData boolean;
     state start #start ;
-        task nbData := 0;
+        task nbData := false;
         set x := 0;
         nextstate first;
     endstate;
-    state first ;
+    state first;
+        deadline delayable;
+        when x >= ${left_offset_bound} and x <= ${right_offset_bound};
+            set x := 0;
+            set e := 0;
+            nextstate preprocessing1;
+        input ${sig.name}();
+			task nbData := true;
+			nextstate first;
+    endstate;
+    state preprocessing1;
+        deadline eager;
+        provided nbData = false;
+            informal "${sig.name}_USELESS_ACT";
+            nextstate processing1;
+        deadline eager;
+        provided nbData = true;
+            informal "${sig.name}_USEFUL_ACT";
+            task nbData := false;
+            nextstate processing1;
+    endstate;
+    state processing1;
+        deadline delayable;
+        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+            informal "${sig.name}_FINISH";
+            reset e;
+            nextstate wait1;
+        input ${sig.name}();
+			task nbData := true;
+			nextstate processing1;
+    endstate;
+    state wait1;
+        when x = ${left_period_bound};
+            set x := 0;
+            nextstate jitter;
+        input ${sig.name}();
+			task nbData := true;
+			nextstate wait1;
+    endstate;
+    state jitter;
+        deadline delayable;
+        when x <= ${right_period_bound - left_period_bound};
+            set e := 0;
+            nextstate preprocessing2;
+        input ${sig.name}();
+			task nbData := true;
+			nextstate jitter;
+    endstate;
+    state preprocessing2;
+        deadline eager;
+        provided nbData = false;
+            informal "${sig.name}_USELESS_ACT";
+            nextstate processing2;
+        deadline eager;
+        provided nbData = true;
+            informal "${sig.name}_USEFUL_ACT";
+            task nbData := false;
+            nextstate processing2;
+    endstate;
+    state processing2;
+        deadline delayable;
+        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+            informal "${sig.name}_FINISH";
+            reset e;
+            nextstate wait2;
+        input ${sig.name}();
+			task nbData := true;
+			nextstate processing2;
+    endstate;
+    state wait2;
+        when x = ${AP.mean.value};
+            set x := 0;
+            nextstate jitter;
+        input ${sig.name}();
+			task nbData := true;
+			nextstate wait2;
+    endstate;
+`);
+            } else {
+                ifContent.append(`
+    var x clock;
+    var e clock;
+    var nbData boolean;
+    state start #start ;
+        task nbData := false;
+        set x := 0;
+        nextstate first;
+    endstate;
+    state first;
         deadline delayable;
         when x <= ${left_period_bound};
             set x := 0;
             nextstate jitter;
         input ${sig.name}();
-			task nbData := nbData + 1;
-			nextstate first;
+            task nbData := true;
+            nextstate first;
     endstate;
     state jitter;
         deadline delayable;
@@ -319,18 +559,18 @@ function generateIFActuator(sig: Actuator, ifContent: CompositeGeneratorNode, si
             set e := 0;
             nextstate preprocessing;
         input ${sig.name}();
-			task nbData := nbData + 1;
-			nextstate jitter;
+            task nbData := true;
+            nextstate jitter;
     endstate;
     state preprocessing;
         deadline eager;
-        provided nbData =  0;
+        provided nbData = false;
             informal "${sig.name}_USELESS_ACT";
             nextstate processing;
         deadline eager;
-        provided nbData <>  0;
+        provided nbData = true;
             informal "${sig.name}_USEFUL_ACT";
-            task nbData := 0;
+            task nbData := false;
             nextstate processing;
     endstate;
     state processing;
@@ -340,18 +580,19 @@ function generateIFActuator(sig: Actuator, ifContent: CompositeGeneratorNode, si
             reset e;
             nextstate wait;
         input ${sig.name}();
-			task nbData := nbData + 1;
-			nextstate processing;
+            task nbData := true;
+            nextstate processing;
     endstate;
     state wait;
         when x = ${AP.mean.value};
             set x := 0;
             nextstate jitter;
         input ${sig.name}();
-			task nbData := nbData + 1;
-			nextstate wait;
+            task nbData := true;
+            nextstate wait;
     endstate;
 `);
+            }
     } else {
         ifContent.append(`
     var e clock;
@@ -382,6 +623,7 @@ interface EventTrigger {
 interface PeriodicTrigger {
     $type: 'PeriodicTrigger'
     period: RandomVar
+    offset: RandomVar | integer
 }
 
 type Trigger = EventTrigger | PeriodicTrigger;
@@ -394,11 +636,12 @@ class Runnable {
 
 function trigRuleToTrigger(serviceName: string, rule: TriggeringRule): Trigger {
     if (isPeriodicTriggering(rule)) {
-        return { $type: "PeriodicTrigger", period: rule.period };
+        return { $type: "PeriodicTrigger", period: rule.period, offset: rule.offset ?? 0 };
     } else {
         return { $type: "EventTrigger", event: getSubscriptionSignal(serviceName, rule.trigger?.ref!) };
     }
 }
+
 
 export function generateMRTCCSLSpec(model: Model, context: Context
 ): string {
@@ -422,26 +665,41 @@ function generateMRTCCSLRunnable(r: Runnable, ctx: Context, sigma: number): [str
     duration : ${left_exec_bound}ms <= ${r.name}_EXEC <= ${right_exec_bound}ms;
     continuous process ${r.name}_EXEC with normal(${r.execution.mean.value}ms, ${r.execution.stdDev.value}ms);`;
     let exec_constr = `${r.name}_FINISH = delay ${r.name}_START by ${r.name}_EXEC;`;
-    let output_constr = ctx.servicesToSignals.get(r.name)?.reduce((acc, v) => `${acc}\n    ${r.name}_FINISH = ${v};`, "") ?? "";
+    let offset_const = "";
     if (r.trigger.$type === "PeriodicTrigger") {
         const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(r.trigger.period, sigma);
+        if (typeof r.trigger.offset !== "number") {
+            const { left: left_off_bound, right: right_off_bound } = randomVariableToRange(r.trigger.offset, sigma);
+            offset_const = `
+    duration : ${left_off_bound}ms <= ${r.name}_PERIOD_OFF <= ${right_off_bound}ms;
+    continuous process ${r.name}_PERIOD_OFF with normal(${r.trigger.offset.mean.value}ms, ${r.trigger.offset.stdDev.value}ms);`;
+        } else {
+            offset_const = `
+    duration : ${0}ms <= ${r.name}_PERIOD_OFF <= ${right_period_bound}ms;
+    continuous process ${r.name}_PERIOD_OFF with uniform;`;
+        }
         return [`
     duration : ${left_period_bound - r.trigger.period.mean.value}ms <= ${r.name}_PERIOD_JITTER <= ${right_period_bound - r.trigger.period.mean.value}ms;
     continuous process ${r.name}_PERIOD_JITTER with normal(0s, ${r.trigger.period.stdDev.value}ms);
+    ${offset_const}
     ${exec_duration_constr}
         `,
         `
-    ${r.name}_START = periodic ${r.trigger.period.mean.value}ms with jitter ${r.name}_PERIOD_JITTER;
+    ${r.name}_START = periodic ${r.trigger.period.mean.value}ms with jitter ${r.name}_PERIOD_JITTER offset ${r.name}_PERIOD_OFF;
     ${exec_constr}
-    ${output_constr}
         `];
     } else {
+        let eventTriggerConsts = "";
+        let delim = "";
+        for (let signalPub of ctx.signalToPublishers.get(r.trigger.event) ?? []) {
+            eventTriggerConsts += delim + `${signalPub}_FINISH causes ${r.name}_START;\n\t${r.name}_START = ${signalPub}_FINISH;`;
+            delim = "\n\t"
+        }
         return [
             exec_duration_constr,
             `
-    ${r.name}_START = ${r.trigger.event};
+    ${eventTriggerConsts}
     ${exec_constr}
-    ${output_constr}
             `
         ]
     }

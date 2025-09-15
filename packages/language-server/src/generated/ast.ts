@@ -23,6 +23,7 @@ export type SdvmlKeywordNames =
     | ","
     | "->"
     | ":"
+    | ";"
     | "AD"
     | "Actuator"
     | "App"
@@ -42,6 +43,7 @@ export type SdvmlKeywordNames =
     | "execution"
     | "ms"
     | "normal"
+    | "offset"
     | "on"
     | "periodic"
     | "publish"
@@ -49,6 +51,7 @@ export type SdvmlKeywordNames =
     | "subscribe"
     | "to"
     | "triggered"
+    | "varying_offset"
     | "~";
 
 export type SdvmlTokenNames = SdvmlTerminalNames | SdvmlKeywordNames;
@@ -171,6 +174,7 @@ export function isModel(item: unknown): item is Model {
 export interface PeriodicTriggering extends langium.AstNode {
     readonly $container: Actuator | Service;
     readonly $type: 'PeriodicTriggering';
+    offset?: RandomVar;
     period: RandomVar;
 }
 
@@ -213,6 +217,7 @@ export interface Sensor extends langium.AstNode {
     readonly $type: 'Sensor';
     dl: RandomVar;
     name: string;
+    offset?: RandomVar;
     ssp: RandomVar;
 }
 
@@ -403,6 +408,7 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                 return {
                     name: PeriodicTriggering,
                     properties: [
+                        { name: 'offset' },
                         { name: 'period' }
                     ]
                 };
@@ -433,6 +439,7 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                     properties: [
                         { name: 'dl' },
                         { name: 'name' },
+                        { name: 'offset' },
                         { name: 'ssp' }
                     ]
                 };

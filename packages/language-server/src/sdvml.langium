@@ -49,7 +49,7 @@ TriggeringRule:
     PeriodicTriggering | EventTriggering;
 
 PeriodicTriggering:
-    'periodic' period=RandomVar;
+    'periodic' period=RandomVar ';' ('offset'':'offset=RandomVar | 'varying_offset');
 
 EventTriggering:
     'triggered' 'on' (trigger=[Subscriber:ID] | 'event');
@@ -68,7 +68,7 @@ Signal:
     Sensor | Actuator;
 
 Sensor:
-    "Sensor" "Signal" name=ID '(''SSP'':'ssp=RandomVar ',''DL'':'dl=RandomVar')';
+    "Sensor" "Signal" name=ID '(''SSP'':'ssp=RandomVar';'('offset'':'offset=RandomVar | 'varying_offset')',''DL'':'dl=RandomVar')';
 
 Actuator:
     "Actuator" "Signal" name=ID '(' trigRule=TriggeringRule',''AD'':'ad=RandomVar')';

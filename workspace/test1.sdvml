@@ -27,9 +27,10 @@ App :
             publish to VSS signal RearBrake 
             periodic 10ms+/-1ms
             execution 3ms+/-1ms
-        // service s3:
-        //     triggered on Al
-        //     ExecTime 3+/-1ms
+        Service s3:
+        subscribe to Alarm
+            triggered on Alarm
+            execution 3ms+/-1ms
 
 Functional Chains:
  chain : Lidar -> s1 -> FrontBrake 
