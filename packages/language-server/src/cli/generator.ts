@@ -128,7 +128,7 @@ export function generateIFScript(model: Model, context: Context): string {
     ifContent.append("system " + model.name + ";\n");
     ifContent.append("type int = range 0 .. 255;\n");
 
-    for (var signal of context.signalsToServices.keys()) {
+    for (var signal of context.signalsToServices.keys() ?? []) {
         ifContent.append("signal " + signal + "();\n");
     }
 
@@ -345,7 +345,7 @@ function generateIFSensor(sig: Sensor, ifContent: CompositeGeneratorNode, contex
     var ssp = sig.ssp;
     var sensorSignal = sig.name;
     var siglines = "";
-    for (var serviceName of context.signalsToServices.get(sensorSignal)!) {
+    for (var serviceName of context.signalsToServices.get(sensorSignal) ?? []) {
         siglines += `\n\t\t\toutput ${sensorSignal}() to {${serviceName}}0;`;
     }
     const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(sig.dl, sigma);

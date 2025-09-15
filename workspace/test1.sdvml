@@ -1,10 +1,10 @@
 SDV test1:
 VSS :
-    Sensor Signal Camera (SSP:10ms+/-2ms, DL: 5ms+/-2ms)
-    Sensor Signal Lidar (SSP:10ms+/-2ms, DL: 5ms+/-2ms) 
+    Sensor Signal Camera (SSP:10ms+/-2ms; offset : 0ms+/-0ms, DL: 5ms+/-2ms)
+    Sensor Signal Lidar (SSP:10ms+/-2ms; offset : 0ms+/-0ms, DL: 5ms+/-2ms) 
 
-    Actuator Signal FrontBrake (periodic 10ms+/-2ms, AD: 5ms+/-2ms)
-    Actuator Signal RearBrake (periodic 10ms+/-2ms, AD: 5ms+/-2ms)
+    Actuator Signal FrontBrake (periodic 10ms+/-2ms; offset : 0ms+/-0ms, AD: 5ms+/-2ms)
+    Actuator Signal RearBrake (periodic 10ms+/-2ms ; offset : 0ms+/-0ms, AD: 5ms+/-2ms)
  
 App :
     Component AEBS_controler :
@@ -25,7 +25,7 @@ App :
         Service s2:
             subscribe to Alarm
             publish to VSS signal RearBrake 
-            periodic 10ms+/-1ms
+            periodic 10ms+/-1ms ; offset : 0ms+/-0ms
             execution 3ms+/-1ms
         Service s3:
         subscribe to Alarm
