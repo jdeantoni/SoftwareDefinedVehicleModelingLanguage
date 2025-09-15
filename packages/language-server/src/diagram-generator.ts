@@ -482,26 +482,25 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
             }
         }
 
-        console.log(guideEdges);
-        const chainNode = <SNode>{
-            type: "node:chain",
-            id: "chain" + fc.name,
-            layout: "hbox",
-            children: [
-                <SLabel>{
-                    type: "label",
-                    id: fc.name + ".description",
-                    text: fc.name,
-                }, ...reactions],
-            layoutOptions: {
-                ...defaultLayout,
-                hAlign: "left",
-                vAlign: "top",
-                resizeContainer: true,
-                minWidth: 2000,
-                minHeight: 60,
-            },
-        };
-        return [chainNode, ...chainLinks, ...guideEdges];
+        // console.log(guideEdges);
+        // const chainNode = <SNode>{
+        //     type: "node:chain",
+        //     id: "chain" + fc.name,
+        //     layout: "hbox",
+        //     children: [
+        //         <SLabel>{
+        //             type: "label",
+        //             id: fc.name + ".description",
+        //             text: fc.name,
+        //         }, ...reactions],
+        //     layoutOptions: {
+        //         ...defaultLayout,
+        //         hAlign: "left",
+        //         vAlign: "top",
+        //         resizeContainer: true,
+        //     },
+        // };
+        // return [chainNode, ...chainLinks, ...guideEdges];
+        return chainLinks;
     }
 }

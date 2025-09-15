@@ -30,7 +30,7 @@ function makeGNUPlotScript(filename: string): string {
 
         filename = "${filename}"
         set output sprintf("%s.svg", filename)
-        set terminal svg size 400,300 enhanced font "Helvetica,20"
+        set terminal svg size 1000,500 enhanced font "Helvetica,20" background rgb "white"
         set datafile missing NaN
         set datafile columnheaders
 
@@ -47,10 +47,8 @@ function makeGNUPlotScript(filename: string): string {
 
         set nokey
         unset border
-        unset xtics
-        unset ytics
 
-        plot filename using 2:xtic(1);
+        plot for [j=2:D_columns] filename using j;
 `
 }
 
@@ -87,13 +85,8 @@ export const generateAction = async (
 
         // workspace.getConfiguration("sdvml-extension-langium");
         // let pathToMrtccsl = settings.get("mrtccsl");
-        const pathToMrtccsl = "/home/ptokarie/code/mrtccsl"
-        console.log(
-            chalk.green(`MRTCCSL path: ${pathToMrtccsl}`)
-        );
         const resultPath = path.join(data.destination, 'results');
-        let commandPrefix = pathToMrtccsl ? `cd ${pathToMrtccsl}; eval \\$(opam env);` : "";
-        let command = `${commandPrefix} OCAMLRUNPARAM=b simulate ${mrtccslFilePath} -o ${resultPath} -fc ${fcFilePath} -bob -cadp -tcadp --scale 0.0001 --traces 10 --steps 10000 --horizon 10000`;
+        let command = `eval \\$(opam env); OCAMLRUNPARAM=b simulate ${mrtccslFilePath} -o ${resultPath} -fc ${fcFilePath} -bob -cadp -tcadp --scale 0.0001 --traces 10 --steps 10000 --horizon 10000`;
         console.log(chalk.green(command));
         console.log(execSync(`bash -c "${command}"`).toString());
 
