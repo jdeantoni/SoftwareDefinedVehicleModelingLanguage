@@ -100,7 +100,7 @@
       {
         "command": "sdvml.generateCode",
         "title": "Run SDVML Compiler",
-        "icon": "$(gear)",
+        "icon": "$(run)",
         "category": "Sdvml Diagram"
       }
     ],

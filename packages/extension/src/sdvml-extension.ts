@@ -191,9 +191,9 @@ export function activate(context: vscode.ExtensionContext) {
             destination: filePath.slice(0, filePath.lastIndexOf('/')) + "/generated/"
         }
         console.error("~~~~~~~> generate path", opts.destination)
-        generateAction(filePath, opts)
-
-        vscode.window.showInformationMessage(`SDVML code generation complete! Output at: ${opts.destination}`);
+        vscode.window.withProgress({ location: vscode.ProgressLocation.Notification, title: "Analysis", cancellable: true }, (progress, token) => {
+            return generateAction(filePath, opts, progress, token);
+        });
     });
 
     context.subscriptions.push(disposable);

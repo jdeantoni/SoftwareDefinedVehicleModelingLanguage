@@ -12,7 +12,8 @@ import * as fsAsync from 'node:fs/promises';
 import * as path from 'node:path';
 import * as fs from 'node:fs';
 import { execSync } from 'node:child_process';
-
+import { Progress, CancellationToken, Disposable } from "vscode";
+import { setTimeout } from 'node:timers/promises';
 
 
 
@@ -45,65 +46,105 @@ function makeGNUPlotScript(filename: string): string {
         print(filename);
         stats filename name "D" nooutput
 
-        set nokey
+        # set nokey
         unset border
 
-        plot for [j=2:D_columns] filename using j;
+        plot for [j=2:D_columns] filename using j title sprintf("missed %s", j);
 `
 }
 
 export const generateAction = async (
     fileName: string,
-    opts: GenerateOptions
+    opts: GenerateOptions,
+    progress: Progress<{ increment: number, message?: string | undefined }>,
+    token: CancellationToken,
 ): Promise<void> => {
     const services = createSdvmlServices(NodeFileSystem).sdvml;
-    extractAstNode<Model>(fileName, services).then(model => {
-        const context = new Context(model);
-        const data = extractDestinationAndName(fileName, opts.destination);
+    let model = await extractAstNode<Model>(fileName, services)
 
-        const resIFPath = path.join(data.destination, 'IF')
-        fs.mkdirSync(resIFPath, { recursive: true });
-        const ifFilePath = `${path.join(resIFPath, data.name)}.if`;
+    progress.report({ increment: 0, message: "preparation" });
+    await setTimeout(100);
+    const context = new Context(model);
+    const data = extractDestinationAndName(fileName, opts.destination);
 
-        const generatedModel = generateIFScript(model, context);
-        fs.writeFileSync(ifFilePath, generatedModel);
+    progress.report({ increment: 10, message: "IF model" });
+    if (token.isCancellationRequested) {
+        return
+    }
+    await setTimeout(100); // TODO: remove this... bad thing, replace with checkboxes if possible
 
-        const resMRTCCSLPath = path.join(data.destination, 'MRTCCSL');
-        fs.mkdirSync(resMRTCCSLPath, { recursive: true });
-        const mrtccslFilePath = `${path.join(resMRTCCSLPath, data.name)}.mrtccsl`;
+    const resIFPath = path.join(data.destination, 'IF')
+    fs.mkdirSync(resIFPath, { recursive: true });
+    const ifFilePath = `${path.join(resIFPath, data.name)}.if`;
 
-        const specification = generateMRTCCSLSpec(model, context);
-        fs.writeFileSync(mrtccslFilePath, specification);
+    const generatedModel = generateIFScript(model, context);
+    await fs.promises.writeFile(ifFilePath, generatedModel);
 
-        const fcFilePath = `${path.join(resMRTCCSLPath, data.name)}.chains`;
-        const chainsString = model.chains.reduce((acc, chain) => { acc += generateFunctionalChainSpec(chain, context) + "\n"; return acc }, "");
-        fs.writeFileSync(fcFilePath, chainsString);
+    progress.report({ increment: 10, message: "MRTCCSL specification" });
+    if (token.isCancellationRequested) {
+        return
+    }
+    await setTimeout(100);
 
-        console.log(
-            chalk.green(`IF, MRTCCSL and functional chain artifacts generated successfully: ${ifFilePath}`)
-        );
+    const resMRTCCSLPath = path.join(data.destination, 'MRTCCSL');
+    fs.mkdirSync(resMRTCCSLPath, { recursive: true });
+    const mrtccslFilePath = `${path.join(resMRTCCSLPath, data.name)}.mrtccsl`;
 
-        // workspace.getConfiguration("sdvml-extension-langium");
-        // let pathToMrtccsl = settings.get("mrtccsl");
-        const resultPath = path.join(data.destination, 'results');
-        let command = `eval \\$(opam env); OCAMLRUNPARAM=b simulate ${mrtccslFilePath} -o ${resultPath} -fc ${fcFilePath} -bob -cadp -tcadp --scale 0.0001 --traces 10 --steps 10000 --horizon 10000`;
-        console.log(chalk.green(command));
-        console.log(execSync(`bash -c "${command}"`).toString());
+    const specification = generateMRTCCSLSpec(model, context);
+    await fs.promises.writeFile(mrtccslFilePath, specification);
 
-        let gnuplotFolder = fs.mkdtempSync('gnus');
-        let specResults = path.join(resultPath, data.name) + ".mrtccsl/";
-        let files = fs.readdirSync(specResults);
-        console.log(files);
-        for (let file of files) {
-            if (file.endsWith(".csv")) {
-                let scriptFilename = `${path.join(gnuplotFolder, file)}.gnu`;
-                fs.writeFileSync(scriptFilename, makeGNUPlotScript(path.join(specResults, file)));
-                let command = `bash -c "unset GTK_PATH; gnuplot ${scriptFilename}"`
-                console.log(command);
-                console.log(execSync(command).toString());
+    progress.report({ increment: 10, message: "functional chains" });
+    if (token.isCancellationRequested) {
+        return
+    }
+    await setTimeout(100);
+
+    const fcFilePath = `${path.join(resMRTCCSLPath, data.name)}.chains`;
+    const chainsString: string = model.chains.reduce((acc: string, chain) => { acc += generateFunctionalChainSpec(chain, context) + "\n"; return acc }, "");
+    await fs.promises.writeFile(fcFilePath, chainsString);
+
+    console.log(
+        chalk.green(`IF, MRTCCSL and functional chain artifacts generated successfully: ${ifFilePath}`)
+    );
+
+
+    progress.report({ increment: 10, message: "simulating" });
+    if (token.isCancellationRequested) {
+        return
+    }
+    await setTimeout(100);
+
+    const resultPath = path.join(data.destination, 'results');
+    let command = `eval \\$(opam env); OCAMLRUNPARAM=b simulate ${mrtccslFilePath} -o ${resultPath} -fc ${fcFilePath} -bob -cadp -tcadp --scale 0.0001 --traces 10 --steps 10000 --horizon 10000`;
+    console.log(chalk.green(command));
+    console.log(execSync(`bash -c "${command}"`).toString());
+
+
+    progress.report({ increment: 10, message: "processing images" });
+    if (token.isCancellationRequested) {
+        return
+    }
+    await setTimeout(100);
+
+    let gnuplotFolder = fs.mkdtempSync('gnus');
+    let specResults = path.join(resultPath, data.name) + ".mrtccsl/";
+    let files = await fs.promises.readdir(specResults);
+    console.log(files);
+    for (let file of files) {
+        if (file.endsWith(".csv")) {
+            let scriptFilename = `${path.join(gnuplotFolder, file)}.gnu`;
+            await fs.promises.writeFile(scriptFilename, makeGNUPlotScript(path.join(specResults, file)));
+            let command = `bash -c "unset GTK_PATH; gnuplot ${scriptFilename}"`
+            console.log(command);
+            console.log(execSync(command).toString());
+
+            if (token.isCancellationRequested) {
+                return
             }
         }
-    });
+    }
+    progress.report({ increment: 50, message: "finished" });
+    await setTimeout(100);
 };
 
 export type GenerateOptions = {
@@ -127,7 +168,7 @@ export function main(): void {
             'destination directory of generating'
         )
         .description('generates ROS 2 code and package')
-        .action(generateAction);
+        .action((file, dest) => { generateAction(file, dest, { report: (_) => { } }, { isCancellationRequested: false, onCancellationRequested: (listener) => new Disposable(() => { }) }) });
 
     program.parse(process.argv);
 }
