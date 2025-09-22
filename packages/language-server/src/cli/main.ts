@@ -49,7 +49,7 @@ function makeGNUPlotScript(filename: string): string {
         # set nokey
         unset border
 
-        plot for [j=2:D_columns] filename using j title sprintf("missed %s", j);
+        plot for [j=2:D_columns] filename using j title sprintf("missed %i", j);
 `
 }
 
