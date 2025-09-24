@@ -11,7 +11,7 @@ import { NodeFileSystem } from 'langium/node';
 import * as fsAsync from 'node:fs/promises';
 import * as path from 'node:path';
 import * as fs from 'node:fs';
-import { execSync } from 'node:child_process';
+import { execSync, spawn } from 'node:child_process';
 import { Progress, CancellationToken, Disposable } from "vscode";
 import { setTimeout } from 'node:timers/promises';
 
@@ -199,6 +199,16 @@ ${buildrules}
 `
     await fs.promises.writeFile(path.join(specResults, "template.gnu"), gnuTemplate);
     await fs.promises.writeFile(path.join(specResults, "build.ninja"), ninjafile);
+
+    // let process = spawn(`bash -c "cd ${specResults};ninja"`);
+    // console.log(`bash -c "cd ${specResults};ninja"`);
+    // for await (const chunk of process.stdout) {
+    //     let matches: string[] = chunk.toString().matchAll(/(\[\d+\/\d+\])/g);
+    //     if (matches.length > 0) {
+    //         console.log(matches);
+    //         progress.report({ message: matches[matches.length - 1], increment: 1 })
+    //     }
+    // }
 
     progress.report({ increment: 50, message: "finished" });
     await setTimeout(100);
