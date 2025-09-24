@@ -200,13 +200,18 @@ ${buildrules}
     await fs.promises.writeFile(path.join(specResults, "template.gnu"), gnuTemplate);
     await fs.promises.writeFile(path.join(specResults, "build.ninja"), ninjafile);
 
-    // let process = spawn(`bash -c "cd ${specResults};ninja"`);
+    // let process = spawn("bash", ["-c", `cd ${specResults};ninja`]);
     // console.log(`bash -c "cd ${specResults};ninja"`);
     // for await (const chunk of process.stdout) {
-    //     let matches: string[] = chunk.toString().matchAll(/(\[\d+\/\d+\])/g);
+    //     // console.log(chunk.toString());
+
+    //     let matches: string[] = [...chunk.toString().matchAll(/\[(\d+)\/(\d+)\]/gm)];
     //     if (matches.length > 0) {
-    //         console.log(matches);
-    //         progress.report({ message: matches[matches.length - 1], increment: 1 })
+    //         const last = matches[matches.length - 1];
+    //         const totalSteps = parseInt(last[2]);
+    //         const processedSteps = matches.length;
+    //         console.log(matches.map(m => m[0]));
+    //         progress.report({ message: last[0], increment: processedSteps * 100 / totalSteps })
     //     }
     // }
 
