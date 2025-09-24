@@ -101,10 +101,10 @@ export class Context {
                 if (isEventTriggering(s.trigRule)) {
                     return [s.name, { name: s.name, trigger: { $type: "EventTrigger", event: s.name }, execution: s.ad }];
                 } else {
-                    return [s.name, { name: s.name, trigger: { $type: "PeriodicTrigger", period: s.trigRule.period, offset: s.trigRule.offset ?? 0}, execution: s.ad }];
+                    return [s.name, { name: s.name, trigger: { $type: "PeriodicTrigger", period: s.trigRule.period, offset: s.trigRule.offset ?? 0 }, execution: s.ad }];
                 }
             } else {
-                const trigger: Trigger = { $type: "PeriodicTrigger", period: s.ssp, offset: s.offset ?? 0};
+                const trigger: Trigger = { $type: "PeriodicTrigger", period: s.ssp, offset: s.offset ?? 0 };
                 return [s.name, { name: s.name, trigger, execution: s.dl }];
             }
         });
@@ -533,8 +533,8 @@ function generateIFActuator(sig: Actuator, ifContent: CompositeGeneratorNode, si
 			nextstate wait2;
     endstate;
 `);
-            } else {
-                ifContent.append(`
+        } else {
+            ifContent.append(`
     var x clock;
     var e clock;
     var nbData boolean;
@@ -591,7 +591,7 @@ function generateIFActuator(sig: Actuator, ifContent: CompositeGeneratorNode, si
             nextstate wait;
     endstate;
 `);
-            }
+        }
     } else {
         ifContent.append(`
     var e clock;
@@ -716,4 +716,20 @@ export function generateFunctionalChainSpec(chain: FunctionalChain, ctx: Context
         previous = runnable.name;
     }
     return chainString;
+}
+export function generateFunctionalChainSegments(chain: FunctionalChain, ctx: Context): string[] {
+    let segments = [];
+    var first = undefined;
+    var previous = undefined;
+    for (let current of chain.participants) {
+        let runnable = ctx.runnables.get(current.ref!.name) ?? expect(`chain participant with id "${current.ref?.name}" is not available.`)
+        if (previous !== undefined) {
+            segments.push(`${chain.name}_${previous}_FINISH_${runnable.name}_START`);
+        }
+        segments.push(`${chain.name}_${runnable.name}_START_${runnable.name}_FINISH`);
+        previous = runnable.name;
+        first = first === undefined ? runnable.name : first;
+    }
+    segments.push(`${chain.name}_${first}_START_${previous}_FINISH`);
+    return segments;
 }

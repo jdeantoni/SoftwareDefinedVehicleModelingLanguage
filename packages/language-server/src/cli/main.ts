@@ -4,7 +4,7 @@ import { Command } from 'commander';
 import { SdvmlLanguageMetaData } from '../generated/module.js';
 import { createSdvmlServices } from '../sdvml-module.js';
 import { extractAstNode, extractDestinationAndName } from './cli-util.js';
-import { Context, generateFunctionalChainSpec, generateIFScript, generateMRTCCSLSpec } from './generator.js';
+import { Context, generateFunctionalChainSegments, generateFunctionalChainSpec, generateIFScript, generateMRTCCSLSpec } from './generator.js';
 // import {workspace} from "vscode";
 import { NodeFileSystem } from 'langium/node';
 // import * as url from 'node:url';
@@ -53,6 +53,34 @@ function makeGNUPlotScript(filename: string): string {
 `
 }
 
+const gnuTemplate = `
+clear
+reset
+set border 3
+set datafile separator ','
+
+set output sprintf("%s.svg", filename)
+set terminal svg size 1000,500 enhanced font "Helvetica,20" background rgb "white"
+set datafile missing NaN
+set datafile columnheaders
+
+# Each bar is half the (visual) width of its x-range.
+set boxwidth 0.5 relative
+set style data histograms
+set style histogram rowstacked
+set style fill solid 1.0
+
+# set ylabel "probability"
+
+print(filename);
+stats filename name "D" nooutput
+
+# set nokey
+unset border
+
+plot for [j=2:D_columns] filename using j title sprintf("missed %i", j);
+`
+
 export const generateAction = async (
     fileName: string,
     opts: GenerateOptions,
@@ -60,7 +88,9 @@ export const generateAction = async (
     token: CancellationToken,
 ): Promise<void> => {
     const services = createSdvmlServices(NodeFileSystem).sdvml;
-    let model = await extractAstNode<Model>(fileName, services)
+    let model = await extractAstNode<Model>(fileName, services);
+
+    let buildrules = ""
 
     progress.report({ increment: 0, message: "preparation" });
     await setTimeout(100);
@@ -100,7 +130,10 @@ export const generateAction = async (
     await setTimeout(100);
 
     const fcFilePath = `${path.join(resMRTCCSLPath, data.name)}.chains`;
-    const chainsString: string = model.chains.reduce((acc: string, chain) => { acc += generateFunctionalChainSpec(chain, context) + "\n"; return acc }, "");
+    const chainsString: string = model.chains.reduce((acc: string, chain) => {
+        acc += generateFunctionalChainSpec(chain, context) + "\n";
+        return acc
+    }, "");
     await fs.promises.writeFile(fcFilePath, chainsString);
 
     console.log(
@@ -120,6 +153,12 @@ export const generateAction = async (
     console.log(chalk.green(command));
     console.log(execSync(`bash -c "${command}"`).toString());
 
+    let chain_pairs = model.chains.flatMap(chain => generateFunctionalChainSegments(chain, context)).map(filename => filename + "_reaction_time_hist.csv")
+    buildrules += `
+build ${chain_pairs.join(" ")} : simulation
+    spec = ${mrtccslFilePath}
+    chain = ${fcFilePath}
+`
 
     progress.report({ increment: 10, message: "processing images" });
     if (token.isCancellationRequested) {
@@ -127,18 +166,21 @@ export const generateAction = async (
     }
     await setTimeout(100);
 
-    let gnuplotFolder = fs.mkdtempSync('gnus');
     let specResults = path.join(resultPath, data.name) + ".mrtccsl/";
     let files = await fs.promises.readdir(specResults);
     console.log(files);
 
     for (let file of files) {
         if (file.endsWith(".csv")) {
-            let scriptFilename = `${path.join(gnuplotFolder, file)}.gnu`;
+            let scriptFilename = `${path.join(specResults, file)}.gnu`;
             await fs.promises.writeFile(scriptFilename, makeGNUPlotScript(path.join(specResults, file)));
             let command = `bash -c "unset GTK_PATH; gnuplot ${scriptFilename}"`
             console.log(command);
             console.log(execSync(command).toString());
+            buildrules += `
+build ${file}.svg : compile_image ${file} | template.gnu
+default ${file}.svg
+`
 
             if (token.isCancellationRequested) {
                 return
@@ -146,6 +188,18 @@ export const generateAction = async (
 
         }
     }
+
+    const ninjafile = `
+rule simulation
+    command = ${mrtccslLocation}eval $$(opam env); OCAMLRUNPARAM=b simulate $spec -o ./ -fc $chain -bob -cadp -tcadp --scale 0.0001 --traces 10 --steps 10000 --horizon 10000
+
+rule compile_image
+    command = unset GTK_PATH; gnuplot -e "filename='$in'" template.gnu
+${buildrules}
+`
+    await fs.promises.writeFile(path.join(specResults, "template.gnu"), gnuTemplate);
+    await fs.promises.writeFile(path.join(specResults, "build.ninja"), ninjafile);
+
     progress.report({ increment: 50, message: "finished" });
     await setTimeout(100);
 };
