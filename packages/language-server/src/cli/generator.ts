@@ -1,4 +1,3 @@
-import { integer } from 'vscode-languageserver';
 import {
     Actuator,
     isActuator,
@@ -623,7 +622,7 @@ interface EventTrigger {
 interface PeriodicTrigger {
     $type: 'PeriodicTrigger'
     period: RandomVar
-    offset: RandomVar | integer
+    offset: RandomVar | number
 }
 
 type Trigger = EventTrigger | PeriodicTrigger;

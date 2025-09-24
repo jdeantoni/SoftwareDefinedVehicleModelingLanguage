@@ -187,12 +187,14 @@ export function activate(context: vscode.ExtensionContext) {
         const document = editor.document;
         const filePath = document.uri.fsPath;
 
-        let opts = {
-            destination: filePath.slice(0, filePath.lastIndexOf('/')) + "/generated/"
-        }
-        console.error("~~~~~~~> generate path", opts.destination)
-        vscode.window.withProgress({ location: vscode.ProgressLocation.Notification, title: "Analysis", cancellable: true }, (progress, token) => {
-            return generateAction(filePath, opts, progress, token);
+        vscode.window.withProgress({ location: vscode.ProgressLocation.Notification, title: "Analysis", cancellable: true }, async (progress, token) => {
+            const mrtccslPath = vscode.workspace.getConfiguration().get('mrtccsl');
+            let opts = {
+                destination: filePath.slice(0, filePath.lastIndexOf('/')) + "/generated/",
+                mrtccslPath
+            }
+            console.error("~~~~~~~> generate path", opts.destination)
+            await generateAction(filePath, opts, progress, token);
         });
     });
 

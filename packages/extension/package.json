@@ -185,9 +185,9 @@
       "title": "SDV DSL",
       "properties": {
         "mrtccsl": {
-          "type": ["string", "null"],
+          "type": "string",
           "default": null,
-          "description": "Path to the directory with MRTCCSL switch installed. Uses global installation (calls `simulate`) by default."
+          "description": "Path to the directory with MRTCCSL switch installed. Uses global switch by default."
         }
       }
     }

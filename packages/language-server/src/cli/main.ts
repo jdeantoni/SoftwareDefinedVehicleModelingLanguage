@@ -115,7 +115,8 @@ export const generateAction = async (
     await setTimeout(100);
 
     const resultPath = path.join(data.destination, 'results');
-    let command = `eval \\$(opam env); OCAMLRUNPARAM=b simulate ${mrtccslFilePath} -o ${resultPath} -fc ${fcFilePath} -bob -cadp -tcadp --scale 0.0001 --traces 10 --steps 10000 --horizon 10000`;
+    let mrtccslLocation = opts.mrtccslPath ? `cd ${opts.mrtccslPath};` : "";
+    let command = `${mrtccslLocation}eval \\$(opam env); OCAMLRUNPARAM=b simulate ${mrtccslFilePath} -o ${resultPath} -fc ${fcFilePath} -bob -cadp -tcadp --scale 0.0001 --traces 10 --steps 10000 --horizon 10000`;
     console.log(chalk.green(command));
     console.log(execSync(`bash -c "${command}"`).toString());
 
@@ -130,6 +131,7 @@ export const generateAction = async (
     let specResults = path.join(resultPath, data.name) + ".mrtccsl/";
     let files = await fs.promises.readdir(specResults);
     console.log(files);
+
     for (let file of files) {
         if (file.endsWith(".csv")) {
             let scriptFilename = `${path.join(gnuplotFolder, file)}.gnu`;
@@ -141,6 +143,7 @@ export const generateAction = async (
             if (token.isCancellationRequested) {
                 return
             }
+
         }
     }
     progress.report({ increment: 50, message: "finished" });
@@ -149,6 +152,7 @@ export const generateAction = async (
 
 export type GenerateOptions = {
     destination?: string;
+    mrtccslPath?: string | null | undefined
 };
 
 export function main(): void {
@@ -168,7 +172,7 @@ export function main(): void {
             'destination directory of generating'
         )
         .description('generates ROS 2 code and package')
-        .action((file, dest) => { generateAction(file, dest, { report: (_) => { } }, { isCancellationRequested: false, onCancellationRequested: (listener) => new Disposable(() => { }) }) });
+        .action((file, dest) => { generateAction(file, { destination: dest }, { report: (_) => { } }, { isCancellationRequested: false, onCancellationRequested: (listener) => new Disposable(() => { }) }) });
 
     program.parse(process.argv);
 }
