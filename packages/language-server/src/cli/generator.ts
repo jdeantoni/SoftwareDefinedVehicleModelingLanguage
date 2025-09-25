@@ -724,12 +724,12 @@ export function generateFunctionalChainSegments(chain: FunctionalChain, ctx: Con
     for (let current of chain.participants) {
         let runnable = ctx.runnables.get(current.ref!.name) ?? expect(`chain participant with id "${current.ref?.name}" is not available.`)
         if (previous !== undefined) {
-            segments.push(`${chain.name}_${previous}_FINISH_${runnable.name}_START`);
+            segments.push(`${previous}_FINISH_${runnable.name}_START`);
         }
-        segments.push(`${chain.name}_${runnable.name}_START_${runnable.name}_FINISH`);
+        segments.push(`${runnable.name}_START_${runnable.name}_FINISH`);
         previous = runnable.name;
         first = first === undefined ? runnable.name : first;
     }
-    segments.push(`${chain.name}_${first}_START_${previous}_FINISH`);
+    segments.push(`${first}_START_${previous}_FINISH`);
     return segments;
 }
