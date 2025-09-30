@@ -52,6 +52,47 @@ async function overrideFileIfChanged(path: string, content: string): Promise<voi
     }
 }
 
+interface NinjaRule {
+    name: string
+    command: string
+    implicitDependencies: string[]
+}
+
+interface NinjaBuildInstruction {
+    rule: NinjaRule
+    inputs: string[]
+    outputs: string[]
+    vars?: Map<string, string>
+}
+
+interface Group {
+    name: string
+    artifacts: string[]
+}
+
+function renderRule(rule: NinjaRule): string {
+    return `rule ${rule.name}
+    command = ${rule.command}
+`
+}
+
+function renderBuildInstruction(instruction: NinjaBuildInstruction): string {
+    let { rule, inputs, outputs, vars } = instruction;
+    let main = `build ${outputs.join(" ")} : ${rule.name} ${inputs.join(" ")}`;
+    let implicits = ((rule.implicitDependencies.length != 0) ? " | " + rule.implicitDependencies.join(" ") : "");
+    let additional_variables = (vars !== undefined) ? Array.from(vars, ([key, value]) => `${key}=${value}`).join("\n") : "";
+    return main + implicits + additional_variables
+}
+
+function renderDefaultGroup(defaultGroup: Group): string {
+    return `build ${defaultGroup.name}: phony ${defaultGroup.artifacts.join(" ")}
+default ${defaultGroup.name}`
+}
+
+function renderBuildFile(rules: NinjaRule[], instructions: NinjaBuildInstruction[], groups: Group[]): string {
+    return [...rules.map(renderRule), ...instructions.map(renderBuildInstruction), ...groups.map(renderDefaultGroup), ""].join("\n")
+}
+
 export const generateAction = async (
     fileName: string,
     opts: GenerateOptions,
@@ -61,6 +102,12 @@ export const generateAction = async (
     const services = createSdvmlServices(NodeFileSystem).sdvml;
     let model = await extractAstNode<Model>(fileName, services);
 
+    let config = {
+        traces: 10,
+        steps: 100000,
+        horizon: 10000,
+        scale: 0.001
+    }
 
     progress.report({ increment: 0, message: "generation" });
 
@@ -113,24 +160,41 @@ export const generateAction = async (
         return
     }
 
-    let buildrules = []
-    let reaction_stats = model.chains.flatMap(chain => generateFunctionalChainSegments(chain, context).map(file => [chain.name, file])).map(([chainName, filename]) => `${chainName}/${filename}_reaction_time_hist.csv`)
-    buildrules.push(`build ${reaction_stats.join(" ")} : simulation spec.mrtccsl chains`);
-    for (let file of reaction_stats) {
-        buildrules.push(`build ${file}.svg : compile_image ${file} | template.gnu`)
+    let simulationRule = <NinjaRule>{
+        name: "simulation",
+        command: `${mrtccslLocation}eval $$(opam env); ${mrtccslLocation ? "cd $$OLDPWD;" : ""} OCAMLRUNPARAM=b ccsl+ simulate $in -o ./ --traces=${config.traces} --steps=${config.steps} --horizon=${config.horizon}`,
+        implicitDependencies: []
+    };
+    let reactionRule = <NinjaRule>{
+        name: "reaction-time",
+        command: `${mrtccslLocation}eval $$(opam env); ${mrtccslLocation ? "cd $$OLDPWD;" : ""} OCAMLRUNPARAM=b ccsl+ reaction --hist=${config.scale} $in -o ./`,
+        implicitDependencies: []
+    };
+    let compileImageRule = <NinjaRule>{
+        name: "compile_image",
+        command: `unset GTK_PATH; gnuplot -e "filename='$in'" template.gnu`,
+        implicitDependencies: ["template.gnu"]
+    };
+
+    let buildInstructions = []
+
+    let traceFiles = Array(config.traces).fill("error").map((value, index) => `${index}.trace`);
+    buildInstructions.push({ rule: simulationRule, inputs: ["spec.mrtccsl"], outputs: traceFiles });
+
+    let reactionStats = model.chains.flatMap(
+        chain =>
+            generateFunctionalChainSegments(chain, context)
+                .map(file => [chain.name, file])
+    ).map(([chainName, filename]) => `${chainName}/${filename}.histogram.csv`);
+
+    buildInstructions.push({ rule: reactionRule, inputs: ["chains", ...traceFiles], outputs: reactionStats });
+
+    for (let file of reactionStats) {
+        buildInstructions.push({ rule: compileImageRule, inputs: [file], outputs: [file + ".svg"] });
     }
-    let images = reaction_stats.map(file => file + ".svg");
-    buildrules.push(`build images: phony ${images.join(" ")}`);
-    buildrules.push("default images");
+    let images = reactionStats.map(file => file + ".svg");
+    const ninjafile = renderBuildFile([simulationRule, reactionRule, compileImageRule], buildInstructions, [{ name: "images", artifacts: images }]);
 
-    const ninjafile = `
-rule simulation
-    command = ${mrtccslLocation}eval $$(opam env); ${mrtccslLocation ? "cd $$OLDPWD;" : ""} OCAMLRUNPARAM=b simulate $in -o ./ -bob -cadp -tcadp --scale 0.0001 --traces 10 --steps 10000 --horizon 10000
-
-rule compile_image
-    command = unset GTK_PATH; gnuplot -e "filename='$in'" template.gnu
-${buildrules.join("\n")}
-`
     await overrideFileIfChanged(path.join(buildDir, "template.gnu"), gnuTemplate);
     await overrideFileIfChanged(path.join(buildDir, "build.ninja"), ninjafile);
 
