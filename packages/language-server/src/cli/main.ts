@@ -175,11 +175,28 @@ export const generateAction = async (
         command: `unset GTK_PATH; gnuplot -e "filename='$in'" template.gnu`,
         implicitDependencies: ["template.gnu"]
     };
+    let compileTCADPRule = <NinjaRule>{
+        name: "convert_trace",
+        command: `${mrtccslLocation}eval $$(opam env); ${mrtccslLocation ? "cd $$OLDPWD;" : ""} OCAMLRUNPARAM=b ccsl+ convert native csl --microstep=spec.mrtccsl --discretize=near --scale=${config.scale} $in -o $out`,
+        implicitDependencies: ["spec.mrtccsl"]
+    };
 
     let buildInstructions = []
 
     let traceFiles = Array(config.traces).fill("error").map((value, index) => `${index}.trace`);
     buildInstructions.push({ rule: simulationRule, inputs: ["spec.mrtccsl"], outputs: traceFiles });
+    let tcadpFiles: string[] = [];
+    buildInstructions.push(...Array(config.traces).fill("error").map((value, index) => {
+        let traceFile = `${index}.trace`;
+        let tcadpFile = `trace/t${index + 1}.txt`;
+        tcadpFiles.push(tcadpFile);
+        return <NinjaBuildInstruction>{
+            rule: compileTCADPRule,
+            inputs: [traceFile],
+            outputs: [tcadpFile]
+        }
+    }));
+
 
     let reactionStats = model.chains.flatMap(
         chain =>
@@ -193,7 +210,7 @@ export const generateAction = async (
         buildInstructions.push({ rule: compileImageRule, inputs: [file], outputs: [file + ".svg"] });
     }
     let images = reactionStats.map(file => file + ".svg");
-    const ninjafile = renderBuildFile([simulationRule, reactionRule, compileImageRule], buildInstructions, [{ name: "images", artifacts: images }]);
+    const ninjafile = renderBuildFile([simulationRule, reactionRule, compileImageRule, compileTCADPRule], buildInstructions, [{ name: "images", artifacts: images }, { name: "tcadp", artifacts: tcadpFiles }]);
 
     await overrideFileIfChanged(path.join(buildDir, "template.gnu"), gnuTemplate);
     await overrideFileIfChanged(path.join(buildDir, "build.ninja"), ninjafile);
