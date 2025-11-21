@@ -23,7 +23,7 @@ import {
     Scope
 } from 'langium';
 import { injectable } from 'inversify';
-import { Model, isSubscriber, isPublisher, isModel, isActuator, isSensor, isFunctionalChain} from './generated/ast.js';
+import { Model, isSubscriber, isPublisher, isModel, isActuator, isSensor, isFunctionalChain, isEventTriggering } from './generated/ast.js';
 
 @injectable()
 export class SdvmlScopeProvider extends DefaultScopeProvider {
@@ -31,23 +31,48 @@ export class SdvmlScopeProvider extends DefaultScopeProvider {
     override getScope(context: ReferenceInfo): Scope {
         const { container, property } = context;
 
-        if (isPublisher(container) && property === 'sigRef') {
+        if (isPublisher(container)) {
+            const model = this.findRootModel(container);
+            if (!model?.vss) return EMPTY_SCOPE;
+            if (property === 'actuatorSignal') {
+                const actuators = model.vss.signals.filter(isActuator);
+                return this.createScopeForNodes(actuators);
+
+            } else if (property === 'appSignal') {
+                const signals = model.components.flatMap(c => c.signals);
+                return this.createScopeForNodes(signals);
+            }
+        }
+
+        if (isSubscriber(container)) {
+            const model = this.findRootModel(container);
+            if (!model?.vss) return EMPTY_SCOPE;
+            if (property === 'sensorSignal') {
+                const sensors = model.vss.signals.filter(isSensor);
+                return this.createScopeForNodes(sensors);
+            }
+            else if (property === 'appSignal') {
+                const signals = model.components.flatMap(c => c.signals);
+                return this.createScopeForNodes(signals);
+            }
+        }
+
+        if (isEventTriggering(container)) {
             const model = this.findRootModel(container);
             if (!model?.vss) return EMPTY_SCOPE;
 
-            const actuators = model.vss.signals.filter(isActuator);
-            return this.createScopeForNodes(actuators);
+            if (property === "trigger") {
+                const subscribedSignals = model.components.flatMap(c => c.services.flatMap(s => s.subscribers.map((sub) => {
+                    const newsub = { ...sub, name: sub.appSignal?.ref?.name ?? sub.sensorSignal?.ref?.name! };
+                    return newsub
+                }
+                )));
+                return this.createScopeForNodes(subscribedSignals);
+            }
+
         }
 
-        if (isSubscriber(container) && property === 'sigRef') {
-            const model = this.findRootModel(container);
-            if (!model?.vss) return EMPTY_SCOPE;
-
-            const sensors = model.vss.signals.filter(isSensor);
-            return this.createScopeForNodes(sensors);
-        }
-
-        if (isFunctionalChain(container)){
+        if (isFunctionalChain(container)) {
             const model = this.findRootModel(container);
             if (!model?.vss) return EMPTY_SCOPE;
 
@@ -55,6 +80,7 @@ export class SdvmlScopeProvider extends DefaultScopeProvider {
                 ...model.vss.signals,
                 ...model.components.flatMap(c => c.services.flatMap(s => s.publishers)),
                 ...model.components.flatMap(c => c.services.flatMap(s => s.subscribers)),
+                ...model.components.flatMap(c => c.signals),
                 ...model.components.flatMap(c => c.services),
             ]
             return this.createScopeForNodes(fcParticipants);
@@ -65,10 +91,10 @@ export class SdvmlScopeProvider extends DefaultScopeProvider {
 
     private findRootModel(node: AstNode): Model {
 
-        if (isModel(node) ){
+        if (isModel(node)) {
             return node as Model
         }
-        if (node.$container == undefined){
+        if (node.$container == undefined) {
             throw "SdvmlScopeProvide:getScope() -> no Model root found !"
         }
         return this.findRootModel(node.$container)

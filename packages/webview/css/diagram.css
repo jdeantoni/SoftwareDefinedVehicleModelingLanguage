@@ -53,7 +53,12 @@
 
 .fc-edge{
     fill:none;
-    stroke: aquamarine;
+    stroke: coral;
+    stroke-width: 4px;
+}
+.fc-guide{
+    fill:none;
+    stroke: aqua;
     stroke-width: 4px;
 }
 

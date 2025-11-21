@@ -27,62 +27,69 @@ entry Model:
         ("Functional" "Chains" ":"
             (chains+=FunctionalChain)*
         )?
-    ;
+;
 
 FunctionalChain:
-    "chain" ":"
-        participants+=[FCParticipant:ID] ("->" participants+=[FCParticipant:ID])* ;
+    name=ID ":"
+        participants+=[FCParticipant:ID] ("->" participants+=[FCParticipant:ID])*;
 
 
-type FCParticipant = Sensor | Subscriber | Service | Publisher | Actuator;
+type FCParticipant = Sensor | Service | Actuator;
 
 VSS:
     "VSS" ":"
         (signals+=Signal*)
-    ;
+;
 
 RandomVar:
-    mean=INT "+/-" stdDev=INT
-    ;
+    mean=DURATION "+/-" stdDev=DURATION
+    | "[" left=DURATION "," right=DURATION "]" "~" "normal" ("(" mean=DURATION "," stdDev=DURATION ")")?
+;
 TriggeringRule:
     PeriodicTriggering | EventTriggering;
 
 PeriodicTriggering:
-    'periodic' period=RandomVar 'ms';
+    'periodic' period=RandomVar ';' ('offset'':'offset=RandomVar | 'varying_offset');
 
 EventTriggering:
-    'triggered' 'on' trigger=[Subscriber:ID];
+    'triggered' 'on' (trigger=[Subscriber:ID] | 'event');
 
 Component:
-    'Component' name=ID
+    'Component' name=ID ":"
+    (signals+=AppSignal)*
     (
         services+=Service
     )+;
+
+AppSignal:
+    "Signal" name=ID;
 
 Signal:
     Sensor | Actuator;
 
 Sensor:
-    "Sensor" "Signal" name=ID '(''SSP'':'ssp=RandomVar 'ms'',''DL'':'dl=RandomVar'ms'')';
+    "Sensor" "Signal" name=ID '(''SSP'':'ssp=RandomVar';'('offset'':'offset=RandomVar | 'varying_offset')',''DL'':'dl=RandomVar')';
 
 Actuator:
-    "Actuator" "Signal" name=ID '(' trigRule=TriggeringRule',''AD'':'ad=RandomVar'ms'')';
+    "Actuator" "Signal" name=ID '(' trigRule=TriggeringRule',''AD'':'ad=RandomVar')';
 
 Publisher:
-    'publish' (sigName=ID | "to" "VSS" "signal" sigRef=[Actuator]) ('('name=ID')')?;//('type' msgType=STRING)? 'message' msg=STRING;
+    'publish' (appSignal=[AppSignal:ID] | "to" "VSS" "signal" actuatorSignal=[Actuator:ID]);//('type' msgType=STRING)? 'message' msg=STRING;
 
 Subscriber:
-    'subscribe' "to" (sigName=ID | "VSS" "signal" sigRef=[Sensor]) ('('name=ID')')?;// ('type' msgType=STRING)? msg=STRING;
+    'subscribe' "to" (appSignal=[AppSignal:ID] | "VSS" "signal" sensorSignal=[Sensor:ID]);// ('type' msgType=STRING)? msg=STRING;
 
 Service:
-    'service' name=ID":"
+    'Service' name=ID":"
         (
             publishers+=Publisher |
             subscribers+=Subscriber
         )+
         trigRule=TriggeringRule
-        'ExecTime' execTime=RandomVar 'ms'; //('type' srvType=STRING)?;
+        'execution' execTime=RandomVar; //('type' srvType=STRING)?;
 
+DURATION:
+    value=INT "ms"; // TODO: make properly the SI units
 
 terminal ID: /[_a-zA-Z][\w_]*/;
 terminal INT returns number: /[0-9]+/;

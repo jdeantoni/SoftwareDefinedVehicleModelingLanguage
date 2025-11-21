@@ -1838,7 +1838,12 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.sprotty-node {
 
 .fc-edge{
     fill:none;
-    stroke: aquamarine;
+    stroke: coral;
+    stroke-width: 4px;
+}
+.fc-guide{
+    fill:none;
+    stroke: aqua;
     stroke-width: 4px;
 }
 
@@ -1896,7 +1901,8 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.sprotty-node {
     fill: rgb(255, 255, 255);
     stroke-width: 1;
     stroke: rgb(218, 218, 218);
-}`, "",{"version":3,"sources":["webpack://./css/diagram.css"],"names":[],"mappings":"AAAA;IACI,wBAAwB;IACxB,eAAe;IACf,0BAA0B;AAC9B;AACA;IACI,wBAAwB;IACxB,eAAe;IACf,kBAAkB;AACtB;;AAEA;IACI,wBAAwB;IACxB,eAAe;IACf,gBAAgB;AACpB;;AAEA;IACI,eAAe;IACf,gDAAgD;AACpD;;AAEA;IACI,mBAAmB;IACnB,eAAe;AACnB;;AAEA;IACI,mBAAmB;IACnB,eAAe;AACnB;;AAEA;GACG,kBAAkB;GAClB,cAAc;GACd,wBAAwB;GACxB,eAAe;AAClB;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,SAAS;IACT,uDAAuD;IACvD,iBAAiB;AACrB;;AAEA;IACI,SAAS;IACT,kBAAkB;IAClB,iBAAiB;AACrB;;AAEA;IACI,oDAAoD;AACxD;;AAEA;IACI,8CAA8C;IAC9C,YAAY;IACZ,aAAa;AACjB;;AAEA;IACI,aAAa;AACjB;;AAEA;IACI,uDAAuD;AAC3D;;AAEA;IACI,sDAAsD;IACtD,eAAe;AACnB;;AAEA;IACI,iBAAiB;AACrB;;AAEA;IACI,UAAU;IACV,WAAW;AACf;;AAEA;IACI,uBAAuB;IACvB,eAAe;IACf,aAAa;AACjB;;AAEA;;GAEG;;AAEH;IACI;AACJ;;AAEA;IACI;AACJ;;AAEA;IACI,wBAAwB;IACxB,eAAe;IACf,0BAA0B;AAC9B","sourcesContent":[".sprotty-node {\n    fill: rgb(169, 208, 250);\n    stroke-width: 1;\n    stroke: rgb(113, 182, 255);\n}\n.node-label {\n    fill: rgb(169, 208, 250);\n    stroke-width: 0;\n    text-align: center;\n}\n\n.node-service {\n    fill: rgb(217, 234, 252);\n    stroke-width: 0;\n    text-align: left;\n}\n\n.sprotty-node.selected {\n    stroke-width: 2;\n    stroke: var(--vscode-button-secondaryForeground);\n}\n\n.sprotty-label {\n    fill: darkslategrey;\n    stroke-width: 0;\n}\n\n.sprotty-label {\n    fill: darkslategrey;\n    stroke-width: 0;\n}\n\n.values{\n   font-style: italic;\n   font-size: 70%;\n   fill: rgb(122, 121, 121);\n   stroke-width: 0;\n}\n\n.sprotty-button {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge .sprotty-label {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge {\n    fill:none;\n    stroke: var(--vscode-editorActiveLineNumber-foreground);\n    stroke-width: 2px;\n}\n\n.fc-edge{\n    fill:none;\n    stroke: aquamarine;\n    stroke-width: 4px;\n}\n\n.sprotty-edge-arrow {\n    fill:var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge > .sprotty-routing-handle {\n    fill: var(--vscode-editor-selectionBackground);\n    stroke: none;\n    z-index: 1000;\n}\n\n.sprotty-edge > .sprotty-routing-handle[data-kind='line'] {\n    opacity: 0.35;\n}\n\n.sprotty-edge > .sprotty-routing-handle.selected {\n    fill: var(--vscode-editor-selectionHighlightBackground);\n}\n\n.sprotty-edge > .sprotty-routing-handle.mouseover {\n    stroke: var(--vscode-editor-symbolHighlightBackground);\n    stroke-width: 1;\n}\n\n.sprotty-edge.mouseover:not(.selected) {\n    stroke-width: 3px;\n}\n\n.sprotty-hidden {\n    width: 0px;\n    height: 0px;\n}\n\n.vss-node{\n    fill: rgb(255, 231, 98);\n    stroke-width: 1;\n    stroke: coral;\n}\n\n/* .vss-node .sprotty-label{\n    fill:darkslategrey\n} */\n\n.sprotty-port{\n    fill:rgb(15, 0, 100)\n}\n\n.vss-node .sprotty-port{\n    fill:rgb(100, 0, 0)\n}\n\n.vss-container{\n    fill: rgb(255, 255, 255);\n    stroke-width: 1;\n    stroke: rgb(218, 218, 218);\n}"],"sourceRoot":""}]);
+}
+`, "",{"version":3,"sources":["webpack://./css/diagram.css"],"names":[],"mappings":"AAAA;IACI,wBAAwB;IACxB,eAAe;IACf,0BAA0B;AAC9B;AACA;IACI,wBAAwB;IACxB,eAAe;IACf,kBAAkB;AACtB;;AAEA;IACI,wBAAwB;IACxB,eAAe;IACf,gBAAgB;AACpB;;AAEA;IACI,eAAe;IACf,gDAAgD;AACpD;;AAEA;IACI,mBAAmB;IACnB,eAAe;AACnB;;AAEA;IACI,mBAAmB;IACnB,eAAe;AACnB;;AAEA;GACG,kBAAkB;GAClB,cAAc;GACd,wBAAwB;GACxB,eAAe;AAClB;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,qDAAqD;AACzD;;AAEA;IACI,SAAS;IACT,uDAAuD;IACvD,iBAAiB;AACrB;;AAEA;IACI,SAAS;IACT,aAAa;IACb,iBAAiB;AACrB;AACA;IACI,SAAS;IACT,YAAY;IACZ,iBAAiB;AACrB;;AAEA;IACI,oDAAoD;AACxD;;AAEA;IACI,8CAA8C;IAC9C,YAAY;IACZ,aAAa;AACjB;;AAEA;IACI,aAAa;AACjB;;AAEA;IACI,uDAAuD;AAC3D;;AAEA;IACI,sDAAsD;IACtD,eAAe;AACnB;;AAEA;IACI,iBAAiB;AACrB;;AAEA;IACI,UAAU;IACV,WAAW;AACf;;AAEA;IACI,uBAAuB;IACvB,eAAe;IACf,aAAa;AACjB;;AAEA;;GAEG;;AAEH;IACI;AACJ;;AAEA;IACI;AACJ;;AAEA;IACI,wBAAwB;IACxB,eAAe;IACf,0BAA0B;AAC9B","sourcesContent":[".sprotty-node {\n    fill: rgb(169, 208, 250);\n    stroke-width: 1;\n    stroke: rgb(113, 182, 255);\n}\n.node-label {\n    fill: rgb(169, 208, 250);\n    stroke-width: 0;\n    text-align: center;\n}\n\n.node-service {\n    fill: rgb(217, 234, 252);\n    stroke-width: 0;\n    text-align: left;\n}\n\n.sprotty-node.selected {\n    stroke-width: 2;\n    stroke: var(--vscode-button-secondaryForeground);\n}\n\n.sprotty-label {\n    fill: darkslategrey;\n    stroke-width: 0;\n}\n\n.sprotty-label {\n    fill: darkslategrey;\n    stroke-width: 0;\n}\n\n.values{\n   font-style: italic;\n   font-size: 70%;\n   fill: rgb(122, 121, 121);\n   stroke-width: 0;\n}\n\n.sprotty-button {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge .sprotty-label {\n    fill: var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge {\n    fill:none;\n    stroke: var(--vscode-editorActiveLineNumber-foreground);\n    stroke-width: 2px;\n}\n\n.fc-edge{\n    fill:none;\n    stroke: coral;\n    stroke-width: 4px;\n}\n.fc-guide{\n    fill:none;\n    stroke: aqua;\n    stroke-width: 4px;\n}\n\n.sprotty-edge-arrow {\n    fill:var(--vscode-editorActiveLineNumber-foreground);\n}\n\n.sprotty-edge > .sprotty-routing-handle {\n    fill: var(--vscode-editor-selectionBackground);\n    stroke: none;\n    z-index: 1000;\n}\n\n.sprotty-edge > .sprotty-routing-handle[data-kind='line'] {\n    opacity: 0.35;\n}\n\n.sprotty-edge > .sprotty-routing-handle.selected {\n    fill: var(--vscode-editor-selectionHighlightBackground);\n}\n\n.sprotty-edge > .sprotty-routing-handle.mouseover {\n    stroke: var(--vscode-editor-symbolHighlightBackground);\n    stroke-width: 1;\n}\n\n.sprotty-edge.mouseover:not(.selected) {\n    stroke-width: 3px;\n}\n\n.sprotty-hidden {\n    width: 0px;\n    height: 0px;\n}\n\n.vss-node{\n    fill: rgb(255, 231, 98);\n    stroke-width: 1;\n    stroke: coral;\n}\n\n/* .vss-node .sprotty-label{\n    fill:darkslategrey\n} */\n\n.sprotty-port{\n    fill:rgb(15, 0, 100)\n}\n\n.vss-node .sprotty-port{\n    fill:rgb(100, 0, 0)\n}\n\n.vss-container{\n    fill: rgb(255, 255, 255);\n    stroke-width: 1;\n    stroke: rgb(218, 218, 218);\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -7473,8 +7479,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   fragment: () => (/* binding */ fragment),
 /* harmony export */   h: () => (/* binding */ h)
 /* harmony export */ });
-/* harmony import */ var _vnode__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./vnode */ "../../node_modules/snabbdom/build/vnode.js");
-/* harmony import */ var _is__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./is */ "../../node_modules/snabbdom/build/is.js");
+/* harmony import */ var _vnode__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vnode */ "../../node_modules/snabbdom/build/vnode.js");
+/* harmony import */ var _is__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./is */ "../../node_modules/snabbdom/build/is.js");
 
 
 function addNS(data, children, sel) {
@@ -7500,10 +7506,10 @@ function h(sel, b, c) {
         if (b !== null) {
             data = b;
         }
-        if (_is__WEBPACK_IMPORTED_MODULE_0__.array(c)) {
+        if (_is__WEBPACK_IMPORTED_MODULE_1__.array(c)) {
             children = c;
         }
-        else if (_is__WEBPACK_IMPORTED_MODULE_0__.primitive(c)) {
+        else if (_is__WEBPACK_IMPORTED_MODULE_1__.primitive(c)) {
             text = c.toString();
         }
         else if (c && c.sel) {
@@ -7511,10 +7517,10 @@ function h(sel, b, c) {
         }
     }
     else if (b !== undefined && b !== null) {
-        if (_is__WEBPACK_IMPORTED_MODULE_0__.array(b)) {
+        if (_is__WEBPACK_IMPORTED_MODULE_1__.array(b)) {
             children = b;
         }
-        else if (_is__WEBPACK_IMPORTED_MODULE_0__.primitive(b)) {
+        else if (_is__WEBPACK_IMPORTED_MODULE_1__.primitive(b)) {
             text = b.toString();
         }
         else if (b && b.sel) {
@@ -7526,8 +7532,8 @@ function h(sel, b, c) {
     }
     if (children !== undefined) {
         for (i = 0; i < children.length; ++i) {
-            if (_is__WEBPACK_IMPORTED_MODULE_0__.primitive(children[i]))
-                children[i] = (0,_vnode__WEBPACK_IMPORTED_MODULE_1__.vnode)(undefined, undefined, undefined, children[i], undefined);
+            if (_is__WEBPACK_IMPORTED_MODULE_1__.primitive(children[i]))
+                children[i] = (0,_vnode__WEBPACK_IMPORTED_MODULE_0__.vnode)(undefined, undefined, undefined, children[i], undefined);
         }
     }
     if (sel[0] === "s" &&
@@ -7536,7 +7542,7 @@ function h(sel, b, c) {
         (sel.length === 3 || sel[3] === "." || sel[3] === "#")) {
         addNS(data, children, sel);
     }
-    return (0,_vnode__WEBPACK_IMPORTED_MODULE_1__.vnode)(sel, data, children, text, undefined);
+    return (0,_vnode__WEBPACK_IMPORTED_MODULE_0__.vnode)(sel, data, children, text, undefined);
 }
 /**
  * @experimental
@@ -7544,10 +7550,10 @@ function h(sel, b, c) {
 function fragment(children) {
     let c;
     let text;
-    if (_is__WEBPACK_IMPORTED_MODULE_0__.array(children)) {
+    if (_is__WEBPACK_IMPORTED_MODULE_1__.array(children)) {
         c = children;
     }
-    else if (_is__WEBPACK_IMPORTED_MODULE_0__.primitive(c)) {
+    else if (_is__WEBPACK_IMPORTED_MODULE_1__.primitive(c)) {
         text = children;
     }
     else if (c && c.sel) {
@@ -7555,11 +7561,11 @@ function fragment(children) {
     }
     if (c !== undefined) {
         for (let i = 0; i < c.length; ++i) {
-            if (_is__WEBPACK_IMPORTED_MODULE_0__.primitive(c[i]))
-                c[i] = (0,_vnode__WEBPACK_IMPORTED_MODULE_1__.vnode)(undefined, undefined, undefined, c[i], undefined);
+            if (_is__WEBPACK_IMPORTED_MODULE_1__.primitive(c[i]))
+                c[i] = (0,_vnode__WEBPACK_IMPORTED_MODULE_0__.vnode)(undefined, undefined, undefined, c[i], undefined);
         }
     }
-    return (0,_vnode__WEBPACK_IMPORTED_MODULE_1__.vnode)(undefined, {}, c, text, undefined);
+    return (0,_vnode__WEBPACK_IMPORTED_MODULE_0__.vnode)(undefined, {}, c, text, undefined);
 }
 
 
@@ -7833,8 +7839,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   init: () => (/* binding */ init)
 /* harmony export */ });
 /* harmony import */ var _vnode__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vnode */ "../../node_modules/snabbdom/build/vnode.js");
-/* harmony import */ var _is__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./is */ "../../node_modules/snabbdom/build/is.js");
-/* harmony import */ var _htmldomapi__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./htmldomapi */ "../../node_modules/snabbdom/build/htmldomapi.js");
+/* harmony import */ var _is__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./is */ "../../node_modules/snabbdom/build/is.js");
+/* harmony import */ var _htmldomapi__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./htmldomapi */ "../../node_modules/snabbdom/build/htmldomapi.js");
 
 
 
@@ -7895,7 +7901,7 @@ function init(modules, domApi, options) {
         pre: [],
         post: [],
     };
-    const api = domApi !== undefined ? domApi : _htmldomapi__WEBPACK_IMPORTED_MODULE_1__.htmlDomApi;
+    const api = domApi !== undefined ? domApi : _htmldomapi__WEBPACK_IMPORTED_MODULE_2__.htmlDomApi;
     for (const hook of hooks) {
         for (const module of modules) {
             const currentHook = module[hook];
@@ -7961,7 +7967,7 @@ function init(modules, domApi, options) {
                 elm.setAttribute("class", sel.slice(dot + 1).replace(/\./g, " "));
             for (i = 0; i < cbs.create.length; ++i)
                 cbs.create[i](emptyNode, vnode);
-            if (_is__WEBPACK_IMPORTED_MODULE_2__.array(children)) {
+            if (_is__WEBPACK_IMPORTED_MODULE_1__.array(children)) {
                 for (i = 0; i < children.length; ++i) {
                     const ch = children[i];
                     if (ch != null) {
@@ -7969,7 +7975,7 @@ function init(modules, domApi, options) {
                     }
                 }
             }
-            else if (_is__WEBPACK_IMPORTED_MODULE_2__.primitive(vnode.text)) {
+            else if (_is__WEBPACK_IMPORTED_MODULE_1__.primitive(vnode.text)) {
                 api.appendChild(elm, api.createTextNode(vnode.text));
             }
             const hook = vnode.data.hook;
@@ -8821,14 +8827,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   toVNode: () => (/* binding */ toVNode)
 /* harmony export */ });
-/* harmony import */ var _h__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./h */ "../../node_modules/snabbdom/build/h.js");
-/* harmony import */ var _vnode__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./vnode */ "../../node_modules/snabbdom/build/vnode.js");
-/* harmony import */ var _htmldomapi__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./htmldomapi */ "../../node_modules/snabbdom/build/htmldomapi.js");
+/* harmony import */ var _h__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./h */ "../../node_modules/snabbdom/build/h.js");
+/* harmony import */ var _vnode__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./vnode */ "../../node_modules/snabbdom/build/vnode.js");
+/* harmony import */ var _htmldomapi__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./htmldomapi */ "../../node_modules/snabbdom/build/htmldomapi.js");
 
 
 
 function toVNode(node, domApi) {
-    const api = domApi !== undefined ? domApi : _htmldomapi__WEBPACK_IMPORTED_MODULE_0__.htmlDomApi;
+    const api = domApi !== undefined ? domApi : _htmldomapi__WEBPACK_IMPORTED_MODULE_2__.htmlDomApi;
     let text;
     if (api.isElement(node)) {
         const id = node.id ? "#" + node.id : "";
@@ -8867,20 +8873,20 @@ function toVNode(node, domApi) {
             sel[1] === "v" &&
             sel[2] === "g" &&
             (sel.length === 3 || sel[3] === "." || sel[3] === "#")) {
-            (0,_h__WEBPACK_IMPORTED_MODULE_1__.addNS)(data, children, sel);
+            (0,_h__WEBPACK_IMPORTED_MODULE_0__.addNS)(data, children, sel);
         }
-        return (0,_vnode__WEBPACK_IMPORTED_MODULE_2__.vnode)(sel, data, children, undefined, node);
+        return (0,_vnode__WEBPACK_IMPORTED_MODULE_1__.vnode)(sel, data, children, undefined, node);
     }
     else if (api.isText(node)) {
         text = api.getTextContent(node);
-        return (0,_vnode__WEBPACK_IMPORTED_MODULE_2__.vnode)(undefined, undefined, undefined, text, node);
+        return (0,_vnode__WEBPACK_IMPORTED_MODULE_1__.vnode)(undefined, undefined, undefined, text, node);
     }
     else if (api.isComment(node)) {
         text = api.getTextContent(node);
-        return (0,_vnode__WEBPACK_IMPORTED_MODULE_2__.vnode)("!", {}, [], text, node);
+        return (0,_vnode__WEBPACK_IMPORTED_MODULE_1__.vnode)("!", {}, [], text, node);
     }
     else {
-        return (0,_vnode__WEBPACK_IMPORTED_MODULE_2__.vnode)("", {}, [], undefined, node);
+        return (0,_vnode__WEBPACK_IMPORTED_MODULE_1__.vnode)("", {}, [], undefined, node);
     }
 }
 
@@ -40466,7 +40472,8 @@ function createSdvmlDiagramContainer(widgetId, customHoverListener) {
             enable: [sprotty_1.editLabelFeature]
         });
         (0, sprotty_1.configureModelElement)(context, 'edge', model_1.SdvmlEdge, sprotty_1.JumpingPolylineEdgeView);
-        (0, sprotty_1.configureModelElement)(context, 'edge:fc-edge', model_1.SdvmlFCEdge, views_1.StraightEdgeView);
+        (0, sprotty_1.configureModelElement)(context, 'edge:fc-edge', model_1.SdvmlFCEdge, views_1.FCEdgeView);
+        (0, sprotty_1.configureModelElement)(context, 'edge:fc-guide', model_1.SdvmlFCEdge, views_1.GuideEdgeView);
         (0, sprotty_1.configureModelElement)(context, 'html', sprotty_1.HtmlRootImpl, sprotty_1.HtmlRootView);
         (0, sprotty_1.configureModelElement)(context, 'pre-rendered', sprotty_1.PreRenderedElementImpl, sprotty_1.PreRenderedView);
         (0, sprotty_1.configureModelElement)(context, 'palette', sprotty_1.SModelRootImpl, sprotty_1.HtmlRootView);
@@ -40477,6 +40484,7 @@ function createSdvmlDiagramContainer(widgetId, customHoverListener) {
         (0, sprotty_1.configureModelElement)(context, 'actuator-port', sprotty_1.RectangularPort, views_1.DownTriangleButtonView);
         (0, sprotty_1.configureModelElement)(context, 'sensor-port', sprotty_1.RectangularPort, views_1.TopTriangleButtonView);
         (0, sprotty_1.configureModelElement)(context, 'node:vss-node', model_1.SdvmlNode, views_1.SdvmlSignalNodeView);
+        (0, sprotty_1.configureModelElement)(context, 'node:chain', model_1.SdvmlNode, views_1.SdvmlSignalNodeView);
         // configureModelElement(context, 'node:vss-container', SdvmlNode, SdvmlVSSNodeView);
         (0, sprotty_1.configureCommand)(context, sprotty_1.CreateElementCommand);
     });
@@ -40667,7 +40675,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.StraightEdgeView = exports.TopTriangleButtonView = exports.InvisibleTriangleView = exports.DownTriangleButtonView = exports.TriangleButtonView = exports.SdvmlVSSNodeView = exports.SdvmlLabelNodeView = exports.SdvmlServiceNodeView = exports.SdvmlSignalNodeView = void 0;
+exports.GuideEdgeView = exports.FCEdgeView = exports.TopTriangleButtonView = exports.InvisibleTriangleView = exports.DownTriangleButtonView = exports.TriangleButtonView = exports.SdvmlVSSNodeView = exports.SdvmlLabelNodeView = exports.SdvmlServiceNodeView = exports.SdvmlSignalNodeView = void 0;
 /** @jsx svg */
 const inversify_1 = __webpack_require__(/*! inversify */ "../../node_modules/inversify/lib/cjs/index.js");
 const sprotty_1 = __webpack_require__(/*! sprotty */ "../../node_modules/sprotty/lib/index.js");
@@ -40767,7 +40775,7 @@ exports.TopTriangleButtonView = TopTriangleButtonView;
 exports.TopTriangleButtonView = TopTriangleButtonView = __decorate([
     (0, inversify_1.injectable)()
 ], TopTriangleButtonView);
-class StraightEdgeView extends sprotty_1.PolylineEdgeView {
+class FCEdgeView extends sprotty_1.PolylineEdgeView {
     render(edge, context) {
         if (edge.routerKind === 'manhattan')
             return super.render(edge, context); // optional fallback
@@ -40780,7 +40788,21 @@ class StraightEdgeView extends sprotty_1.PolylineEdgeView {
             (0, sprotty_1.svg)("line", { x1: start.x, y1: start.y, x2: end.x, y2: end.y }));
     }
 }
-exports.StraightEdgeView = StraightEdgeView;
+exports.FCEdgeView = FCEdgeView;
+class GuideEdgeView extends sprotty_1.PolylineEdgeView {
+    render(edge, context) {
+        if (edge.routerKind === 'manhattan')
+            return super.render(edge, context); // optional fallback
+        const route = this.edgeRouterRegistry.route(edge);
+        if (!route || route.length < 2)
+            return undefined;
+        const start = route[0];
+        const end = route[route.length - 1];
+        return (0, sprotty_1.svg)("g", { "class-sprotty-edge": true, "class-fc-guide": true },
+            (0, sprotty_1.svg)("line", { x1: start.x, y1: start.y, x2: end.x, y2: end.y }));
+    }
+}
+exports.GuideEdgeView = GuideEdgeView;
 
 
 /***/ })

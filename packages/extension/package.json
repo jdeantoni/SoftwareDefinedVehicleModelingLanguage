@@ -100,7 +100,7 @@
       {
         "command": "sdvml.generateCode",
         "title": "Run SDVML Compiler",
-        "icon": "$(gear)",
+        "icon": "$(run)",
         "category": "Sdvml Diagram"
       }
     ],
@@ -179,7 +179,18 @@
         "command": "sdvml.diagram.delete",
         "when": "sdvml-diagram-focused"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "SDV DSL",
+      "properties": {
+        "mrtccsl": {
+          "type": "string",
+          "default": null,
+          "description": "Path to the directory with MRTCCSL switch installed. Uses global switch by default."
+        }
+      }
+    }
   },
   "activationEvents": [
     "onCommand:sdvml.generateCode",

@@ -18,7 +18,7 @@
                 "--extensionDevelopmentPath=${workspaceFolder}/packages/extension"
             ],
             "outFiles": [
-                "${workspaceFolder}/packages/extension/pack/extension/src/*.cjs"
+                "${workspaceFolder}/packages/extension/pack/extension/src/*"
             ],
             "sourceMaps": true
         },
@@ -35,7 +35,7 @@
                 "--extensionDevelopmentPath=${workspaceFolder}/packages/extension"
             ],
             "outFiles": [
-                "${workspaceFolder}/packages/extension/pack/extension/src/*.cjs"
+                "${workspaceFolder}/packages/extension/pack/extension/src/*"
             ],
             "sourceMaps": true
         },
@@ -52,7 +52,7 @@
                 "--extensionDevelopmentPath=${workspaceFolder}/packages/extension"
             ],
             "outFiles": [
-                "${workspaceFolder}/packages/extension/pack/extension/src/*.cjs"
+                "${workspaceFolder}/packages/extension/pack/extension/src/*"
             ],
             "sourceMaps": true
         },
@@ -66,7 +66,7 @@
             ],
             "sourceMaps": true,
             "outFiles": [
-                "${workspaceFolder}/packages/extension/pack/language-server/src/*.cjs"
+                "${workspaceFolder}/packages/extension/pack/language-server/src/*"
             ]
         },
     ]

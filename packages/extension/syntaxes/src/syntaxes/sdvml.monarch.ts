@@ -1,12 +1,12 @@
 // Monarch syntax highlighting for the sdvml language.
 export default {
     keywords: [
-        'AD','Actuator','App','Chains','Component','DL','ExecTime','Functional','SDV','SSP','Sensor','Signal','VSS','chain','ms','on','periodic','publish','service','signal','subscribe','to','triggered'
+        'AD','Actuator','App','Chains','Component','DL','Functional','SDV','SSP','Sensor','Service','Signal','VSS','event','execution','ms','normal','offset','on','periodic','publish','signal','subscribe','to','triggered','varying_offset'
     ],
     operators: [
-        '+/-',',','->',':'
+        '+/-',',','->',':',';','~'
     ],
-    symbols: /\(|\)|\+\/-|,|->|:/,
+    symbols: /\(|\)|\+\/-|,|->|:|;|\[|\]|~/,
 
     tokenizer: {
         initial: [

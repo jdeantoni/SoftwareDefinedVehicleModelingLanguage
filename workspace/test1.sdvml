@@ -1,35 +1,36 @@
 SDV test1:
 VSS :
-    Sensor Signal Camera (SSP:10+/-2ms, DL: 5+/-2ms)
-    Sensor Signal Lidar (SSP:10+/-2ms, DL: 5+/-2ms) 
+    Sensor Signal Camera (SSP:10ms+/-2ms; offset : 0ms+/-0ms, DL: 5ms+/-2ms)
+    Sensor Signal Lidar (SSP:10ms+/-2ms; offset : 0ms+/-0ms, DL: 5ms+/-2ms) 
 
-    Actuator Signal FrontBrake (periodic 10+/-2ms, AD: 5+/-2ms)
-    Actuator Signal RearBrake (periodic 10+/-2ms, AD: 5+/-2ms)
+    Actuator Signal FrontBrake (periodic 10ms+/-2ms; offset : 0ms+/-0ms, AD: 5ms+/-2ms)
+    Actuator Signal RearBrake (periodic 10ms+/-2ms ; offset : 0ms+/-0ms, AD: 5ms+/-2ms)
  
 App :
-    Component AEBS_controler 
+    Component AEBS_controler :
        
  
-        
-        service s1:
+        Signal Alarm
+        Service s1:
             subscribe to VSS signal Camera  
-            subscribe to VSS signal Lidar (Rad) 
-            publish to VSS signal FrontBrake (FB) 
+            subscribe to VSS signal Lidar
+            publish to VSS signal FrontBrake
             publish Alarm
             
-            triggered on Rad 
-            ExecTime 3+/-1ms 
+            triggered on Lidar 
+            execution 3ms+/-1ms 
 
-    Component SecondControler 
+    Component SecondControler :
       
-        service s2:
-            subscribe to Alarm (Al)
+        Service s2:
+            subscribe to Alarm
             publish to VSS signal RearBrake 
-            periodic 10+/-1ms
-            ExecTime 3+/-1ms
-        // service s3:
-        //     triggered on Al
-        //     ExecTime 3+/-1ms
+            periodic 10ms+/-1ms ; offset : 0ms+/-0ms
+            execution 3ms+/-1ms
+        Service s3:
+        subscribe to Alarm
+            triggered on Alarm
+            execution 3ms+/-1ms
 
 Functional Chains:
- chain : Lidar -> Rad -> s1 -> FB -> FrontBrake 
+ chain : Lidar -> s1 -> FrontBrake 
