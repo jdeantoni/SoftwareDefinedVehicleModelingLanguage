@@ -1,5 +1,5 @@
 # SoftwareDefinedVehicleModelingLanguage
-a simple DSL for SDV understandable timing Analysis
+a simple DSL for SDV understandable timing Analysis (check the [language README](./packages/language-server/README.md) for an example)
 
 ## Building the plugin
 
@@ -12,8 +12,6 @@ to resolve all dependencies
 yarn
 ```
 to compile.
-
-check the [language README](./packages/language-server/README.md)
 
 ## Using
 ### Analysis dependencies
