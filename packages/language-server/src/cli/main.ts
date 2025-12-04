@@ -167,7 +167,7 @@ export const generateAction = async (
     };
     let reactionRule = <NinjaRule>{
         name: "reaction-time",
-        command: `${mrtccslLocation}eval $$(opam env); ${mrtccslLocation ? "cd $$OLDPWD;" : ""} OCAMLRUNPARAM=b ccsl+ reaction --hist=${config.scale} $in -o ./`,
+        command: `${mrtccslLocation}eval $$(opam env); ${mrtccslLocation ? "cd $$OLDPWD;" : ""} OCAMLRUNPARAM=b ccsl+ reaction -s earliest --scale=${config.scale} -c $in -o ./`,
         implicitDependencies: []
     };
     let compileImageRule = <NinjaRule>{
@@ -177,7 +177,7 @@ export const generateAction = async (
     };
     let compileTCADPRule = <NinjaRule>{
         name: "convert_trace",
-        command: `${mrtccslLocation}eval $$(opam env); ${mrtccslLocation ? "cd $$OLDPWD;" : ""} OCAMLRUNPARAM=b ccsl+ convert native csl --microstep=spec.mrtccsl --discretize=near --scale=${config.scale} $in -o $out`,
+        command: `${mrtccslLocation}eval $$(opam env); ${mrtccslLocation ? "cd $$OLDPWD;" : ""} OCAMLRUNPARAM=b ccsl+ trace convert native csl --microstep=spec.mrtccsl --discretize=near --scale=${config.scale} $in -o $out`,
         implicitDependencies: ["spec.mrtccsl"]
     };
 
@@ -202,7 +202,7 @@ export const generateAction = async (
         chain =>
             generateFunctionalChainSegments(chain, context)
                 .map(file => [chain.name, file])
-    ).map(([chainName, filename]) => `${chainName}/${filename}.histogram.csv`);
+    ).map(([chainName, filename]) => `${chainName}/categorized/${filename}.histogram.csv`);
 
     buildInstructions.push({ rule: reactionRule, inputs: ["chains", ...traceFiles], outputs: reactionStats });
 
@@ -227,7 +227,6 @@ export const generateAction = async (
             const last = matches[matches.length - 1];
             const totalSteps = parseInt(last[2]);
             const processedSteps = matches.length;
-            console.log(matches.map(m => m[0]));
             progress.report({ message: "building " + last[0], increment: processedSteps * 90 / totalSteps })
         }
     }

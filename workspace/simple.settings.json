@@ -1,0 +1,5 @@
+{
+    "max_timestamp": 1000.0,
+    "max_steps": 1000,
+    "traces": 10
+}

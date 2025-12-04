@@ -1,0 +1,15 @@
+SDV Valeo:
+
+VSS :
+    Sensor Signal CameraFrame (SSP:40ms+/-1ms; offset:0ms+/-0ms, DL: 10ms+/-2ms) 
+    Actuator Signal Screen (periodic 15ms+/-1ms ; offset : 0ms+/-0ms, AD: 4ms+/-1ms)
+App :
+    Component Recognition :
+        Service S:
+            subscribe to VSS signal CameraFrame
+            publish to VSS signal Screen
+            triggered on CameraFrame
+            execution 100ms+/-30ms
+
+Functional Chains:
+    chain : CameraFrame -> S -> Screen
