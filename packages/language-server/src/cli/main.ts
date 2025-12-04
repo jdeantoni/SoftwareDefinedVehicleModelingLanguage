@@ -136,7 +136,7 @@ export const generateAction = async (
     }
 
 
-    const specification = generateMRTCCSLSpec(model, context);
+    const specification = generateMRTCCSLSpec(context);
     await overrideFileIfChanged(mrtccslFilePath, specification);
 
     progress.report({ increment: 4, message: "functional chains" });

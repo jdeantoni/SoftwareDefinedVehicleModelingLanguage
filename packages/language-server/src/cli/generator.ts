@@ -12,7 +12,6 @@ import {
     Publisher,
     RandomVar,
     TriggeringRule,
-    isEventTriggering,
     FunctionalChain,
 } from '../generated/ast.js';
 import { CompositeGeneratorNode, toString } from 'langium/generate';
@@ -98,17 +97,13 @@ export class Context {
 
         let runnable_vss: [string, Runnable][] = model.vss.signals.map(s => {
             if (isActuator(s)) {
-                if (isEventTriggering(s.trigRule)) {
-                    return [s.name, { name: s.name, trigger: { $type: "EventTrigger", event: s.name }, execution: s.ad }];
-                } else {
-                    return [s.name, { name: s.name, trigger: { $type: "PeriodicTrigger", period: s.trigRule.period, offset: s.trigRule.offset ?? 0 }, execution: s.ad }];
-                }
+                return [s.name, new Runnable(s.name, trigRuleToTrigger(s.name, s.trigRule), s.ad)];
             } else {
-                const trigger: Trigger = { $type: "PeriodicTrigger", period: s.ssp, offset: s.offset ?? 0 };
-                return [s.name, { name: s.name, trigger, execution: s.dl }];
+                const trigger: Trigger = new PeriodicTrigger(s.ssp, s.offset ?? 0);
+                return [s.name, new Runnable(s.name, trigger, s.dl)];
             }
         });
-        let runnable_services = model.components.flatMap(c => c.services.map(s => [s.name, { name: makeServiceName(c, s), trigger: trigRuleToTrigger(s.name, s.trigRule), execution: s.execTime }]) as [string, Runnable][]);
+        let runnable_services = model.components.flatMap(c => c.services.map(s => [s.name, new Runnable(makeServiceName(c, s), trigRuleToTrigger(s.name, s.trigRule), s.execTime)]) as [string, Runnable][]);
         this.runnables = new Map(runnable_vss.concat(runnable_services))
     }
 }
@@ -614,15 +609,50 @@ function generateIFActuator(sig: Actuator, ifContent: CompositeGeneratorNode, si
 
 }
 
-interface EventTrigger {
-    $type: 'EventTrigger'
-    event: string
+class EventTrigger {
+    $type: 'EventTrigger';
+    event: string;
+    constructor(event: string) {
+        this.event = event;
+    }
+    spec(spawn_clock: string, jitter_var: string, phase_var: string, ctx: Context): [string, string] {
+        let structure = "";
+
+        for (let signalPub of ctx.signalToPublishers.get(this.event) ?? []) {
+            let pubRunnable = ctx.runnables.get(signalPub) ?? expect("imposible situation: runnable should be defined if it is listed as producer");
+            structure += `\n\t${pubRunnable.finish_clock} = ${spawn_clock};`; // ASSUMPTION: communication is instantaneous
+        }
+        return ["", structure]
+    }
 }
 
-interface PeriodicTrigger {
-    $type: 'PeriodicTrigger'
-    period: RandomVar
-    offset: RandomVar | number
+class PeriodicTrigger {
+    $type: 'PeriodicTrigger';
+    period: RandomVar;
+    offset: RandomVar | number;
+    constructor(period: RandomVar, offset: RandomVar | number) {
+        this.period = period;
+        this.offset = offset;
+    }
+    spec(spawn_clock: string, jitter_var: string, phase_var: string): [string, string] {
+        let assumptions = "";
+        const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(this.period, sigma);
+        if (typeof this.offset !== "number") {
+            const { left: left_off_bound, right: right_off_bound } = randomVariableToRange(this.offset, sigma);
+            assumptions = `
+    duration : ${left_off_bound}ms <= ${phase_var} <= ${right_off_bound}ms;
+    continuous process ${phase_var} with normal(${this.offset.mean.value}ms, ${this.offset.stdDev.value}ms);`;
+        } else { // ASSUMPTION: if offset is not defined, random until period is assumed
+            assumptions = `
+    duration : ${0}ms <= ${phase_var} <= ${right_period_bound}ms;
+    continuous process ${phase_var} with uniform;`;
+        }
+        assumptions += `
+        duration : ${left_period_bound - this.period.mean.value}ms <= ${jitter_var} <= ${right_period_bound - this.period.mean.value}ms;
+        continuous process ${jitter_var} with normal(0s, ${this.period.stdDev.value}ms);`;
+        let structure = `${spawn_clock} = periodic ${this.period.mean.value}ms with jitter ${jitter_var} offset ${phase_var};`;
+        return [assumptions, structure];
+    }
 }
 
 type Trigger = EventTrigger | PeriodicTrigger;
@@ -631,19 +661,40 @@ class Runnable {
     name: string;
     trigger: Trigger;
     execution: RandomVar;
+    constructor(name: string, trigger: Trigger, execution: RandomVar) {
+        this.name = name;
+        this.trigger = trigger;
+        this.execution = execution;
+    }
+    get start_clock(): string {
+        return `${this.name}_START`
+    }
+    get finish_clock(): string {
+        return `${this.name}_FINISH`
+    }
+    get spawn_clock(): string {
+        return `${this.name}_SPAWN`;
+    }
+    get execution_var(): string {
+        return `${this.name}_EXECUTION`;
+    }
+    get jitter_var(): string {
+        return `${this.name}_JITTER`;
+    }
+    get phase_var(): string {
+        return `${this.name}_PHASE`;
+    }
 }
 
 function trigRuleToTrigger(serviceName: string, rule: TriggeringRule): Trigger {
     if (isPeriodicTriggering(rule)) {
-        return { $type: "PeriodicTrigger", period: rule.period, offset: rule.offset ?? 0 };
+        return new PeriodicTrigger(rule.period, rule.offset ?? 0); // ASSUMPTION: offset is set to 0 if missing.
     } else {
-        return { $type: "EventTrigger", event: getSubscriptionSignal(serviceName, rule.trigger?.ref!) };
+        return new EventTrigger(getSubscriptionSignal(serviceName, rule.trigger?.ref!));
     }
 }
 
-
-export function generateMRTCCSLSpec(model: Model, context: Context
-): string {
+export function generateMRTCCSLSpec(context: Context): string {
     let [assumptions, structure] = Array.from(context.runnables.values()).map(r => generateMRTCCSLRunnable(r, context, sigma)).reduce(
         (acc, v) => {
             let [assumes, structs] = acc;
@@ -661,48 +712,22 @@ export function generateMRTCCSLSpec(model: Model, context: Context
 function generateMRTCCSLRunnable(r: Runnable, ctx: Context, sigma: number): [string, string] {
     const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(r.execution, sigma);
     let exec_duration_constr = `
-    duration : ${left_exec_bound}ms <= ${r.name}_EXEC <= ${right_exec_bound}ms;
-    continuous process ${r.name}_EXEC with normal(${r.execution.mean.value}ms, ${r.execution.stdDev.value}ms);`;
-    let exec_constr = `${r.name}_FINISH = delay ${r.name}_START by ${r.name}_EXEC;`;
-    let offset_const = "";
-    if (r.trigger.$type === "PeriodicTrigger") {
-        const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(r.trigger.period, sigma);
-        if (typeof r.trigger.offset !== "number") {
-            const { left: left_off_bound, right: right_off_bound } = randomVariableToRange(r.trigger.offset, sigma);
-            offset_const = `
-    duration : ${left_off_bound}ms <= ${r.name}_PERIOD_OFF <= ${right_off_bound}ms;
-    continuous process ${r.name}_PERIOD_OFF with normal(${r.trigger.offset.mean.value}ms, ${r.trigger.offset.stdDev.value}ms);`;
-        } else {
-            offset_const = `
-    duration : ${0}ms <= ${r.name}_PERIOD_OFF <= ${right_period_bound}ms;
-    continuous process ${r.name}_PERIOD_OFF with uniform;`;
-        }
-        return [`
-    duration : ${left_period_bound - r.trigger.period.mean.value}ms <= ${r.name}_PERIOD_JITTER <= ${right_period_bound - r.trigger.period.mean.value}ms;
-    continuous process ${r.name}_PERIOD_JITTER with normal(0s, ${r.trigger.period.stdDev.value}ms);
-    ${offset_const}
+    duration : ${left_exec_bound}ms <= ${r.execution_var} <= ${right_exec_bound}ms;
+    continuous process ${r.execution_var} with normal(${r.execution.mean.value}ms, ${r.execution.stdDev.value}ms);`;
+    let exec_constr = `${r.finish_clock} = delay ${r.start_clock} by ${r.execution_var};`;
+    let [phaseJitterConstraints, triggerConstrants] = r.trigger.spec(r.spawn_clock, r.jitter_var, r.phase_var, ctx);
+    triggerConstrants += `${r.spawn_clock} causes ${r.start_clock};`
+        triggerConstrants += `${r.spawn_clock} = ${r.start_clock};`
+    return [`
+    ${phaseJitterConstraints}
     ${exec_duration_constr}
         `,
-        `
-    ${r.name}_START = periodic ${r.trigger.period.mean.value}ms with jitter ${r.name}_PERIOD_JITTER offset ${r.name}_PERIOD_OFF;
+    `
+    ${triggerConstrants}
     ${exec_constr}
         `];
-    } else {
-        let eventTriggerConsts = "";
-        let delim = "";
-        for (let signalPub of ctx.signalToPublishers.get(r.trigger.event) ?? []) {
-            eventTriggerConsts += delim + `${signalPub}_FINISH causes ${r.name}_START;\n\t${r.name}_START = ${signalPub}_FINISH;`;
-            delim = "\n\t"
-        }
-        return [
-            exec_duration_constr,
-            `
-    ${eventTriggerConsts}
-    ${exec_constr}
-            `
-        ]
-    }
 }
+
 
 export function generateFunctionalChainSpec(chain: FunctionalChain, ctx: Context): string {
     var chainString = `${chain.name}:`;
@@ -712,24 +737,27 @@ export function generateFunctionalChainSpec(chain: FunctionalChain, ctx: Context
         if (previous !== undefined) {
             chainString += (runnable.trigger.$type === "EventTrigger" && ctx.servicesToSignals.get(previous)?.includes(runnable.trigger.event)) ? "->" : "?";
         }
-        chainString += `${runnable.name}_START->${runnable.name}_FINISH`;
+        chainString += `${runnable.start_clock}->${runnable.finish_clock}`;
         previous = runnable.name;
     }
     return chainString;
 }
 export function generateFunctionalChainSegments(chain: FunctionalChain, ctx: Context): string[] {
+    if (chain.participants.length === 0) {
+        return [];
+    }
     let segments = [];
     var first = undefined;
     var previous = undefined;
     for (let current of chain.participants) {
         let runnable = ctx.runnables.get(current.ref!.name) ?? expect(`chain participant with id "${current.ref?.name}" is not available.`)
         if (previous !== undefined) {
-            segments.push(`${previous}_FINISH_${runnable.name}_START`);
+            segments.push(`${previous.finish_clock}_${runnable.start_clock}`);
         }
-        segments.push(`${runnable.name}_START_${runnable.name}_FINISH`);
-        previous = runnable.name;
-        first = first === undefined ? runnable.name : first;
+        segments.push(`${runnable.start_clock}_${runnable.finish_clock}`);
+        previous = runnable;
+        first = first === undefined ? runnable : first;
     }
-    segments.push(`${first}_START_${previous}_FINISH`);
+    segments.push(`${first!.start_clock}_${previous!.finish_clock}`);
     return segments;
 }
