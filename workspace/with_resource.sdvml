@@ -1,0 +1,17 @@
+SDV simple:
+
+VSS :
+    Sensor Signal Camera (SSP:150ms+/-10ms; offset:0ms+/-0ms, DL: 30ms+/-10ms)
+    Actuator Signal Brake (periodic 100ms+/-1ms; offset:0ms+/-0ms, AD: 30ms+/-10ms)    
+App :
+    Component AEB_controler :
+        Service S1:
+            subscribe to VSS signal Camera
+            publish to VSS signal Brake
+            triggered on Camera
+            execution 50ms+/-15ms on cpu0
+Resource : 
+    Execution cpu0
+
+Functional Chains:
+    chain : Camera -> S1 -> Brake

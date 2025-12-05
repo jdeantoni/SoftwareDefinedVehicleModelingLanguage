@@ -30,7 +30,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@16"
+                "$ref": "#/rules@17"
               },
               "arguments": []
             }
@@ -71,6 +71,33 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
               "arguments": []
             },
             "cardinality": "*"
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Keyword",
+                "value": "Resource"
+              },
+              {
+                "$type": "Keyword",
+                "value": ":"
+              },
+              {
+                "$type": "Assignment",
+                "feature": "resources",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@15"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "*"
+              }
+            ],
+            "cardinality": "?"
           },
           {
             "$type": "Group",
@@ -124,7 +151,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@16"
+                "$ref": "#/rules@17"
               },
               "arguments": []
             }
@@ -145,7 +172,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
               "terminal": {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@16"
+                  "$ref": "#/rules@17"
                 },
                 "arguments": []
               },
@@ -171,7 +198,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
                   "terminal": {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@16"
+                      "$ref": "#/rules@17"
                     },
                     "arguments": []
                   },
@@ -242,7 +269,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@15"
+                    "$ref": "#/rules@16"
                   },
                   "arguments": []
                 }
@@ -258,7 +285,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@15"
+                    "$ref": "#/rules@16"
                   },
                   "arguments": []
                 }
@@ -279,7 +306,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@15"
+                    "$ref": "#/rules@16"
                   },
                   "arguments": []
                 }
@@ -295,7 +322,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@15"
+                    "$ref": "#/rules@16"
                   },
                   "arguments": []
                 }
@@ -326,7 +353,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@15"
+                        "$ref": "#/rules@16"
                       },
                       "arguments": []
                     }
@@ -342,7 +369,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@15"
+                        "$ref": "#/rules@16"
                       },
                       "arguments": []
                     }
@@ -492,7 +519,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
                   "terminal": {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@16"
+                      "$ref": "#/rules@17"
                     },
                     "arguments": []
                   },
@@ -531,7 +558,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@16"
+                "$ref": "#/rules@17"
               },
               "arguments": []
             }
@@ -592,7 +619,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@16"
+                "$ref": "#/rules@17"
               },
               "arguments": []
             }
@@ -656,7 +683,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@16"
+                "$ref": "#/rules@17"
               },
               "arguments": []
             }
@@ -781,7 +808,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@16"
+                "$ref": "#/rules@17"
               },
               "arguments": []
             }
@@ -864,7 +891,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
                   "terminal": {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@16"
+                      "$ref": "#/rules@17"
                     },
                     "arguments": []
                   },
@@ -898,7 +925,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
                       "terminal": {
                         "$type": "RuleCall",
                         "rule": {
-                          "$ref": "#/rules@16"
+                          "$ref": "#/rules@17"
                         },
                         "arguments": []
                       },
@@ -947,7 +974,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
                   "terminal": {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@16"
+                      "$ref": "#/rules@17"
                     },
                     "arguments": []
                   },
@@ -977,7 +1004,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
                       "terminal": {
                         "$type": "RuleCall",
                         "rule": {
-                          "$ref": "#/rules@16"
+                          "$ref": "#/rules@17"
                         },
                         "arguments": []
                       },
@@ -1014,7 +1041,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@16"
+                "$ref": "#/rules@17"
               },
               "arguments": []
             }
@@ -1080,6 +1107,66 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
               },
               "arguments": []
             }
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Keyword",
+                "value": "on"
+              },
+              {
+                "$type": "Assignment",
+                "feature": "resource",
+                "operator": "=",
+                "terminal": {
+                  "$type": "CrossReference",
+                  "type": {
+                    "$ref": "#/rules@15"
+                  },
+                  "terminal": {
+                    "$type": "RuleCall",
+                    "rule": {
+                      "$ref": "#/rules@17"
+                    },
+                    "arguments": []
+                  },
+                  "deprecatedSyntax": false
+                }
+              }
+            ],
+            "cardinality": "?"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "Resource",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "Execution"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@17"
+              },
+              "arguments": []
+            }
           }
         ]
       },
@@ -1103,7 +1190,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@17"
+                "$ref": "#/rules@18"
               },
               "arguments": []
             }

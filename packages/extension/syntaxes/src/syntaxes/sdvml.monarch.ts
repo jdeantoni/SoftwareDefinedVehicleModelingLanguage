@@ -1,7 +1,7 @@
 // Monarch syntax highlighting for the sdvml language.
 export default {
     keywords: [
-        'AD','Actuator','App','Chains','Component','DL','Functional','SDV','SSP','Sensor','Service','Signal','VSS','event','execution','ms','normal','offset','on','periodic','publish','signal','subscribe','to','triggered','varying_offset'
+        'AD','Actuator','App','Chains','Component','DL','Execution','Functional','Resource','SDV','SSP','Sensor','Service','Signal','VSS','event','execution','ms','normal','offset','on','periodic','publish','signal','subscribe','to','triggered','varying_offset'
     ],
     operators: [
         '+/-',',','->',':',';','~'

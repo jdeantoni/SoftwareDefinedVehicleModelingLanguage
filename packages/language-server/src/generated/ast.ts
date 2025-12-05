@@ -30,7 +30,9 @@ export type SdvmlKeywordNames =
     | "Chains"
     | "Component"
     | "DL"
+    | "Execution"
     | "Functional"
+    | "Resource"
     | "SDV"
     | "SSP"
     | "Sensor"
@@ -162,6 +164,7 @@ export interface Model extends langium.AstNode {
     chains: Array<FunctionalChain>;
     components: Array<Component>;
     name: string;
+    resources: Array<Resource>;
     vss: VSS;
 }
 
@@ -212,6 +215,18 @@ export function isRandomVar(item: unknown): item is RandomVar {
     return reflection.isInstance(item, RandomVar);
 }
 
+export interface Resource extends langium.AstNode {
+    readonly $container: Model;
+    readonly $type: 'Resource';
+    name: string;
+}
+
+export const Resource = 'Resource';
+
+export function isResource(item: unknown): item is Resource {
+    return reflection.isInstance(item, Resource);
+}
+
 export interface Sensor extends langium.AstNode {
     readonly $container: VSS;
     readonly $type: 'Sensor';
@@ -233,6 +248,7 @@ export interface Service extends langium.AstNode {
     execTime: RandomVar;
     name: string;
     publishers: Array<Publisher>;
+    resource?: langium.Reference<Resource>;
     subscribers: Array<Subscriber>;
     trigRule: TriggeringRule;
 }
@@ -280,6 +296,7 @@ export type SdvmlAstType = {
     PeriodicTriggering: PeriodicTriggering
     Publisher: Publisher
     RandomVar: RandomVar
+    Resource: Resource
     Sensor: Sensor
     Service: Service
     Signal: Signal
@@ -291,7 +308,7 @@ export type SdvmlAstType = {
 export class SdvmlAstReflection extends langium.AbstractAstReflection {
 
     getAllTypes(): string[] {
-        return [Actuator, AppSignal, Component, DURATION, EventTriggering, FCParticipant, FunctionalChain, Model, PeriodicTriggering, Publisher, RandomVar, Sensor, Service, Signal, Subscriber, TriggeringRule, VSS];
+        return [Actuator, AppSignal, Component, DURATION, EventTriggering, FCParticipant, FunctionalChain, Model, PeriodicTriggering, Publisher, RandomVar, Resource, Sensor, Service, Signal, Subscriber, TriggeringRule, VSS];
     }
 
     protected override computeIsSubtype(subtype: string, supertype: string): boolean {
@@ -328,6 +345,9 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
             case 'Publisher:appSignal':
             case 'Subscriber:appSignal': {
                 return AppSignal;
+            }
+            case 'Service:resource': {
+                return Resource;
             }
             case 'Subscriber:sensorSignal': {
                 return Sensor;
@@ -400,6 +420,7 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                         { name: 'chains', defaultValue: [] },
                         { name: 'components', defaultValue: [] },
                         { name: 'name' },
+                        { name: 'resources', defaultValue: [] },
                         { name: 'vss' }
                     ]
                 };
@@ -433,6 +454,14 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                     ]
                 };
             }
+            case Resource: {
+                return {
+                    name: Resource,
+                    properties: [
+                        { name: 'name' }
+                    ]
+                };
+            }
             case Sensor: {
                 return {
                     name: Sensor,
@@ -451,6 +480,7 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                         { name: 'execTime' },
                         { name: 'name' },
                         { name: 'publishers', defaultValue: [] },
+                        { name: 'resource' },
                         { name: 'subscribers', defaultValue: [] },
                         { name: 'trigRule' }
                     ]

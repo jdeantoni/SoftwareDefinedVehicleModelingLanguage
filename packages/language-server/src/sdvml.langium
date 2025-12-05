@@ -24,6 +24,10 @@ entry Model:
         "App" ":"
             components+=Component*
 
+        ("Resource" ":"
+            (resources+=Resource)*
+        )?
+
         ("Functional" "Chains" ":"
             (chains+=FunctionalChain)*
         )?
@@ -86,10 +90,14 @@ Service:
             subscribers+=Subscriber
         )+
         trigRule=TriggeringRule
-        'execution' execTime=RandomVar; //('type' srvType=STRING)?;
+        'execution' execTime=RandomVar //('type' srvType=STRING)?;
+        ('on' resource=[Resource:ID])?;
+
+Resource:
+    "Execution" name=ID;
 
 DURATION:
-    value=INT "ms"; // TODO: make properly the SI units
+    value=INT "ms"; // TODO: use the SI units
 
 terminal ID: /[_a-zA-Z][\w_]*/;
 terminal INT returns number: /[0-9]+/;

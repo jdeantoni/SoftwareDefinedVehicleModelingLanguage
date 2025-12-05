@@ -103,7 +103,7 @@ export class Context {
                 return [s.name, new Runnable(s.name, trigger, s.dl)];
             }
         });
-        let runnable_services = model.components.flatMap(c => c.services.map(s => [s.name, new Runnable(makeServiceName(c, s), trigRuleToTrigger(s.name, s.trigRule), s.execTime)]) as [string, Runnable][]);
+        let runnable_services = model.components.flatMap(c => c.services.map(s => [s.name, new Runnable(makeServiceName(c, s), trigRuleToTrigger(s.name, s.trigRule), s.execTime, s.resource?.ref ? new Resource(s.resource?.ref?.name) : undefined)]) as [string, Runnable][]);
         this.runnables = new Map(runnable_vss.concat(runnable_services))
     }
 }
@@ -657,14 +657,62 @@ class PeriodicTrigger {
 
 type Trigger = EventTrigger | PeriodicTrigger;
 
+
+class Resource {
+    name: string;
+    constructor(name: string) {
+        this.name = name;
+    }
+    spec(): string {
+        let spawn = this.spawn_clock;
+        let execution = this.execution_clock;
+        let release = this.release_clock;
+        let free = `${this.name}_FREE`;
+        let force = `${this.name}_FORCE`;
+        let taken = `${this.name}_TAKEN`;
+        let drop = `${this.name}_DROP`;
+        let resource_spec = `
+var ${spawn}, ${execution}, ${release}, ${free}, ${force}, ${taken}, ${drop} : clock;
+${spawn} = ${free} xor ${taken};
+${release} = ${force} xor ${drop};
+${execution} = (${free} or ${force});
+allow ${taken} in ]${execution}, ${release}];
+forbid ${free} in ]${execution}, ${release}];
+allow ${force} in [${spawn}, ${release}[;
+forbid ${drop} in [${spawn}, ${release}[;
+${execution} alternates ${release};`;
+        return resource_spec;
+    }
+    get spawn_clock(): string {
+        return `${this.name}_SPAWN`;
+    }
+    get execution_clock(): string {
+        return `${this.name}_EXECUTION`;
+    }
+    get release_clock(): string {
+        return `${this.name}_RELEASE`;
+    }
+    allocation_spec(spawn: string, start: string, finish: string): string {
+        return `
+        ${this.spawn_clock} |= ${spawn};
+        ${this.execution_clock} |= ${start};
+        ${this.release_clock} |= ${finish};
+        `
+    }
+}
+// TODO: add tasks file for svgbob
+// TODO: add svgbob compilation to ninja
+
 class Runnable {
     name: string;
     trigger: Trigger;
     execution: RandomVar;
-    constructor(name: string, trigger: Trigger, execution: RandomVar) {
+    resource?: Resource;
+    constructor(name: string, trigger: Trigger, execution: RandomVar, resource?: Resource) {
         this.name = name;
         this.trigger = trigger;
         this.execution = execution;
+        this.resource = resource;
     }
     get start_clock(): string {
         return `${this.name}_START`
@@ -717,7 +765,11 @@ function generateMRTCCSLRunnable(r: Runnable, ctx: Context, sigma: number): [str
     let exec_constr = `${r.finish_clock} = delay ${r.start_clock} by ${r.execution_var};`;
     let [phaseJitterConstraints, triggerConstrants] = r.trigger.spec(r.spawn_clock, r.jitter_var, r.phase_var, ctx);
     triggerConstrants += `${r.spawn_clock} causes ${r.start_clock};`
+    if (r.resource === undefined) { // ASSUMPTION: in case of undefined resource the job is scheduled immediately
         triggerConstrants += `${r.spawn_clock} = ${r.start_clock};`
+    } else {
+        triggerConstrants += r.resource.allocation_spec(r.spawn_clock, r.start_clock, r.finish_clock);
+    }
     return [`
     ${phaseJitterConstraints}
     ${exec_duration_constr}
@@ -727,6 +779,7 @@ function generateMRTCCSLRunnable(r: Runnable, ctx: Context, sigma: number): [str
     ${exec_constr}
         `];
 }
+
 
 
 export function generateFunctionalChainSpec(chain: FunctionalChain, ctx: Context): string {
