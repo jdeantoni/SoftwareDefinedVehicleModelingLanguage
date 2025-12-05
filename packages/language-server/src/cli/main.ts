@@ -4,7 +4,7 @@ import { Command } from 'commander';
 import { SdvmlLanguageMetaData } from '../generated/module.js';
 import { createSdvmlServices } from '../sdvml-module.js';
 import { extractAstNode, extractDestinationAndName } from './cli-util.js';
-import { Context, generateFunctionalChainSegments, generateFunctionalChainSpec, generateIFScript, generateMRTCCSLSpec } from './generator.js';
+import { Context, generateFunctionalChainSegments, generateFunctionalChainSpec, generateIFScript, generateMRTCCSLSpec, generateTaskCSV } from './generator.js';
 // import {workspace} from "vscode";
 import { NodeFileSystem } from 'langium/node';
 // import * as url from 'node:url';
@@ -66,8 +66,9 @@ interface NinjaBuildInstruction {
 }
 
 interface Group {
-    name: string
-    artifacts: string[]
+    name: string;
+    artifacts: string[];
+    byDefault: boolean;
 }
 
 function renderRule(rule: NinjaRule): string {
@@ -84,13 +85,17 @@ function renderBuildInstruction(instruction: NinjaBuildInstruction): string {
     return main + implicits + additional_variables
 }
 
-function renderDefaultGroup(defaultGroup: Group): string {
-    return `build ${defaultGroup.name}: phony ${defaultGroup.artifacts.join(" ")}
-default ${defaultGroup.name}`
+function renderGroup(g: Group): string {
+    const buildLine = `build ${g.name}: phony ${g.artifacts.join(" ")}`;
+    if (g.byDefault) {
+        return `${buildLine}\ndefault ${g.name}`
+    } else {
+        return buildLine
+    }
 }
 
 function renderBuildFile(rules: NinjaRule[], instructions: NinjaBuildInstruction[], groups: Group[]): string {
-    return [...rules.map(renderRule), ...instructions.map(renderBuildInstruction), ...groups.map(renderDefaultGroup), ""].join("\n")
+    return [...rules.map(renderRule), ...instructions.map(renderBuildInstruction), ...groups.map(renderGroup), ""].join("\n")
 }
 
 export const generateAction = async (
@@ -120,6 +125,7 @@ export const generateAction = async (
     let mrtccslLocation = opts.mrtccslPath ? `cd ${opts.mrtccslPath};` : "";
     const ifFilePath = path.join(buildDir, "model.if");
     const mrtccslFilePath = path.join(buildDir, "spec.mrtccsl");
+    const tasksFilePath = path.join(buildDir, "tasks.csv");
     const chainsSpecFilePath = path.join(buildDir, "chains");
 
     progress.report({ increment: 1, message: "IF model" });
@@ -138,6 +144,8 @@ export const generateAction = async (
 
     const specification = generateMRTCCSLSpec(context);
     await overrideFileIfChanged(mrtccslFilePath, specification);
+    const tasksDescription = generateTaskCSV(context);
+    await overrideFileIfChanged(tasksFilePath, tasksDescription);
 
     progress.report({ increment: 4, message: "functional chains" });
     if (token.isCancellationRequested) {
@@ -160,14 +168,15 @@ export const generateAction = async (
         return
     }
 
+    const useMRTCCSL = `${mrtccslLocation}eval $$(opam env); ${mrtccslLocation ? "cd $$OLDPWD;" : ""} OCAMLRUNPARAM=b `;
     let simulationRule = <NinjaRule>{
         name: "simulation",
-        command: `${mrtccslLocation}eval $$(opam env); ${mrtccslLocation ? "cd $$OLDPWD;" : ""} OCAMLRUNPARAM=b ccsl+ simulate $in -o ./ --traces=${config.traces} --steps=${config.steps} --horizon=${config.horizon}`,
+        command: `${useMRTCCSL} ccsl+ simulate $in -o ./ --traces=${config.traces} --steps=${config.steps} --horizon=${config.horizon}`,
         implicitDependencies: []
     };
     let reactionRule = <NinjaRule>{
-        name: "reaction-time",
-        command: `${mrtccslLocation}eval $$(opam env); ${mrtccslLocation ? "cd $$OLDPWD;" : ""} OCAMLRUNPARAM=b ccsl+ reaction -s earliest --scale=${config.scale} -c $in -o ./`,
+        name: "reaction_time",
+        command: `${useMRTCCSL} ccsl+ reaction -s earliest --scale=${config.scale} -c $in -o ./`,
         implicitDependencies: []
     };
     let compileImageRule = <NinjaRule>{
@@ -177,8 +186,13 @@ export const generateAction = async (
     };
     let compileTCADPRule = <NinjaRule>{
         name: "convert_trace",
-        command: `${mrtccslLocation}eval $$(opam env); ${mrtccslLocation ? "cd $$OLDPWD;" : ""} OCAMLRUNPARAM=b ccsl+ trace convert native csl --microstep=spec.mrtccsl --discretize=near --scale=${config.scale} $in -o $out`,
+        command: `${useMRTCCSL} ccsl+ trace convert native csl --microstep=spec.mrtccsl --discretize=near --scale=${config.scale} $in -o $out`,
         implicitDependencies: ["spec.mrtccsl"]
+    };
+    let convertSVGBOBRule = <NinjaRule>{
+        name: "convert_svg_bob",
+        command: `${useMRTCCSL} ccsl+ trace convert native svgbob --vertical --tasks=${tasksFilePath} $in -o $out`,
+        implicitDependencies: [tasksFilePath]
     };
 
     let buildInstructions = []
@@ -186,15 +200,25 @@ export const generateAction = async (
     let traceFiles = Array(config.traces).fill("error").map((value, index) => `${index}.trace`);
     buildInstructions.push({ rule: simulationRule, inputs: ["spec.mrtccsl"], outputs: traceFiles });
     let tcadpFiles: string[] = [];
-    buildInstructions.push(...Array(config.traces).fill("error").map((value, index) => {
+    let svgbobFiles: string[] = [];
+    buildInstructions.push(...Array(config.traces).fill("error").flatMap((value, index) => {
         let traceFile = `${index}.trace`;
         let tcadpFile = `trace/t${index + 1}.txt`;
+        let bobFile = `trace/${index}.svgbob`;
         tcadpFiles.push(tcadpFile);
-        return <NinjaBuildInstruction>{
-            rule: compileTCADPRule,
-            inputs: [traceFile],
-            outputs: [tcadpFile]
-        }
+        svgbobFiles.push(bobFile);
+        return [
+            <NinjaBuildInstruction>{
+                rule: compileTCADPRule,
+                inputs: [traceFile],
+                outputs: [tcadpFile]
+            },
+            <NinjaBuildInstruction>{
+                rule: convertSVGBOBRule,
+                inputs: [traceFile],
+                outputs: [bobFile]
+            }
+        ]
     }));
 
 
@@ -210,7 +234,12 @@ export const generateAction = async (
         buildInstructions.push({ rule: compileImageRule, inputs: [file], outputs: [file + ".svg"] });
     }
     let images = reactionStats.map(file => file + ".svg");
-    const ninjafile = renderBuildFile([simulationRule, reactionRule, compileImageRule, compileTCADPRule], buildInstructions, [{ name: "images", artifacts: images }, { name: "tcadp", artifacts: tcadpFiles }]);
+    const groups = [
+        { name: "images", artifacts: images, byDefault: true },
+        { name: "tcadp", artifacts: tcadpFiles, byDefault: true },
+        { name: "svgbob", artifacts: svgbobFiles, byDefault: false }
+    ];
+    const ninjafile = renderBuildFile([simulationRule, reactionRule, compileImageRule, compileTCADPRule, convertSVGBOBRule], buildInstructions, groups);
 
     await overrideFileIfChanged(path.join(buildDir, "template.gnu"), gnuTemplate);
     await overrideFileIfChanged(path.join(buildDir, "build.ninja"), ninjafile);

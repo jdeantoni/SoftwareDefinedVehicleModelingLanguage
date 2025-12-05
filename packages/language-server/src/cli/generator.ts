@@ -47,6 +47,7 @@ export class Context {
     runnables: Map<serviceKey, Runnable>;
     servicesToComponents: Map<serviceKey, componentKey[]>;
     signalToPublishers: Map<signalName, serviceKey[]>;
+    resources: Map<string, Resource>;
 
     constructor(model: Model) {
         this.signalsToServices = new Map<string, string[]>();
@@ -54,6 +55,7 @@ export class Context {
         this.runnableInputs = new Map<string, string[]>();
         this.servicesToComponents = new Map();
         this.signalToPublishers = new Map<string, string[]>();
+        this.resources = new Map(model.resources.map(r => [r.name, new Resource(r.name)]));
 
         for (var component of model.components) {
             for (var service of component.services) {
@@ -103,8 +105,8 @@ export class Context {
                 return [s.name, new Runnable(s.name, trigger, s.dl)];
             }
         });
-        let runnable_services = model.components.flatMap(c => c.services.map(s => [s.name, new Runnable(makeServiceName(c, s), trigRuleToTrigger(s.name, s.trigRule), s.execTime, s.resource?.ref ? new Resource(s.resource?.ref?.name) : undefined)]) as [string, Runnable][]);
-        this.runnables = new Map(runnable_vss.concat(runnable_services))
+        let runnable_services = model.components.flatMap(c => c.services.map(s => [s.name, new Runnable(makeServiceName(c, s), trigRuleToTrigger(s.name, s.trigRule), s.execTime, s.resource?.ref ? this.resources.get(s.resource.ref.name) : undefined)]) as [string, Runnable][]);
+        this.runnables = new Map(runnable_vss.concat(runnable_services));
     }
 }
 
@@ -620,7 +622,7 @@ class EventTrigger {
 
         for (let signalPub of ctx.signalToPublishers.get(this.event) ?? []) {
             let pubRunnable = ctx.runnables.get(signalPub) ?? expect("imposible situation: runnable should be defined if it is listed as producer");
-            structure += `\n\t${pubRunnable.finish_clock} = ${spawn_clock};`; // ASSUMPTION: communication is instantaneous
+            structure += `\n    ${pubRunnable.finish_clock} = ${spawn_clock};`; // ASSUMPTION: communication is instantaneous
         }
         return ["", structure]
     }
@@ -645,12 +647,12 @@ class PeriodicTrigger {
         } else { // ASSUMPTION: if offset is not defined, random until period is assumed
             assumptions = `
     duration : ${0}ms <= ${phase_var} <= ${right_period_bound}ms;
-    continuous process ${phase_var} with uniform;`;
+    continuous process ${phase_var} with uniform;\n`;
         }
         assumptions += `
-        duration : ${left_period_bound - this.period.mean.value}ms <= ${jitter_var} <= ${right_period_bound - this.period.mean.value}ms;
-        continuous process ${jitter_var} with normal(0s, ${this.period.stdDev.value}ms);`;
-        let structure = `${spawn_clock} = periodic ${this.period.mean.value}ms with jitter ${jitter_var} offset ${phase_var};`;
+    duration : ${left_period_bound - this.period.mean.value}ms <= ${jitter_var} <= ${right_period_bound - this.period.mean.value}ms;
+    continuous process ${jitter_var} with normal(0s, ${this.period.stdDev.value}ms);`;
+        let structure = `${spawn_clock} = periodic ${this.period.mean.value}ms with jitter ${jitter_var} offset ${phase_var};\n`;
         return [assumptions, structure];
     }
 }
@@ -672,15 +674,15 @@ class Resource {
         let taken = `${this.name}_TAKEN`;
         let drop = `${this.name}_DROP`;
         let resource_spec = `
-var ${spawn}, ${execution}, ${release}, ${free}, ${force}, ${taken}, ${drop} : clock;
-${spawn} = ${free} xor ${taken};
-${release} = ${force} xor ${drop};
-${execution} = (${free} or ${force});
-allow ${taken} in ]${execution}, ${release}];
-forbid ${free} in ]${execution}, ${release}];
-allow ${force} in [${spawn}, ${release}[;
-forbid ${drop} in [${spawn}, ${release}[;
-${execution} alternates ${release};`;
+    var ${spawn}, ${execution}, ${release}, ${free}, ${force}, ${taken}, ${drop} : clock;
+    ${spawn} = ${free} xor ${taken};
+    ${release} = ${force} xor ${drop};
+    ${execution} = (${free} or ${force});
+    allow ${taken} in ]${execution}, ${release}];
+    forbid ${free} in ]${execution}, ${release}];
+    allow ${force} in [${spawn}, ${release}[;
+    forbid ${drop} in [${spawn}, ${release}[;
+    ${execution} alternates ${release};`;
         return resource_spec;
     }
     get spawn_clock(): string {
@@ -694,14 +696,12 @@ ${execution} alternates ${release};`;
     }
     allocation_spec(spawn: string, start: string, finish: string): string {
         return `
-        ${this.spawn_clock} |= ${spawn};
-        ${this.execution_clock} |= ${start};
-        ${this.release_clock} |= ${finish};
+    ${this.spawn_clock} |= ${spawn};
+    ${this.execution_clock} |= ${start};
+    ${this.release_clock} |= ${finish};
         `
     }
 }
-// TODO: add tasks file for svgbob
-// TODO: add svgbob compilation to ninja
 
 class Runnable {
     name: string;
@@ -743,13 +743,14 @@ function trigRuleToTrigger(serviceName: string, rule: TriggeringRule): Trigger {
 }
 
 export function generateMRTCCSLSpec(context: Context): string {
+    const resourcesSpec = Array.from(context.resources.values()).map(r => r.spec()).join("\n") + "\n";
     let [assumptions, structure] = Array.from(context.runnables.values()).map(r => generateMRTCCSLRunnable(r, context, sigma)).reduce(
         (acc, v) => {
             let [assumes, structs] = acc;
             let [assumption, structure] = v;
 
             return [`${assumes}${assumption}\n`, `${structs}${structure}\n`];
-        }, ["", ""]);
+        }, ["", resourcesSpec]);
     return `assume {
     ${assumptions}
 } structure {
@@ -764,7 +765,7 @@ function generateMRTCCSLRunnable(r: Runnable, ctx: Context, sigma: number): [str
     continuous process ${r.execution_var} with normal(${r.execution.mean.value}ms, ${r.execution.stdDev.value}ms);`;
     let exec_constr = `${r.finish_clock} = delay ${r.start_clock} by ${r.execution_var};`;
     let [phaseJitterConstraints, triggerConstrants] = r.trigger.spec(r.spawn_clock, r.jitter_var, r.phase_var, ctx);
-    triggerConstrants += `${r.spawn_clock} causes ${r.start_clock};`
+    triggerConstrants += `    ${r.spawn_clock} causes ${r.start_clock};`
     if (r.resource === undefined) { // ASSUMPTION: in case of undefined resource the job is scheduled immediately
         triggerConstrants += `${r.spawn_clock} = ${r.start_clock};`
     } else {
@@ -813,4 +814,13 @@ export function generateFunctionalChainSegments(chain: FunctionalChain, ctx: Con
     }
     segments.push(`${first!.start_clock}_${previous!.finish_clock}`);
     return segments;
+}
+
+export function generateTaskCSV(ctx: Context): string {
+    const header = "name,release,start,finish,deadline\n";
+    let tasks = "";
+    for (let r of ctx.runnables.values()) {
+        tasks += `${r.name},${r.spawn_clock},${r.start_clock},${r.finish_clock},${r.finish_clock}\n`;
+    }
+    return header + tasks;
 }
