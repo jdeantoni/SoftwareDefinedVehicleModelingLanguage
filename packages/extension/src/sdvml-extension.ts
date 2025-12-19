@@ -194,7 +194,11 @@ export function activate(context: vscode.ExtensionContext) {
                 mrtccslPath
             }
             console.error("~~~~~~~> generate path", opts.destination)
-            await generateAction(filePath, opts, progress, token);
+            try {
+                await generateAction(filePath, opts, progress, token);
+            } catch (error) {
+                vscode.window.showErrorMessage("" + error);
+            }
         });
     });
 
