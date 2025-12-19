@@ -53,10 +53,10 @@ TriggeringRule:
     PeriodicTriggering | EventTriggering;
 
 PeriodicTriggering:
-    'periodic' period=RandomVar ';' ('offset'':'offset=RandomVar | 'varying_offset');
+    'period' period=RandomVar 'offset' (offset=RandomVar | 'varying');
 
 EventTriggering:
-    'triggered' 'on' (trigger=[Subscriber:ID] | 'event');
+    'trigger' 'on' (trigger=[Subscriber:ID] | 'event');
 
 Component:
     'Component' name=ID ":"
@@ -72,13 +72,13 @@ Signal:
     Sensor | Actuator;
 
 Sensor:
-    "Sensor" "Signal" name=ID '(''SSP'':'ssp=RandomVar';'('offset'':'offset=RandomVar | 'varying_offset')',''DL'':'dl=RandomVar')';
+    "Sensor" "Signal" name=ID '(''SSP' ssp=RandomVar 'offset'  (offset=RandomVar | 'varying')',''DL' dl=RandomVar')';
 
 Actuator:
-    "Actuator" "Signal" name=ID '(' trigRule=TriggeringRule',''AD'':'ad=RandomVar')';
+    "Actuator" "Signal" name=ID '(' trigRule=TriggeringRule',''AD' ad=RandomVar')';
 
 Publisher:
-    'publish' (appSignal=[AppSignal:ID] | "to" "VSS" "signal" actuatorSignal=[Actuator:ID]);//('type' msgType=STRING)? 'message' msg=STRING;
+    'publish' "to" (appSignal=[AppSignal:ID] | "VSS" "signal" actuatorSignal=[Actuator:ID]);//('type' msgType=STRING)? 'message' msg=STRING;
 
 Subscriber:
     'subscribe' "to" (appSignal=[AppSignal:ID] | "VSS" "signal" sensorSignal=[Sensor:ID]);// ('type' msgType=STRING)? msg=STRING;
@@ -91,7 +91,7 @@ Service:
         )+
         trigRule=TriggeringRule
         'execution' execTime=RandomVar //('type' srvType=STRING)?;
-        ('on' resource=[Resource:ID])?;
+        ('using' resource=[Resource:ID])?;
 
 Resource:
     "Execution" name=ID;

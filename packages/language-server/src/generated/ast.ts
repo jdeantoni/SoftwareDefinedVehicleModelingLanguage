@@ -23,7 +23,6 @@ export type SdvmlKeywordNames =
     | ","
     | "->"
     | ":"
-    | ";"
     | "AD"
     | "Actuator"
     | "App"
@@ -47,13 +46,14 @@ export type SdvmlKeywordNames =
     | "normal"
     | "offset"
     | "on"
-    | "periodic"
+    | "period"
     | "publish"
     | "signal"
     | "subscribe"
     | "to"
-    | "triggered"
-    | "varying_offset"
+    | "trigger"
+    | "using"
+    | "varying"
     | "~";
 
 export type SdvmlTokenNames = SdvmlTerminalNames | SdvmlKeywordNames;

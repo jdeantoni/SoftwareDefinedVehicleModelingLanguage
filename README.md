@@ -20,5 +20,5 @@ to compile.
 - PRISM
 - MRTCCSL
     - install in a global switch
-    - or specify the path to the switch in the settings
+    - or specify the path to the switch in the plugin settings
 - ninja build system

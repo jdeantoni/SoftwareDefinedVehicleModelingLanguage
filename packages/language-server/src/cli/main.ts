@@ -4,7 +4,7 @@ import { Command } from 'commander';
 import { SdvmlLanguageMetaData } from '../generated/module.js';
 import { createSdvmlServices } from '../sdvml-module.js';
 import { extractAstNode, extractDestinationAndName } from './cli-util.js';
-import { Context, generateFunctionalChainSegments, generateFunctionalChainSpec, generateIFScript, generateMRTCCSLSpec, generateTaskCSV } from './generator.js';
+import { Context, generateFunctionalChainSegments, generateFunctionalChainSpec, generateIFScript, generateMRTCCSLSpec, generateSchedulingDelayMonitoringChains, generateTaskCSV } from './generator.js';
 // import {workspace} from "vscode";
 import { NodeFileSystem } from 'langium/node';
 // import * as url from 'node:url';
@@ -98,12 +98,12 @@ function renderBuildFile(rules: NinjaRule[], instructions: NinjaBuildInstruction
     return [...rules.map(renderRule), ...instructions.map(renderBuildInstruction), ...groups.map(renderGroup), ""].join("\n")
 }
 
-export const generateAction = async (
+export async function generateAction (
     fileName: string,
     opts: GenerateOptions,
     progress: Progress<{ increment: number, message?: string | undefined }>,
     token: CancellationToken,
-): Promise<void> => {
+): Promise<void> {
     const services = createSdvmlServices(NodeFileSystem).sdvml;
     let model = await extractAstNode<Model>(fileName, services);
 
@@ -152,7 +152,8 @@ export const generateAction = async (
         return
     }
 
-    const chainsString: string = model.chains.reduce((acc: string, chain) => {
+    let [schedulingChainSpec, shedulingChainSegments] = generateSchedulingDelayMonitoringChains(context);
+    const chainsString: string = schedulingChainSpec + model.chains.reduce((acc: string, chain) => {
         acc += generateFunctionalChainSpec(chain, context) + "\n";
         return acc
     }, "");
@@ -225,8 +226,8 @@ export const generateAction = async (
     let reactionStats = model.chains.flatMap(
         chain =>
             generateFunctionalChainSegments(chain, context)
-                .map(file => [chain.name, file])
-    ).map(([chainName, filename]) => `${chainName}/categorized/${filename}.histogram.csv`);
+                .map(file =>  [chain.name, file] as [string, string])
+    ).concat(shedulingChainSegments).map(([chainName, filename]) => `${chainName}/categorized/${filename}.histogram.csv`);
 
     buildInstructions.push({ rule: reactionRule, inputs: ["chains", ...traceFiles], outputs: reactionStats });
 

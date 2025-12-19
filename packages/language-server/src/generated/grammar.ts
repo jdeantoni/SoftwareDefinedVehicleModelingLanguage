@@ -429,7 +429,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
         "elements": [
           {
             "$type": "Keyword",
-            "value": "periodic"
+            "value": "period"
           },
           {
             "$type": "Assignment",
@@ -445,39 +445,26 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
           },
           {
             "$type": "Keyword",
-            "value": ";"
+            "value": "offset"
           },
           {
             "$type": "Alternatives",
             "elements": [
               {
-                "$type": "Group",
-                "elements": [
-                  {
-                    "$type": "Keyword",
-                    "value": "offset"
+                "$type": "Assignment",
+                "feature": "offset",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@3"
                   },
-                  {
-                    "$type": "Keyword",
-                    "value": ":"
-                  },
-                  {
-                    "$type": "Assignment",
-                    "feature": "offset",
-                    "operator": "=",
-                    "terminal": {
-                      "$type": "RuleCall",
-                      "rule": {
-                        "$ref": "#/rules@3"
-                      },
-                      "arguments": []
-                    }
-                  }
-                ]
+                  "arguments": []
+                }
               },
               {
                 "$type": "Keyword",
-                "value": "varying_offset"
+                "value": "varying"
               }
             ]
           }
@@ -498,7 +485,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
         "elements": [
           {
             "$type": "Keyword",
-            "value": "triggered"
+            "value": "trigger"
           },
           {
             "$type": "Keyword",
@@ -697,10 +684,6 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
             "value": "SSP"
           },
           {
-            "$type": "Keyword",
-            "value": ":"
-          },
-          {
             "$type": "Assignment",
             "feature": "ssp",
             "operator": "=",
@@ -714,39 +697,26 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
           },
           {
             "$type": "Keyword",
-            "value": ";"
+            "value": "offset"
           },
           {
             "$type": "Alternatives",
             "elements": [
               {
-                "$type": "Group",
-                "elements": [
-                  {
-                    "$type": "Keyword",
-                    "value": "offset"
+                "$type": "Assignment",
+                "feature": "offset",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@3"
                   },
-                  {
-                    "$type": "Keyword",
-                    "value": ":"
-                  },
-                  {
-                    "$type": "Assignment",
-                    "feature": "offset",
-                    "operator": "=",
-                    "terminal": {
-                      "$type": "RuleCall",
-                      "rule": {
-                        "$ref": "#/rules@3"
-                      },
-                      "arguments": []
-                    }
-                  }
-                ]
+                  "arguments": []
+                }
               },
               {
                 "$type": "Keyword",
-                "value": "varying_offset"
+                "value": "varying"
               }
             ]
           },
@@ -757,10 +727,6 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
           {
             "$type": "Keyword",
             "value": "DL"
-          },
-          {
-            "$type": "Keyword",
-            "value": ":"
           },
           {
             "$type": "Assignment",
@@ -838,10 +804,6 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
             "value": "AD"
           },
           {
-            "$type": "Keyword",
-            "value": ":"
-          },
-          {
             "$type": "Assignment",
             "feature": "ad",
             "operator": "=",
@@ -877,6 +839,10 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
             "value": "publish"
           },
           {
+            "$type": "Keyword",
+            "value": "to"
+          },
+          {
             "$type": "Alternatives",
             "elements": [
               {
@@ -901,10 +867,6 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
               {
                 "$type": "Group",
                 "elements": [
-                  {
-                    "$type": "Keyword",
-                    "value": "to"
-                  },
                   {
                     "$type": "Keyword",
                     "value": "VSS"
@@ -1113,7 +1075,7 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
             "elements": [
               {
                 "$type": "Keyword",
-                "value": "on"
+                "value": "using"
               },
               {
                 "$type": "Assignment",

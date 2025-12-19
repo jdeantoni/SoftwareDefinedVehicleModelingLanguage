@@ -332,11 +332,11 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
             });
         } else {
             const trigger = service.trigRule.trigger;
-            if (trigger != undefined) {
+            if (trigger?.ref !== undefined) {
                 res.push(<SLabel>{
                     type: "label:values",
                     id: idCache.uniqueId(nodeId + '.values2'),
-                    text: "triggered on:" + (trigger.ref?.appSignal?.ref?.name ?? trigger.ref?.sensorSignal?.ref?.name)
+                    text: "triggered on:" + (trigger.ref?.appSignal?.ref?.name ?? trigger.ref?.sensorSignal?.ref?.name ?? "self")
                 });
             }
         }

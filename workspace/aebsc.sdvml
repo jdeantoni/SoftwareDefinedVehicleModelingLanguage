@@ -1,11 +1,11 @@
 SDV aebsc:
 
 VSS :
-    Sensor Signal Camera (SSP:5ms+/-0ms; offset : 0ms+/-0ms, DL: 1ms +/-0ms)
-    Sensor Signal Lidar (SSP:5ms +/-0ms; offset : 0ms+/-0ms, DL: 1ms+/-0ms)
-    Sensor Signal Radar (SSP:5ms +/-0ms; offset : 0ms+/-0ms, DL: 1ms+/-0ms)
-    Actuator Signal Brake (periodic 5ms+/-0ms; offset : 0ms+/-0ms, AD: 1ms+/-0ms)    
-    Actuator Signal Alarm (triggered on event, AD: 1ms+/-0ms)
+    Sensor Signal Camera (SSP 5ms+/-0ms offset 0ms+/-0ms, DL 1ms +/-0ms)
+    Sensor Signal Lidar (SSP 5ms +/-0ms offset 0ms+/-0ms, DL 1ms+/-0ms)
+    Sensor Signal Radar (SSP 5ms +/-0ms offset 0ms+/-0ms, DL 1ms+/-0ms)
+    Actuator Signal Brake (period 5ms+/-0ms offset 0ms+/-0ms, AD 1ms+/-0ms)    
+    Actuator Signal Alarm (trigger on event, AD 1ms+/-0ms)
 App :
     Component Data_hub :
         Signal Detection_data
@@ -14,21 +14,21 @@ App :
             subscribe to VSS signal Lidar
             subscribe to VSS signal Radar
             subscribe to VSS signal Camera
-            publish Detection_data
-            periodic 5ms+/-0ms; offset : 0ms+/-0ms
+            publish to Detection_data
+            period 5ms+/-0ms offset 0ms+/-0ms
             execution 1ms+/-0ms 
     Component AEB_controler :
         Signal Processed_detection
         Service Compute_detection:
             subscribe to Detection_data
-            publish Processed_detection
-            triggered on Detection_data
+            publish to Processed_detection
+            trigger on Detection_data
             execution 1ms+/-0ms
         Service Compute_reaction:
             subscribe to Processed_detection
             publish to VSS signal Alarm
             publish to VSS signal Brake
-            triggered on Processed_detection
+            trigger on Processed_detection
             execution 1ms+/-0ms
 
 Functional Chains:

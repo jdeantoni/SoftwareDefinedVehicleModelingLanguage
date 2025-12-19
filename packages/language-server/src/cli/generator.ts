@@ -48,6 +48,7 @@ export class Context {
     servicesToComponents: Map<serviceKey, componentKey[]>;
     signalToPublishers: Map<signalName, serviceKey[]>;
     resources: Map<string, Resource>;
+    plainNameRunnable: Map<string, Runnable>
 
     constructor(model: Model) {
         this.signalsToServices = new Map<string, string[]>();
@@ -99,13 +100,20 @@ export class Context {
 
         let runnable_vss: [string, Runnable][] = model.vss.signals.map(s => {
             if (isActuator(s)) {
-                return [s.name, new Runnable(s.name, trigRuleToTrigger(s.name, s.trigRule), s.ad)];
+                return [s.name, new Runnable(s.name, actuatorTrigRuleToTrigger(s.name, s.trigRule), s.ad, false)];
             } else {
                 const trigger: Trigger = new PeriodicTrigger(s.ssp, s.offset ?? 0);
-                return [s.name, new Runnable(s.name, trigger, s.dl)];
+                return [s.name, new Runnable(s.name, trigger, s.dl, false)];
             }
         });
-        let runnable_services = model.components.flatMap(c => c.services.map(s => [s.name, new Runnable(makeServiceName(c, s), trigRuleToTrigger(s.name, s.trigRule), s.execTime, s.resource?.ref ? this.resources.get(s.resource.ref.name) : undefined)]) as [string, Runnable][]);
+        this.plainNameRunnable = new Map(runnable_vss);
+        let runnable_services = model.components.flatMap(c => c.services.map(s => {
+            const resource = s.resource?.ref ? this.resources.get(s.resource.ref.name) : undefined;
+            const name = makeServiceName(c, s);
+            const runnable = new Runnable(name, trigRuleToTrigger(s.name, s.trigRule), s.execTime, false, resource);
+            this.plainNameRunnable.set(s.name, runnable);
+            return [name, runnable] as [string, Runnable]
+        }));
         this.runnables = new Map(runnable_vss.concat(runnable_services));
     }
 }
@@ -619,10 +627,9 @@ class EventTrigger {
     }
     spec(spawn_clock: string, jitter_var: string, phase_var: string, ctx: Context): [string, string] {
         let structure = "";
-
         for (let signalPub of ctx.signalToPublishers.get(this.event) ?? []) {
-            let pubRunnable = ctx.runnables.get(signalPub) ?? expect("imposible situation: runnable should be defined if it is listed as producer");
-            structure += `\n    ${pubRunnable.finish_clock} = ${spawn_clock};`; // ASSUMPTION: communication is instantaneous
+            let pubRunnable = ctx.runnables.get(signalPub) ?? expect("impossible situation: runnable should be defined if it is listed as producer");
+            structure += `\n    ${spawn_clock} |= ${pubRunnable.finish_clock};`; // ASSUMPTION: communication is instantaneous
         }
         return ["", structure]
     }
@@ -680,9 +687,8 @@ class Resource {
     ${execution} = (${free} or ${force});
     allow ${taken} in ]${execution}, ${release}];
     forbid ${free} in ]${execution}, ${release}];
-    allow ${force} in [${spawn}, ${release}[;
-    forbid ${drop} in [${spawn}, ${release}[;
-    ${execution} alternates ${release};`;
+    ${execution} alternates ${release};
+    `;
         return resource_spec;
     }
     get spawn_clock(): string {
@@ -695,8 +701,14 @@ class Resource {
         return `${this.name}_RELEASE`;
     }
     allocation_spec(spawn: string, start: string, finish: string): string {
+        let force = `${this.name}_FORCE`;
+        let drop = `${this.name}_DROP`;
+        let local_force = `${finish}_FORCE`;
         return `
-    ${this.spawn_clock} |= ${spawn};
+    allow ${local_force} in [${spawn}, ${finish}[;
+    forbid ${drop} in [${spawn}, ${finish}[;
+    ${force} += ${local_force};
+    ${this.spawn_clock} += ${spawn};
     ${this.execution_clock} |= ${start};
     ${this.release_clock} |= ${finish};
         `
@@ -708,11 +720,13 @@ class Runnable {
     trigger: Trigger;
     execution: RandomVar;
     resource?: Resource;
-    constructor(name: string, trigger: Trigger, execution: RandomVar, resource?: Resource) {
+    vss: boolean;
+    constructor(name: string, trigger: Trigger, execution: RandomVar, vss: boolean, resource?: Resource) {
         this.name = name;
         this.trigger = trigger;
         this.execution = execution;
         this.resource = resource;
+        this.vss = vss;
     }
     get start_clock(): string {
         return `${this.name}_START`
@@ -741,6 +755,13 @@ function trigRuleToTrigger(serviceName: string, rule: TriggeringRule): Trigger {
         return new EventTrigger(getSubscriptionSignal(serviceName, rule.trigger?.ref!));
     }
 }
+function actuatorTrigRuleToTrigger(serviceName: string, rule: TriggeringRule): Trigger {
+    if (isPeriodicTriggering(rule)) {
+        return new PeriodicTrigger(rule.period, rule.offset ?? 0); // ASSUMPTION: offset is set to 0 if missing.
+    } else {
+        return new EventTrigger(serviceName);
+    }
+}
 
 export function generateMRTCCSLSpec(context: Context): string {
     const resourcesSpec = Array.from(context.resources.values()).map(r => r.spec()).join("\n") + "\n";
@@ -760,6 +781,9 @@ export function generateMRTCCSLSpec(context: Context): string {
 
 function generateMRTCCSLRunnable(r: Runnable, ctx: Context, sigma: number): [string, string] {
     const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(r.execution, sigma);
+    if (left_exec_bound < 0) { // TODO: move the verification in a better place and report to the user
+        throw new Error(`${r.name} can have negative execution time.`);
+    }
     let exec_duration_constr = `
     duration : ${left_exec_bound}ms <= ${r.execution_var} <= ${right_exec_bound}ms;
     continuous process ${r.execution_var} with normal(${r.execution.mean.value}ms, ${r.execution.stdDev.value}ms);`;
@@ -787,7 +811,7 @@ export function generateFunctionalChainSpec(chain: FunctionalChain, ctx: Context
     var chainString = `${chain.name}:`;
     var previous = undefined;
     for (let current of chain.participants) {
-        let runnable = ctx.runnables.get(current.ref!.name) ?? expect(`chain participant with id "${current.ref?.name}" is not available.`)
+        let runnable = ctx.plainNameRunnable.get(current.ref!.name) ?? expect(`chain participant with id "${current.ref?.name}" is not available.`)
         if (previous !== undefined) {
             chainString += (runnable.trigger.$type === "EventTrigger" && ctx.servicesToSignals.get(previous)?.includes(runnable.trigger.event)) ? "->" : "?";
         }
@@ -804,7 +828,7 @@ export function generateFunctionalChainSegments(chain: FunctionalChain, ctx: Con
     var first = undefined;
     var previous = undefined;
     for (let current of chain.participants) {
-        let runnable = ctx.runnables.get(current.ref!.name) ?? expect(`chain participant with id "${current.ref?.name}" is not available.`)
+        let runnable = ctx.plainNameRunnable.get(current.ref!.name) ?? expect(`chain participant with id "${current.ref?.name}" is not available.`)
         if (previous !== undefined) {
             segments.push(`${previous.finish_clock}_${runnable.start_clock}`);
         }
@@ -823,4 +847,18 @@ export function generateTaskCSV(ctx: Context): string {
         tasks += `${r.name},${r.spawn_clock},${r.start_clock},${r.finish_clock},${r.finish_clock}\n`;
     }
     return header + tasks;
+}
+
+export function generateSchedulingDelayMonitoringChains(ctx: Context): [string, [string, string][]] {
+    let files: [string, string][] = [];
+    let chainsSpec = "";
+    for (let r of ctx.runnables.values()) {
+        if (!r.vss && r.resource) {
+            const name = `monitor_scheduling_${r.name}`;
+            const file = `${r.spawn_clock}_${r.start_clock}`;
+            files.push([name, file]);
+            chainsSpec += `${name}:${r.spawn_clock}->${r.start_clock}\n`;
+        }
+    }
+    return [chainsSpec, files]
 }
