@@ -98,7 +98,7 @@ function renderBuildFile(rules: NinjaRule[], instructions: NinjaBuildInstruction
     return [...rules.map(renderRule), ...instructions.map(renderBuildInstruction), ...groups.map(renderGroup), ""].join("\n")
 }
 
-export async function generateAction (
+export async function generateAction(
     fileName: string,
     opts: GenerateOptions,
     progress: Progress<{ increment: number, message?: string | undefined }>,
@@ -177,7 +177,7 @@ export async function generateAction (
     };
     let reactionRule = <NinjaRule>{
         name: "reaction_time",
-        command: `${useMRTCCSL} ccsl+ reaction -s earliest --scale=${config.scale} -c $in -o ./`,
+        command: `${useMRTCCSL} ccsl+ reaction -s earliest --scale=${config.scale} -c -w worst $in -l ./ -o ./`,
         implicitDependencies: []
     };
     let compileImageRule = <NinjaRule>{
@@ -224,10 +224,19 @@ export async function generateAction (
 
 
     let reactionStats = model.chains.flatMap(
-        chain =>
-            generateFunctionalChainSegments(chain, context)
-                .map(file =>  [chain.name, file] as [string, string])
+        chain => {
+            let segments = generateFunctionalChainSegments(chain, context)
+            let chain_name_pairs = segments.map(file => [chain.name, file] as [string, string]);
+            return chain_name_pairs;
+        }
     ).concat(shedulingChainSegments).map(([chainName, filename]) => `${chainName}/categorized/${filename}.histogram.csv`);
+    reactionStats.push(...model.chains.map(
+        chain => {
+            let segments = generateFunctionalChainSegments(chain, context);
+            let full = segments[0];
+            return `${chain.name}/weighted/${full}.histogram.csv`;
+        }
+    ));
 
     buildInstructions.push({ rule: reactionRule, inputs: ["chains", ...traceFiles], outputs: reactionStats });
 
