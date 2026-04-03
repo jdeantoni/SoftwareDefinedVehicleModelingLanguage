@@ -18,7 +18,7 @@ App :
             execution 3ms+/-1ms
     Component AEB_controler :
         Service S2:
-            subscribe to Fusion_data
+            subscribe to queue Fusion_data
             publish to VSS signal Alarm
             publish to VSS signal Brake
             trigger on Fusion_data

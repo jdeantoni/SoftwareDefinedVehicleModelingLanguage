@@ -31,16 +31,16 @@ App :
         Signal Position
         Signal Speed
         Service Positioning:
-            subscribe to VSS signal GPS
-            subscribe to VSS signal Inertial
+            subscribe to var VSS signal GPS
+            subscribe to queue VSS signal Inertial
             publish to Position
             trigger on Inertial
             execution 1ms+/-0ms using cpu0
         Service Speed:
-            subscribe to VSS signal Wheel1Speed
-            subscribe to VSS signal Wheel2Speed
-            subscribe to VSS signal Wheel3Speed
-            subscribe to VSS signal Wheel4Speed
+            subscribe to var VSS signal Wheel1Speed
+            subscribe to var VSS signal Wheel2Speed
+            subscribe to var VSS signal Wheel3Speed
+            subscribe to var VSS signal Wheel4Speed
             publish to Speed
             period 25ms+/-1ms offset varying
             execution 1ms+/-0ms using cpu0
@@ -51,30 +51,30 @@ App :
         Signal RadarEnvironment
         Signal EnvironmentMap
         Service CameraPerception:
-            subscribe to VSS signal Camera1
-            subscribe to VSS signal Camera2
-            subscribe to VSS signal Camera3
-            subscribe to VSS signal Camera4
-            subscribe to VSS signal Camera5
-            subscribe to VSS signal Camera6
-            subscribe to VSS signal Camera7
+            subscribe to var VSS signal Camera1
+            subscribe to var VSS signal Camera2
+            subscribe to var VSS signal Camera3
+            subscribe to var VSS signal Camera4
+            subscribe to var VSS signal Camera5
+            subscribe to var VSS signal Camera6
+            subscribe to var VSS signal Camera7
             publish to CameraEnvironment
             period 100ms+/-10ms offset varying
             execution 10ms+/-3ms using gpu0
         Service LiDARPerception:
-            subscribe to VSS signal LiDAR
+            subscribe to queue VSS signal LiDAR
             publish to LiDAREnvironment
             trigger on LiDAR
             execution 30ms+/-10ms using gpu0
         Service RadarPerception:
-            subscribe to VSS signal Radar
+            subscribe to queue VSS signal Radar
             publish to RadarEnvironment
             trigger on Radar
             execution 10ms+/-4ms using gpu0
         Service Fusion:
-            subscribe to CameraEnvironment
-            subscribe to LiDAREnvironment
-            subscribe to RadarEnvironment
+            subscribe to var CameraEnvironment
+            subscribe to var LiDAREnvironment
+            subscribe to var RadarEnvironment
             publish to EnvironmentMap
             period 100ms+/-5ms offset varying
             execution 25ms+/-5ms using gpu1
@@ -90,7 +90,7 @@ App :
         Signal SpeedLimitSigns
         Signal DirectionSigns
         Service ObjectDetection:
-            subscribe to EnvironmentMap
+            subscribe to queue EnvironmentMap
             publish to Lanes
             publish to Signs
             publish to Vehicles
@@ -100,21 +100,21 @@ App :
             trigger on EnvironmentMap
             execution 50ms+/-10ms using gpu1
         Service Prediction:
-            subscribe to Lanes
-            subscribe to Signs
-            subscribe to Vehicles
-            subscribe to Pedestrians
-            subscribe to Cyclist
-            subscribe to VSS signal SteeringWheelPosition
-            subscribe to VSS signal BrakePedalPosition
-            subscribe to VSS signal AccelerationPedalPosition
-            subscribe to Speed
+            subscribe to var Lanes
+            subscribe to var Signs
+            subscribe to queue Vehicles
+            subscribe to var Pedestrians
+            subscribe to var Cyclist
+            subscribe to var VSS signal SteeringWheelPosition
+            subscribe to var VSS signal BrakePedalPosition
+            subscribe to var VSS signal AccelerationPedalPosition
+            subscribe to var Speed
             publish to Trajectories
             publish to EgoTrajectory
             trigger on Vehicles
             execution 10ms+/-1ms using cpu1
         Service SignInterpretation:
-            subscribe to Signs
+            subscribe to var Signs
             publish to SpeedLimitSigns
             publish to DirectionSigns
             period 200ms+/-20ms offset varying
@@ -123,13 +123,13 @@ App :
     Component CollisionDetection:
         Signal TimeToCollision
         Service TimeToCollision:
-            subscribe to Trajectories
-            subscribe to Speed
+            subscribe to var Trajectories
+            subscribe to var Speed
             publish to TimeToCollision
             period 200ms+/-10ms offset varying
             execution 30ms+/-5ms using cpu1
         Service BrakingDecision:
-            subscribe to TimeToCollision
+            subscribe to queue TimeToCollision
             publish to VSS signal Braking
             publish to VSS signal CollisionAlert
             trigger on TimeToCollision
@@ -137,31 +137,31 @@ App :
 
     Component Assistance:
         Service BlindSpot:
-            subscribe to Trajectories
+            subscribe to queue Trajectories
             publish to VSS signal PassingVehicleIndicator
             trigger on Trajectories
             execution 10ms+/-5ms using cpu2
         Service Navigation:
-            subscribe to Position
-            subscribe to EgoTrajectory
-            subscribe to DirectionSigns
+            subscribe to var Position
+            subscribe to var EgoTrajectory
+            subscribe to var DirectionSigns
             publish to VSS signal NavigationHint
             period 100ms+/-20ms offset varying
             execution 50ms+/-10ms using cpu2
         Service Speeding:
-            subscribe to SpeedLimitSigns
+            subscribe to var SpeedLimitSigns
             publish to VSS signal SpeedingAlert
             period 500ms+/-100ms offset varying
             execution 2ms+/-0ms using cpu2
         Service LaneMonitoring:
-            subscribe to Lanes
-            subscribe to EgoTrajectory
+            subscribe to queue Lanes
+            subscribe to var EgoTrajectory
             publish to VSS signal LaneDepartureAlert
             trigger on Lanes
             execution 5ms+/-1ms using cpu2
         Service PedestrianNotification:
-            subscribe to Pedestrians
-            subscribe to Cyclist
+            subscribe to var Pedestrians
+            subscribe to var Cyclist
             publish to VSS signal AwarenessAlert
             period 1000ms+/-100ms offset varying
             execution 10ms+/-3ms using cpu2
@@ -175,4 +175,7 @@ Resource :
     Execution cpu3
 
 Functional Chains:
-    chain : Camera1 -> CameraPerception -> Fusion -> ObjectDetection -> Prediction -> TimeToCollision -> BrakingDecision -> Braking
+    aebs_brake : Camera1 -> Braking
+    aebs_warning : Camera1 -> CollisionAlert
+    // aebs_brake : Camera1 -> CameraPerception -> Fusion -> ObjectDetection -> Prediction -> TimeToCollision -> BrakingDecision -> Braking
+    // aebs_warning : Camera1 -> CameraPerception -> Fusion -> ObjectDetection -> Prediction -> TimeToCollision -> BrakingDecision -> CollisionAlert

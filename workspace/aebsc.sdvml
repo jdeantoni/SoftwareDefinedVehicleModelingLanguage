@@ -8,7 +8,7 @@ VSS :
     Actuator Signal Alarm (trigger on event, AD 1ms+/-0ms)
 App :
     Component Data_hub :
-        Signal Detection_data
+        Signal Detection_data 
         Signal Reaction_data
         Service Fuse_detection:
             subscribe to VSS signal Lidar

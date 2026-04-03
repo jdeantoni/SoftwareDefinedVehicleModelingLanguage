@@ -1,21 +1,21 @@
 // Monarch syntax highlighting for the sdvml language.
 export default {
     keywords: [
-        'AD','Actuator','App','Chains','Component','DL','Execution','Functional','Resource','SDV','SSP','Sensor','Service','Signal','VSS','event','execution','ms','normal','offset','on','period','publish','signal','subscribe','to','trigger','using','varying'
+        'AD','Actuator','App','Chains','Component','DL','Execution','Functional','Resource','SDV','SSP','Sensor','Service','Signal','VSS','event','execution','ms','nonreentrant','normal','offset','on','period','publish','queue','signal','subscribe','to','trigger','using','var','varying'
     ],
     operators: [
-        '+/-',',','->',':','~'
+        '+/-',',','->',':','|','~'
     ],
-    symbols: /\(|\)|\+\/-|,|->|:|\[|\]|~/,
+    symbols: /\(|\)|\+\/-|,|->|:|\[|\]|\||~/,
 
     tokenizer: {
         initial: [
             { regex: /[_a-zA-Z][\w_]*/, action: { cases: { '@keywords': {"token":"keyword"}, '@default': {"token":"ID"} }} },
             { regex: /[0-9]+/, action: {"token":"number"} },
-            { regex: /[0-9]+\.[0-9]+/, action: {"token":"FLOAT"} },
-            { regex: /([0-9]+\.[0-9]*([eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)/, action: {"token":"DOUBLE"} },
+            { regex: /[0-9]+\.[0-9]+/, action: {"token":"number"} },
+            { regex: /([0-9]+\.[0-9]*([eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)/, action: {"token":"number"} },
             { regex: /"(\\.|[^"\\])*"|'(\\.|[^'\\])*'/, action: {"token":"string"} },
-            { regex: /(true|false)/, action: {"token":"BOOL"} },
+            { regex: /(true|false)/, action: {"token":"boolean"} },
             { include: '@whitespace' },
             { regex: /@symbols/, action: { cases: { '@operators': {"token":"operator"}, '@default': {"token":""} }} },
         ],

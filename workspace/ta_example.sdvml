@@ -6,10 +6,10 @@ VSS :
 App :
     Component Recognition :
         Service S:
-            subscribe to VSS signal CameraFrame
+            subscribe to queue VSS signal CameraFrame
             publish to VSS signal Screen
             trigger on CameraFrame
             execution 100ms+/-30ms
 
 Functional Chains:
-    chain : CameraFrame -> S -> Screen
+    chain : CameraFrame -> Screen

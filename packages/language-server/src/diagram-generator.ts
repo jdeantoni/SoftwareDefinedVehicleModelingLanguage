@@ -17,12 +17,9 @@
 
 import { GeneratorContext, LangiumDiagramGenerator } from 'langium-sprotty';
 import { SEdge, SLabel, SModelRoot, SNode, SPort, SModelElement } from 'sprotty-protocol';
-import { Signal, Component, Model, isSensor, Sensor, Actuator, isPeriodicTriggering, Service, FunctionalChain, FCParticipant } from './generated/ast.js';
+import { Signal, Component, Model, isSensor, Sensor, Actuator, isPeriodicTriggering, Service } from './generated/ast.js';
 import { Context, makeServiceName, getPublishingSignal, getSubscriptionSignal } from './cli/generator.js';
-import path from 'path';
-import { Reference } from 'langium';
 
-import * as fs from 'fs';
 
 // export interface ExpandableNode extends SNode {
 //     type: 'expandable-node'
@@ -51,7 +48,7 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                 ...sdvmlModel.components.flatMap(c => this.generateComponent(c, args, context)),
                 // ...this.generateVSS(sdvmlModel.vss, args),
                 ...sdvmlModel.vss.signals.flatMap(s => this.generateSignal(s, args)),
-                ...sdvmlModel.chains.flatMap(c => this.generateFCEdge(c, args, context))
+                // ...sdvmlModel.chains.flatMap(c => this.generateFCEdge(c, args, context))
             ]
         };
         this.traceProvider.trace(graph, sdvmlModel);
@@ -379,128 +376,128 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
         return node;
     }
 
-    protected generateFCEdge(fc: FunctionalChain, ctx: GeneratorContext<Model>, model: Context): SNode[] {
-        let filePath = ctx.document.uri.path.replace("vscode-webview://", "");
-        filePath = filePath.slice(filePath.indexOf("/"), filePath.lastIndexOf('/'));
-        let results = `${filePath}/generated/results/${path.basename(ctx.document.uri.path).replace(".sdvml", ".mrtccsl")}/`;
+    // protected generateFCEdge(fc: FunctionalChain, ctx: GeneratorContext<Model>, model: Context): SNode[] {
+    //     let filePath = ctx.document.uri.path.replace("vscode-webview://", "");
+    //     filePath = filePath.slice(filePath.indexOf("/"), filePath.lastIndexOf('/'));
+    //     let results = `${filePath}/generated/results/${path.basename(ctx.document.uri.path).replace(".sdvml", ".mrtccsl")}/`;
 
-        var previous: string | undefined = undefined;
-        const participantNames = fc.participants.map((participant: Reference<FCParticipant>): [string, boolean] => {
-            if (participant.ref?.$type == "Sensor" || participant.ref?.$type == "Actuator") {
-                return [participant.ref.name, true];
-            } else {
-                const service = participant.ref;
-                const component = service?.$container;
-                return [makeServiceName(component!, service!), false];
-            }
-        });
-        const pairs = participantNames.flatMap(([qualifiedName, vss]): [string, string, boolean, boolean, boolean][] => {
-            const serviceEventPairs: [string, string, boolean, boolean, boolean][] = [[qualifiedName, qualifiedName, true, false, vss]];
-            if (previous != undefined) {
-                serviceEventPairs.push([previous, qualifiedName, false, false, vss])
-            }
-            previous = qualifiedName;
-            return serviceEventPairs;
-        });
-        // Add full chain too
-        let first = participantNames[0];
-        let last = participantNames[participantNames.length - 1];
-        pairs.push([first[0], last[0], true, true, true]);
+    //     var previous: string | undefined = undefined;
+    //     const participantNames = fc.participants.map((participant: Reference<FCParticipant>): [string, boolean] => {
+    //         if (participant.ref?.$type == "Sensor" || participant.ref?.$type == "Actuator") {
+    //             return [participant.ref.name, true];
+    //         } else {
+    //             const service = participant.ref;
+    //             const component = service?.$container;
+    //             return [makeServiceName(component!, service!), false];
+    //         }
+    //     });
+    //     const pairs = participantNames.flatMap(([qualifiedName, vss]): [string, string, boolean, boolean, boolean][] => {
+    //         const serviceEventPairs: [string, string, boolean, boolean, boolean][] = [[qualifiedName, qualifiedName, true, false, vss]];
+    //         if (previous != undefined) {
+    //             serviceEventPairs.push([previous, qualifiedName, false, false, vss])
+    //         }
+    //         previous = qualifiedName;
+    //         return serviceEventPairs;
+    //     });
+    //     // Add full chain too
+    //     let first = participantNames[0];
+    //     let last = participantNames[participantNames.length - 1];
+    //     pairs.push([first[0], last[0], true, true, true]);
 
-        const reactions = [];
-        const chainLinks = [];
-        const guideEdges = [];
-        console.error(pairs);
-        for (let [start, finish, runnable, wholeChain, vss] of pairs) {
-            let id = runnable ? `${fc.name}_${start}_START_${finish}_FINISH` : `${fc.name}_${start}_FINISH_${finish}_START`;;
-            let reactionId = `${id}.reaction`;
-            let chainLinkId = `${id}.highlight`;
+    //     const reactions = [];
+    //     const chainLinks = [];
+    //     const guideEdges = [];
+    //     console.error(pairs);
+    //     for (let [start, finish, runnable, wholeChain, vss] of pairs) {
+    //         let id = runnable ? `${fc.name}_${start}_START_${finish}_FINISH` : `${fc.name}_${start}_FINISH_${finish}_START`;;
+    //         let reactionId = `${id}.reaction`;
+    //         let chainLinkId = `${id}.highlight`;
 
-            if (!wholeChain && !runnable) {
-                chainLinks.push(
-                    <SEdge>{
-                        type: 'edge:fc-edge',
-                        id: chainLinkId,
-                        sourceId: start,
-                        targetId: finish,
-                        layout: "stack"
-                    }
-                );
-            }
-            try {
-                const imageBuffer = fs.readFileSync(path.join(results, `${id}_reaction_time_hist.csv.svg`));
-                const image = imageBuffer.toString().replace(/<svg(.|\n)*?>/gmi, "").replace(/<\?xml(.*)>/, "").replace(/<title>.*<\/title>/, "").replace(/<desc>.*<\/desc>/, "").replace("<g id=\"gnuplot_canvas\">", "").replace("<\/g>\n<\/svg>", "").replace(/xlink:href/g, "href");
+    //         if (!wholeChain && !runnable) {
+    //             chainLinks.push(
+    //                 <SEdge>{
+    //                     type: 'edge:fc-edge',
+    //                     id: chainLinkId,
+    //                     sourceId: start,
+    //                     targetId: finish,
+    //                     layout: "stack"
+    //                 }
+    //             );
+    //         }
+    //         try {
+    //             const imageBuffer = fs.readFileSync(path.join(results, `${id}_reaction_time_hist.csv.svg`));
+    //             const image = imageBuffer.toString().replace(/<svg(.|\n)*?>/gmi, "").replace(/<\?xml(.*)>/, "").replace(/<title>.*<\/title>/, "").replace(/<desc>.*<\/desc>/, "").replace("<g id=\"gnuplot_canvas\">", "").replace("<\/g>\n<\/svg>", "").replace(/xlink:href/g, "href");
 
-                reactions.push(<SNode>{
-                    type: "node",
-                    id: reactionId + ".container",
-                    size: { height: 50, width: 50 },
-                    children: [
-                        <SLabel>{
-                            type: "label",
-                            id: reactionId + ".description",
-                            text: `${start} ~> ${finish}`,
-                        },
-                        <SNode>{
-                            type: "pre-rendered",
-                            id: reactionId,
-                            code: `<g transform="scale(0.2)">${image}</g>`,
-                            size: { height: 50, width: 50 },
-                            layout: "stack",
-                            layoutOptions: {
-                                resizeContainer: false
-                            }
-                        }
-                    ]
-                });
-                if (runnable) {
-                    var signalId = (model.servicesToSignals.get(finish) ?? []).pop(); // TODO: need to pick the port that leads to next runnable
-                } else {
-                    var signalId = (model.runnableInputs.get(finish) ?? []).pop();
-                }
-                if (vss && runnable) {
-                    var portId = finish + ".container";
-                } else if (vss && !runnable) {
-                    var portId = finish;
-                }
-                else if (signalId && !wholeChain) {
-                    var portId = `${finish}.${signalId}`;
-                } else {
-                    var portId = finish; // for actuators that do not have outputs
-                }
-                guideEdges.push(
-                    <SEdge>{
-                        type: 'edge:fc-guide',
-                        id: `${reactionId}_to_${portId}`,
-                        sourceId: reactionId + ".container",
-                        targetId: portId,
-                        layout: "stack"
-                    }
-                );
-            } catch (e) {
-                continue
-            }
-        }
+    //             reactions.push(<SNode>{
+    //                 type: "node",
+    //                 id: reactionId + ".container",
+    //                 size: { height: 50, width: 50 },
+    //                 children: [
+    //                     <SLabel>{
+    //                         type: "label",
+    //                         id: reactionId + ".description",
+    //                         text: `${start} ~> ${finish}`,
+    //                     },
+    //                     <SNode>{
+    //                         type: "pre-rendered",
+    //                         id: reactionId,
+    //                         code: `<g transform="scale(0.2)">${image}</g>`,
+    //                         size: { height: 50, width: 50 },
+    //                         layout: "stack",
+    //                         layoutOptions: {
+    //                             resizeContainer: false
+    //                         }
+    //                     }
+    //                 ]
+    //             });
+    //             if (runnable) {
+    //                 var signalId = (model.servicesToSignals.get(finish) ?? []).pop(); // TODO: need to pick the port that leads to next runnable
+    //             } else {
+    //                 var signalId = (model.runnableInputs.get(finish) ?? []).pop();
+    //             }
+    //             if (vss && runnable) {
+    //                 var portId = finish + ".container";
+    //             } else if (vss && !runnable) {
+    //                 var portId = finish;
+    //             }
+    //             else if (signalId && !wholeChain) {
+    //                 var portId = `${finish}.${signalId}`;
+    //             } else {
+    //                 var portId = finish; // for actuators that do not have outputs
+    //             }
+    //             guideEdges.push(
+    //                 <SEdge>{
+    //                     type: 'edge:fc-guide',
+    //                     id: `${reactionId}_to_${portId}`,
+    //                     sourceId: reactionId + ".container",
+    //                     targetId: portId,
+    //                     layout: "stack"
+    //                 }
+    //             );
+    //         } catch (e) {
+    //             continue
+    //         }
+    //     }
 
-        // console.log(guideEdges);
-        // const chainNode = <SNode>{
-        //     type: "node:chain",
-        //     id: "chain" + fc.name,
-        //     layout: "hbox",
-        //     children: [
-        //         <SLabel>{
-        //             type: "label",
-        //             id: fc.name + ".description",
-        //             text: fc.name,
-        //         }, ...reactions],
-        //     layoutOptions: {
-        //         ...defaultLayout,
-        //         hAlign: "left",
-        //         vAlign: "top",
-        //         resizeContainer: true,
-        //     },
-        // };
-        // return [chainNode, ...chainLinks, ...guideEdges];
-        return chainLinks;
-    }
+    //     // console.log(guideEdges);
+    //     // const chainNode = <SNode>{
+    //     //     type: "node:chain",
+    //     //     id: "chain" + fc.name,
+    //     //     layout: "hbox",
+    //     //     children: [
+    //     //         <SLabel>{
+    //     //             type: "label",
+    //     //             id: fc.name + ".description",
+    //     //             text: fc.name,
+    //     //         }, ...reactions],
+    //     //     layoutOptions: {
+    //     //         ...defaultLayout,
+    //     //         hAlign: "left",
+    //     //         vAlign: "top",
+    //     //         resizeContainer: true,
+    //     //     },
+    //     // };
+    //     // return [chainNode, ...chainLinks, ...guideEdges];
+    //     return chainLinks;
+    // }
 }

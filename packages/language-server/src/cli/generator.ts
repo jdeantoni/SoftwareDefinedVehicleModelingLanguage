@@ -16,6 +16,7 @@ import {
 } from '../generated/ast.js';
 import { CompositeGeneratorNode, toString } from 'langium/generate';
 
+
 function expect(msg: string): never {
     throw new Error(msg)
 }
@@ -40,6 +41,20 @@ export type serviceKey = string;
 export type componentKey = string;
 export type signalName = string;
 
+class Communication {
+    name: signalName;
+    writes: Runnable[];
+    var_reads: Runnable[];
+    queue_reads: Runnable[];
+
+    constructor(name: string) {
+        this.name = name;
+        this.writes = [];
+        this.var_reads = [];
+        this.queue_reads = [];
+    }
+}
+
 export class Context {
     signalsToServices: Map<signalName, serviceKey[]>;
     servicesToSignals: Map<serviceKey, signalName[]>;
@@ -48,7 +63,8 @@ export class Context {
     servicesToComponents: Map<serviceKey, componentKey[]>;
     signalToPublishers: Map<signalName, serviceKey[]>;
     resources: Map<string, Resource>;
-    plainNameRunnable: Map<string, Runnable>
+    plainNameRunnable: Map<string, Runnable>;
+    communication: Map<string, Communication>;
 
     constructor(model: Model) {
         this.signalsToServices = new Map<string, string[]>();
@@ -58,27 +74,51 @@ export class Context {
         this.signalToPublishers = new Map<string, string[]>();
         this.resources = new Map(model.resources.map(r => [r.name, new Resource(r.name)]));
 
+        let component_comms = model.vss.signals.map(s => [s.name, new Communication(s.name)] as [string, Communication]);
+        let vss_comms = model.components.flatMap(component => component.signals.map(s => [s.name, new Communication(s.name)] as [string, Communication]));
+        this.communication = new Map<string, Communication>(component_comms.concat(vss_comms));
+
+        this.plainNameRunnable = new Map();
+        this.runnables = new Map();
+
         for (var component of model.components) {
             for (var service of component.services) {
-                const serviceName = makeServiceName(component, service);
+                const name = makeServiceName(component, service);
+                const resource = service.resource?.ref ? this.resources.get(service.resource.ref.name) : undefined;
+                const runnable = new Runnable(name, trigRuleToTrigger(service.name, service.trigRule), service.execTime, false, !service.nonreentrant, resource);
+                this.plainNameRunnable.set(service.name, runnable);
+                this.runnables.set(name, runnable);
+
                 const inputs = [];
                 for (var subscription of service.subscribers) {
                     const subscriptionSignal = getSubscriptionSignal(service.name, subscription);
                     let targetServices = this.signalsToServices.get(subscriptionSignal) ?? [];
-                    targetServices.push(serviceName);
+                    targetServices.push(name);
                     this.signalsToServices.set(subscriptionSignal, targetServices);
                     inputs.push(subscriptionSignal);
+
+                    let comm = this.communication.get(subscriptionSignal) ?? expect("communication should be already initialized");
+                    if (subscription.commType.name == "queue") {
+                        comm.queue_reads.push(runnable);
+                    } else if (subscription.commType.name == "var") {
+                        comm.var_reads.push(runnable);
+                    }
+                    this.communication.set(subscriptionSignal, comm);
                 };
-                this.runnableInputs.set(serviceName, inputs);
+                this.runnableInputs.set(name, inputs);
                 for (var publish of service.publishers) {
                     const publishingSignal = getPublishingSignal(service.name, publish);
-                    let sourceServices = this.servicesToSignals.get(serviceName) ?? [];
+                    let sourceServices = this.servicesToSignals.get(name) ?? [];
                     sourceServices.push(publishingSignal);
-                    this.servicesToSignals.set(serviceName, sourceServices);
+                    this.servicesToSignals.set(name, sourceServices);
 
                     let signalPublishers = this.signalToPublishers.get(publishingSignal) ?? [];
-                    signalPublishers.push(serviceName);
+                    signalPublishers.push(name);
                     this.signalToPublishers.set(publishingSignal, signalPublishers);
+
+                    let comm = this.communication.get(publishingSignal) ?? expect("communication should be already initialized");
+                    comm.writes.push(runnable);
+                    this.communication.set(publishingSignal, comm);
                 };
                 const relatedComponents = this.servicesToComponents.get(service.name) ?? [];
                 relatedComponents.push(component.name);
@@ -86,35 +126,38 @@ export class Context {
             }
         }
 
-        for (var vssSignal of model.vss.signals) {
-            if (isSensor(vssSignal)) {
-                this.servicesToSignals.set(vssSignal.name, [vssSignal.name]);
-                this.signalToPublishers.set(vssSignal.name, [vssSignal.name]);
+        for (var s of model.vss.signals) {
+            if (isSensor(s)) {
+                this.servicesToSignals.set(s.name, [s.name]);
+                this.signalToPublishers.set(s.name, [s.name]);
             } else {
-                this.runnableInputs.set(vssSignal.name, [vssSignal.name]);
-                let receivers = this.signalsToServices.get(vssSignal.name) ?? [];
-                receivers.push(vssSignal.name);
-                this.signalsToServices.set(vssSignal.name, receivers);
+                this.runnableInputs.set(s.name, [s.name]);
+                let receivers = this.signalsToServices.get(s.name) ?? [];
+                receivers.push(s.name);
+                this.signalsToServices.set(s.name, receivers);
+            }
+            var runnable;
+            if (isActuator(s)) {
+                runnable = new Runnable(s.name, actuatorTrigRuleToTrigger(s.name, s.trigRule), s.ad, false, true);
+            } else {
+                const trigger: Trigger = new PeriodicTrigger(s.ssp, s.offset ?? 0); // TODO: fix it, in the syntax we say "varying" which is not 0 for sure
+                runnable = new Runnable(s.name, trigger, s.dl, false, true);
+            }
+            this.plainNameRunnable.set(s.name, runnable);
+            this.runnables.set(s.name, runnable);
+
+            let comm = this.communication.get(s.name) ?? expect("communication should be already initialized");
+            if (isSensor(s)) {
+                comm.writes.push(runnable);
+            } else {
+                if (runnable.trigger.$type == "EventTrigger") {
+                    comm.queue_reads.push(runnable);
+                } else {
+                    comm.var_reads.push(runnable);
+                }
             }
         }
-
-        let runnable_vss: [string, Runnable][] = model.vss.signals.map(s => {
-            if (isActuator(s)) {
-                return [s.name, new Runnable(s.name, actuatorTrigRuleToTrigger(s.name, s.trigRule), s.ad, false)];
-            } else {
-                const trigger: Trigger = new PeriodicTrigger(s.ssp, s.offset ?? 0);
-                return [s.name, new Runnable(s.name, trigger, s.dl, false)];
-            }
-        });
-        this.plainNameRunnable = new Map(runnable_vss);
-        let runnable_services = model.components.flatMap(c => c.services.map(s => {
-            const resource = s.resource?.ref ? this.resources.get(s.resource.ref.name) : undefined;
-            const name = makeServiceName(c, s);
-            const runnable = new Runnable(name, trigRuleToTrigger(s.name, s.trigRule), s.execTime, false, resource);
-            this.plainNameRunnable.set(s.name, runnable);
-            return [name, runnable] as [string, Runnable]
-        }));
-        this.runnables = new Map(runnable_vss.concat(runnable_services));
+        this.communication.forEach((value, key) => console.log(`${key}: ${value.queue_reads.map(r => r.name)}`));
     }
 }
 
@@ -721,12 +764,14 @@ class Runnable {
     execution: RandomVar;
     resource?: Resource;
     vss: boolean;
-    constructor(name: string, trigger: Trigger, execution: RandomVar, vss: boolean, resource?: Resource) {
+    reentrant: boolean;
+    constructor(name: string, trigger: Trigger, execution: RandomVar, vss: boolean, reentrant: boolean, resource?: Resource) {
         this.name = name;
         this.trigger = trigger;
         this.execution = execution;
         this.resource = resource;
         this.vss = vss;
+        this.reentrant = reentrant;
     }
     get start_clock(): string {
         return `${this.name}_START`
@@ -782,7 +827,7 @@ export function generateMRTCCSLSpec(context: Context): string {
 function generateMRTCCSLRunnable(r: Runnable, ctx: Context, sigma: number): [string, string] {
     const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(r.execution, sigma);
     if (left_exec_bound < 0) { // TODO: move the verification in a better place and report to the user
-        throw new Error(`${r.name} can have negative execution time.`);
+        throw new Error(`${r.name} cannot have negative execution time.`);
     }
     let exec_duration_constr = `
     duration : ${left_exec_bound}ms <= ${r.execution_var} <= ${right_exec_bound}ms;
@@ -791,9 +836,14 @@ function generateMRTCCSLRunnable(r: Runnable, ctx: Context, sigma: number): [str
     let [phaseJitterConstraints, triggerConstrants] = r.trigger.spec(r.spawn_clock, r.jitter_var, r.phase_var, ctx);
     triggerConstrants += `    ${r.spawn_clock} causes ${r.start_clock};`
     if (r.resource === undefined) { // ASSUMPTION: in case of undefined resource the job is scheduled immediately
-        triggerConstrants += `${r.spawn_clock} = ${r.start_clock};`
+        triggerConstrants += `${r.spawn_clock} = ${r.start_clock};`;
     } else {
         triggerConstrants += r.resource.allocation_spec(r.spawn_clock, r.start_clock, r.finish_clock);
+    }
+    if (r.reentrant) { // when resource is assigned, it is already non-reentrant as there cannot be two different jobs executing
+        var reentrancy_constraint = "";
+    } else {
+        var reentrancy_constraint = `${r.start_clock} alternates ${r.finish_clock};`;
     }
     return [`
     ${phaseJitterConstraints}
@@ -802,43 +852,77 @@ function generateMRTCCSLRunnable(r: Runnable, ctx: Context, sigma: number): [str
     `
     ${triggerConstrants}
     ${exec_constr}
+    ${reentrancy_constraint}
         `];
 }
 
-
-
-export function generateFunctionalChainSpec(chain: FunctionalChain, ctx: Context): string {
-    var chainString = `${chain.name}:`;
-    var previous = undefined;
-    for (let current of chain.participants) {
-        let runnable = ctx.plainNameRunnable.get(current.ref!.name) ?? expect(`chain participant with id "${current.ref?.name}" is not available.`)
-        if (previous !== undefined) {
-            chainString += (runnable.trigger.$type === "EventTrigger" && ctx.servicesToSignals.get(previous)?.includes(runnable.trigger.event)) ? "->" : "?";
+function generateCommunicationNetworkSexp(ctx: Context): string[] {
+    let declaration = [];
+    for (let comm of ctx.communication.values()) {
+        let write_sexp = comm.writes.map(r => r.finish_clock).join(" ");
+        if (comm.var_reads.length > 0) {
+            let read_sexp = comm.var_reads.map(r => r.start_clock).join(" ");
+            declaration.push(`(Variable (name ${comm.name}:var) (reads (${read_sexp})) (writes (${write_sexp})))`)
         }
-        chainString += `${runnable.start_clock}->${runnable.finish_clock}`;
-        previous = runnable.name;
-    }
-    return chainString;
-}
-export function generateFunctionalChainSegments(chain: FunctionalChain, ctx: Context): string[] {
-    if (chain.participants.length === 0) {
-        return [];
-    }
-    let segments = [];
-    var first = undefined;
-    var previous = undefined;
-    for (let current of chain.participants) {
-        let runnable = ctx.plainNameRunnable.get(current.ref!.name) ?? expect(`chain participant with id "${current.ref?.name}" is not available.`)
-        if (previous !== undefined) {
-            segments.push(`${previous.finish_clock}_${runnable.start_clock}`);
+        if (comm.queue_reads.length > 0) {
+            let read_sexp = comm.queue_reads.map(r => r.start_clock).join(" ");
+            declaration.push(`(Queue (name ${comm.name}:queue) (reads (${read_sexp})) (writes (${write_sexp})))`)
         }
-        segments.push(`${runnable.start_clock}_${runnable.finish_clock}`);
-        previous = runnable;
-        first = first === undefined ? runnable : first;
+        // skips communication declaration when place is only written into, as otheriwse it is just waste of network operation
     }
-    segments.push(`${first!.start_clock}_${previous!.finish_clock}`);
-    return segments;
+    for (let [name, runnable] of ctx.runnables) {
+        declaration.push(`(Queue (name ${name}_state) (writes (${runnable.start_clock})) (reads (${runnable.finish_clock})))`); // TODO: can be a variable when non-reentrant
+    }
+    return declaration;
 }
+
+function generateFunctionalChainSpec(chain: FunctionalChain, ctx: Context): string[] {
+    var declaration = [];
+    var finishRunnable = ctx.plainNameRunnable.get(chain.finish.ref!.name) ?? expect(`chain participant with id "${chain.finish.ref?.name}" is not available.`);
+    declaration.push(`(Probe (name ${chain.name}) (color ${chain.name}) (at ${finishRunnable.finish_clock}))`);
+
+    for (let start_variant of chain.start) {
+        let runnable = ctx.plainNameRunnable.get(start_variant.ref!.name) ?? expect(`chain participant with id "${start_variant.ref?.name}" is not available.`)
+        declaration.push(`(Inject (at ${runnable.start_clock}) (color ${chain.name}))`);
+    }
+    return declaration
+}
+
+function monitorDeclarations(ctx: Context): [string[], string[]] {
+    let declaration = [];
+    let files = [];
+    for (let r of ctx.runnables.values()) {
+        if (!r.vss && r.resource) {
+            let probe = `${r.name}_monitor`;
+            const file = `${probe}/${r.spawn_clock}_${r.start_clock}`;
+            files.push(file);
+            declaration.push(`(Inject (at ${r.start_clock}) (color ${probe}))`);
+            declaration.push(`(Probe (name ${probe}) (color ${probe}) (at ${r.finish_clock}))`);
+        }
+    }
+    return [files, declaration];
+}
+
+export function generateNetworkDeclaration(chains: FunctionalChain[], ctx: Context): [string[], string] {
+    let netDeclaration = generateCommunicationNetworkSexp(ctx);
+    let chainDeclaration = chains.flatMap(c => generateFunctionalChainSpec(c, ctx));
+    let [monitorFiles, monitorDeclaration] = monitorDeclarations(ctx);
+    let fullDeclaration = netDeclaration.concat(chainDeclaration, monitorDeclaration);
+
+    let chain_files = chains.flatMap(c => c.name);
+
+    return [monitorFiles.concat(chain_files), `(\n${fullDeclaration.join("\n")}\n)`]
+}
+
+export function generateMicrostepOrder(ctx: Context): string {
+    let pairs: string[] = [];
+    for (let comm of ctx.communication.values()) {
+        let order_pair = comm.writes.flatMap(w => comm.queue_reads.map(r => `(${w.finish_clock} ${r.start_clock})`));
+        pairs.push(...order_pair);
+    }
+    return `(${pairs.join("\n")})`
+}
+
 
 export function generateTaskCSV(ctx: Context): string {
     const header = "name,release,start,finish,deadline\n";
@@ -847,18 +931,4 @@ export function generateTaskCSV(ctx: Context): string {
         tasks += `${r.name},${r.spawn_clock},${r.start_clock},${r.finish_clock},${r.finish_clock}\n`;
     }
     return header + tasks;
-}
-
-export function generateSchedulingDelayMonitoringChains(ctx: Context): [string, [string, string][]] {
-    let files: [string, string][] = [];
-    let chainsSpec = "";
-    for (let r of ctx.runnables.values()) {
-        if (!r.vss && r.resource) {
-            const name = `monitor_scheduling_${r.name}`;
-            const file = `${r.spawn_clock}_${r.start_clock}`;
-            files.push([name, file]);
-            chainsSpec += `${name}:${r.spawn_clock}->${r.start_clock}\n`;
-        }
-    }
-    return [chainsSpec, files]
 }

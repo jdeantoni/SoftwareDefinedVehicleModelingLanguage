@@ -35,7 +35,7 @@ entry Model:
 
 FunctionalChain:
     name=ID ":"
-        participants+=[FCParticipant:ID] ("->" participants+=[FCParticipant:ID])*;
+        start+=[FCParticipant:ID] ("|" start+=[FCParticipant:ID])* "->" finish=[FCParticipant:ID];
 
 
 type FCParticipant = Sensor | Service | Actuator;
@@ -78,10 +78,10 @@ Actuator:
     "Actuator" "Signal" name=ID '(' trigRule=TriggeringRule',''AD' ad=RandomVar')';
 
 Publisher:
-    'publish' "to" (appSignal=[AppSignal:ID] | "VSS" "signal" actuatorSignal=[Actuator:ID]);//('type' msgType=STRING)? 'message' msg=STRING;
+    'publish' "to" (appSignal=[AppSignal:ID] | "VSS" "signal" actuatorSignal=[Actuator:ID]);
 
 Subscriber:
-    'subscribe' "to" (appSignal=[AppSignal:ID] | "VSS" "signal" sensorSignal=[Sensor:ID]);// ('type' msgType=STRING)? msg=STRING;
+    'subscribe' "to" (commType=CommunicationType) ((appSignal=[AppSignal:ID] | "VSS" "signal" sensorSignal=[Sensor:ID]));
 
 Service:
     'Service' name=ID":"
@@ -90,8 +90,12 @@ Service:
             subscribers+=Subscriber
         )+
         trigRule=TriggeringRule
-        'execution' execTime=RandomVar //('type' srvType=STRING)?;
-        ('using' resource=[Resource:ID])?;
+        'execution' execTime=RandomVar
+        ('using' resource=[Resource:ID])?
+        ( nonreentrant?="nonreentrant" )?;
+
+CommunicationType:
+    (name="var" ) | (name="queue");
 
 Resource:
     "Execution" name=ID;
@@ -101,10 +105,10 @@ DURATION:
 
 terminal ID: /[_a-zA-Z][\w_]*/;
 terminal INT returns number: /[0-9]+/;
-terminal FLOAT: /[0-9]+\.[0-9]+/;
-terminal DOUBLE: /([0-9]+\.[0-9]*([eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)/;
+terminal FLOAT returns number: /[0-9]+\.[0-9]+/;
+terminal DOUBLE returns number: /([0-9]+\.[0-9]*([eE][+-]?[0-9]+)?|[0-9]+[eE][+-]?[0-9]+)/;
 terminal STRING: /"(\\.|[^"\\])*"|'(\\.|[^'\\])*'/;
-terminal BOOL: 'true' | 'false';
+terminal BOOL returns boolean: 'true' | 'false';
 
 hidden terminal WS: /\s+/;
 hidden terminal ML_COMMENT: /\/\*[\s\S]*?\*\//;

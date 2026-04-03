@@ -1,10 +1,9 @@
 import type { Model } from '../generated/ast.js';
-import chalk from 'chalk';
 import { Command } from 'commander';
 import { SdvmlLanguageMetaData } from '../generated/module.js';
 import { createSdvmlServices } from '../sdvml-module.js';
 import { extractAstNode, extractDestinationAndName } from './cli-util.js';
-import { Context, generateFunctionalChainSegments, generateFunctionalChainSpec, generateIFScript, generateMRTCCSLSpec, generateSchedulingDelayMonitoringChains, generateTaskCSV } from './generator.js';
+import { Context, generateMRTCCSLSpec, generateMicrostepOrder, generateNetworkDeclaration, generateTaskCSV } from './generator.js';
 // import {workspace} from "vscode";
 import { NodeFileSystem } from 'langium/node';
 // import * as url from 'node:url';
@@ -16,31 +15,11 @@ import { Progress, CancellationToken, Disposable } from "vscode";
 
 
 const gnuTemplate = `
-clear
-reset
-set border 3
-set datafile separator ','
-
-set output sprintf("%s.svg", filename)
-set terminal svg size 1000,500 enhanced font "Helvetica,20" background rgb "white"
-set datafile missing NaN
-set datafile columnheaders
-
-# Each bar is half the (visual) width of its x-range.
-set boxwidth 0.5 relative
-set style data histograms
-set style histogram rowstacked
-set style fill solid 1.0
-
-# set ylabel "probability"
-
-print(filename);
-stats filename name "D" nooutput
-
-# set nokey
-unset border
-
-plot for [j=2:D_columns] filename using j title sprintf("missed %i", j);
+set datafile separator ","
+set terminal svg enhanced size 2000 500 font "Times,11" background rgb 'white'
+set output "/dev/stdout"
+set xrange[0:]
+plot "/dev/stdin" using 1:2 smooth unique w linespoints pt 7;
 `
 
 async function overrideFileIfChanged(path: string, content: string): Promise<void> {
@@ -123,18 +102,21 @@ export async function generateAction(
     const buildDir = path.join(data.destination, data.name);
     await fs.promises.mkdir(buildDir, { recursive: true });
     let mrtccslLocation = opts.mrtccslPath ? `cd ${opts.mrtccslPath};` : "";
-    const ifFilePath = path.join(buildDir, "model.if");
+    // const ifFilePath = path.join(buildDir, "model.if");
     const mrtccslFilePath = path.join(buildDir, "spec.mrtccsl");
     const tasksFilePath = path.join(buildDir, "tasks.csv");
-    const chainsSpecFilePath = path.join(buildDir, "chains");
+    const reactionsDir = path.join(buildDir, "reaction");
+    const networkFilePath = path.join(buildDir, "network.sexp");
+    const microstepPath = path.join(buildDir, "microstep.sexp");
+    const traceDir = path.join(buildDir, "traces");
 
     progress.report({ increment: 1, message: "IF model" });
     if (token.isCancellationRequested) {
         return
     }
 
-    const generatedModel = generateIFScript(model, context);
-    await overrideFileIfChanged(ifFilePath, generatedModel);
+    // const generatedModel = generateIFScript(model, context);
+    // await overrideFileIfChanged(ifFilePath, generatedModel);
 
     progress.report({ increment: 4, message: "MRTCCSL specification" });
     if (token.isCancellationRequested) {
@@ -152,17 +134,10 @@ export async function generateAction(
         return
     }
 
-    let [schedulingChainSpec, shedulingChainSegments] = generateSchedulingDelayMonitoringChains(context);
-    const chainsString: string = schedulingChainSpec + model.chains.reduce((acc: string, chain) => {
-        acc += generateFunctionalChainSpec(chain, context) + "\n";
-        return acc
-    }, "");
-    await overrideFileIfChanged(chainsSpecFilePath, chainsString);
-
-    console.log(
-        chalk.green(`IF, MRTCCSL and functional chain artifacts generated successfully: ${ifFilePath}`)
-    );
-
+    let [chainFiles, networkDeclaration] = generateNetworkDeclaration(model.chains, context);
+    await overrideFileIfChanged(networkFilePath, networkDeclaration);
+    let microstepOrder = generateMicrostepOrder(context);
+    await overrideFileIfChanged(microstepPath, microstepOrder); // TODO: for now, for reactions, we don't really care about the same step order
 
     progress.report({ increment: 1, message: "building" });
     if (token.isCancellationRequested) {
@@ -172,17 +147,17 @@ export async function generateAction(
     const useMRTCCSL = `${mrtccslLocation}eval $$(opam env); ${mrtccslLocation ? "cd $$OLDPWD;" : ""} OCAMLRUNPARAM=b `;
     let simulationRule = <NinjaRule>{
         name: "simulation",
-        command: `${useMRTCCSL} ccsl+ simulate $in -o ./ --traces=${config.traces} --steps=${config.steps} --horizon=${config.horizon}`,
+        command: `${useMRTCCSL} ccsl+ simulate $in -o ${traceDir} --traces=${config.traces} --steps=${config.steps} --horizon=${config.horizon}`,
         implicitDependencies: []
     };
     let reactionRule = <NinjaRule>{
         name: "reaction_time",
-        command: `${useMRTCCSL} ccsl+ reaction -s earliest --scale=${config.scale} -c -w worst $in -l ./ -o ./`,
+        command: `${useMRTCCSL} ccsl+ reaction2 --scale=${config.scale} $in -o ${reactionsDir}`,
         implicitDependencies: []
     };
     let compileImageRule = <NinjaRule>{
         name: "compile_image",
-        command: `unset GTK_PATH; gnuplot -e "filename='$in'" template.gnu`,
+        command: `unset GTK_PATH; cat $in | gnuplot template.gnu > $out`,
         implicitDependencies: ["template.gnu"]
     };
     let compileTCADPRule = <NinjaRule>{
@@ -195,19 +170,27 @@ export async function generateAction(
         command: `${useMRTCCSL} ccsl+ trace convert native svgbob --vertical --tasks=${tasksFilePath} $in -o $out`,
         implicitDependencies: [tasksFilePath]
     };
+    let compiledSVGBOBRule = <NinjaRule>{
+        name: "compile_svg_bob",
+        command: `svgbob_cli $in -o $out`,
+        implicitDependencies: []
+    };
 
     let buildInstructions = []
 
-    let traceFiles = Array(config.traces).fill("error").map((value, index) => `${index}.trace`);
+    let traceFiles = Array(config.traces).fill("error").map((_, index) => `${traceDir}/${index}.trace`);
     buildInstructions.push({ rule: simulationRule, inputs: ["spec.mrtccsl"], outputs: traceFiles });
     let tcadpFiles: string[] = [];
     let svgbobFiles: string[] = [];
+    let compiledSvgbobFiles: string[] = [];
     buildInstructions.push(...Array(config.traces).fill("error").flatMap((value, index) => {
-        let traceFile = `${index}.trace`;
-        let tcadpFile = `trace/t${index + 1}.txt`;
-        let bobFile = `trace/${index}.svgbob`;
+        let traceFile = `${traceDir}/${index}.trace`;
+        let tcadpFile = `${traceDir}/cadp/t${index + 1}.txt`;
+        let bobFile = `${traceDir}/visualize/${index}.svgbob`;
+        let compiledBobFile = `${traceDir}/visualize/${index}.svgbob.svg`;
         tcadpFiles.push(tcadpFile);
         svgbobFiles.push(bobFile);
+        compiledSvgbobFiles.push(compiledBobFile)
         return [
             <NinjaBuildInstruction>{
                 rule: compileTCADPRule,
@@ -218,38 +201,32 @@ export async function generateAction(
                 rule: convertSVGBOBRule,
                 inputs: [traceFile],
                 outputs: [bobFile]
-            }
+            },
+            <NinjaBuildInstruction>{
+                rule: compiledSVGBOBRule,
+                inputs: [bobFile],
+                outputs: [compiledBobFile]
+            },
         ]
     }));
 
+    let reactionStats = chainFiles.flatMap(c => [`${reactionsDir}/${c}/weighted/full/histogram.csv`, `${reactionsDir}/${c}/weighted/reduced/histogram.csv`, `${reactionsDir}/${c}/weighted/without/histogram.csv`]);
 
-    let reactionStats = model.chains.flatMap(
-        chain => {
-            let segments = generateFunctionalChainSegments(chain, context)
-            let chain_name_pairs = segments.map(file => [chain.name, file] as [string, string]);
-            return chain_name_pairs;
-        }
-    ).concat(shedulingChainSegments).map(([chainName, filename]) => `${chainName}/categorized/${filename}.histogram.csv`);
-    reactionStats.push(...model.chains.map(
-        chain => {
-            let segments = generateFunctionalChainSegments(chain, context);
-            let full = segments[0];
-            return `${chain.name}/weighted/${full}.histogram.csv`;
-        }
-    ));
-
-    buildInstructions.push({ rule: reactionRule, inputs: ["chains", ...traceFiles], outputs: reactionStats });
+    buildInstructions.push({ rule: reactionRule, inputs: [networkFilePath, microstepPath, ...traceFiles], outputs: reactionStats });
 
     for (let file of reactionStats) {
         buildInstructions.push({ rule: compileImageRule, inputs: [file], outputs: [file + ".svg"] });
     }
     let images = reactionStats.map(file => file + ".svg");
+
+
     const groups = [
         { name: "images", artifacts: images, byDefault: true },
-        { name: "tcadp", artifacts: tcadpFiles, byDefault: true },
-        { name: "svgbob", artifacts: svgbobFiles, byDefault: false }
+        { name: "tcadp", artifacts: tcadpFiles, byDefault: false },
+        { name: "svgbob", artifacts: svgbobFiles, byDefault: false },
+        { name: "svgbob_compiled", artifacts: compiledSvgbobFiles, byDefault: false },
     ];
-    const ninjafile = renderBuildFile([simulationRule, reactionRule, compileImageRule, compileTCADPRule, convertSVGBOBRule], buildInstructions, groups);
+    const ninjafile = renderBuildFile([simulationRule, reactionRule, compileImageRule, compileTCADPRule, convertSVGBOBRule, compiledSVGBOBRule], buildInstructions, groups);
 
     await overrideFileIfChanged(path.join(buildDir, "template.gnu"), gnuTemplate);
     await overrideFileIfChanged(path.join(buildDir, "build.ninja"), ninjafile);
