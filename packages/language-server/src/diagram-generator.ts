@@ -17,8 +17,11 @@
 
 import { GeneratorContext, LangiumDiagramGenerator } from 'langium-sprotty';
 import { SEdge, SLabel, SModelRoot, SNode, SPort, SModelElement } from 'sprotty-protocol';
-import { Signal, Component, Model, isSensor, Sensor, Actuator, isPeriodicTriggering, Service } from './generated/ast.js';
+import { Signal, Component, Model, isSensor, Sensor, Actuator, isPeriodicTriggering, Service, SimpleChain, FCParticipant, isSimpleChain } from './generated/ast.js';
 import { Context, makeServiceName, getPublishingSignal, getSubscriptionSignal } from './cli/generator.js';
+import path from 'path';
+import { Reference } from 'langium';
+import { readFileSync } from 'fs';
 
 
 // export interface ExpandableNode extends SNode {
@@ -48,7 +51,7 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                 ...sdvmlModel.components.flatMap(c => this.generateComponent(c, args, context)),
                 // ...this.generateVSS(sdvmlModel.vss, args),
                 ...sdvmlModel.vss.signals.flatMap(s => this.generateSignal(s, args)),
-                // ...sdvmlModel.chains.flatMap(c => this.generateFCEdge(c, args, context))
+                ...sdvmlModel.chains.flatMap(c => { if (isSimpleChain(c)) { return this.generateFCEdge(c, args, context); } else { return [] } })
             ]
         };
         this.traceProvider.trace(graph, sdvmlModel);
@@ -281,12 +284,12 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
             <SLabel>{
                 type: "label:values",
                 id: idCache.uniqueId(nodeId + '.values1'),
-                text: "DL:" + sig.dl.mean.value + "+/-" + sig.dl.stdDev.value + "ms"
+                text: "Latency:" + sig.latency.mean.value + "+/-" + sig.latency.stdDev.value + "ms"
             },
             <SLabel>{
                 type: "label:values",
                 id: idCache.uniqueId(nodeId + '.values2'),
-                text: "SSP:" + sig.ssp.mean.value + "+/-" + sig.ssp.stdDev.value + "ms"
+                text: "Period:" + sig.latency.mean.value + "+/-" + sig.latency.stdDev.value + "ms"
             }
         ];
         return res;
@@ -298,14 +301,14 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
             <SLabel>{
                 type: "label:values",
                 id: idCache.uniqueId(nodeId + '.values1'),
-                text: "DL:" + sig.ad.mean.value + "+/-" + sig.ad.stdDev.value + "ms"
+                text: "Latency:" + sig.latency.mean.value + "+/-" + sig.latency.stdDev.value + "ms"
             }
         ];
-        if (isPeriodicTriggering(sig.trigRule)) {
+        if (isPeriodicTriggering(sig.trigger)) {
             res.push(<SLabel>{
                 type: "label:values",
                 id: idCache.uniqueId(nodeId + '.values2'),
-                text: "AP:" + sig.trigRule.period.mean.value + "+/-" + sig.trigRule.period.stdDev.value + "ms"
+                text: "AP:" + sig.trigger.period.mean.value + "+/-" + sig.trigger.period.stdDev.value + "ms"
             });
         }
 
@@ -321,14 +324,14 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
                 text: "ET:" + service.execTime.mean.value + "+/-" + service.execTime.stdDev.value + "ms"
             }
         ]
-        if (isPeriodicTriggering(service.trigRule)) {
+        if (isPeriodicTriggering(service.trigger)) {
             res.push(<SLabel>{
                 type: "label:values",
                 id: idCache.uniqueId(nodeId + '.values2'),
-                text: "AP:" + service.trigRule.period.mean.value + "+/-" + service.trigRule.period.stdDev.value + "ms"
+                text: "AP:" + service.trigger.period.mean.value + "+/-" + service.trigger.period.stdDev.value + "ms"
             });
         } else {
-            const trigger = service.trigRule.trigger;
+            const trigger = service.trigger.event;
             if (trigger?.ref !== undefined) {
                 res.push(<SLabel>{
                     type: "label:values",
@@ -344,7 +347,7 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
         const { idCache } = ctx;
         const nodeId = idCache.uniqueId(sig.name, sig);
         // console.error(`#############  ${sig.name}:${nodeId}   -- ${idCache.getId(sig)}`)
-        //  :"(AD:"+sig.ad.mean+"+/-"+sig.ad.stdDev+"ms\n:"+sig.trigRule.$type+")";
+        //  :"(AD:"+sig.ad.mean+"+/-"+sig.ad.stdDev+"ms\n:"+sig.trigger.$type+")";
         const sigType = isSensor(sig) ? "output" : "input";
         const node = <SNode>{
             type: 'node:vss-node',
@@ -376,128 +379,128 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
         return node;
     }
 
-    // protected generateFCEdge(fc: FunctionalChain, ctx: GeneratorContext<Model>, model: Context): SNode[] {
-    //     let filePath = ctx.document.uri.path.replace("vscode-webview://", "");
-    //     filePath = filePath.slice(filePath.indexOf("/"), filePath.lastIndexOf('/'));
-    //     let results = `${filePath}/generated/results/${path.basename(ctx.document.uri.path).replace(".sdvml", ".mrtccsl")}/`;
+    protected generateFCEdge(fc: SimpleChain, ctx: GeneratorContext<Model>, model: Context): SNode[] {
+        let filePath = ctx.document.uri.path.replace("vscode-webview://", "");
+        filePath = filePath.slice(filePath.indexOf("/"), filePath.lastIndexOf('/'));
+        let results = `${filePath}/generated/results/${path.basename(ctx.document.uri.path).replace(".sdvml", ".mrtccsl")}/`;
 
-    //     var previous: string | undefined = undefined;
-    //     const participantNames = fc.participants.map((participant: Reference<FCParticipant>): [string, boolean] => {
-    //         if (participant.ref?.$type == "Sensor" || participant.ref?.$type == "Actuator") {
-    //             return [participant.ref.name, true];
-    //         } else {
-    //             const service = participant.ref;
-    //             const component = service?.$container;
-    //             return [makeServiceName(component!, service!), false];
-    //         }
-    //     });
-    //     const pairs = participantNames.flatMap(([qualifiedName, vss]): [string, string, boolean, boolean, boolean][] => {
-    //         const serviceEventPairs: [string, string, boolean, boolean, boolean][] = [[qualifiedName, qualifiedName, true, false, vss]];
-    //         if (previous != undefined) {
-    //             serviceEventPairs.push([previous, qualifiedName, false, false, vss])
-    //         }
-    //         previous = qualifiedName;
-    //         return serviceEventPairs;
-    //     });
-    //     // Add full chain too
-    //     let first = participantNames[0];
-    //     let last = participantNames[participantNames.length - 1];
-    //     pairs.push([first[0], last[0], true, true, true]);
+        var previous: string | undefined = undefined;
+        const participantNames = fc.participants.map((participant: Reference<FCParticipant>): [string, boolean] => {
+            if (participant.ref?.$type == "Sensor" || participant.ref?.$type == "Actuator") {
+                return [participant.ref.name, true];
+            } else {
+                const service = participant.ref;
+                const component = service?.$container;
+                return [makeServiceName(component!, service!), false];
+            }
+        });
+        const pairs = participantNames.flatMap(([qualifiedName, vss]): [string, string, boolean, boolean, boolean][] => {
+            const serviceEventPairs: [string, string, boolean, boolean, boolean][] = [[qualifiedName, qualifiedName, true, false, vss]];
+            if (previous != undefined) {
+                serviceEventPairs.push([previous, qualifiedName, false, false, vss])
+            }
+            previous = qualifiedName;
+            return serviceEventPairs;
+        });
+        // Add full chain too
+        let first = participantNames[0];
+        let last = participantNames[participantNames.length - 1];
+        pairs.push([first[0], last[0], true, true, true]);
 
-    //     const reactions = [];
-    //     const chainLinks = [];
-    //     const guideEdges = [];
-    //     console.error(pairs);
-    //     for (let [start, finish, runnable, wholeChain, vss] of pairs) {
-    //         let id = runnable ? `${fc.name}_${start}_START_${finish}_FINISH` : `${fc.name}_${start}_FINISH_${finish}_START`;;
-    //         let reactionId = `${id}.reaction`;
-    //         let chainLinkId = `${id}.highlight`;
+        const reactions = [];
+        const chainLinks = [];
+        const guideEdges = [];
+        console.error(pairs);
+        for (let [start, finish, runnable, wholeChain, vss] of pairs) {
+            let id = runnable ? `${fc.name}_${start}_START_${finish}_FINISH` : `${fc.name}_${start}_FINISH_${finish}_START`;;
+            let reactionId = `${id}.reaction`;
+            let chainLinkId = `${id}.highlight`;
 
-    //         if (!wholeChain && !runnable) {
-    //             chainLinks.push(
-    //                 <SEdge>{
-    //                     type: 'edge:fc-edge',
-    //                     id: chainLinkId,
-    //                     sourceId: start,
-    //                     targetId: finish,
-    //                     layout: "stack"
-    //                 }
-    //             );
-    //         }
-    //         try {
-    //             const imageBuffer = fs.readFileSync(path.join(results, `${id}_reaction_time_hist.csv.svg`));
-    //             const image = imageBuffer.toString().replace(/<svg(.|\n)*?>/gmi, "").replace(/<\?xml(.*)>/, "").replace(/<title>.*<\/title>/, "").replace(/<desc>.*<\/desc>/, "").replace("<g id=\"gnuplot_canvas\">", "").replace("<\/g>\n<\/svg>", "").replace(/xlink:href/g, "href");
+            if (!wholeChain && !runnable) {
+                chainLinks.push(
+                    <SEdge>{
+                        type: 'edge:fc-edge',
+                        id: chainLinkId,
+                        sourceId: start,
+                        targetId: finish,
+                        layout: "stack"
+                    }
+                );
+            }
+            try {
+                const imageBuffer = readFileSync(path.join(results, `${id}_reaction_time_hist.csv.svg`));
+                const image = imageBuffer.toString().replace(/<svg(.|\n)*?>/gmi, "").replace(/<\?xml(.*)>/, "").replace(/<title>.*<\/title>/, "").replace(/<desc>.*<\/desc>/, "").replace("<g id=\"gnuplot_canvas\">", "").replace("<\/g>\n<\/svg>", "").replace(/xlink:href/g, "href");
 
-    //             reactions.push(<SNode>{
-    //                 type: "node",
-    //                 id: reactionId + ".container",
-    //                 size: { height: 50, width: 50 },
-    //                 children: [
-    //                     <SLabel>{
-    //                         type: "label",
-    //                         id: reactionId + ".description",
-    //                         text: `${start} ~> ${finish}`,
-    //                     },
-    //                     <SNode>{
-    //                         type: "pre-rendered",
-    //                         id: reactionId,
-    //                         code: `<g transform="scale(0.2)">${image}</g>`,
-    //                         size: { height: 50, width: 50 },
-    //                         layout: "stack",
-    //                         layoutOptions: {
-    //                             resizeContainer: false
-    //                         }
-    //                     }
-    //                 ]
-    //             });
-    //             if (runnable) {
-    //                 var signalId = (model.servicesToSignals.get(finish) ?? []).pop(); // TODO: need to pick the port that leads to next runnable
-    //             } else {
-    //                 var signalId = (model.runnableInputs.get(finish) ?? []).pop();
-    //             }
-    //             if (vss && runnable) {
-    //                 var portId = finish + ".container";
-    //             } else if (vss && !runnable) {
-    //                 var portId = finish;
-    //             }
-    //             else if (signalId && !wholeChain) {
-    //                 var portId = `${finish}.${signalId}`;
-    //             } else {
-    //                 var portId = finish; // for actuators that do not have outputs
-    //             }
-    //             guideEdges.push(
-    //                 <SEdge>{
-    //                     type: 'edge:fc-guide',
-    //                     id: `${reactionId}_to_${portId}`,
-    //                     sourceId: reactionId + ".container",
-    //                     targetId: portId,
-    //                     layout: "stack"
-    //                 }
-    //             );
-    //         } catch (e) {
-    //             continue
-    //         }
-    //     }
+                reactions.push(<SNode>{
+                    type: "node",
+                    id: reactionId + ".container",
+                    size: { height: 50, width: 50 },
+                    children: [
+                        <SLabel>{
+                            type: "label",
+                            id: reactionId + ".description",
+                            text: `${start} ~> ${finish}`,
+                        },
+                        <SNode>{
+                            type: "pre-rendered",
+                            id: reactionId,
+                            code: `<g transform="scale(0.2)">${image}</g>`,
+                            size: { height: 50, width: 50 },
+                            layout: "stack",
+                            layoutOptions: {
+                                resizeContainer: false
+                            }
+                        }
+                    ]
+                });
+                if (runnable) {
+                    var signalId = (model.servicesToSignals.get(finish) ?? []).pop(); // TODO: need to pick the port that leads to next runnable
+                } else {
+                    var signalId = (model.runnableInputs.get(finish) ?? []).pop();
+                }
+                if (vss && runnable) {
+                    var portId = finish + ".container";
+                } else if (vss && !runnable) {
+                    var portId = finish;
+                }
+                else if (signalId && !wholeChain) {
+                    var portId = `${finish}.${signalId}`;
+                } else {
+                    var portId = finish; // for actuators that do not have outputs
+                }
+                guideEdges.push(
+                    <SEdge>{
+                        type: 'edge:fc-guide',
+                        id: `${reactionId}_to_${portId}`,
+                        sourceId: reactionId + ".container",
+                        targetId: portId,
+                        layout: "stack"
+                    }
+                );
+            } catch (e) {
+                continue
+            }
+        }
 
-    //     // console.log(guideEdges);
-    //     // const chainNode = <SNode>{
-    //     //     type: "node:chain",
-    //     //     id: "chain" + fc.name,
-    //     //     layout: "hbox",
-    //     //     children: [
-    //     //         <SLabel>{
-    //     //             type: "label",
-    //     //             id: fc.name + ".description",
-    //     //             text: fc.name,
-    //     //         }, ...reactions],
-    //     //     layoutOptions: {
-    //     //         ...defaultLayout,
-    //     //         hAlign: "left",
-    //     //         vAlign: "top",
-    //     //         resizeContainer: true,
-    //     //     },
-    //     // };
-    //     // return [chainNode, ...chainLinks, ...guideEdges];
-    //     return chainLinks;
-    // }
+        // console.log(guideEdges);
+        // const chainNode = <SNode>{
+        //     type: "node:chain",
+        //     id: "chain" + fc.name,
+        //     layout: "hbox",
+        //     children: [
+        //         <SLabel>{
+        //             type: "label",
+        //             id: fc.name + ".description",
+        //             text: fc.name,
+        //         }, ...reactions],
+        //     layoutOptions: {
+        //         ...defaultLayout,
+        //         hAlign: "left",
+        //         vAlign: "top",
+        //         resizeContainer: true,
+        //     },
+        // };
+        // return [chainNode, ...chainLinks, ...guideEdges];
+        return chainLinks;
+    }
 }

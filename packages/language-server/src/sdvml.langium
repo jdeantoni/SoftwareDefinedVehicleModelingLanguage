@@ -33,12 +33,17 @@ entry Model:
         )?
 ;
 
-FunctionalChain:
-    name=ID ":"
-        start+=[FCParticipant:ID] ("|" start+=[FCParticipant:ID])* "->" finish=[FCParticipant:ID];
-
-
 type FCParticipant = Sensor | Service | Actuator;
+
+SimpleChain:
+    name=ID ":"
+         participants+=[FCParticipant:ID] ("->" participants+=[FCParticipant:ID])+;
+
+CompositeChain:
+    name=ID ":" alternatives+=[SimpleChain:ID] ( "|" alternatives+=[SimpleChain:ID] )+;
+
+FunctionalChain:
+    SimpleChain | CompositeChain;
 
 VSS:
     "VSS" ":"
@@ -49,6 +54,7 @@ RandomVar:
     mean=DURATION "+/-" stdDev=DURATION
     | "[" left=DURATION "," right=DURATION "]" "~" "normal" ("(" mean=DURATION "," stdDev=DURATION ")")?
 ;
+
 TriggeringRule:
     PeriodicTriggering | EventTriggering;
 
@@ -56,7 +62,10 @@ PeriodicTriggering:
     'period' period=RandomVar 'offset' (offset=RandomVar | 'varying');
 
 EventTriggering:
-    'trigger' 'on' (trigger=[Subscriber:ID] | 'event');
+    'on' event=[Subscriber:ID];
+
+SelfTriggering:
+    "on" "event" event="self";
 
 Component:
     'Component' name=ID ":"
@@ -72,33 +81,33 @@ Signal:
     Sensor | Actuator;
 
 Sensor:
-    "Sensor" "Signal" name=ID '(''SSP' ssp=RandomVar 'offset'  (offset=RandomVar | 'varying')',''DL' dl=RandomVar')';
+    "Sensor" "Signal" name=ID ':' "trigger" trigger=PeriodicTriggering "latency" latency=RandomVar;
 
 Actuator:
-    "Actuator" "Signal" name=ID '(' trigRule=TriggeringRule',''AD' ad=RandomVar')';
+    "Actuator" "Signal" name=ID ':' "trigger" trigger=(PeriodicTriggering | SelfTriggering) "latency" latency=RandomVar;
 
 Publisher:
-    'publish' "to" (appSignal=[AppSignal:ID] | "VSS" "signal" actuatorSignal=[Actuator:ID]);
-
-Subscriber:
-    'subscribe' "to" (commType=CommunicationType) ((appSignal=[AppSignal:ID] | "VSS" "signal" sensorSignal=[Sensor:ID]));
-
-Service:
-    'Service' name=ID":"
-        (
-            publishers+=Publisher |
-            subscribers+=Subscriber
-        )+
-        trigRule=TriggeringRule
-        'execution' execTime=RandomVar
-        ('using' resource=[Resource:ID])?
-        ( nonreentrant?="nonreentrant" )?;
+    ("App" "." appSignal=[AppSignal:ID] | "VSS" "." actuatorSignal=[Actuator:ID]);
 
 CommunicationType:
     (name="var" ) | (name="queue");
 
+Subscriber:
+    (commType=CommunicationType) ("App" "." appSignal=[AppSignal:ID] | "VSS" "." sensorSignal=[Sensor:ID]);
+
 Resource:
     "Execution" name=ID;
+
+Service:
+    'Service' name=ID":"
+        ("subscribe" "to" ("-" subscribers+=Subscriber)+)?
+        ("publish" "to" ("-" publishers+=Publisher)+)?
+        "trigger" trigger=TriggeringRule
+        'execution' execTime=RandomVar
+        ('use' resource=[Resource:ID])?
+        ( nonreentrant?="nonreentrant" )?;
+
+
 
 DURATION:
     value=INT "ms"; // TODO: use the SI units

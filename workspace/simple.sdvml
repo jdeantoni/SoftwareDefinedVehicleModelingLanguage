@@ -1,19 +1,21 @@
 SDV simple:
 
 VSS :
-    Sensor Signal Camera (SSP 150ms+/-10ms offset 0ms+/-0ms, DL 30ms+/-10ms)
-    Actuator Signal Brake (period 100ms+/-1ms offset 0ms+/-0ms, AD 30ms+/-10ms)    
+    Sensor Signal Camera :
+            trigger period 150ms+/-10ms offset 0ms+/-0ms
+            latency 30ms+/-10ms
+    Actuator Signal Brake :
+            trigger period 100ms+/-1ms offset 0ms+/-0ms
+            latency 30ms+/-10ms
 App :
     Component AEB_controler :
-        Service S1:
-            subscribe to var VSS signal Camera
-            publish to VSS signal Brake
-            period 200ms+/-10ms offset 10ms+/-0ms
-            execution 50ms+/-15ms using cpu0
-            nonreentrant
-
-Resource:
-    Execution cpu0
+        Service S1 :
+            subscribe to
+                - var VSS.Camera
+            publish to
+                - VSS.Brake
+            trigger period 200ms+/-10ms offset 10ms+/-0ms
+            execution 50ms+/-15ms
 
 Functional Chains:
-    chain : Camera -> Brake
+    chain : Camera -> S1 -> Brake

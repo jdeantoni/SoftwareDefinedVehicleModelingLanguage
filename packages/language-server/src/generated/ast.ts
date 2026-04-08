@@ -21,19 +21,18 @@ export type SdvmlKeywordNames =
     | ")"
     | "+/-"
     | ","
+    | "-"
     | "->"
+    | "."
     | ":"
-    | "AD"
     | "Actuator"
     | "App"
     | "Chains"
     | "Component"
-    | "DL"
     | "Execution"
     | "Functional"
     | "Resource"
     | "SDV"
-    | "SSP"
     | "Sensor"
     | "Service"
     | "Signal"
@@ -42,6 +41,7 @@ export type SdvmlKeywordNames =
     | "]"
     | "event"
     | "execution"
+    | "latency"
     | "ms"
     | "nonreentrant"
     | "normal"
@@ -50,11 +50,11 @@ export type SdvmlKeywordNames =
     | "period"
     | "publish"
     | "queue"
-    | "signal"
+    | "self"
     | "subscribe"
     | "to"
     | "trigger"
-    | "using"
+    | "use"
     | "var"
     | "varying"
     | "|"
@@ -68,6 +68,14 @@ export const FCParticipant = 'FCParticipant';
 
 export function isFCParticipant(item: unknown): item is FCParticipant {
     return reflection.isInstance(item, FCParticipant);
+}
+
+export type FunctionalChain = CompositeChain | SimpleChain;
+
+export const FunctionalChain = 'FunctionalChain';
+
+export function isFunctionalChain(item: unknown): item is FunctionalChain {
+    return reflection.isInstance(item, FunctionalChain);
 }
 
 export type Signal = Actuator | Sensor;
@@ -89,9 +97,9 @@ export function isTriggeringRule(item: unknown): item is TriggeringRule {
 export interface Actuator extends langium.AstNode {
     readonly $container: VSS;
     readonly $type: 'Actuator';
-    ad: RandomVar;
+    latency: RandomVar;
     name: string;
-    trigRule: TriggeringRule;
+    trigger: PeriodicTriggering | SelfTriggering;
 }
 
 export const Actuator = 'Actuator';
@@ -138,6 +146,19 @@ export function isComponent(item: unknown): item is Component {
     return reflection.isInstance(item, Component);
 }
 
+export interface CompositeChain extends langium.AstNode {
+    readonly $container: Model;
+    readonly $type: 'CompositeChain';
+    alternatives: Array<langium.Reference<SimpleChain>>;
+    name: string;
+}
+
+export const CompositeChain = 'CompositeChain';
+
+export function isCompositeChain(item: unknown): item is CompositeChain {
+    return reflection.isInstance(item, CompositeChain);
+}
+
 export interface DURATION extends langium.AstNode {
     readonly $container: RandomVar;
     readonly $type: 'DURATION';
@@ -151,29 +172,15 @@ export function isDURATION(item: unknown): item is DURATION {
 }
 
 export interface EventTriggering extends langium.AstNode {
-    readonly $container: Actuator | Service;
+    readonly $container: Service;
     readonly $type: 'EventTriggering';
-    trigger?: langium.Reference<Subscriber>;
+    event: langium.Reference<Subscriber>;
 }
 
 export const EventTriggering = 'EventTriggering';
 
 export function isEventTriggering(item: unknown): item is EventTriggering {
     return reflection.isInstance(item, EventTriggering);
-}
-
-export interface FunctionalChain extends langium.AstNode {
-    readonly $container: Model;
-    readonly $type: 'FunctionalChain';
-    finish: langium.Reference<FCParticipant>;
-    name: string;
-    start: Array<langium.Reference<FCParticipant>>;
-}
-
-export const FunctionalChain = 'FunctionalChain';
-
-export function isFunctionalChain(item: unknown): item is FunctionalChain {
-    return reflection.isInstance(item, FunctionalChain);
 }
 
 export interface Model extends langium.AstNode {
@@ -192,7 +199,7 @@ export function isModel(item: unknown): item is Model {
 }
 
 export interface PeriodicTriggering extends langium.AstNode {
-    readonly $container: Actuator | Service;
+    readonly $container: Actuator | Sensor | Service;
     readonly $type: 'PeriodicTriggering';
     offset?: RandomVar;
     period: RandomVar;
@@ -244,13 +251,24 @@ export function isResource(item: unknown): item is Resource {
     return reflection.isInstance(item, Resource);
 }
 
+export interface SelfTriggering extends langium.AstNode {
+    readonly $container: Actuator;
+    readonly $type: 'SelfTriggering';
+    event: 'self';
+}
+
+export const SelfTriggering = 'SelfTriggering';
+
+export function isSelfTriggering(item: unknown): item is SelfTriggering {
+    return reflection.isInstance(item, SelfTriggering);
+}
+
 export interface Sensor extends langium.AstNode {
     readonly $container: VSS;
     readonly $type: 'Sensor';
-    dl: RandomVar;
+    latency: RandomVar;
     name: string;
-    offset?: RandomVar;
-    ssp: RandomVar;
+    trigger: PeriodicTriggering;
 }
 
 export const Sensor = 'Sensor';
@@ -268,13 +286,26 @@ export interface Service extends langium.AstNode {
     publishers: Array<Publisher>;
     resource?: langium.Reference<Resource>;
     subscribers: Array<Subscriber>;
-    trigRule: TriggeringRule;
+    trigger: TriggeringRule;
 }
 
 export const Service = 'Service';
 
 export function isService(item: unknown): item is Service {
     return reflection.isInstance(item, Service);
+}
+
+export interface SimpleChain extends langium.AstNode {
+    readonly $container: Model;
+    readonly $type: 'SimpleChain';
+    name: string;
+    participants: Array<langium.Reference<FCParticipant>>;
+}
+
+export const SimpleChain = 'SimpleChain';
+
+export function isSimpleChain(item: unknown): item is SimpleChain {
+    return reflection.isInstance(item, SimpleChain);
 }
 
 export interface Subscriber extends langium.AstNode {
@@ -308,6 +339,7 @@ export type SdvmlAstType = {
     AppSignal: AppSignal
     CommunicationType: CommunicationType
     Component: Component
+    CompositeChain: CompositeChain
     DURATION: DURATION
     EventTriggering: EventTriggering
     FCParticipant: FCParticipant
@@ -317,9 +349,11 @@ export type SdvmlAstType = {
     Publisher: Publisher
     RandomVar: RandomVar
     Resource: Resource
+    SelfTriggering: SelfTriggering
     Sensor: Sensor
     Service: Service
     Signal: Signal
+    SimpleChain: SimpleChain
     Subscriber: Subscriber
     TriggeringRule: TriggeringRule
     VSS: VSS
@@ -328,7 +362,7 @@ export type SdvmlAstType = {
 export class SdvmlAstReflection extends langium.AbstractAstReflection {
 
     getAllTypes(): string[] {
-        return [Actuator, AppSignal, CommunicationType, Component, DURATION, EventTriggering, FCParticipant, FunctionalChain, Model, PeriodicTriggering, Publisher, RandomVar, Resource, Sensor, Service, Signal, Subscriber, TriggeringRule, VSS];
+        return [Actuator, AppSignal, CommunicationType, Component, CompositeChain, DURATION, EventTriggering, FCParticipant, FunctionalChain, Model, PeriodicTriggering, Publisher, RandomVar, Resource, SelfTriggering, Sensor, Service, Signal, SimpleChain, Subscriber, TriggeringRule, VSS];
     }
 
     protected override computeIsSubtype(subtype: string, supertype: string): boolean {
@@ -336,6 +370,10 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
             case Actuator:
             case Sensor: {
                 return this.isSubtype(FCParticipant, supertype) || this.isSubtype(Signal, supertype);
+            }
+            case CompositeChain:
+            case SimpleChain: {
+                return this.isSubtype(FunctionalChain, supertype);
             }
             case EventTriggering:
             case PeriodicTriggering: {
@@ -353,12 +391,11 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
     getReferenceType(refInfo: langium.ReferenceInfo): string {
         const referenceId = `${refInfo.container.$type}:${refInfo.property}`;
         switch (referenceId) {
-            case 'EventTriggering:trigger': {
-                return Subscriber;
+            case 'CompositeChain:alternatives': {
+                return SimpleChain;
             }
-            case 'FunctionalChain:finish':
-            case 'FunctionalChain:start': {
-                return FCParticipant;
+            case 'EventTriggering:event': {
+                return Subscriber;
             }
             case 'Publisher:actuatorSignal': {
                 return Actuator;
@@ -369,6 +406,9 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
             }
             case 'Service:resource': {
                 return Resource;
+            }
+            case 'SimpleChain:participants': {
+                return FCParticipant;
             }
             case 'Subscriber:sensorSignal': {
                 return Sensor;
@@ -385,9 +425,9 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                 return {
                     name: Actuator,
                     properties: [
-                        { name: 'ad' },
+                        { name: 'latency' },
                         { name: 'name' },
-                        { name: 'trigRule' }
+                        { name: 'trigger' }
                     ]
                 };
             }
@@ -417,6 +457,15 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                     ]
                 };
             }
+            case CompositeChain: {
+                return {
+                    name: CompositeChain,
+                    properties: [
+                        { name: 'alternatives', defaultValue: [] },
+                        { name: 'name' }
+                    ]
+                };
+            }
             case DURATION: {
                 return {
                     name: DURATION,
@@ -429,17 +478,7 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                 return {
                     name: EventTriggering,
                     properties: [
-                        { name: 'trigger' }
-                    ]
-                };
-            }
-            case FunctionalChain: {
-                return {
-                    name: FunctionalChain,
-                    properties: [
-                        { name: 'finish' },
-                        { name: 'name' },
-                        { name: 'start', defaultValue: [] }
+                        { name: 'event' }
                     ]
                 };
             }
@@ -492,14 +531,21 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                     ]
                 };
             }
+            case SelfTriggering: {
+                return {
+                    name: SelfTriggering,
+                    properties: [
+                        { name: 'event' }
+                    ]
+                };
+            }
             case Sensor: {
                 return {
                     name: Sensor,
                     properties: [
-                        { name: 'dl' },
+                        { name: 'latency' },
                         { name: 'name' },
-                        { name: 'offset' },
-                        { name: 'ssp' }
+                        { name: 'trigger' }
                     ]
                 };
             }
@@ -513,7 +559,16 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                         { name: 'publishers', defaultValue: [] },
                         { name: 'resource' },
                         { name: 'subscribers', defaultValue: [] },
-                        { name: 'trigRule' }
+                        { name: 'trigger' }
+                    ]
+                };
+            }
+            case SimpleChain: {
+                return {
+                    name: SimpleChain,
+                    properties: [
+                        { name: 'name' },
+                        { name: 'participants', defaultValue: [] }
                     ]
                 };
             }

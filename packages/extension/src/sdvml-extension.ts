@@ -177,7 +177,7 @@ export function activate(context: vscode.ExtensionContext) {
         registerTextEditorSync(webviewViewProvider, context);
     }
 
-    const disposable = vscode.commands.registerCommand('sdvml.generateCode', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('sdvml.generateCode', () => {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
             vscode.window.showErrorMessage('No active SDVML file.');
@@ -200,9 +200,13 @@ export function activate(context: vscode.ExtensionContext) {
                 vscode.window.showErrorMessage("" + error);
             }
         });
-    });
+    }));
 
-    context.subscriptions.push(disposable);
+    context.subscriptions.push(
+        vscode.commands.registerCommand("sdvml.showHistogram", (args: unknown) => {
+
+        })
+    )
 }
 
 function createLanguageClient(context: vscode.ExtensionContext): LanguageClient {

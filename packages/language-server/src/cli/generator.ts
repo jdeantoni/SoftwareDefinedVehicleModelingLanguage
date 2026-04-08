@@ -13,6 +13,9 @@ import {
     RandomVar,
     TriggeringRule,
     FunctionalChain,
+    SelfTriggering,
+    SimpleChain,
+    isSimpleChain,
 } from '../generated/ast.js';
 import { CompositeGeneratorNode, toString } from 'langium/generate';
 
@@ -85,7 +88,7 @@ export class Context {
             for (var service of component.services) {
                 const name = makeServiceName(component, service);
                 const resource = service.resource?.ref ? this.resources.get(service.resource.ref.name) : undefined;
-                const runnable = new Runnable(name, trigRuleToTrigger(service.name, service.trigRule), service.execTime, false, !service.nonreentrant, resource);
+                const runnable = new Runnable(name, trigRuleToTrigger(service.name, service.trigger), service.execTime, false, !service.nonreentrant, resource);
                 this.plainNameRunnable.set(service.name, runnable);
                 this.runnables.set(name, runnable);
 
@@ -138,10 +141,10 @@ export class Context {
             }
             var runnable;
             if (isActuator(s)) {
-                runnable = new Runnable(s.name, actuatorTrigRuleToTrigger(s.name, s.trigRule), s.ad, false, true);
+                runnable = new Runnable(s.name, actuatorTrigRuleToTrigger(s.name, s.trigger), s.latency, false, true);
             } else {
-                const trigger: Trigger = new PeriodicTrigger(s.ssp, s.offset ?? 0); // TODO: fix it, in the syntax we say "varying" which is not 0 for sure
-                runnable = new Runnable(s.name, trigger, s.dl, false, true);
+                const trigger: Trigger = new PeriodicTrigger(s.trigger.period, s.trigger.offset ?? 0); // TODO: fix it, in the syntax we say "varying" which is not 0 for sure
+                runnable = new Runnable(s.name, trigger, s.latency, false, true);
             }
             this.plainNameRunnable.set(s.name, runnable);
             this.runnables.set(s.name, runnable);
@@ -211,10 +214,10 @@ function generateIFService(component: Component, service: Service, ifContent: Co
 
     const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(service.execTime, sigma);
     ifContent.append("process " + serviceName + "(1);\n");
-    if (isPeriodicTriggering(service.trigRule)) {
-        const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(service.trigRule.period, sigma);
-        if (service.trigRule.offset) {
-            const { left: left_offset_bound, right: right_offset_bound } = randomVariableToRange(service.trigRule.offset, sigma);
+    if (isPeriodicTriggering(service.trigger)) {
+        const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(service.trigger.period, sigma);
+        if (service.trigger.offset) {
+            const { left: left_offset_bound, right: right_offset_bound } = randomVariableToRange(service.trigger.offset, sigma);
             var inpData: string[] = ["", "", "", "", "", "", "", ""];
             var inpNxtState: string[] = ["first", "processing1a", "processing1b", "wait1", "jitter", "processing2a", "processing2b", "wait2"];
             var idxState = 0;
@@ -301,7 +304,7 @@ function generateIFService(component: Component, service: Service, ifContent: Co
             nextstate wait2;${inpData[6]}
     endstate;
     state wait2;
-        when x = ${service.trigRule.period.mean.value};
+        when x = ${service.trigger.period.mean.value};
             set x := 0;
             nextstate jitter;${inpData[7]}
     endstate;\n`);
@@ -361,14 +364,14 @@ function generateIFService(component: Component, service: Service, ifContent: Co
             nextstate wait;${inpData[3]}
     endstate;
     state wait;
-        when x = ${service.trigRule.period.mean.value};
+        when x = ${service.trigger.period.mean.value};
             set x := 0;
             nextstate jitter;${inpData[4]}
     endstate;\n`);
         }
 
     } else {
-        const signalName = getSubscriptionSignal(service.name, service.trigRule.trigger?.ref!);
+        const signalName = getSubscriptionSignal(service.name, service.trigger.event?.ref!);
         ifContent.append("\tvar e clock;");
         ifContent.append(`
     state wait #start ;
@@ -389,16 +392,16 @@ function generateIFService(component: Component, service: Service, ifContent: Co
 }
 
 function generateIFSensor(sig: Sensor, ifContent: CompositeGeneratorNode, context: Context, sigma: number) {
-    var ssp = sig.ssp;
+    var ssp = sig.trigger.period;
     var sensorSignal = sig.name;
     var siglines = "";
     for (var serviceName of context.signalsToServices.get(sensorSignal) ?? []) {
         siglines += `\n\t\t\toutput ${sensorSignal}() to {${serviceName}}0;`;
     }
-    const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(sig.dl, sigma);
+    const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(sig.latency, sigma);
     const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(ssp, sigma);
-    if (sig.offset) {
-        const { left: left_offset_bound, right: right_offset_bound } = randomVariableToRange(sig.offset, sigma);
+    if (sig.trigger.offset) {
+        const { left: left_offset_bound, right: right_offset_bound } = randomVariableToRange(sig.trigger.offset, sigma);
         ifContent.append(`process ${sensorSignal}(1);
     var x clock;
     var e clock;
@@ -487,13 +490,13 @@ endprocess;
 
 
 function generateIFActuator(sig: Actuator, ifContent: CompositeGeneratorNode, sigma: number) {
-    const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(sig.ad, sigma);
+    const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(sig.latency, sigma);
     ifContent.append(`process ${sig.name}(1);`)
-    if (isPeriodicTriggering(sig.trigRule)) {
-        const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(sig.trigRule.period, sigma);
-        var AP = (sig.trigRule as PeriodicTriggering).period;
-        if (sig.trigRule.offset) {
-            const { left: left_offset_bound, right: right_offset_bound } = randomVariableToRange(sig.trigRule.offset, sigma);
+    if (isPeriodicTriggering(sig.trigger)) {
+        const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(sig.trigger.period, sigma);
+        var AP = (sig.trigger as PeriodicTriggering).period;
+        if (sig.trigger.offset) {
+            const { left: left_offset_bound, right: right_offset_bound } = randomVariableToRange(sig.trigger.offset, sigma);
             ifContent.append(`
     var x clock;
     var e clock;
@@ -797,10 +800,10 @@ function trigRuleToTrigger(serviceName: string, rule: TriggeringRule): Trigger {
     if (isPeriodicTriggering(rule)) {
         return new PeriodicTrigger(rule.period, rule.offset ?? 0); // ASSUMPTION: offset is set to 0 if missing.
     } else {
-        return new EventTrigger(getSubscriptionSignal(serviceName, rule.trigger?.ref!));
+        return new EventTrigger(getSubscriptionSignal(serviceName, rule.event?.ref!));
     }
 }
-function actuatorTrigRuleToTrigger(serviceName: string, rule: TriggeringRule): Trigger {
+function actuatorTrigRuleToTrigger(serviceName: string, rule: (PeriodicTriggering | SelfTriggering)): Trigger {
     if (isPeriodicTriggering(rule)) {
         return new PeriodicTrigger(rule.period, rule.offset ?? 0); // ASSUMPTION: offset is set to 0 if missing.
     } else {
@@ -876,16 +879,24 @@ function generateCommunicationNetworkSexp(ctx: Context): string[] {
     return declaration;
 }
 
-function generateFunctionalChainSpec(chain: FunctionalChain, ctx: Context): string[] {
-    var declaration = [];
-    var finishRunnable = ctx.plainNameRunnable.get(chain.finish.ref!.name) ?? expect(`chain participant with id "${chain.finish.ref?.name}" is not available.`);
-    declaration.push(`(Probe (name ${chain.name}) (color ${chain.name}) (at ${finishRunnable.finish_clock}))`);
-
-    for (let start_variant of chain.start) {
-        let runnable = ctx.plainNameRunnable.get(start_variant.ref!.name) ?? expect(`chain participant with id "${start_variant.ref?.name}" is not available.`)
-        declaration.push(`(Inject (at ${runnable.start_clock}) (color ${chain.name}))`);
+function generateSimpleChainSpec(chain: SimpleChain, ctx: Context): string {
+    var sequence = [];
+    for (let p of chain.participants) {
+        var r = ctx.plainNameRunnable.get(p.ref!.name) ?? expect(`chain participant with id "${p.ref?.name}" is not available.`);
+        sequence.push(r.start_clock, r.finish_clock);
     }
-    return declaration
+    let sexp_list = `(${sequence.join(" ")})`;
+    return sexp_list;
+}
+
+function generateFunctionalChainSpec(chain: FunctionalChain, ctx: Context): string {
+    if (isSimpleChain(chain)) {
+        let sequence = generateSimpleChainSpec(chain, ctx);
+        return `(Chain (name ${chain.name}) (alternatives (${sequence})))`
+    } else {
+        let alternatives = chain.alternatives.map(r => generateSimpleChainSpec(r.ref!, ctx)).join(" ");
+        return `(Chain (name ${chain.name}) (alternatives (${alternatives})))`
+    }
 }
 
 function monitorDeclarations(ctx: Context): [string[], string[]] {
@@ -905,7 +916,7 @@ function monitorDeclarations(ctx: Context): [string[], string[]] {
 
 export function generateNetworkDeclaration(chains: FunctionalChain[], ctx: Context): [string[], string] {
     let netDeclaration = generateCommunicationNetworkSexp(ctx);
-    let chainDeclaration = chains.flatMap(c => generateFunctionalChainSpec(c, ctx));
+    let chainDeclaration = chains.map(c => generateFunctionalChainSpec(c, ctx));
     let [monitorFiles, monitorDeclaration] = monitorDeclarations(ctx);
     let fullDeclaration = netDeclaration.concat(chainDeclaration, monitorDeclaration);
 
