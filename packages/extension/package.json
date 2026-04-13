@@ -192,6 +192,9 @@
       }
     }
   },
+  "extensionDependencies": [
+    "RafaelArvelo.vsplotter"
+  ],
   "activationEvents": [
     "onCommand:sdvml.generateCode",
     "onLanguage:sdvml",

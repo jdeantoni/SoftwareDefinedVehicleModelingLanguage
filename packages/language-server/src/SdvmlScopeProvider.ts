@@ -23,7 +23,7 @@ import {
     Scope
 } from 'langium';
 import { injectable } from 'inversify';
-import { Model, isSubscriber, isPublisher, isModel, isActuator, isSensor, isFunctionalChain, isEventTriggering } from './generated/ast.js';
+import { Model, isSubscriber, isPublisher, isModel, isActuator, isSensor, isFunctionalChain, isEventTriggering, isSimpleChain, isCompositeChain } from './generated/ast.js';
 
 @injectable()
 export class SdvmlScopeProvider extends DefaultScopeProvider {
@@ -61,7 +61,7 @@ export class SdvmlScopeProvider extends DefaultScopeProvider {
             const model = this.findRootModel(container);
             if (!model?.vss) return EMPTY_SCOPE;
 
-            if (property === "trigger") {
+            if (property === "event") {
                 const subscribedSignals = model.components.flatMap(c => c.services.flatMap(s => s.subscribers.map((sub) => {
                     const newsub = { ...sub, name: sub.appSignal?.ref?.name ?? sub.sensorSignal?.ref?.name! };
                     return newsub
@@ -73,17 +73,30 @@ export class SdvmlScopeProvider extends DefaultScopeProvider {
         }
 
         if (isFunctionalChain(container)) {
-            const model = this.findRootModel(container);
-            if (!model?.vss) return EMPTY_SCOPE;
+            if (isSimpleChain(container)) {
+                const model = this.findRootModel(container);
+                if (!model?.vss) return EMPTY_SCOPE;
 
-            const fcParticipants = [
-                ...model.vss.signals,
-                ...model.components.flatMap(c => c.services.flatMap(s => s.publishers)),
-                ...model.components.flatMap(c => c.services.flatMap(s => s.subscribers)),
-                ...model.components.flatMap(c => c.signals),
-                ...model.components.flatMap(c => c.services),
-            ]
-            return this.createScopeForNodes(fcParticipants);
+                const fcParticipants = [
+                    ...model.vss.signals,
+                    ...model.components.flatMap(c => c.services.flatMap(s => s.publishers)),
+                    ...model.components.flatMap(c => c.services.flatMap(s => s.subscribers)),
+                    ...model.components.flatMap(c => c.signals),
+                    ...model.components.flatMap(c => c.services),
+                ]
+                return this.createScopeForNodes(fcParticipants);
+            }
+            if (isCompositeChain(container)) {
+
+                const model = this.findRootModel(container);
+                return this.createScopeForNodes(model.chains.flatMap(c => {
+                    if (isSimpleChain(c)) {
+                        return [c];
+                    } else {
+                        return [];
+                    }
+                }));
+            }
         }
 
         return super.getScope(context);

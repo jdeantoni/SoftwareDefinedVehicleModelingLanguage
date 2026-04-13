@@ -56,9 +56,38 @@ function sdvmlCreateWebviewHtml(identifier: SprottyDiagramIdentifier, container:
 </html>`;
 }
 
+type SubplotLayout = 'horizontal' | 'vertical' | 'grid' | 'none';
+/** Multi-file overlay: align Y series by row index using the first file’s X (legacy). */
+export const OVERLAY_ALIGN_INDEX = 'index' as const;
+/** Multi-file overlay: merge on sorted union of numeric X with linear interpolation per series (default). */
+export const OVERLAY_ALIGN_INTERPOLATE = 'interpolate' as const;
+
+export type OverlayAlignMode = typeof OVERLAY_ALIGN_INDEX | typeof OVERLAY_ALIGN_INTERPOLATE;
+
+/** Default synthetic id prefix when none is set in plot JSON or VS Code settings. */
+export const PLOT_COMPUTED_ID_PREFIX = '__vp:';
+
+class PlotSettings {
+
+    public readonly title: string;
+    public readonly tooltip: vscode.MarkdownString;
+    public readonly x: string;
+    public readonly y: Array<string>;
+    constructor(title: string, x: string, y: string | string[]) {
+        {
+            this.title = title;
+            this.x = x;
+            this.y = Array.isArray(y) ? y : [y];
+            this.tooltip = new vscode.MarkdownString(`**X-Axis:** ${x}
+                                                  **Y-Axis:** ${this.y.join(', ')}`);
+        }
+
+    }
+}
+
 export function activate(context: vscode.ExtensionContext) {
     const cliPath = context.asAbsolutePath('pack/language-server/src/cli/main.cjs');
-    const { generateAction, GenerateOptions } = require(cliPath);
+    const { generateAction } = require(cliPath);
 
 
     const diagramMode = process.env.DIAGRAM_MODE || 'panel';
@@ -184,8 +213,7 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
 
-        const document = editor.document;
-        const filePath = document.uri.fsPath;
+        const filePath = editor.document.uri.fsPath;
 
         vscode.window.withProgress({ location: vscode.ProgressLocation.Notification, title: "Analysis", cancellable: true }, async (progress, token) => {
             const mrtccslPath = vscode.workspace.getConfiguration().get('mrtccsl');
@@ -203,7 +231,11 @@ export function activate(context: vscode.ExtensionContext) {
     }));
 
     context.subscriptions.push(
-        vscode.commands.registerCommand("sdvml.showHistogram", (args: unknown) => {
+        vscode.commands.registerCommand("sdvml.showHistogram", (filename: string, optLines?: string[]) => {
+            let optLinesArray = (optLines === undefined) ? [] : optLines;
+            let uri = vscode.Uri.file(filename);
+            // vscode.commands.executeCommand("vscode.open", uri, { viewColumn: vscode.ViewColumn.Beside, preview: false});
+            vscode.commands.executeCommand("vsplotter.createChart", uri, new PlotSettings("Distribution", "bin", ["total", ...optLinesArray]));
 
         })
     )

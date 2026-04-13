@@ -56,6 +56,23 @@ class Communication {
         this.var_reads = [];
         this.queue_reads = [];
     }
+
+    declaration(): string[] {
+        let declaration = [];
+        let write_sexp = this.writes.map(r => r.finish_clock).join(" ");
+        if (this.var_reads.length > 0) {
+            let read_sexp = this.var_reads.map(r => r.start_clock).join(" ");
+            declaration.push(`(Variable (name ${this.name}:var) (reads (${read_sexp})) (writes (${write_sexp})))`)
+        }
+        if (this.queue_reads.length > 0) {
+            for (let read of this.queue_reads) {
+                // Queues should be unique for each runnable
+                declaration.push(`(Queue (name ${read.name}_${this.name}:queue) (reads (${read.start_clock})) (writes (${write_sexp})))`)
+            }
+        }
+        // skips communication declaration when place is only written into, as otheriwse it is just waste of network operation
+        return declaration;
+    }
 }
 
 export class Context {
@@ -862,19 +879,13 @@ function generateMRTCCSLRunnable(r: Runnable, ctx: Context, sigma: number): [str
 function generateCommunicationNetworkSexp(ctx: Context): string[] {
     let declaration = [];
     for (let comm of ctx.communication.values()) {
-        let write_sexp = comm.writes.map(r => r.finish_clock).join(" ");
-        if (comm.var_reads.length > 0) {
-            let read_sexp = comm.var_reads.map(r => r.start_clock).join(" ");
-            declaration.push(`(Variable (name ${comm.name}:var) (reads (${read_sexp})) (writes (${write_sexp})))`)
-        }
-        if (comm.queue_reads.length > 0) {
-            let read_sexp = comm.queue_reads.map(r => r.start_clock).join(" ");
-            declaration.push(`(Queue (name ${comm.name}:queue) (reads (${read_sexp})) (writes (${write_sexp})))`)
-        }
-        // skips communication declaration when place is only written into, as otheriwse it is just waste of network operation
+        declaration.push(...comm.declaration());
     }
     for (let [name, runnable] of ctx.runnables) {
         declaration.push(`(Queue (name ${name}_state) (writes (${runnable.start_clock})) (reads (${runnable.finish_clock})))`); // TODO: can be a variable when non-reentrant
+        if (runnable.resource !== undefined) {
+            declaration.push(`(Queue (name ${name}_spawn) (writes (${runnable.spawn_clock})) (reads (${runnable.start_clock})))`);
+        }
     }
     return declaration;
 }
@@ -882,7 +893,7 @@ function generateCommunicationNetworkSexp(ctx: Context): string[] {
 function generateSimpleChainSpec(chain: SimpleChain, ctx: Context): string {
     var sequence = [];
     for (let p of chain.participants) {
-        var r = ctx.plainNameRunnable.get(p.ref!.name) ?? expect(`chain participant with id "${p.ref?.name}" is not available.`);
+        let r = ctx.plainNameRunnable.get(p.ref!.name) ?? expect(`chain participant with id "${p.ref?.name}" is not available.`);
         sequence.push(r.start_clock, r.finish_clock);
     }
     let sexp_list = `(${sequence.join(" ")})`;
@@ -905,10 +916,8 @@ function monitorDeclarations(ctx: Context): [string[], string[]] {
     for (let r of ctx.runnables.values()) {
         if (!r.vss && r.resource) {
             let probe = `${r.name}_monitor`;
-            const file = `${probe}/${r.spawn_clock}_${r.start_clock}`;
-            files.push(file);
-            declaration.push(`(Inject (at ${r.start_clock}) (color ${probe}))`);
-            declaration.push(`(Probe (name ${probe}) (color ${probe}) (at ${r.finish_clock}))`);
+            files.push(probe);
+            declaration.push(`(Chain (name ${probe}) (alternatives ((${r.spawn_clock} ${r.start_clock}))))`);
         }
     }
     return [files, declaration];
@@ -925,11 +934,36 @@ export function generateNetworkDeclaration(chains: FunctionalChain[], ctx: Conte
     return [monitorFiles.concat(chain_files), `(\n${fullDeclaration.join("\n")}\n)`]
 }
 
+export function generateChainLinks(chain: FunctionalChain, ctx: Context): string[] {
+    if (isSimpleChain(chain)) {
+        let links = [];
+        var prev;
+        for (let p of chain.participants) {
+            let r = ctx.plainNameRunnable.get(p.ref!.name) ?? expect(`chain participant with id "${p.ref?.name}" is not available.`);
+            links.push(`${r.start_clock}->${r.finish_clock}`);
+            if (prev !== undefined) {
+                links.push(`${prev}->${r.start_clock}`);
+            }
+            prev = r.finish_clock;
+        }
+        return links;
+    } else {
+        return [];
+    }
+}
+
+
 export function generateMicrostepOrder(ctx: Context): string {
     let pairs: string[] = [];
     for (let comm of ctx.communication.values()) {
         let order_pair = comm.writes.flatMap(w => comm.queue_reads.map(r => `(${w.finish_clock} ${r.start_clock})`));
         pairs.push(...order_pair);
+    }
+
+    for (let [_, runnable] of ctx.runnables) {
+        if (runnable.resource !== undefined) {
+            pairs.push(`(${runnable.spawn_clock} ${runnable.start_clock})`);
+        }
     }
     return `(${pairs.join("\n")})`
 }

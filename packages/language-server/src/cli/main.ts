@@ -1,5 +1,5 @@
 import type { Model } from '../generated/ast.js';
-import { Command } from 'commander';
+import * as commander from 'commander';
 import { SdvmlLanguageMetaData } from '../generated/module.js';
 import { createSdvmlServices } from '../sdvml-module.js';
 import { extractAstNode, extractDestinationAndName } from './cli-util.js';
@@ -260,7 +260,7 @@ const __dirname = path.resolve(); // was: url.fileURLToPath(new URL('.', import.
 const packagePath = path.resolve(__dirname, '..', '..', 'package.json');
 
 export function main(): void {
-    const program = new Command();
+    const program = new commander.Command();
     fsAsync.readFile(packagePath, 'utf-8').then(packageContent => {
         program.version(JSON.parse(packageContent).version);
     });

@@ -26,6 +26,7 @@ import { SdvmlLayoutConfigurator } from './layout-config.js';
 import { registerValidationChecks, SdvmlValidator } from './sdvml-validator.js';
 
 import { SdvmlScopeProvider } from './SdvmlScopeProvider.js';
+import { HistogramShowProvider } from './lens-generator.js';
 
 
 
@@ -71,6 +72,9 @@ export const SdvmlModule: Module<SdvmlServices, PartialLangiumServices & Sprotty
     },
     references: {
         ScopeProvider: (services) => new SdvmlScopeProvider(services)
+    },
+    lsp: {
+        CodeLensProvider: (services) => new HistogramShowProvider(services),
     }
 };
 
