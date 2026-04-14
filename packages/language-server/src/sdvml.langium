@@ -37,10 +37,13 @@ type FCParticipant = Sensor | Service | Actuator;
 
 SimpleChain:
     name=ID ":"
-         participants+=[FCParticipant:ID] ("->" participants+=[FCParticipant:ID])+;
+         participants+=[FCParticipant:ID] ("->" participants+=[FCParticipant:ID])+ (prop=FCProp)?;
 
 CompositeChain:
-    name=ID ":" alternatives+=[SimpleChain:ID] ( "|" alternatives+=[SimpleChain:ID] )+;
+    name=ID ":" alternatives+=[SimpleChain:ID] ( "|" alternatives+=[SimpleChain:ID] )+ (prop=FCProp)?;
+
+FCProp:
+    "<=" reaction=DURATION prob=INT "%";
 
 FunctionalChain:
     SimpleChain | CompositeChain;

@@ -4,9 +4,9 @@ export default {
         'Actuator','App','Chains','Component','Execution','Functional','Resource','SDV','Sensor','Service','Signal','VSS','event','execution','latency','ms','nonreentrant','normal','offset','on','period','publish','queue','self','subscribe','to','trigger','use','var','varying'
     ],
     operators: [
-        '+/-',',','-','->','.',':','|','~'
+        '%','+/-',',','-','->','.',':','<=','|','~'
     ],
-    symbols: /\(|\)|\+\/-|,|-|->|\.|:|\[|\]|\||~/,
+    symbols: /%|\(|\)|\+\/-|,|-|->|\.|:|<=|\[|\]|\||~/,
 
     tokenizer: {
         initial: [

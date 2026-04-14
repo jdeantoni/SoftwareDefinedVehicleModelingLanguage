@@ -22,7 +22,7 @@ import {
 } from 'sprotty-vscode';
 import { LspSprottyEditorProvider, LspSprottyViewProvider, LspWebviewPanelManager } from 'sprotty-vscode/lib/lsp';
 import * as vscode from 'vscode';
-import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from 'vscode-languageclient/node';
+import { DiagnosticSeverity, LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from 'vscode-languageclient/node';
 import { Messenger } from 'vscode-messenger';
 import { GetImageRequest } from './sdvml-messages.js'
 
@@ -87,7 +87,7 @@ class PlotSettings {
 
 export function activate(context: vscode.ExtensionContext) {
     const cliPath = context.asAbsolutePath('pack/language-server/src/cli/main.cjs');
-    const { generateAction } = require(cliPath);
+    const { generateAction, generateDiagnostics } = require(cliPath);
 
 
     const diagramMode = process.env.DIAGRAM_MODE || 'panel';
@@ -239,6 +239,43 @@ export function activate(context: vscode.ExtensionContext) {
 
         })
     )
+    const propCollection = vscode.languages.createDiagnosticCollection('sdvml-properties');
+    if (vscode.window.activeTextEditor) {
+        putDiagnostics(vscode.window.activeTextEditor, propCollection, generateDiagnostics);
+    }
+    let folder = vscode.workspace.workspaceFolders?.[0];
+    if (folder) {
+        const propWatcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(folder, 'generated/**/prop.check'));
+        context.subscriptions.push(propWatcher);
+        context.subscriptions.push(
+            propWatcher.onDidChange(async _ => {
+                await putDiagnostics(vscode.window.activeTextEditor, propCollection, generateDiagnostics);
+            }),
+            propWatcher.onDidCreate(async _ => {
+                await putDiagnostics(vscode.window.activeTextEditor, propCollection, generateDiagnostics);
+            }),
+            propWatcher.onDidDelete(async _ => {
+                await putDiagnostics(vscode.window.activeTextEditor, propCollection, generateDiagnostics);
+            })
+        );
+    }
+    context.subscriptions.push(
+        vscode.window.onDidChangeActiveTextEditor(async editor => {
+            await putDiagnostics(editor, propCollection, generateDiagnostics);
+        })
+    );
+}
+
+async function putDiagnostics(editor: vscode.TextEditor | undefined, collection: vscode.DiagnosticCollection, generateDiagnostics: (filepath: string, opts: { destination: string }) => Promise<vscode.Diagnostic[]>): Promise<void> {
+    if (editor && path.extname(editor.document.uri.fsPath) === ".sdvml") {
+        const filePath = editor.document.uri.fsPath;
+        let opts = {
+            destination: filePath.slice(0, filePath.lastIndexOf('/')) + "/generated/",
+        }
+        let diagnostics: vscode.Diagnostic[] = await generateDiagnostics(filePath, opts);
+        collection.clear();
+        collection.set(editor.document.uri, diagnostics.map(d => <vscode.Diagnostic>{ range: d.range, severity: d.severity - 1, message: d.message }));
+    }
 }
 
 function createLanguageClient(context: vscode.ExtensionContext): LanguageClient {

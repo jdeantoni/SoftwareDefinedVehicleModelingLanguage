@@ -39,7 +39,7 @@ export class HistogramShowProvider implements CodeLensProvider {
 
         let lens = [];
         for (let c of model.chains) {
-            let file = `${info.destination}/${info.name}/reaction/${c.name}/weighted/without/histogram.csv`;
+            let file = `${info.destination}/${info.name}/reaction/${c.name}/without/histogram.csv`;
             if (existsSync(file)) {
                 let links = generateChainLinks(c, ctx);
 
@@ -56,7 +56,7 @@ export class HistogramShowProvider implements CodeLensProvider {
         };
         for (let c of model.components) {
             for (let s of c.services) {
-                let file = `${info.destination}/${info.name}/reaction/${c.name}_${s.name}_monitor/weighted/without/histogram.csv`;
+                let file = `${info.destination}/${info.name}/reaction/${c.name}_${s.name}_monitor/without/histogram.csv`;
                 if (s.resource !== undefined && existsSync(file)) {
                     let reaction_lens = <CodeLens>{
                         range: s.resource.$refNode?.astNode.$cstNode?.range,

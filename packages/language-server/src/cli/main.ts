@@ -12,6 +12,7 @@ import * as path from 'node:path';
 import * as fs from 'node:fs';
 import { spawn } from 'node:child_process';
 import { Progress, CancellationToken, Disposable } from "vscode";
+import { Diagnostic, DiagnosticSeverity } from 'vscode-languageserver';
 
 
 const gnuTemplate = `
@@ -210,7 +211,7 @@ export async function generateAction(
         ]
     }));
 
-    let reactionStats = chainFiles.flatMap(c => [`${reactionsDir}/${c}/weighted/full/histogram.csv`, `${reactionsDir}/${c}/weighted/reduced/histogram.csv`, `${reactionsDir}/${c}/weighted/without/histogram.csv`]);
+    let reactionStats = chainFiles.flatMap(c => [`${reactionsDir}/${c}/full/histogram.csv`, `${reactionsDir}/${c}/reduced/histogram.csv`, `${reactionsDir}/${c}/without/histogram.csv`]);
 
     buildInstructions.push({ rule: reactionRule, inputs: [networkFilePath, microstepPath, ...traceFiles], outputs: reactionStats });
 
@@ -219,14 +220,35 @@ export async function generateAction(
     }
     let images = reactionStats.map(file => file + ".svg");
 
+    let rules = [simulationRule, reactionRule, compileImageRule, compileTCADPRule, convertSVGBOBRule, compiledSVGBOBRule];
+    let props = [];
+    for (let c of model.chains) {
+        if (c.prop !== undefined) {
+
+            let checkProp = <NinjaRule>{
+                name: `reaction_check_${c.name}`,
+                command: `${useMRTCCSL} ccsl+ reaction_check ${c.prop.reaction.value / 1000} ${c.prop.prob / 100} $in -o $out`,
+                implicitDependencies: []
+            };
+            let propFile = `${reactionsDir}/${c.name}/without/prop.check`;
+            buildInstructions.push(<NinjaBuildInstruction>{
+                rule: checkProp,
+                inputs: [`${reactionsDir}/${c.name}/without/histogram.csv`],
+                outputs: [propFile]
+            });
+            props.push(propFile);
+            rules.push(checkProp);
+        }
+    }
 
     const groups = [
         { name: "images", artifacts: images, byDefault: true },
         { name: "tcadp", artifacts: tcadpFiles, byDefault: false },
         { name: "svgbob", artifacts: svgbobFiles, byDefault: false },
         { name: "svgbob_compiled", artifacts: compiledSvgbobFiles, byDefault: false },
+        { name: "props", artifacts: props, byDefault: true },
     ];
-    const ninjafile = renderBuildFile([simulationRule, reactionRule, compileImageRule, compileTCADPRule, convertSVGBOBRule, compiledSVGBOBRule], buildInstructions, groups);
+    const ninjafile = renderBuildFile(rules, buildInstructions, groups);
 
     await overrideFileIfChanged(path.join(buildDir, "template.gnu"), gnuTemplate);
     await overrideFileIfChanged(path.join(buildDir, "build.ninja"), ninjafile);
@@ -249,6 +271,47 @@ export async function generateAction(
 
     progress.report({ increment: 100, message: "finished" });
 };
+
+interface Prop { satisfies: boolean, message: string }
+
+export async function generateDiagnostics(filename: string, opts: GenerateOptions): Promise<Diagnostic[]> {
+    const services = createSdvmlServices(NodeFileSystem).sdvml;
+
+    const info = extractDestinationAndName(filename, opts.destination);
+    let model = await extractAstNode<Model>(filename, services);
+
+    let diagnostics = [];
+    for (let c of model.chains) {
+        if (c.prop !== undefined) {
+            let propFile = `${info.destination}/${info.name}/reaction/${c.name}/without/prop.check`;
+
+            const text = await fs.promises.readFile(propFile).catch(error => undefined);
+            if (text !== undefined) {
+                let prop = JSON.parse(text.toString()) as Prop;
+                if (prop.satisfies) {
+                    diagnostics.push(<Diagnostic>{
+                        range: c.prop.$cstNode?.range,
+                        severity: DiagnosticSeverity.Information,
+                        message: prop.message,
+                    });
+                } else {
+                    diagnostics.push(<Diagnostic>{
+                        range: c.prop.$cstNode?.range,
+                        severity: DiagnosticSeverity.Error,
+                        message: "Property not satisfied",
+                    });
+                }
+            } else {
+                diagnostics.push(<Diagnostic>{
+                    range: c.prop.$cstNode?.range,
+                    severity: DiagnosticSeverity.Warning,
+                    message: "Property not evaluated",
+                });
+            }
+        }
+    }
+    return diagnostics;
+}
 
 export type GenerateOptions = {
     destination?: string;

@@ -17,6 +17,7 @@ export const SdvmlTerminals = {
 export type SdvmlTerminalNames = keyof typeof SdvmlTerminals;
 
 export type SdvmlKeywordNames =
+    | "%"
     | "("
     | ")"
     | "+/-"
@@ -25,6 +26,7 @@ export type SdvmlKeywordNames =
     | "->"
     | "."
     | ":"
+    | "<="
     | "Actuator"
     | "App"
     | "Chains"
@@ -151,6 +153,7 @@ export interface CompositeChain extends langium.AstNode {
     readonly $type: 'CompositeChain';
     alternatives: Array<langium.Reference<SimpleChain>>;
     name: string;
+    prop?: FCProp;
 }
 
 export const CompositeChain = 'CompositeChain';
@@ -160,7 +163,7 @@ export function isCompositeChain(item: unknown): item is CompositeChain {
 }
 
 export interface DURATION extends langium.AstNode {
-    readonly $container: RandomVar;
+    readonly $container: FCProp | RandomVar;
     readonly $type: 'DURATION';
     value: number;
 }
@@ -181,6 +184,19 @@ export const EventTriggering = 'EventTriggering';
 
 export function isEventTriggering(item: unknown): item is EventTriggering {
     return reflection.isInstance(item, EventTriggering);
+}
+
+export interface FCProp extends langium.AstNode {
+    readonly $container: CompositeChain | SimpleChain;
+    readonly $type: 'FCProp';
+    prob: number;
+    reaction: DURATION;
+}
+
+export const FCProp = 'FCProp';
+
+export function isFCProp(item: unknown): item is FCProp {
+    return reflection.isInstance(item, FCProp);
 }
 
 export interface Model extends langium.AstNode {
@@ -300,6 +316,7 @@ export interface SimpleChain extends langium.AstNode {
     readonly $type: 'SimpleChain';
     name: string;
     participants: Array<langium.Reference<FCParticipant>>;
+    prop?: FCProp;
 }
 
 export const SimpleChain = 'SimpleChain';
@@ -343,6 +360,7 @@ export type SdvmlAstType = {
     DURATION: DURATION
     EventTriggering: EventTriggering
     FCParticipant: FCParticipant
+    FCProp: FCProp
     FunctionalChain: FunctionalChain
     Model: Model
     PeriodicTriggering: PeriodicTriggering
@@ -362,7 +380,7 @@ export type SdvmlAstType = {
 export class SdvmlAstReflection extends langium.AbstractAstReflection {
 
     getAllTypes(): string[] {
-        return [Actuator, AppSignal, CommunicationType, Component, CompositeChain, DURATION, EventTriggering, FCParticipant, FunctionalChain, Model, PeriodicTriggering, Publisher, RandomVar, Resource, SelfTriggering, Sensor, Service, Signal, SimpleChain, Subscriber, TriggeringRule, VSS];
+        return [Actuator, AppSignal, CommunicationType, Component, CompositeChain, DURATION, EventTriggering, FCParticipant, FCProp, FunctionalChain, Model, PeriodicTriggering, Publisher, RandomVar, Resource, SelfTriggering, Sensor, Service, Signal, SimpleChain, Subscriber, TriggeringRule, VSS];
     }
 
     protected override computeIsSubtype(subtype: string, supertype: string): boolean {
@@ -462,7 +480,8 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                     name: CompositeChain,
                     properties: [
                         { name: 'alternatives', defaultValue: [] },
-                        { name: 'name' }
+                        { name: 'name' },
+                        { name: 'prop' }
                     ]
                 };
             }
@@ -479,6 +498,15 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                     name: EventTriggering,
                     properties: [
                         { name: 'event' }
+                    ]
+                };
+            }
+            case FCProp: {
+                return {
+                    name: FCProp,
+                    properties: [
+                        { name: 'prob' },
+                        { name: 'reaction' }
                     ]
                 };
             }
@@ -568,7 +596,8 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                     name: SimpleChain,
                     properties: [
                         { name: 'name' },
-                        { name: 'participants', defaultValue: [] }
+                        { name: 'participants', defaultValue: [] },
+                        { name: 'prop' }
                     ]
                 };
             }
