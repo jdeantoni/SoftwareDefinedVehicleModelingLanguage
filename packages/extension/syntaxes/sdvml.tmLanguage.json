@@ -10,7 +10,7 @@
     },
     {
       "name": "keyword.control.sdvml",
-      "match": "\\b(Actuator|App|Chains|Component|Execution|Functional|Resource|SDV|Sensor|Service|Signal|VSS|event|execution|latency|ms|nonreentrant|normal|offset|on|period|publish|queue|self|subscribe|to|trigger|use|var|varying)\\b"
+      "match": "\\b(Actuator|App|Chains|Component|Execution|Functional|Resource|SDV|Sensor|Service|Signal|VSS|event|execution|latency|nonreentrant|normal|offset|on|period|publish|queue|self|subscribe|to|trigger|use|var|varying)\\b"
     },
     {
       "name": "string.quoted.double.sdvml",

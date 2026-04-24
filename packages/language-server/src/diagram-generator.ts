@@ -18,7 +18,7 @@
 import { GeneratorContext, LangiumDiagramGenerator } from 'langium-sprotty';
 import { SEdge, SLabel, SModelRoot, SNode, SPort, SModelElement } from 'sprotty-protocol';
 import { Signal, Component, Model, isSensor, Sensor, Actuator, isPeriodicTriggering, Service, SimpleChain, FCParticipant, isSimpleChain } from './generated/ast.js';
-import { Context, makeServiceName, getPublishingSignal, getSubscriptionSignal } from './cli/generator.js';
+import { Context, makeServiceName, getPublishingSignal, getSubscriptionSignal, NormalRandomVariable, sigmaScale } from './cli/generator.js';
 import path from 'path';
 import { Reference } from 'langium';
 import { readFileSync } from 'fs';
@@ -280,16 +280,18 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
 
     protected getSensorLabel(sig: Sensor, nodeId: string, ctx: GeneratorContext<Model>): SLabel[] {
         const { idCache } = ctx;
+        let latency = new NormalRandomVariable(sig.latency, sigmaScale);
+        let period = new NormalRandomVariable(sig.trigger.period, sigmaScale);
         let res: SLabel[] = [
             <SLabel>{
                 type: "label:values",
                 id: idCache.uniqueId(nodeId + '.values1'),
-                text: "Latency:" + sig.latency.mean.value + "+/-" + sig.latency.stdDev.value + "ms"
+                text: "Latency:" + latency.mean.as_millisecond + "+/-" + latency.stdDev.as_millisecond + "ms"
             },
             <SLabel>{
                 type: "label:values",
                 id: idCache.uniqueId(nodeId + '.values2'),
-                text: "Period:" + sig.latency.mean.value + "+/-" + sig.latency.stdDev.value + "ms"
+                text: "Period:" + period.mean.as_millisecond + "+/-" + period.stdDev.as_millisecond + "ms"
             }
         ];
         return res;
@@ -297,18 +299,20 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
 
     protected getActuatorLabel(sig: Actuator, nodeId: string, ctx: GeneratorContext<Model>): SLabel[] {
         const { idCache } = ctx;
+        let latency = new NormalRandomVariable(sig.latency, sigmaScale);
         let res: SLabel[] = [
             <SLabel>{
                 type: "label:values",
                 id: idCache.uniqueId(nodeId + '.values1'),
-                text: "Latency:" + sig.latency.mean.value + "+/-" + sig.latency.stdDev.value + "ms"
+                text: "Latency:" + latency.mean.as_millisecond + "+/-" + latency.stdDev.as_millisecond + "ms"
             }
         ];
         if (isPeriodicTriggering(sig.trigger)) {
+            let period = new NormalRandomVariable(sig.trigger.period, sigmaScale);
             res.push(<SLabel>{
                 type: "label:values",
                 id: idCache.uniqueId(nodeId + '.values2'),
-                text: "AP:" + sig.trigger.period.mean.value + "+/-" + sig.trigger.period.stdDev.value + "ms"
+                text: "Period:" + period.mean.as_millisecond + "+/-" + period.stdDev.as_millisecond + "ms"
             });
         }
 
@@ -317,18 +321,20 @@ export class SdvmlDiagramGenerator extends LangiumDiagramGenerator {
 
     protected getServiceLabel(service: Service, nodeId: string, ctx: GeneratorContext<Model>): SModelElement[] {
         const { idCache } = ctx;
+        let execTime = new NormalRandomVariable(service.execTime, sigmaScale);
         let res: SLabel[] = [
             <SLabel>{
                 type: "label:values",
                 id: idCache.uniqueId(nodeId + '.values1'),
-                text: "ET:" + service.execTime.mean.value + "+/-" + service.execTime.stdDev.value + "ms"
+                text: "ET:" + execTime.mean.as_millisecond + "+/-" + execTime.stdDev.as_millisecond + "ms"
             }
         ]
         if (isPeriodicTriggering(service.trigger)) {
+            let period = new NormalRandomVariable(service.trigger.period, sigmaScale);
             res.push(<SLabel>{
                 type: "label:values",
                 id: idCache.uniqueId(nodeId + '.values2'),
-                text: "AP:" + service.trigger.period.mean.value + "+/-" + service.trigger.period.stdDev.value + "ms"
+                text: "Period:" + period.mean.as_millisecond + "+/-" + period.stdDev.as_millisecond + "ms"
             });
         } else {
             const trigger = service.trigger.event;

@@ -1,10 +1,8 @@
 import {
-    Actuator,
     isActuator,
     isPeriodicTriggering,
     isSensor,
     PeriodicTriggering,
-    Sensor,
     Service,
     type Model,
     Component,
@@ -17,8 +15,82 @@ import {
     SimpleChain,
     isSimpleChain,
 } from '../generated/ast.js';
-import { CompositeGeneratorNode, toString } from 'langium/generate';
 
+export const sigmaScale = 2;
+
+const durationRegexp = /([0-9]+(\.[0-9]+)?)(d|h|(ms)|m|s|(us)|(ns))/;
+
+export class Duration {
+    second: number;
+
+    constructor(second: number) {
+        this.second = second;
+    }
+
+    static of_day(day: number): Duration { return new Duration(day * 24 * 60 * 60) }
+    static of_hour(hour: number): Duration { return new Duration(hour * 60 * 60) }
+    static of_minute(minute: number): Duration { return new Duration(minute * 60) }
+    static of_second(second: number): Duration { return new Duration(second) }
+    static of_millisecond(millisecond: number): Duration { return new Duration(millisecond / 1_000) }
+    static of_microsecond(microsecond: number): Duration { return new Duration(microsecond / 1_000_000) }
+    static of_nanosecond(nanosecond: number): Duration { return new Duration(nanosecond / 1_000_000_000) }
+    static of_syntax_duration(duration: string): Duration {
+        let match = durationRegexp.exec(duration);
+        if (match) {
+            let value = Number.parseFloat(match[1]);
+            let unit = match[3];
+
+            switch (unit) {
+                case "d":
+                    return Duration.of_day(value);
+                case "h":
+                    return Duration.of_hour(value);
+                case "m":
+                    return Duration.of_minute(value);
+                case "s":
+                    return Duration.of_second(value);
+                case "ms":
+                    return Duration.of_millisecond(value);
+                case "us":
+                    return Duration.of_microsecond(value);
+                case "ns":
+                    return Duration.of_nanosecond(value);
+                default:
+                    throw new Error("Duration.of_syntax_duration: unknown unit case")
+            }
+        } else {
+            throw new Error("Duration.of_syntax_duration: duration regexp is inconsistent with the grammar");
+        }
+    }
+
+    get as_second(): number { return this.second; }
+    get as_millisecond(): number { return this.second * 1000; }
+    get as_microsecond(): number { return this.second * 1_000_000; }
+    get as_nanosecond(): number { return this.second * 1_000_000; }
+
+    is_negative(): boolean {
+        return this.second < 0;
+    }
+}
+
+export interface Range {
+    left: Duration;
+    right: Duration;
+}
+
+export class NormalRandomVariable {
+    range: Range;
+    mean: Duration;
+    stdDev: Duration;
+
+    constructor(rv: RandomVar, sigmaScale: number) {
+        this.mean = Duration.of_syntax_duration(rv.mean);
+        this.stdDev = Duration.of_syntax_duration(rv.stdDev);
+        let left = rv.left ? Duration.of_syntax_duration(rv.left) : new Duration(this.mean.second - sigmaScale * this.stdDev.second)
+        let right = rv.right ? Duration.of_syntax_duration(rv.right) : new Duration(this.mean.second + sigmaScale * this.stdDev.second)
+        this.range = { left, right };
+    }
+}
 
 function expect(msg: string): never {
     throw new Error(msg)
@@ -33,11 +105,6 @@ export function getSubscriptionSignal(serviceName: string, sub: Subscriber): str
 }
 export function getPublishingSignal(serviceName: string, pub: Publisher): string {
     return pub.actuatorSignal?.ref?.name ?? pub.appSignal?.ref?.name ?? expect(`Reference to publishing signal in service "${serviceName}" was not properly resolved.`);
-}
-
-function randomVariableToRange(v: RandomVar, sigma: number): { left: number, right: number } {
-    console.log(`${v.mean} ${v.stdDev} ${sigma}`);
-    return { left: v.mean.value - sigma * v.stdDev.value, right: v.mean.value + sigma * v.stdDev.value };
 }
 
 export type serviceKey = string;
@@ -94,8 +161,8 @@ export class Context {
         this.signalToPublishers = new Map<string, string[]>();
         this.resources = new Map(model.resources.map(r => [r.name, new Resource(r.name)]));
 
-        let component_comms = model.vss.signals.map(s => [s.name, new Communication(s.name)] as [string, Communication]);
-        let vss_comms = model.components.flatMap(component => component.signals.map(s => [s.name, new Communication(s.name)] as [string, Communication]));
+        let vss_comms = model.vss.signals.map(s => [s.name, new Communication(s.name)] as [string, Communication]);
+        let component_comms = model.components.flatMap(component => component.signals.map(s => [s.name, new Communication(s.name)] as [string, Communication]));
         this.communication = new Map<string, Communication>(component_comms.concat(vss_comms));
 
         this.plainNameRunnable = new Map();
@@ -170,14 +237,18 @@ export class Context {
             if (isSensor(s)) {
                 comm.writes.push(runnable);
             } else {
-                if (runnable.trigger.$type == "EventTrigger") {
+                if (runnable.trigger.$type === "EventTrigger") {
                     comm.queue_reads.push(runnable);
                 } else {
                     comm.var_reads.push(runnable);
                 }
             }
+            this.communication.set(s.name, comm);
         }
+        console.log("queues");
         this.communication.forEach((value, key) => console.log(`${key}: ${value.queue_reads.map(r => r.name)}`));
+        console.log("vars");
+        this.communication.forEach((value, key) => console.log(`${key}: ${value.var_reads.map(r => r.name)}`));
     }
 }
 
@@ -187,503 +258,501 @@ export class Context {
 //     });
 // }
 
-const sigma = 2;
+// export function generateIFScript(model: Model, context: Context): string {
 
-export function generateIFScript(model: Model, context: Context): string {
+//     const ifContent = new CompositeGeneratorNode();
+//     ifContent.append("system " + model.name + ";\n");
+//     ifContent.append("type int = range 0 .. 255;\n");
 
-    const ifContent = new CompositeGeneratorNode();
-    ifContent.append("system " + model.name + ";\n");
-    ifContent.append("type int = range 0 .. 255;\n");
+//     for (var signal of context.signalsToServices.keys() ?? []) {
+//         ifContent.append("signal " + signal + "();\n");
+//     }
 
-    for (var signal of context.signalsToServices.keys() ?? []) {
-        ifContent.append("signal " + signal + "();\n");
-    }
+//     for (var sig of model.vss.signals) {
+//         if (isSensor(sig)) {
+//             generateIFSensor(sig, ifContent, context, sigma);
+//         }
+//         if (isActuator(sig)) {
+//             generateIFActuator(sig, ifContent, sigma);
+//         }
+//     }
 
-    for (var sig of model.vss.signals) {
-        if (isSensor(sig)) {
-            generateIFSensor(sig, ifContent, context, sigma);
-        }
-        if (isActuator(sig)) {
-            generateIFActuator(sig, ifContent, sigma);
-        }
-    }
+//     for (var c of model.components) {
+//         for (var s of c.services) {
+//             generateIFService(c, s, ifContent, context, sigma);
+//         }
+//     }
 
-    for (var c of model.components) {
-        for (var s of c.services) {
-            generateIFService(c, s, ifContent, context, sigma);
-        }
-    }
-
-    ifContent.append("endsystem;\n");
-    return toString(ifContent);
-}
+//     ifContent.append("endsystem;\n");
+//     return toString(ifContent);
+// }
 
 
-function generateIFService(component: Component, service: Service, ifContent: CompositeGeneratorNode, context: Context, sigma: number) {
-    const serviceName: string = makeServiceName(component, service);
-    var publines = "";
-    for (var pub of service.publishers) {
-        const signalName = getPublishingSignal(service.name, pub);
-        for (var targetService of context.signalsToServices.get(signalName) ?? []) {
-            publines += `\n\t\t\toutput ${signalName}() to {${targetService}}0;`;
-        }
-    }
+// function generateIFService(component: Component, service: Service, ifContent: CompositeGeneratorNode, context: Context, sigma: number) {
+//     const serviceName: string = makeServiceName(component, service);
+//     var publines = "";
+//     for (var pub of service.publishers) {
+//         const signalName = getPublishingSignal(service.name, pub);
+//         for (var targetService of context.signalsToServices.get(signalName) ?? []) {
+//             publines += `\n\t\t\toutput ${signalName}() to {${targetService}}0;`;
+//         }
+//     }
 
-    const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(service.execTime, sigma);
-    ifContent.append("process " + serviceName + "(1);\n");
-    if (isPeriodicTriggering(service.trigger)) {
-        const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(service.trigger.period, sigma);
-        if (service.trigger.offset) {
-            const { left: left_offset_bound, right: right_offset_bound } = randomVariableToRange(service.trigger.offset, sigma);
-            var inpData: string[] = ["", "", "", "", "", "", "", ""];
-            var inpNxtState: string[] = ["first", "processing1a", "processing1b", "wait1", "jitter", "processing2a", "processing2b", "wait2"];
-            var idxState = 0;
-            for (var nxtState of inpNxtState) {
-                for (var inputSignal of context.runnableInputs.get(serviceName) ?? []) {
-                    inpData[idxState] += `\n\t\tinput ${inputSignal}();\n\t\t\ttask nbData := true;\n\t\t\tnextstate ${nxtState};`;
-                }
-                idxState++;
-            }
-            ifContent.append(`\tvar x clock;
-    var e clock;
-    var nbData boolean;
-    state start #start ;
-        task nbData := false;
-        set x := 0;
-        nextstate first;
-    endstate;
-    state first;
-        deadline delayable;
-        when x >= ${left_offset_bound} and x <= ${right_offset_bound};
-            set x := 0;
-            set e := 0;
-            nextstate preprocessing1;${inpData[0]}
-    endstate;
-    state preprocessing1;
-        deadline eager;
-        provided nbData = false;
-            informal "${serviceName}_USELESS_EXEC";
-            nextstate processing1a;
-        deadline eager;
-        provided nbData = true;
-            informal "${serviceName}_USEFUL_EXEC";
-            task nbData := false;
-            nextstate processing1b;
-    endstate;
-    state processing1a;
-        deadline delayable;
-        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
-            informal "${serviceName}_FINISH";${publines}
-            reset e;
-            nextstate wait1;${inpData[1]}
-    endstate;
-    state processing1b;
-        deadline delayable;
-        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
-            informal "${serviceName}_FINISH";${publines}
-            reset e;
-            nextstate wait1;${inpData[2]}
-    endstate;
-    state wait1;
-        when x = ${left_period_bound};
-            set x := 0;
-            nextstate jitter;${inpData[3]}
-    endstate;
-    state jitter;
-        deadline delayable;
-        when x <= ${right_period_bound - left_period_bound};
-            set e := 0;
-            nextstate preprocessing2;${inpData[4]}
-    endstate;
-    state preprocessing2;
-        deadline eager;
-        provided nbData = false;
-            informal "${serviceName}_USELESS_EXEC";
-            nextstate processing2a;
-        deadline eager;
-        provided nbData = true;
-            informal "${serviceName}_USEFUL_EXEC";
-            task nbData := false;
-            nextstate processing2b;
-    endstate;
-    state processing2a;
-        deadline delayable;
-        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
-            informal "${serviceName}_FINISH";${publines}
-            reset e;
-            nextstate wait2;${inpData[5]}
-    endstate;
-    state processing2b;
-        deadline delayable;
-        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
-            informal "${serviceName}_FINISH";${publines}
-            reset e;
-            nextstate wait2;${inpData[6]}
-    endstate;
-    state wait2;
-        when x = ${service.trigger.period.mean.value};
-            set x := 0;
-            nextstate jitter;${inpData[7]}
-    endstate;\n`);
-        } else {
-            var inpData: string[] = ["", "", "", "", ""];
-            var inpNxtState: string[] = ["first", "jitter", "processing1", "processing2", "wait"];
-            var idxState = 0;
-            for (var nxtState of inpNxtState) {
-                for (var inputSignal of context.runnableInputs.get(serviceName) ?? []) {
-                    inpData[idxState] += `\n\t\tinput ${inputSignal}();\n\t\t\ttask nbData := true;\n\t\t\tnextstate ${nxtState};`;
-                }
-                idxState++;
-            }
-            ifContent.append(`\tvar x clock;
-    var e clock;
-    var nbData boolean;
-    state start #start ;
-        task nbData := false;
-        set x := 0;
-        nextstate first;
-    endstate;
-    state first;
-        deadline delayable;
-        when x <= ${left_period_bound};
-            set x := 0;
-            nextstate jitter;${inpData[0]}
-    endstate;
-    state jitter;
-        deadline delayable;
-        when x <= ${right_period_bound - left_period_bound};
-            set e := 0;
-            nextstate preprocessing;${inpData[1]}
-    endstate;
-    state preprocessing;
-        deadline eager;
-        provided nbData = false;
-            informal "${serviceName}_USELESS_EXEC";
-            nextstate processing1;
-        deadline eager;
-        provided nbData = true;
-            informal "${serviceName}_USEFUL_EXEC";
-            task nbData := false;
-            nextstate processing2;
-    endstate;
-    state processing1;
-        deadline delayable;
-        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
-            informal "${serviceName}_FINISH";${publines}
-            reset e;
-            nextstate wait;${inpData[2]}
-    endstate;
-    state processing2;
-        deadline delayable;
-        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
-            informal "${serviceName}_FINISH";${publines}
-            reset e;
-            nextstate wait;${inpData[3]}
-    endstate;
-    state wait;
-        when x = ${service.trigger.period.mean.value};
-            set x := 0;
-            nextstate jitter;${inpData[4]}
-    endstate;\n`);
-        }
+//     const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(service.execTime, sigma);
+//     ifContent.append("process " + serviceName + "(1);\n");
+//     if (isPeriodicTriggering(service.trigger)) {
+//         const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(service.trigger.period, sigma);
+//         if (service.trigger.offset) {
+//             const { left: left_offset_bound, right: right_offset_bound } = randomVariableToRange(service.trigger.offset, sigma);
+//             var inpData: string[] = ["", "", "", "", "", "", "", ""];
+//             var inpNxtState: string[] = ["first", "processing1a", "processing1b", "wait1", "jitter", "processing2a", "processing2b", "wait2"];
+//             var idxState = 0;
+//             for (var nxtState of inpNxtState) {
+//                 for (var inputSignal of context.runnableInputs.get(serviceName) ?? []) {
+//                     inpData[idxState] += `\n\t\tinput ${inputSignal}();\n\t\t\ttask nbData := true;\n\t\t\tnextstate ${nxtState};`;
+//                 }
+//                 idxState++;
+//             }
+//             ifContent.append(`\tvar x clock;
+//     var e clock;
+//     var nbData boolean;
+//     state start #start ;
+//         task nbData := false;
+//         set x := 0;
+//         nextstate first;
+//     endstate;
+//     state first;
+//         deadline delayable;
+//         when x >= ${left_offset_bound} and x <= ${right_offset_bound};
+//             set x := 0;
+//             set e := 0;
+//             nextstate preprocessing1;${inpData[0]}
+//     endstate;
+//     state preprocessing1;
+//         deadline eager;
+//         provided nbData = false;
+//             informal "${serviceName}_USELESS_EXEC";
+//             nextstate processing1a;
+//         deadline eager;
+//         provided nbData = true;
+//             informal "${serviceName}_USEFUL_EXEC";
+//             task nbData := false;
+//             nextstate processing1b;
+//     endstate;
+//     state processing1a;
+//         deadline delayable;
+//         when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+//             informal "${serviceName}_FINISH";${publines}
+//             reset e;
+//             nextstate wait1;${inpData[1]}
+//     endstate;
+//     state processing1b;
+//         deadline delayable;
+//         when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+//             informal "${serviceName}_FINISH";${publines}
+//             reset e;
+//             nextstate wait1;${inpData[2]}
+//     endstate;
+//     state wait1;
+//         when x = ${left_period_bound};
+//             set x := 0;
+//             nextstate jitter;${inpData[3]}
+//     endstate;
+//     state jitter;
+//         deadline delayable;
+//         when x <= ${right_period_bound - left_period_bound};
+//             set e := 0;
+//             nextstate preprocessing2;${inpData[4]}
+//     endstate;
+//     state preprocessing2;
+//         deadline eager;
+//         provided nbData = false;
+//             informal "${serviceName}_USELESS_EXEC";
+//             nextstate processing2a;
+//         deadline eager;
+//         provided nbData = true;
+//             informal "${serviceName}_USEFUL_EXEC";
+//             task nbData := false;
+//             nextstate processing2b;
+//     endstate;
+//     state processing2a;
+//         deadline delayable;
+//         when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+//             informal "${serviceName}_FINISH";${publines}
+//             reset e;
+//             nextstate wait2;${inpData[5]}
+//     endstate;
+//     state processing2b;
+//         deadline delayable;
+//         when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+//             informal "${serviceName}_FINISH";${publines}
+//             reset e;
+//             nextstate wait2;${inpData[6]}
+//     endstate;
+//     state wait2;
+//         when x = ${service.trigger.period.mean.value};
+//             set x := 0;
+//             nextstate jitter;${inpData[7]}
+//     endstate;\n`);
+//         } else {
+//             var inpData: string[] = ["", "", "", "", ""];
+//             var inpNxtState: string[] = ["first", "jitter", "processing1", "processing2", "wait"];
+//             var idxState = 0;
+//             for (var nxtState of inpNxtState) {
+//                 for (var inputSignal of context.runnableInputs.get(serviceName) ?? []) {
+//                     inpData[idxState] += `\n\t\tinput ${inputSignal}();\n\t\t\ttask nbData := true;\n\t\t\tnextstate ${nxtState};`;
+//                 }
+//                 idxState++;
+//             }
+//             ifContent.append(`\tvar x clock;
+//     var e clock;
+//     var nbData boolean;
+//     state start #start ;
+//         task nbData := false;
+//         set x := 0;
+//         nextstate first;
+//     endstate;
+//     state first;
+//         deadline delayable;
+//         when x <= ${left_period_bound};
+//             set x := 0;
+//             nextstate jitter;${inpData[0]}
+//     endstate;
+//     state jitter;
+//         deadline delayable;
+//         when x <= ${right_period_bound - left_period_bound};
+//             set e := 0;
+//             nextstate preprocessing;${inpData[1]}
+//     endstate;
+//     state preprocessing;
+//         deadline eager;
+//         provided nbData = false;
+//             informal "${serviceName}_USELESS_EXEC";
+//             nextstate processing1;
+//         deadline eager;
+//         provided nbData = true;
+//             informal "${serviceName}_USEFUL_EXEC";
+//             task nbData := false;
+//             nextstate processing2;
+//     endstate;
+//     state processing1;
+//         deadline delayable;
+//         when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+//             informal "${serviceName}_FINISH";${publines}
+//             reset e;
+//             nextstate wait;${inpData[2]}
+//     endstate;
+//     state processing2;
+//         deadline delayable;
+//         when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+//             informal "${serviceName}_FINISH";${publines}
+//             reset e;
+//             nextstate wait;${inpData[3]}
+//     endstate;
+//     state wait;
+//         when x = ${service.trigger.period.mean.value};
+//             set x := 0;
+//             nextstate jitter;${inpData[4]}
+//     endstate;\n`);
+//         }
 
-    } else {
-        const signalName = getSubscriptionSignal(service.name, service.trigger.event?.ref!);
-        ifContent.append("\tvar e clock;");
-        ifContent.append(`
-    state wait #start ;
-        input ${signalName}();
-            informal "${serviceName}_START";
-            set e := 0;
-            nextstate processing;
-    endstate;
-    state processing;
-        deadline delayable;
-        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
-            informal "${serviceName}_FINISH";${publines}
-            reset e;
-            nextstate wait;
-    endstate;\n`);
-    }
-    ifContent.append("endprocess;\n");
-}
+//     } else {
+//         const signalName = getSubscriptionSignal(service.name, service.trigger.event?.ref!);
+//         ifContent.append("\tvar e clock;");
+//         ifContent.append(`
+//     state wait #start ;
+//         input ${signalName}();
+//             informal "${serviceName}_START";
+//             set e := 0;
+//             nextstate processing;
+//     endstate;
+//     state processing;
+//         deadline delayable;
+//         when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+//             informal "${serviceName}_FINISH";${publines}
+//             reset e;
+//             nextstate wait;
+//     endstate;\n`);
+//     }
+//     ifContent.append("endprocess;\n");
+// }
 
-function generateIFSensor(sig: Sensor, ifContent: CompositeGeneratorNode, context: Context, sigma: number) {
-    var ssp = sig.trigger.period;
-    var sensorSignal = sig.name;
-    var siglines = "";
-    for (var serviceName of context.signalsToServices.get(sensorSignal) ?? []) {
-        siglines += `\n\t\t\toutput ${sensorSignal}() to {${serviceName}}0;`;
-    }
-    const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(sig.latency, sigma);
-    const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(ssp, sigma);
-    if (sig.trigger.offset) {
-        const { left: left_offset_bound, right: right_offset_bound } = randomVariableToRange(sig.trigger.offset, sigma);
-        ifContent.append(`process ${sensorSignal}(1);
-    var x clock;
-    var e clock;
-    state start #start ;
-        set x := 0;
-        nextstate first;
-    endstate;
-    state first;
-        deadline delayable;
-        when x >= ${left_offset_bound} and x <= ${right_offset_bound};
-            informal "${sensorSignal}_START";
-            set x := 0;
-            set e := 0;
-            nextstate exec1;
-    endstate;
-    state exec1;
-        deadline delayable;
-        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
-            informal "${sensorSignal}_FINISH";
-            reset e;${siglines}
-            nextstate wait1;
-    endstate;
-    state wait1;
-        when x = ${left_period_bound};
-            set x := 0;
-            nextstate jitter;
-    endstate;
-    state jitter;
-        deadline delayable;
-        when x <= ${right_period_bound - left_period_bound} ;
-            informal "${sensorSignal}_START";
-            set e := 0;
-            nextstate exec2;
-    endstate;
-    state exec2;
-        deadline delayable;
-        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
-            informal "${sensorSignal}_FINISH";
-            reset e;${siglines}
-            nextstate wait2;
-    endstate;
-    state wait2;
-        when x = ${ssp.mean.value};
-            set x := 0;
-            nextstate jitter;
-    endstate;
-endprocess;
-`);
-    } else {
-        ifContent.append(`process ${sensorSignal}(1);
-    var x clock;
-    var e clock;
-    state start #start ;
-        set x := 0;
-        nextstate first;
-    endstate;
-    state first;
-        deadline delayable;
-        when x <= ${left_period_bound};
-            set x := 0;
-            nextstate jitter;
-    endstate;
-    state jitter;
-        deadline delayable;
-        when x <= ${right_period_bound - left_period_bound} ;
-            informal "${sensorSignal}_START";
-            set e := 0;
-            nextstate exec;
-    endstate;
-    state exec;
-        deadline delayable;
-        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
-            informal "${sensorSignal}_FINISH";
-            reset e;${siglines}
-            nextstate wait;
-    endstate;
-    state wait;
-        when x = ${ssp.mean.value};
-            set x := 0;
-            nextstate jitter;
-    endstate;
-endprocess;
-`);
-    }
-}
+// function generateIFSensor(sig: Sensor, ifContent: CompositeGeneratorNode, context: Context, sigma: number) {
+//     var ssp = sig.trigger.period;
+//     var sensorSignal = sig.name;
+//     var siglines = "";
+//     for (var serviceName of context.signalsToServices.get(sensorSignal) ?? []) {
+//         siglines += `\n\t\t\toutput ${sensorSignal}() to {${serviceName}}0;`;
+//     }
+//     const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(sig.latency, sigma);
+//     const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(ssp, sigma);
+//     if (sig.trigger.offset) {
+//         const { left: left_offset_bound, right: right_offset_bound } = randomVariableToRange(sig.trigger.offset, sigma);
+//         ifContent.append(`process ${sensorSignal}(1);
+//     var x clock;
+//     var e clock;
+//     state start #start ;
+//         set x := 0;
+//         nextstate first;
+//     endstate;
+//     state first;
+//         deadline delayable;
+//         when x >= ${left_offset_bound} and x <= ${right_offset_bound};
+//             informal "${sensorSignal}_START";
+//             set x := 0;
+//             set e := 0;
+//             nextstate exec1;
+//     endstate;
+//     state exec1;
+//         deadline delayable;
+//         when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+//             informal "${sensorSignal}_FINISH";
+//             reset e;${siglines}
+//             nextstate wait1;
+//     endstate;
+//     state wait1;
+//         when x = ${left_period_bound};
+//             set x := 0;
+//             nextstate jitter;
+//     endstate;
+//     state jitter;
+//         deadline delayable;
+//         when x <= ${right_period_bound - left_period_bound} ;
+//             informal "${sensorSignal}_START";
+//             set e := 0;
+//             nextstate exec2;
+//     endstate;
+//     state exec2;
+//         deadline delayable;
+//         when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+//             informal "${sensorSignal}_FINISH";
+//             reset e;${siglines}
+//             nextstate wait2;
+//     endstate;
+//     state wait2;
+//         when x = ${ssp.mean.value};
+//             set x := 0;
+//             nextstate jitter;
+//     endstate;
+// endprocess;
+// `);
+//     } else {
+//         ifContent.append(`process ${sensorSignal}(1);
+//     var x clock;
+//     var e clock;
+//     state start #start ;
+//         set x := 0;
+//         nextstate first;
+//     endstate;
+//     state first;
+//         deadline delayable;
+//         when x <= ${left_period_bound};
+//             set x := 0;
+//             nextstate jitter;
+//     endstate;
+//     state jitter;
+//         deadline delayable;
+//         when x <= ${right_period_bound - left_period_bound} ;
+//             informal "${sensorSignal}_START";
+//             set e := 0;
+//             nextstate exec;
+//     endstate;
+//     state exec;
+//         deadline delayable;
+//         when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+//             informal "${sensorSignal}_FINISH";
+//             reset e;${siglines}
+//             nextstate wait;
+//     endstate;
+//     state wait;
+//         when x = ${ssp.mean.value};
+//             set x := 0;
+//             nextstate jitter;
+//     endstate;
+// endprocess;
+// `);
+//     }
+// }
 
 
-function generateIFActuator(sig: Actuator, ifContent: CompositeGeneratorNode, sigma: number) {
-    const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(sig.latency, sigma);
-    ifContent.append(`process ${sig.name}(1);`)
-    if (isPeriodicTriggering(sig.trigger)) {
-        const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(sig.trigger.period, sigma);
-        var AP = (sig.trigger as PeriodicTriggering).period;
-        if (sig.trigger.offset) {
-            const { left: left_offset_bound, right: right_offset_bound } = randomVariableToRange(sig.trigger.offset, sigma);
-            ifContent.append(`
-    var x clock;
-    var e clock;
-    var nbData boolean;
-    state start #start ;
-        task nbData := false;
-        set x := 0;
-        nextstate first;
-    endstate;
-    state first;
-        deadline delayable;
-        when x >= ${left_offset_bound} and x <= ${right_offset_bound};
-            set x := 0;
-            set e := 0;
-            nextstate preprocessing1;
-        input ${sig.name}();
-			task nbData := true;
-			nextstate first;
-    endstate;
-    state preprocessing1;
-        deadline eager;
-        provided nbData = false;
-            informal "${sig.name}_USELESS_ACT";
-            nextstate processing1;
-        deadline eager;
-        provided nbData = true;
-            informal "${sig.name}_USEFUL_ACT";
-            task nbData := false;
-            nextstate processing1;
-    endstate;
-    state processing1;
-        deadline delayable;
-        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
-            informal "${sig.name}_FINISH";
-            reset e;
-            nextstate wait1;
-        input ${sig.name}();
-			task nbData := true;
-			nextstate processing1;
-    endstate;
-    state wait1;
-        when x = ${left_period_bound};
-            set x := 0;
-            nextstate jitter;
-        input ${sig.name}();
-			task nbData := true;
-			nextstate wait1;
-    endstate;
-    state jitter;
-        deadline delayable;
-        when x <= ${right_period_bound - left_period_bound};
-            set e := 0;
-            nextstate preprocessing2;
-        input ${sig.name}();
-			task nbData := true;
-			nextstate jitter;
-    endstate;
-    state preprocessing2;
-        deadline eager;
-        provided nbData = false;
-            informal "${sig.name}_USELESS_ACT";
-            nextstate processing2;
-        deadline eager;
-        provided nbData = true;
-            informal "${sig.name}_USEFUL_ACT";
-            task nbData := false;
-            nextstate processing2;
-    endstate;
-    state processing2;
-        deadline delayable;
-        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
-            informal "${sig.name}_FINISH";
-            reset e;
-            nextstate wait2;
-        input ${sig.name}();
-			task nbData := true;
-			nextstate processing2;
-    endstate;
-    state wait2;
-        when x = ${AP.mean.value};
-            set x := 0;
-            nextstate jitter;
-        input ${sig.name}();
-			task nbData := true;
-			nextstate wait2;
-    endstate;
-`);
-        } else {
-            ifContent.append(`
-    var x clock;
-    var e clock;
-    var nbData boolean;
-    state start #start ;
-        task nbData := false;
-        set x := 0;
-        nextstate first;
-    endstate;
-    state first;
-        deadline delayable;
-        when x <= ${left_period_bound};
-            set x := 0;
-            nextstate jitter;
-        input ${sig.name}();
-            task nbData := true;
-            nextstate first;
-    endstate;
-    state jitter;
-        deadline delayable;
-        when x <= ${right_period_bound - left_period_bound};
-            set e := 0;
-            nextstate preprocessing;
-        input ${sig.name}();
-            task nbData := true;
-            nextstate jitter;
-    endstate;
-    state preprocessing;
-        deadline eager;
-        provided nbData = false;
-            informal "${sig.name}_USELESS_ACT";
-            nextstate processing;
-        deadline eager;
-        provided nbData = true;
-            informal "${sig.name}_USEFUL_ACT";
-            task nbData := false;
-            nextstate processing;
-    endstate;
-    state processing;
-        deadline delayable;
-        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
-            informal "${sig.name}_FINISH";
-            reset e;
-            nextstate wait;
-        input ${sig.name}();
-            task nbData := true;
-            nextstate processing;
-    endstate;
-    state wait;
-        when x = ${AP.mean.value};
-            set x := 0;
-            nextstate jitter;
-        input ${sig.name}();
-            task nbData := true;
-            nextstate wait;
-    endstate;
-`);
-        }
-    } else {
-        ifContent.append(`
-    var e clock;
-    state wait #start ;
-        input ${sig.name}();
-            informal "${sig.name}_START";
-            set e := 0;
-            nextstate processing;
-    endstate;
-    state processing;
-        deadline delayable;
-        when e >= ${left_exec_bound} and e <= ${right_exec_bound};
-            informal "${sig.name}_FINISH";
-            reset e;
-            nextstate wait;
-    endstate;\n`);
-    }
+// function generateIFActuator(sig: Actuator, ifContent: CompositeGeneratorNode, sigma: number) {
+//     const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(sig.latency, sigma);
+//     ifContent.append(`process ${sig.name}(1);`)
+//     if (isPeriodicTriggering(sig.trigger)) {
+//         const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(sig.trigger.period, sigma);
+//         var AP = (sig.trigger as PeriodicTriggering).period;
+//         if (sig.trigger.offset) {
+//             const { left: left_offset_bound, right: right_offset_bound } = randomVariableToRange(sig.trigger.offset, sigma);
+//             ifContent.append(`
+//     var x clock;
+//     var e clock;
+//     var nbData boolean;
+//     state start #start ;
+//         task nbData := false;
+//         set x := 0;
+//         nextstate first;
+//     endstate;
+//     state first;
+//         deadline delayable;
+//         when x >= ${left_offset_bound} and x <= ${right_offset_bound};
+//             set x := 0;
+//             set e := 0;
+//             nextstate preprocessing1;
+//         input ${sig.name}();
+// 			task nbData := true;
+// 			nextstate first;
+//     endstate;
+//     state preprocessing1;
+//         deadline eager;
+//         provided nbData = false;
+//             informal "${sig.name}_USELESS_ACT";
+//             nextstate processing1;
+//         deadline eager;
+//         provided nbData = true;
+//             informal "${sig.name}_USEFUL_ACT";
+//             task nbData := false;
+//             nextstate processing1;
+//     endstate;
+//     state processing1;
+//         deadline delayable;
+//         when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+//             informal "${sig.name}_FINISH";
+//             reset e;
+//             nextstate wait1;
+//         input ${sig.name}();
+// 			task nbData := true;
+// 			nextstate processing1;
+//     endstate;
+//     state wait1;
+//         when x = ${left_period_bound};
+//             set x := 0;
+//             nextstate jitter;
+//         input ${sig.name}();
+// 			task nbData := true;
+// 			nextstate wait1;
+//     endstate;
+//     state jitter;
+//         deadline delayable;
+//         when x <= ${right_period_bound - left_period_bound};
+//             set e := 0;
+//             nextstate preprocessing2;
+//         input ${sig.name}();
+// 			task nbData := true;
+// 			nextstate jitter;
+//     endstate;
+//     state preprocessing2;
+//         deadline eager;
+//         provided nbData = false;
+//             informal "${sig.name}_USELESS_ACT";
+//             nextstate processing2;
+//         deadline eager;
+//         provided nbData = true;
+//             informal "${sig.name}_USEFUL_ACT";
+//             task nbData := false;
+//             nextstate processing2;
+//     endstate;
+//     state processing2;
+//         deadline delayable;
+//         when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+//             informal "${sig.name}_FINISH";
+//             reset e;
+//             nextstate wait2;
+//         input ${sig.name}();
+// 			task nbData := true;
+// 			nextstate processing2;
+//     endstate;
+//     state wait2;
+//         when x = ${AP.mean.value};
+//             set x := 0;
+//             nextstate jitter;
+//         input ${sig.name}();
+// 			task nbData := true;
+// 			nextstate wait2;
+//     endstate;
+// `);
+//         } else {
+//             ifContent.append(`
+//     var x clock;
+//     var e clock;
+//     var nbData boolean;
+//     state start #start ;
+//         task nbData := false;
+//         set x := 0;
+//         nextstate first;
+//     endstate;
+//     state first;
+//         deadline delayable;
+//         when x <= ${left_period_bound};
+//             set x := 0;
+//             nextstate jitter;
+//         input ${sig.name}();
+//             task nbData := true;
+//             nextstate first;
+//     endstate;
+//     state jitter;
+//         deadline delayable;
+//         when x <= ${right_period_bound - left_period_bound};
+//             set e := 0;
+//             nextstate preprocessing;
+//         input ${sig.name}();
+//             task nbData := true;
+//             nextstate jitter;
+//     endstate;
+//     state preprocessing;
+//         deadline eager;
+//         provided nbData = false;
+//             informal "${sig.name}_USELESS_ACT";
+//             nextstate processing;
+//         deadline eager;
+//         provided nbData = true;
+//             informal "${sig.name}_USEFUL_ACT";
+//             task nbData := false;
+//             nextstate processing;
+//     endstate;
+//     state processing;
+//         deadline delayable;
+//         when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+//             informal "${sig.name}_FINISH";
+//             reset e;
+//             nextstate wait;
+//         input ${sig.name}();
+//             task nbData := true;
+//             nextstate processing;
+//     endstate;
+//     state wait;
+//         when x = ${AP.mean.value};
+//             set x := 0;
+//             nextstate jitter;
+//         input ${sig.name}();
+//             task nbData := true;
+//             nextstate wait;
+//     endstate;
+// `);
+//         }
+//     } else {
+//         ifContent.append(`
+//     var e clock;
+//     state wait #start ;
+//         input ${sig.name}();
+//             informal "${sig.name}_START";
+//             set e := 0;
+//             nextstate processing;
+//     endstate;
+//     state processing;
+//         deadline delayable;
+//         when e >= ${left_exec_bound} and e <= ${right_exec_bound};
+//             informal "${sig.name}_FINISH";
+//             reset e;
+//             nextstate wait;
+//     endstate;\n`);
+//     }
 
-    ifContent.append("endprocess;\n");
+//     ifContent.append("endprocess;\n");
 
-}
+// }
 
 class EventTrigger {
-    $type: 'EventTrigger';
+    $type = 'EventTrigger';
     event: string;
     constructor(event: string) {
         this.event = event;
@@ -699,30 +768,34 @@ class EventTrigger {
 }
 
 class PeriodicTrigger {
-    $type: 'PeriodicTrigger';
-    period: RandomVar;
-    offset: RandomVar | number;
+    $type = 'PeriodicTrigger';
+    period: NormalRandomVariable;
+    offset: NormalRandomVariable | number;
     constructor(period: RandomVar, offset: RandomVar | number) {
-        this.period = period;
-        this.offset = offset;
+        this.period = new NormalRandomVariable(period, sigmaScale);
+        if (typeof offset === "number") {
+            this.offset = offset;
+        } else {
+            this.offset = new NormalRandomVariable(offset, sigmaScale);
+        }
     }
     spec(spawn_clock: string, jitter_var: string, phase_var: string): [string, string] {
         let assumptions = "";
-        const { left: left_period_bound, right: right_period_bound } = randomVariableToRange(this.period, sigma);
+        const { left: left_period_bound, right: right_period_bound } = this.period.range;
         if (typeof this.offset !== "number") {
-            const { left: left_off_bound, right: right_off_bound } = randomVariableToRange(this.offset, sigma);
+            const { left: left_off_bound, right: right_off_bound } = this.period.range;
             assumptions = `
-    duration : ${left_off_bound}ms <= ${phase_var} <= ${right_off_bound}ms;
-    continuous process ${phase_var} with normal(${this.offset.mean.value}ms, ${this.offset.stdDev.value}ms);`;
+    duration : ${left_off_bound.as_millisecond}ms <= ${phase_var} <= ${right_off_bound.as_microsecond}ms;
+    continuous process ${phase_var} with normal(${this.offset.mean.as_millisecond}ms, ${this.offset.stdDev.as_millisecond}ms);`;
         } else { // ASSUMPTION: if offset is not defined, random until period is assumed
             assumptions = `
-    duration : ${0}ms <= ${phase_var} <= ${right_period_bound}ms;
+    duration : ${0}ms <= ${phase_var} <= ${right_period_bound.as_millisecond}ms;
     continuous process ${phase_var} with uniform;\n`;
         }
         assumptions += `
-    duration : ${left_period_bound - this.period.mean.value}ms <= ${jitter_var} <= ${right_period_bound - this.period.mean.value}ms;
-    continuous process ${jitter_var} with normal(0s, ${this.period.stdDev.value}ms);`;
-        let structure = `${spawn_clock} = periodic ${this.period.mean.value}ms with jitter ${jitter_var} offset ${phase_var};\n`;
+    duration : ${left_period_bound.as_millisecond - this.period.mean.as_millisecond}ms <= ${jitter_var} <= ${right_period_bound.as_millisecond - this.period.mean.as_millisecond}ms;
+    continuous process ${jitter_var} with normal(0s, ${this.period.stdDev.as_millisecond}ms);`;
+        let structure = `${spawn_clock} = periodic ${this.period.mean.as_millisecond}ms with jitter ${jitter_var} offset ${phase_var};\n`;
         return [assumptions, structure];
     }
 }
@@ -781,14 +854,14 @@ class Resource {
 class Runnable {
     name: string;
     trigger: Trigger;
-    execution: RandomVar;
+    execution: NormalRandomVariable;
     resource?: Resource;
     vss: boolean;
     reentrant: boolean;
     constructor(name: string, trigger: Trigger, execution: RandomVar, vss: boolean, reentrant: boolean, resource?: Resource) {
         this.name = name;
         this.trigger = trigger;
-        this.execution = execution;
+        this.execution = new NormalRandomVariable(execution, sigmaScale);
         this.resource = resource;
         this.vss = vss;
         this.reentrant = reentrant;
@@ -830,7 +903,7 @@ function actuatorTrigRuleToTrigger(serviceName: string, rule: (PeriodicTriggerin
 
 export function generateMRTCCSLSpec(context: Context): string {
     const resourcesSpec = Array.from(context.resources.values()).map(r => r.spec()).join("\n") + "\n";
-    let [assumptions, structure] = Array.from(context.runnables.values()).map(r => generateMRTCCSLRunnable(r, context, sigma)).reduce(
+    let [assumptions, structure] = Array.from(context.runnables.values()).map(r => generateMRTCCSLRunnable(r, context, sigmaScale)).reduce(
         (acc, v) => {
             let [assumes, structs] = acc;
             let [assumption, structure] = v;
@@ -845,13 +918,13 @@ export function generateMRTCCSLSpec(context: Context): string {
 }
 
 function generateMRTCCSLRunnable(r: Runnable, ctx: Context, sigma: number): [string, string] {
-    const { left: left_exec_bound, right: right_exec_bound } = randomVariableToRange(r.execution, sigma);
-    if (left_exec_bound < 0) { // TODO: move the verification in a better place and report to the user
+    const { left: left_exec_bound, right: right_exec_bound } = r.execution.range;
+    if (left_exec_bound.is_negative()) { // TODO: move the verification in a better place and report to the user
         throw new Error(`${r.name} cannot have negative execution time.`);
     }
     let exec_duration_constr = `
-    duration : ${left_exec_bound}ms <= ${r.execution_var} <= ${right_exec_bound}ms;
-    continuous process ${r.execution_var} with normal(${r.execution.mean.value}ms, ${r.execution.stdDev.value}ms);`;
+    duration : ${left_exec_bound.as_millisecond}ms <= ${r.execution_var} <= ${right_exec_bound.as_millisecond}ms;
+    continuous process ${r.execution_var} with normal(${r.execution.mean.as_millisecond}ms, ${r.execution.stdDev.as_millisecond}ms);`;
     let exec_constr = `${r.finish_clock} = delay ${r.start_clock} by ${r.execution_var};`;
     let [phaseJitterConstraints, triggerConstrants] = r.trigger.spec(r.spawn_clock, r.jitter_var, r.phase_var, ctx);
     triggerConstrants += `    ${r.spawn_clock} causes ${r.start_clock};`

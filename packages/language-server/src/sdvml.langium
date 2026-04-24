@@ -110,11 +110,7 @@ Service:
         ('use' resource=[Resource:ID])?
         ( nonreentrant?="nonreentrant" )?;
 
-
-
-DURATION:
-    value=INT "ms"; // TODO: use the SI units
-
+terminal DURATION: /([0-9]+(\.[0-9]+)?)(d|h|(ms)|m|s|(us)|(ns))/;
 terminal ID: /[_a-zA-Z][\w_]*/;
 terminal INT returns number: /[0-9]+/;
 terminal FLOAT returns number: /[0-9]+\.[0-9]+/;

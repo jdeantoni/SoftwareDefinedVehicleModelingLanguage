@@ -7,6 +7,7 @@
 import * as langium from 'langium';
 
 export const SdvmlTerminals = {
+    DURATION: /([0-9]+(\.[0-9]+)?)(d|h|(ms)|m|s|(us)|(ns))/,
     ID: /[_a-zA-Z][\w_]*/,
     INT: /[0-9]+/,
     WS: /\s+/,
@@ -44,7 +45,6 @@ export type SdvmlKeywordNames =
     | "event"
     | "execution"
     | "latency"
-    | "ms"
     | "nonreentrant"
     | "normal"
     | "offset"
@@ -162,18 +162,6 @@ export function isCompositeChain(item: unknown): item is CompositeChain {
     return reflection.isInstance(item, CompositeChain);
 }
 
-export interface DURATION extends langium.AstNode {
-    readonly $container: FCProp | RandomVar;
-    readonly $type: 'DURATION';
-    value: number;
-}
-
-export const DURATION = 'DURATION';
-
-export function isDURATION(item: unknown): item is DURATION {
-    return reflection.isInstance(item, DURATION);
-}
-
 export interface EventTriggering extends langium.AstNode {
     readonly $container: Service;
     readonly $type: 'EventTriggering';
@@ -190,7 +178,7 @@ export interface FCProp extends langium.AstNode {
     readonly $container: CompositeChain | SimpleChain;
     readonly $type: 'FCProp';
     prob: number;
-    reaction: DURATION;
+    reaction: string;
 }
 
 export const FCProp = 'FCProp';
@@ -243,10 +231,10 @@ export function isPublisher(item: unknown): item is Publisher {
 export interface RandomVar extends langium.AstNode {
     readonly $container: Actuator | PeriodicTriggering | Sensor | Service;
     readonly $type: 'RandomVar';
-    left?: DURATION;
-    mean: DURATION;
-    right?: DURATION;
-    stdDev: DURATION;
+    left?: string;
+    mean: string;
+    right?: string;
+    stdDev: string;
 }
 
 export const RandomVar = 'RandomVar';
@@ -357,7 +345,6 @@ export type SdvmlAstType = {
     CommunicationType: CommunicationType
     Component: Component
     CompositeChain: CompositeChain
-    DURATION: DURATION
     EventTriggering: EventTriggering
     FCParticipant: FCParticipant
     FCProp: FCProp
@@ -380,7 +367,7 @@ export type SdvmlAstType = {
 export class SdvmlAstReflection extends langium.AbstractAstReflection {
 
     getAllTypes(): string[] {
-        return [Actuator, AppSignal, CommunicationType, Component, CompositeChain, DURATION, EventTriggering, FCParticipant, FCProp, FunctionalChain, Model, PeriodicTriggering, Publisher, RandomVar, Resource, SelfTriggering, Sensor, Service, Signal, SimpleChain, Subscriber, TriggeringRule, VSS];
+        return [Actuator, AppSignal, CommunicationType, Component, CompositeChain, EventTriggering, FCParticipant, FCProp, FunctionalChain, Model, PeriodicTriggering, Publisher, RandomVar, Resource, SelfTriggering, Sensor, Service, Signal, SimpleChain, Subscriber, TriggeringRule, VSS];
     }
 
     protected override computeIsSubtype(subtype: string, supertype: string): boolean {
@@ -482,14 +469,6 @@ export class SdvmlAstReflection extends langium.AbstractAstReflection {
                         { name: 'alternatives', defaultValue: [] },
                         { name: 'name' },
                         { name: 'prop' }
-                    ]
-                };
-            }
-            case DURATION: {
-                return {
-                    name: DURATION,
-                    properties: [
-                        { name: 'value' }
                     ]
                 };
             }

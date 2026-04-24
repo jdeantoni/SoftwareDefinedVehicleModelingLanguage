@@ -3,7 +3,7 @@ import * as commander from 'commander';
 import { SdvmlLanguageMetaData } from '../generated/module.js';
 import { createSdvmlServices } from '../sdvml-module.js';
 import { extractAstNode, extractDestinationAndName } from './cli-util.js';
-import { Context, generateMRTCCSLSpec, generateMicrostepOrder, generateNetworkDeclaration, generateTaskCSV } from './generator.js';
+import { Context, Duration, generateMRTCCSLSpec, generateMicrostepOrder, generateNetworkDeclaration, generateTaskCSV } from './generator.js';
 // import {workspace} from "vscode";
 import { NodeFileSystem } from 'langium/node';
 // import * as url from 'node:url';
@@ -227,7 +227,7 @@ export async function generateAction(
 
             let checkProp = <NinjaRule>{
                 name: `reaction_check_${c.name}`,
-                command: `${useMRTCCSL} ccsl+ reaction_check ${c.prop.reaction.value / 1000} ${c.prop.prob / 100} $in -o $out`,
+                command: `${useMRTCCSL} ccsl+ reaction_check ${Duration.of_syntax_duration(c.prop.reaction).as_second} ${c.prop.prob / 100} $in -o $out`,
                 implicitDependencies: []
             };
             let propFile = `${reactionsDir}/${c.name}/without/prop.check`;

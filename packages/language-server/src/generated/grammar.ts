@@ -1421,35 +1421,14 @@ export const SdvmlGrammar = (): Grammar => loadedSdvmlGrammar ?? (loadedSdvmlGra
       "wildcard": false
     },
     {
-      "$type": "ParserRule",
+      "$type": "TerminalRule",
       "name": "DURATION",
       "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "Assignment",
-            "feature": "value",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@23"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Keyword",
-            "value": "ms"
-          }
-        ]
+        "$type": "RegexToken",
+        "regex": "/([0-9]+(\\\\.[0-9]+)?)(d|h|(ms)|m|s|(us)|(ns))/"
       },
-      "definesHiddenTokens": false,
-      "entry": false,
       "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
+      "hidden": false
     },
     {
       "$type": "TerminalRule",
