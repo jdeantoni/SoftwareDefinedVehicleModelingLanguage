@@ -1,0 +1,39 @@
+SDV simple:
+
+VSS :
+    Sensor Signal VehicleSpeedSensor :
+            trigger period 100ms+/-0ms offset varying
+            latency 4.87ms+/-0.5493ms
+    Actuator Signal FrontBrakeActuator :
+            trigger on event self
+            latency 5ms+/-0.006ms
+App :
+    Component C :
+        Signal LocalSpeed
+        Signal LocalBrake
+        Service VehicleSpeedReader :
+            subscribe to 
+                - queue VSS.VehicleSpeedSensor
+            publish to
+                - App.LocalSpeed
+            trigger on VehicleSpeedSensor
+            execution 7ms+/-0.004ms
+        
+        Service BrakeController :
+            subscribe to
+                - var App.LocalSpeed
+            publish to
+                - App.LocalBrake
+            trigger period 250ms+/-0ms offset varying
+            execution 4.05ms+/-0.2244ms
+
+        Service FrontBrakeWriter:
+            subscribe to
+                - queue App.LocalBrake
+            publish to 
+                - VSS.FrontBrakeActuator
+            trigger on LocalBrake
+            execution 7.87ms+/-0.4822ms
+
+Functional Chains:
+    chain : VehicleSpeedSensor -> VehicleSpeedReader -> BrakeController -> FrontBrakeWriter -> FrontBrakeActuator
