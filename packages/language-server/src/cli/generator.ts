@@ -785,7 +785,7 @@ class PeriodicTrigger {
         if (typeof this.offset !== "number") {
             const { left: left_off_bound, right: right_off_bound } = this.period.range;
             assumptions = `
-    duration : ${left_off_bound.as_millisecond}ms <= ${phase_var} <= ${right_off_bound.as_microsecond}ms;
+    duration : ${left_off_bound.as_millisecond}ms <= ${phase_var} <= ${right_off_bound.as_millisecond}ms;
     continuous process ${phase_var} with normal(${this.offset.mean.as_millisecond}ms, ${this.offset.stdDev.as_millisecond}ms);`;
         } else { // ASSUMPTION: if offset is not defined, random until period is assumed
             assumptions = `
